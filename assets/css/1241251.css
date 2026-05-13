@@ -1,1 +1,40 @@
 /* Estilos para o site */
+
+/* ==========================================
+   ANIMAÇÃO DO CARROSSEL CONTÍNUO (Funcionalidades)
+   ========================================== */
+   
+.slider-container {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.slider-track {
+    display: flex;
+    width: max-content;
+    /* Aumenta ou diminui os 30s para alterar a velocidade */
+    animation: carrosselContinuo 30s linear infinite; 
+}
+
+/* Pausa a animação quando o utilizador passa o rato para conseguir ler */
+.slider-track:hover {
+    animation-play-state: paused;
+}
+
+.slider-group {
+    display: flex;
+    gap: 1.5rem;
+    padding-right: 1.5rem; /* Mantém o espaçamento igual entre os dois grupos */
+}
+
+.slider-card {
+    width: 240px; /* Mantém os cartões com o tamanho perfeito da tua imagem */
+    flex-shrink: 0;
+}
+
+@keyframes carrosselContinuo {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* Move exatamente metade da largura total */
+}
