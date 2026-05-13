@@ -1,3 +1,49 @@
+<?php
+// 1. Iniciar a "Sessão" (para o servidor se lembrar de quem entrou)
+session_start();
+
+// Se o utilizador já estiver logado, redireciona logo para o dashboard
+if (isset($_SESSION['user_id'])) {
+    header("Location: dashboard.php");
+    exit;
+}
+
+$erro = ""; // Variável para guardar mensagens de erro
+
+// 2. Verificar se o formulário foi submetido (se clicaram no botão "Entrar")
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    require_once 'db.php'; // Chamar a nossa ponte
+
+    // Apanhar o que foi escrito nos campos (com proteção contra espaços vazios)
+    $user = trim($_POST['username'] ?? '');
+    $pass = trim($_POST['password'] ?? '');
+
+    if (!empty($user) && !empty($pass)) {
+        // 3. Procurar o utilizador na base de dados
+        $sql = "SELECT id, username, password_hash, nome FROM utilizadores WHERE username = :username";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':username' => $user]);
+        $utilizador = $stmt->fetch();
+
+        // 4. Se o utilizador existir, testar se a password bate certo com o Hash!
+        if ($utilizador && password_verify($pass, $utilizador['password_hash'])) {
+            // SUCESSO! Guardar os dados do utilizador na memória da sessão
+            $_SESSION['user_id'] = $utilizador['id'];
+            $_SESSION['username'] = $utilizador['username'];
+            $_SESSION['nome'] = $utilizador['nome'];
+
+            // Redirecionar para o Dashboard
+            header("Location: dashboard.php");
+            exit;
+        } else {
+            $erro = "Utilizador ou palavra-passe incorretos.";
+        }
+    } else {
+        $erro = "Por favor, preencha todos os campos.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-PT">
 
@@ -40,7 +86,12 @@
             <div class="card-body p-4 p-md-5">
                 <h4 class="fw-bold text-dark mb-4 text-center">Acesso Restrito</h4>
 
-                <form action="dashboard.php" method="POST">
+                <form action="" method="POST">
+                    <?php if (!empty($erro)): ?>
+                        <div class="alert alert-danger text-center small mb-3">
+                            <i class="fa-solid fa-triangle-exclamation me-1"></i> <?php echo $erro; ?>
+                        </div>
+                    <?php endif; ?>
                     <div class="mb-3">
                         <label for="username" class="form-label small fw-bold text-secondary">Utilizador *</label>
                         <div class="input-group">
