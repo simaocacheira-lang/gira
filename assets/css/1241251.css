@@ -211,3 +211,40 @@ h3 { font-size: 1.7rem !important; font-weight: 800; margin: 5px 0; }
     cursor: pointer;
     border-color: #dee2e6 !important;
 }
+
+
+/* Terceira linha de cenas */
+/* Efeito nos botões de Ações Rápidas */
+.action-btn {
+    background-color: #ffffff;
+    border-color: #f0f2f5 !important;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.action-btn:hover {
+    background-color: #f8f9fc;
+    border-color: #1a73e8 !important;
+    transform: translateY(-2px);
+}
+
+.action-btn i {
+    transition: transform 0.2s;
+}
+
+.action-btn:hover i {
+    transform: scale(1.1);
+}
+
+/* Cor roxa para o gráfico nas ações rápidas */
+.text-purple { color: #8a4fff; }
+
+/* Ajuste das tabelas para o estilo MediGest */
+.table th {
+    border-bottom: 2px solid #f8f9fc;
+    font-weight: 600;
+}
