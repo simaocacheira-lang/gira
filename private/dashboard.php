@@ -13,17 +13,82 @@
 
 <body>
 
-    <nav class="sidebar">
-        <div class="sidebar-brand"><i class="fa-solid fa-square-plus me-2 text-primary"></i> Gira</div>
-        <a href="#" class="sidebar-link active"><i class="fa-solid fa-house"></i> Dashboard</a>
-        <a href="#" class="sidebar-link"><i class="fa-solid fa-stethoscope"></i> Equipamentos</a>
-        <a href="#" class="sidebar-link"><i class="fa-solid fa-location-dot"></i> Localizações</a>
-    </nav>
+    <!--Botão de toggle do sidebar -->
+
+    <nav class="sidebar" id="sidebar">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="sidebar-brand mb-0">
+            <i class="fa-solid fa-square-plus me-2 text-primary"></i>
+            <span class="sidebar-text">Gira</span>
+        </div>
+        <button id="toggleSidebar" class="btn btn-link text-white p-0 shadow-none border-0">
+            <i class="fa-solid fa-angles-left" id="toggleIcon"></i>
+        </button>
+    </div>
+
+    <a href="#" class="sidebar-link active">
+        <i class="fa-solid fa-house"></i>
+        <span class="sidebar-text ms-2">Dashboard</span>
+    </a>
+    <a href="#" class="sidebar-link">
+        <i class="fa-solid fa-stethoscope"></i>
+        <span class="sidebar-text ms-2">Equipamentos</span>
+    </a>
+    <a href="#" class="sidebar-link">
+        <i class="fa-solid fa-location-dot"></i>
+        <span class="sidebar-text ms-2">Localizações</span>
+    </a>
+</nav>
 
     <!-- TUDO tem de estar dentro da main-wrapper!! -->
     <div class="main-wrapper">
 
-<!-- Cabeçalho do Dashboard -->
+        <!-- Search bar, notificações, perfil -->
+
+
+        <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded-4 shadow-sm mb-4">
+
+            <div class="flex-grow-1 me-4" style="max-width: 600px;">
+                <div class="input-group bg-light rounded-3">
+                    <span class="input-group-text border-0 bg-transparent text-muted">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" class="form-control border-0 bg-transparent small" placeholder="Pesquisar equipamento, número de série, modelo..." style="font-size: 0.85rem;">
+                    <span class="input-group-text border-0 bg-transparent">
+                        <kbd class="bg-white text-muted border shadow-sm px-2" style="font-size: 0.7rem;">⌘ K</kbd>
+                    </span>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-light rounded-circle position-relative p-2" style="width: 40px; height: 40px;">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                        6
+                    </span>
+                </button>
+
+                <button class="btn btn-light rounded-circle p-2" style="width: 40px; height: 40px;">
+                    <i class="fa-regular fa-moon"></i>
+                </button>
+
+                <div class="vr mx-2 text-muted opacity-25" style="height: 30px;"></div>
+
+                <div class="d-flex align-items-center cursor-pointer">
+                    <div class="text-end me-3 d-none d-lg-block">
+                        <p class="fw-bold mb-0 small lh-1">Dr. Miguel Santos</p>
+                        <small class="text-muted" style="font-size: 0.65rem;">Administrador</small>
+                    </div>
+                    <img src="https://i.pravatar.cc/150?u=miguel" alt="Perfil" class="rounded-circle border" width="40" height="40">
+                    <i class="fa-solid fa-chevron-down text-muted small ms-2"></i>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <!-- Cabeçalho do Dashboard -->
 
         <div class="d-flex justify-content-between align-items-center mb-5">
             <div>
@@ -236,131 +301,151 @@
             </div>
         </div>
 
-        
-<!-- Tabelas e ações rápidas (3ª linha de cenas) -->
+
+        <!-- Tabelas e ações rápidas (3ª linha de cenas) -->
 
         <div class="row g-4 mt-3 mb-5">
-    
-    <div class="col-lg-5">
-        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h6 class="fw-bold mb-0">Equipamentos Recentes</h6>
-                <a href="#" class="text-primary small text-decoration-none">Ver todos</a>
+
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h6 class="fw-bold mb-0">Equipamentos Recentes</h6>
+                        <a href="#" class="text-primary small text-decoration-none">Ver todos</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0" style="font-size: 0.75rem;">
+                            <thead class="table-light">
+                                <tr class="text-muted">
+                                    <th>Equipamento</th>
+                                    <th>Modelo</th>
+                                    <th>Localização</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="fw-bold">Monitor Multiparamétrico</div>
+                                        <div class="text-muted" style="font-size: 0.65rem;">SN: MPS-2022-45873</div>
+                                    </td>
+                                    <td>Philips IntelliVue</td>
+                                    <td>UCI - Sala 2</td>
+                                    <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Ativo</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="fw-bold">Bomba de Infusão</div>
+                                        <div class="text-muted" style="font-size: 0.65rem;">SN: INF-2020-88321</div>
+                                    </td>
+                                    <td>B. Braun Space</td>
+                                    <td>Medicina - 3º Piso</td>
+                                    <td><span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-2">Manutenção</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0" style="font-size: 0.75rem;">
-                    <thead class="table-light">
-                        <tr class="text-muted">
-                            <th>Equipamento</th>
-                            <th>Modelo</th>
-                            <th>Localização</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="fw-bold">Monitor Multiparamétrico</div>
-                                <div class="text-muted" style="font-size: 0.65rem;">SN: MPS-2022-45873</div>
-                            </td>
-                            <td>Philips IntelliVue</td>
-                            <td>UCI - Sala 2</td>
-                            <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Ativo</span></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="fw-bold">Bomba de Infusão</div>
-                                <div class="text-muted" style="font-size: 0.65rem;">SN: INF-2020-88321</div>
-                            </td>
-                            <td>B. Braun Space</td>
-                            <td>Medicina - 3º Piso</td>
-                            <td><span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-2">Manutenção</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+
+            <div class="col-lg-3">
+                <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h6 class="fw-bold mb-0">Manutenções Agendadas</h6>
+                        <a href="#" class="text-primary small text-decoration-none">Calendário</a>
+                    </div>
+
+                    <div class="vstack gap-3">
+                        <div class="d-flex align-items-center">
+                            <div class="date-box bg-light rounded-3 text-center p-2 me-3" style="min-width: 50px;">
+                                <div class="text-danger small fw-bold text-uppercase" style="font-size: 0.5rem;">Mai</div>
+                                <div class="fw-bold fs-5 lh-1">21</div>
+                            </div>
+                            <div>
+                                <p class="small fw-bold mb-0">Ventilador Pulmonar</p>
+                                <p class="text-muted mb-0" style="font-size: 0.65rem;">Preventiva · 09:00</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="date-box bg-light rounded-3 text-center p-2 me-3" style="min-width: 50px;">
+                                <div class="text-danger small fw-bold text-uppercase" style="font-size: 0.5rem;">Mai</div>
+                                <div class="fw-bold fs-5 lh-1">22</div>
+                            </div>
+                            <div>
+                                <p class="small fw-bold mb-0">Autoclave</p>
+                                <p class="text-muted mb-0" style="font-size: 0.65rem;">Calibração · 10:30</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-light btn-sm mt-auto rounded-pill text-primary fw-bold" style="font-size: 0.7rem;">Ver todas as manutenções</a>
+                </div>
             </div>
+
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                    <h6 class="fw-bold mb-4">Ações Rápidas</h6>
+                    <div class="row g-2 text-center">
+                        <div class="col-4">
+                            <div class="action-btn border rounded-3 p-3 h-100">
+                                <i class="fa-solid fa-circle-plus text-primary fs-4 mb-2"></i>
+                                <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Novo Equipamento</p>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="action-btn border rounded-3 p-3 h-100">
+                                <i class="fa-solid fa-wrench text-success fs-4 mb-2"></i>
+                                <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Nova Manutenção</p>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="action-btn border rounded-3 p-3 h-100">
+                                <i class="fa-solid fa-file-arrow-up text-info fs-4 mb-2"></i>
+                                <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Novo Documento</p>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="action-btn border rounded-3 p-3 h-100">
+                                <i class="fa-solid fa-users text-warning fs-4 mb-2"></i>
+                                <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Novo Fornecedor</p>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="action-btn border rounded-3 p-3 h-100">
+                                <i class="fa-solid fa-chart-line text-purple fs-4 mb-2"></i>
+                                <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Relatório Rápido</p>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="action-btn border rounded-3 p-3 h-100">
+                                <i class="fa-solid fa-magnifying-glass text-secondary fs-4 mb-2"></i>
+                                <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Pesquisa Avançada</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <div class="col-lg-3">
-        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h6 class="fw-bold mb-0">Manutenções Agendadas</h6>
-                <a href="#" class="text-primary small text-decoration-none">Calendário</a>
-            </div>
-            
-            <div class="vstack gap-3">
-                <div class="d-flex align-items-center">
-                    <div class="date-box bg-light rounded-3 text-center p-2 me-3" style="min-width: 50px;">
-                        <div class="text-danger small fw-bold text-uppercase" style="font-size: 0.5rem;">Mai</div>
-                        <div class="fw-bold fs-5 lh-1">21</div>
-                    </div>
-                    <div>
-                        <p class="small fw-bold mb-0">Ventilador Pulmonar</p>
-                        <p class="text-muted mb-0" style="font-size: 0.65rem;">Preventiva · 09:00</p>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center">
-                    <div class="date-box bg-light rounded-3 text-center p-2 me-3" style="min-width: 50px;">
-                        <div class="text-danger small fw-bold text-uppercase" style="font-size: 0.5rem;">Mai</div>
-                        <div class="fw-bold fs-5 lh-1">22</div>
-                    </div>
-                    <div>
-                        <p class="small fw-bold mb-0">Autoclave</p>
-                        <p class="text-muted mb-0" style="font-size: 0.65rem;">Calibração · 10:30</p>
-                    </div>
-                </div>
-            </div>
-            <a href="#" class="btn btn-light btn-sm mt-auto rounded-pill text-primary fw-bold" style="font-size: 0.7rem;">Ver todas as manutenções</a>
-        </div>
-    </div>
+    <!-- JAVA SCRIPTS  -->
 
-    <div class="col-lg-4">
-        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
-            <h6 class="fw-bold mb-4">Ações Rápidas</h6>
-            <div class="row g-2 text-center">
-                <div class="col-4">
-                    <div class="action-btn border rounded-3 p-3 h-100">
-                        <i class="fa-solid fa-circle-plus text-primary fs-4 mb-2"></i>
-                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Novo Equipamento</p>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="action-btn border rounded-3 p-3 h-100">
-                        <i class="fa-solid fa-wrench text-success fs-4 mb-2"></i>
-                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Nova Manutenção</p>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="action-btn border rounded-3 p-3 h-100">
-                        <i class="fa-solid fa-file-arrow-up text-info fs-4 mb-2"></i>
-                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Novo Documento</p>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="action-btn border rounded-3 p-3 h-100">
-                        <i class="fa-solid fa-users text-warning fs-4 mb-2"></i>
-                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Novo Fornecedor</p>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="action-btn border rounded-3 p-3 h-100">
-                        <i class="fa-solid fa-chart-line text-purple fs-4 mb-2"></i>
-                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Relatório Rápido</p>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="action-btn border rounded-3 p-3 h-100">
-                        <i class="fa-solid fa-magnifying-glass text-secondary fs-4 mb-2"></i>
-                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Pesquisa Avançada</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Scrips do Toggle da Sidebar -->
 
-</div>
-    </div>
+    <script>
+    document.getElementById('toggleSidebar').addEventListener('click', function() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('collapsed');
+        
+        // Guarda a preferência
+        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+    });
+
+    // Ao carregar, verifica se estava colapsado
+    if(localStorage.getItem('sidebarCollapsed') === 'true') {
+        document.getElementById('sidebar').classList.add('collapsed');
+    }
+</script>
+</script>
 </body>
 
 </html>
