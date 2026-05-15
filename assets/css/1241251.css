@@ -42,140 +42,172 @@
     transform: translateX(-50%);
   } /* Move exatamente metade da largura total */
 }
-
 /* ==========================================
-   ESTILOS GERAIS
+   ESTILOS GIRA E FUNCIONAIS (Dashboard)
    ========================================== */
 
 /* 1. RESET E FUNDO GLOBAL */
 body {
-  margin: 0;
-  padding: 0;
-  background-color: #f0f2f5;
-  font-family: "Inter", sans-serif;
-  overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fc;
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: #333;
 }
 
-/* 2. SIDEBAR (FIXA À ESQUERDA) */
+/* 2. SIDEBAR (AZUL MEDIGEST) */
 .sidebar {
-  width: 250px;
-  height: 100vh;
-  background-color: #0b1b35; /* Azul profundo */
-  color: #ffffff;
-  position: fixed;
-  top: 0;
-  left: 0;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  z-index: 1050;
+    width: 250px;
+    height: 100vh;
+    background-color: #0b1b35;
+    color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 20px;
 }
 
 .sidebar-brand {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 40px;
-  display: flex;
-  align-items: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
 }
 
 .sidebar-link {
-  color: #aeb9ce;
-  text-decoration: none;
-  padding: 12px 15px;
-  border-radius: 8px;
-  margin-bottom: 5px;
-  display: flex;
-  align-items: center;
-  transition: 0.3s;
+    color: #aeb9ce;
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    transition: 0.3s ease;
 }
 
-.sidebar-link:hover,
-.sidebar-link.active {
-  background-color: #1a73e8;
-  color: #ffffff;
+.sidebar-link.active, .sidebar-link:hover {
+    background: #1a73e8;
+    color: #fff;
 }
 
-.sidebar-link i {
-  margin-right: 12px;
+.sidebar-link i { margin-right: 12px; }
+
+
+/* 3. ÁREA DE CONTEÚDO */
+.main-wrapper {
+    /* Deve ser IGUAL à largura da sidebar */
+    margin-left: 250px; 
+    
+    /* Garante que o conteúdo não encosta nas bordas */
+    padding: 40px; 
+    
+    /* Garante que a largura total é respeitada sem scroll horizontal */
+    width: calc(100% - 250px); 
+    
+    min-height: 100vh;
+    background-color: #f8f9fc;
 }
 
-/* 3. ÁREA DE CONTEÚDO (EMPURRADA PELA SIDEBAR) */
-.main-content {
-  margin-left: 250px; /* Deve ser igual à largura da sidebar */
-  padding: 30px;
-  min-height: 100vh;
+/* Garante que o Bootstrap não estraga a largura com as rows */
+.container-fluid {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
-
-/* 4. OS CARTÕES KPI (QUADRADOS) */
+/* 4. CARTÕES KPI (QUADRADOS REAIS - v12) */
 .kpi-card {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  height: 100%;
-  min-height: 220px; /* Força o formato quadrado */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-  border: none;
-  transition: transform 0.2s;
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    aspect-ratio: 1 / 1; /* O SEGREDO DO QUADRADO PERFEITO */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease;
 }
 
 .kpi-card:hover {
-  transform: translateY(-5px);
+    transform: translateY(-5px);
 }
 
-/* Círculos dos Ícones */
+/* Ícone Circular */
 .icon-circle {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  margin-bottom: 15px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
 }
 
-/* Contentor do Gráfico no fundo do cartão */
-.kpi-chart {
-  height: 40px;
-  width: 100%;
-  margin-top: auto;
+/* Gráfico Sparkline no fundo */
+.sparkline-box {
+    height: 35px;
+    width: 100%;
+    opacity: 0.6;
 }
 
-/* 5. AUXILIARES E CORES */
-.bg-blue-light {
-  background: #eef4ff;
-  color: #1a73e8;
-}
-.bg-green-light {
-  background: #effaf3;
-  color: #34a853;
-}
-.bg-orange-light {
-  background: #fff4e6;
-  color: #fb8c00;
-}
-.bg-red-light {
-  background: #fff0f0;
-  color: #d93025;
+/* 5. AUXILIARES */
+.bg-primary-light { background: #e7f0ff; color: #0d6efd; }
+.bg-success-light { background: #e8f6f0; color: #198754; }
+.bg-warning-light { background: #fff4e6; color: #fd7e14; }
+.bg-danger-light  { background: #ffebeb; color: #dc3545; }
+.bg-gray-light    { background: #f0f2f5; color: #6c757d; }
+
+.small-caps {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.65rem;
+    font-weight: 800;
 }
 
-/* Bordas de Alerta para os 2 últimos cartões */
-.border-danger {
-  border-left: 4px solid #dc3545 !important;
-}
-.border-primary {
-  border-left: 4px solid #0d6efd !important;
+h3 { font-size: 1.7rem !important; font-weight: 800; margin: 5px 0; }
+
+/* GRÁFICOS DONUT EM CSS */
+.donut-container {
+    width: 100px;
+    height: 100px;
 }
 
-/* Tipografia */
-h3 {
-  font-size: 1.6rem !important;
-  font-weight: 700;
+.donut-main, .donut-critic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
-.text-muted {
-  font-size: 0.75rem !important;
+
+/* Cores do Donut de Categoria */
+.donut-main {
+    background: conic-gradient(#0d6efd 0% 28%, #0dcaf0 28% 52%, #198754 52% 70%, #ffc107 70% 85%, #f8f9fc 85% 100%);
+}
+
+/* Cores do Donut de Criticidade */
+.donut-critic {
+    background: conic-gradient(#dc3545 0% 15%, #fd7e14 15% 46%, #ffc107 46% 84%, #198754 84% 100%);
+}
+
+.donut-center {
+    width: 70px;
+    height: 70px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+/* Efeito de Clique/Hover nos alertas */
+.border-light-subtle:hover {
+    background-color: #f8f9fc;
+    cursor: pointer;
+    border-color: #dee2e6 !important;
 }
