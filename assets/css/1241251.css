@@ -312,3 +312,119 @@ h3 { font-size: 1.7rem !important; font-weight: 800; margin: 5px 0; }
     box-shadow: none;
     background-color: transparent;
 }
+
+/* ==========================================
+   ADAPTAÇÃO RESTRITA PARA MODO ESCURO NATIVO (Bootstrap)
+   ========================================== */
+
+/* Quando o Bootstrap ativa o tema Dark, mudamos os nossos elementos customizados */
+[data-bs-theme="dark"] {
+    /* 1. Ajustar os fundos brancos personalizados para tons escuros oficiais */
+    .kpi-card, 
+    .bg-white, 
+    .action-btn, 
+    .border-light-subtle {
+        background-color: var(--bs-body-bg) !important; /* Usa o fundo escuro padrão do Bootstrap */
+        color: var(--bs-body-color) !important;
+        border-color: var(--bs-border-color) !important;
+    }
+
+    /* 2. Corrigir o miolo do gráfico Donut */
+    .donut-center {
+        background-color: var(--bs-body-bg) !important;
+    }
+
+    /* 3. Ajustar o input group da Topbar */
+    .input-group.bg-light {
+        background-color: var(--bs-tertiary-bg) !important;
+    }
+    
+    .input-group kbd {
+        background-color: var(--bs-body-bg) !important;
+        color: var(--bs-body-color) !important;
+        border-color: var(--bs-border-color) !important;
+    }
+
+    /* 4. Efeitos de Hover no ambiente noturno */
+    .action-btn:hover, 
+    .border-light-subtle:hover {
+        background-color: var(--bs-tertiary-bg) !important;
+    }
+
+    /* 5. Forçar textos muted a manterem legibilidade e contraste */
+    .text-muted {
+        color: #aeb9ce !important;
+    }
+}
+
+/* ==========================================
+   SISTEMA DE MODO ESCURO COMPLETO (GIRA)
+   ========================================== */
+
+[data-bs-theme="dark"] {
+    /* 1. Fundo Geral da Página e do Wrapper */
+    body, .main-wrapper {
+        background-color: #0b132b !important; /* Azul quase preto super moderno */
+        color: #f8f9fc !important;
+    }
+
+    /* 2. Topbar, Cartões KPI, Tabelas e Caixas de Ação */
+    .bg-white,
+    .kpi-card,
+    .card,
+    .action-btn,
+    .border-light-subtle {
+        background-color: #1c2541 !important; /* Azul-escuro contrastante */
+        color: #f8f9fc !important;
+        border-color: #2e3b62 !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+    }
+
+    /* 3. Ajuste da Barra de Pesquisa e Atalho */
+    .input-group.bg-light,
+    .form-control {
+        background-color: #131a31 !important;
+        color: #fff !important;
+    }
+
+    .input-group-text,
+    kbd {
+        background-color: #1c2541 !important;
+        color: #aeb9ce !important;
+        border-color: #2e3b62 !important;
+    }
+
+    /* 4. Miolo do Gráfico Donut */
+    .donut-center {
+        background-color: #1c2541 !important;
+    }
+
+    /* 5. Tabelas e Cabeçalhos */
+    .table {
+        color: #f8f9fc !important;
+    }
+    .table-light,
+    .table th {
+        background-color: #131a31 !important;
+        color: #aeb9ce !important;
+        border-bottom-color: #2e3b62 !important;
+    }
+    .table-hover tbody tr:hover {
+        background-color: #242f52 !important;
+    }
+
+    /* 6. Efeitos de Hover nos Botões de Ação */
+    .action-btn:hover,
+    .border-light-subtle:hover {
+        background-color: #242f52 !important;
+        border-color: #1a73e8 !important;
+    }
+
+    /* 7. Preservar legibilidade de textos secundários */
+    .text-muted {
+        color: #aeb9ce !important;
+    }
+    .text-secondary {
+        color: #cbd5e1 !important;
+    }
+}

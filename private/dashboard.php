@@ -16,29 +16,42 @@
     <!--Botão de toggle do sidebar -->
 
     <nav class="sidebar" id="sidebar">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div class="sidebar-brand mb-0">
-            <i class="fa-solid fa-square-plus me-2 text-primary"></i>
-            <span class="sidebar-text">Gira</span>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="sidebar-brand mb-0">
+                <i class="fa-solid fa-square-plus me-2 text-primary"></i>
+                <span class="sidebar-text">Gira</span>
+            </div>
+            <button id="toggleSidebar" class="btn btn-link text-white p-0 shadow-none border-0">
+                <i class="fa-solid fa-angles-left" id="toggleIcon"></i>
+            </button>
         </div>
-        <button id="toggleSidebar" class="btn btn-link text-white p-0 shadow-none border-0">
-            <i class="fa-solid fa-angles-left" id="toggleIcon"></i>
-        </button>
-    </div>
 
-    <a href="#" class="sidebar-link active">
-        <i class="fa-solid fa-house"></i>
-        <span class="sidebar-text ms-2">Dashboard</span>
-    </a>
-    <a href="#" class="sidebar-link">
-        <i class="fa-solid fa-stethoscope"></i>
-        <span class="sidebar-text ms-2">Equipamentos</span>
-    </a>
-    <a href="#" class="sidebar-link">
-        <i class="fa-solid fa-location-dot"></i>
-        <span class="sidebar-text ms-2">Localizações</span>
-    </a>
-</nav>
+        <div class="small-caps text-secondary mb-2 opacity-50 sidebar-text">Dashboard</div>
+        <a href="dashboard.php" class="sidebar-link active">
+            <i class="fa-solid fa-house"></i>
+            <span class="sidebar-text ms-2">Dashboard</span>
+        </a>
+
+        <div class="small-caps text-secondary mt-4 mb-2 opacity-50 sidebar-text">Gestão</div>
+        <a href="equipamentos.php" class="sidebar-link">
+            <i class="fa-solid fa-stethoscope"></i>
+            <span class="sidebar-text ms-2">Equipamentos</span>
+        </a>
+        <a href="localizacoes.php" class="sidebar-link">
+            <i class="fa-solid fa-location-dot"></i>
+            <span class="sidebar-text ms-2">Localizações</span>
+        </a>
+        <a href="fornecedores.php" class="sidebar-link">
+            <i class="fa-solid fa-truck-field"></i>
+            <span class="sidebar-text ms-2">Fornecedores</span>
+        </a>
+
+        <div class="small-caps text-secondary mt-4 mb-2 opacity-50 sidebar-text">Configurações</div>
+        <a href="backoffice_publico.php" class="sidebar-link">
+            <i class="fa-solid fa-globe"></i>
+            <span class="sidebar-text ms-2">Gerir Área Pública</span>
+        </a>
+    </nav>
 
     <!-- TUDO tem de estar dentro da main-wrapper!! -->
     <div class="main-wrapper">
@@ -68,8 +81,8 @@
                     </span>
                 </button>
 
-                <button class="btn btn-light rounded-circle p-2" style="width: 40px; height: 40px;">
-                    <i class="fa-regular fa-moon"></i>
+                <button class="btn btn-light rounded-circle p-2" style="width: 40px; height: 40px;" id="themeToggle">
+                    <i class="fa-regular fa-moon" id="themeIcon"></i>
                 </button>
 
                 <div class="vr mx-2 text-muted opacity-25" style="height: 30px;"></div>
@@ -432,20 +445,43 @@
     <!-- Scrips do Toggle da Sidebar -->
 
     <script>
-    document.getElementById('toggleSidebar').addEventListener('click', function() {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('collapsed');
-        
-        // Guarda a preferência
-        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
-    });
+        document.getElementById('toggleSidebar').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('collapsed');
 
-    // Ao carregar, verifica se estava colapsado
-    if(localStorage.getItem('sidebarCollapsed') === 'true') {
-        document.getElementById('sidebar').classList.add('collapsed');
-    }
-</script>
-</script>
+            // Guarda a preferência
+            localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        });
+
+        // Ao carregar, verifica se estava colapsado
+        if (localStorage.getItem('sidebarCollapsed') === 'true') {
+            document.getElementById('sidebar').classList.add('collapsed');
+        }
+    </script>
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const htmlElement = document.documentElement; // Alvo: tag <html>
+
+        themeToggle.addEventListener('click', function() {
+            if (htmlElement.getAttribute('data-bs-theme') === 'dark') {
+                htmlElement.setAttribute('data-bs-theme', 'light');
+                themeIcon.className = 'fa-regular fa-moon';
+                localStorage.setItem('giraTheme', 'light');
+            } else {
+                htmlElement.setAttribute('data-bs-theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun text-warning';
+                localStorage.setItem('giraTheme', 'dark');
+            }
+        });
+
+        // Mantém o estado quando mudas de página ou dás refresh
+        if (localStorage.getItem('giraTheme') === 'dark') {
+            htmlElement.setAttribute('data-bs-theme', 'dark');
+            themeIcon.className = 'fa-solid fa-sun text-warning';
+        }
+    </script>
+
 </body>
 
 </html>
