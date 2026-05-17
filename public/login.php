@@ -4,7 +4,7 @@ session_start();
 
 // Se o utilizador já estiver logado, redireciona logo para o dashboard
 if (isset($_SESSION['user_id'])) {
-    header("Location: dashboard.php");
+    header("Location: ../private/dashboard.php");
     exit;
 }
 
@@ -12,7 +12,7 @@ $erro = ""; // Variável para guardar mensagens de erro
 
 // 2. Verificar se o formulário foi submetido (se clicaram no botão "Entrar")
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    require_once 'db.php'; // Chamar a nossa ponte
+    require_once '../private/db.php'; // Chamar a nossa ponte
 
     // Apanhar o que foi escrito nos campos (com proteção contra espaços vazios)
     $user = trim($_POST['username'] ?? '');
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['nome'] = $utilizador['nome'];
 
             // Redirecionar para o Dashboard
-            header("Location: dashboard.php");
+            header("Location: ../private/dashboard.php");
             exit;
         } else {
             $erro = "Utilizador ou palavra-passe incorretos.";
@@ -113,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </button>
 
                     <div class="text-center">
-                        <a href="../public/index.html" class="text-decoration-none small text-muted">
+                        <a href="index.php" class="text-decoration-none small text-muted">
                             <i class="fa-solid fa-arrow-left me-1"></i> Voltar à página inicial
                         </a>
                     </div>
