@@ -49,268 +49,306 @@
 /* 1. RESET E FUNDO GLOBAL */
 
 body {
-    margin: 0;
-    padding: 0;
-    background-color: #f8f9fc;
-    font-family: 'Inter', -apple-system, sans-serif;
-    color: #333;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fc;
+  font-family:
+    "Inter",
+    -apple-system,
+    sans-serif;
+  color: #333;
 }
 
 /* 2. SIDEBAR */
 
 .sidebar {
-    width: 250px;
-    height: 100vh;
-    background-color: #0b1b35;
-    color: #ffffff;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    padding: 20px;
+  width: 250px;
+  height: 100vh;
+  background-color: #0b1b35;
+  color: #ffffff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 20px;
 }
 
 .sidebar-brand {
-    font-size: 1.5rem;
-    font-weight: 800;
-    margin-bottom: 40px;
-    display: flex;
-    align-items: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
 }
 
 .sidebar-link {
-    color: #aeb9ce;
-    text-decoration: none;
-    padding: 12px 15px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-    transition: 0.3s ease;
+  color: #aeb9ce;
+  text-decoration: none;
+  padding: 12px 15px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  transition: 0.3s ease;
 }
 
-.sidebar-link.active, .sidebar-link:hover {
-    background: #1a73e8;
-    color: #fff;
+.sidebar-link.active,
+.sidebar-link:hover {
+  background: #1a73e8;
+  color: #fff;
 }
 
-.sidebar-link i { margin-right: 12px; }
-
+.sidebar-link i {
+  margin-right: 12px;
+}
 
 /* --- 2.1. Toggle da Sidebar --- */
 
 /* Transição suave para a sidebar e para o conteúdo principal */
-.sidebar, .main-wrapper {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.sidebar,
+.main-wrapper {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Quando a sidebar tem a classe .collapsed */
 .sidebar.collapsed {
-    width: 80px;
-    padding: 20px 15px;
+  width: 80px;
+  padding: 20px 15px;
 }
 
 /* Esconder os textos (spans) quando colapsado */
 .sidebar.collapsed .sidebar-text {
-    display: none !important;
+  display: none !important;
 }
 
 /* Rodar o ícone de setas */
 .sidebar.collapsed #toggleIcon {
-    transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 /* Centralizar ícones no estado colapsado */
 .sidebar.collapsed .sidebar-link {
-    justify-content: center;
-    padding: 12px 0;
+  justify-content: center;
+  padding: 12px 0;
 }
 
 .sidebar.collapsed .sidebar-link i {
-    margin-right: 0;
-    font-size: 1.2rem;
+  margin-right: 0;
+  font-size: 1.2rem;
 }
 
 /* Ajustar a margem do conteúdo principal dinamicamente */
 .sidebar.collapsed ~ .main-wrapper {
-    margin-left: 80px;
-    width: calc(100% - 80px);
+  margin-left: 80px;
+  width: calc(100% - 80px);
 }
-
-
 
 /* 3. ÁREA DE CONTEÚDO */
 .main-wrapper {
-    /* Deve ser IGUAL à largura da sidebar */
-    margin-left: 250px; 
-    
-    /* Garante que o conteúdo não encosta nas bordas */
-    padding: 40px; 
-    
-    /* Garante que a largura total é respeitada sem scroll horizontal */
-    width: calc(100% - 250px); 
-    
-    min-height: 100vh;
-    background-color: #f8f9fc;
+  /* Deve ser IGUAL à largura da sidebar */
+  margin-left: 250px;
+
+  /* Garante que o conteúdo não encosta nas bordas */
+  padding: 40px;
+
+  /* Garante que a largura total é respeitada sem scroll horizontal */
+  width: calc(100% - 250px);
+
+  min-height: 100vh;
+  background-color: #f8f9fc;
 }
 
 /* Garante que o Bootstrap não estraga a largura com as rows */
 .container-fluid {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 /* 4. CARTÕES KPI (QUADRADOS REAIS - v12) */
 .kpi-card {
-    background: #fff;
-    border-radius: 20px;
-    padding: 20px;
-    border: none;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-    aspect-ratio: 1 / 1; /* QUADRADO*/
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: transform 0.2s ease;
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  aspect-ratio: 1 / 1; /* QUADRADO*/
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease;
 }
 
 .kpi-card:hover {
-    transform: translateY(-5px);
+  transform: translateY(-5px);
 }
 
 /* Ícone Circular */
 .icon-circle {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
 }
 
 /* Gráfico Sparkline no fundo */
 .sparkline-box {
-    height: 35px;
-    width: 100%;
-    opacity: 0.6;
+  height: 35px;
+  width: 100%;
+  opacity: 0.6;
 }
 
 /* 5. AUXILIARES */
-.bg-primary-light { background: #e7f0ff; color: #0d6efd; }
-.bg-success-light { background: #e8f6f0; color: #198754; }
-.bg-warning-light { background: #fff4e6; color: #fd7e14; }
-.bg-danger-light  { background: #ffebeb; color: #dc3545; }
-.bg-gray-light    { background: #f0f2f5; color: #6c757d; }
-
-.small-caps {
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.65rem;
-    font-weight: 800;
+.bg-primary-light {
+  background: #e7f0ff;
+  color: #0d6efd;
+}
+.bg-success-light {
+  background: #e8f6f0;
+  color: #198754;
+}
+.bg-warning-light {
+  background: #fff4e6;
+  color: #fd7e14;
+}
+.bg-danger-light {
+  background: #ffebeb;
+  color: #dc3545;
+}
+.bg-gray-light {
+  background: #f0f2f5;
+  color: #6c757d;
 }
 
-h3 { font-size: 1.7rem !important; font-weight: 800; margin: 5px 0; }
+.small-caps {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+h3 {
+  font-size: 1.7rem !important;
+  font-weight: 800;
+  margin: 5px 0;
+}
 
 /* GRÁFICOS DONUT EM CSS */
 .donut-container {
-    width: 100px;
-    height: 100px;
+  width: 100px;
+  height: 100px;
 }
 
-.donut-main, .donut-critic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+.donut-main,
+.donut-critic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 /* Cores do Donut de Categoria */
 .donut-main {
-    background: conic-gradient(#0d6efd 0% 28%, #0dcaf0 28% 52%, #198754 52% 70%, #ffc107 70% 85%, #f8f9fc 85% 100%);
+  background: conic-gradient(
+    #0d6efd 0% 28%,
+    #0dcaf0 28% 52%,
+    #198754 52% 70%,
+    #ffc107 70% 85%,
+    #f8f9fc 85% 100%
+  );
 }
 
 /* Cores do Donut de Criticidade */
 .donut-critic {
-    background: conic-gradient(#dc3545 0% 15%, #fd7e14 15% 46%, #ffc107 46% 84%, #198754 84% 100%);
+  background: conic-gradient(
+    #dc3545 0% 15%,
+    #fd7e14 15% 46%,
+    #ffc107 46% 84%,
+    #198754 84% 100%
+  );
 }
 
 .donut-center {
-    width: 70px;
-    height: 70px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
+  width: 70px;
+  height: 70px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
 }
 
 /* Efeito de Clique/Hover nos alertas */
 .border-light-subtle:hover {
-    background-color: #f8f9fc;
-    cursor: pointer;
-    border-color: #dee2e6 !important;
+  background-color: #f8f9fc;
+  cursor: pointer;
+  border-color: #dee2e6 !important;
 }
-
 
 /* Terceira linha de cenas */
 /* Efeito nos botões de Ações Rápidas */
 .action-btn {
-    background-color: #ffffff;
-    border-color: #f0f2f5 !important;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  background-color: #ffffff;
+  border-color: #f0f2f5 !important;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .action-btn:hover {
-    background-color: #f8f9fc;
-    border-color: #1a73e8 !important;
-    transform: translateY(-2px);
+  background-color: #f8f9fc;
+  border-color: #1a73e8 !important;
+  transform: translateY(-2px);
 }
 
 .action-btn i {
-    transition: transform 0.2s;
+  transition: transform 0.2s;
 }
 
 .action-btn:hover i {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 /* Cor roxa para o gráfico nas ações rápidas */
-.text-purple { color: #8a4fff; }
+.text-purple {
+  color: #8a4fff;
+}
 
 /* Ajuste das tabelas para o estilo MediGest */
 .table th {
-    border-bottom: 2px solid #f8f9fc;
-    font-weight: 600;
+  border-bottom: 2px solid #f8f9fc;
+  font-weight: 600;
 }
 
 /* Topbar */
 
 /* Pequenos ajustes para a Topbar */
 .input-group:focus-within {
-    box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.1);
-    transition: 0.3s;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.1);
+  transition: 0.3s;
 }
 
 .cursor-pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
-.lh-1 { line-height: 1; }
+.lh-1 {
+  line-height: 1;
+}
 
 /* Remove a borda azul padrão do Bootstrap no input de pesquisa */
 .form-control:focus {
-    box-shadow: none;
-    background-color: transparent;
+  box-shadow: none;
+  background-color: transparent;
 }
 
 /* ==========================================
@@ -319,112 +357,140 @@ h3 { font-size: 1.7rem !important; font-weight: 800; margin: 5px 0; }
 
 /* Quando o Bootstrap ativa o tema Dark, mudamos os nossos elementos customizados */
 [data-bs-theme="dark"] {
-    /* 1. Ajustar os fundos brancos personalizados para tons escuros oficiais */
-    .kpi-card, 
-    .bg-white, 
-    .action-btn, 
-    .border-light-subtle {
-        background-color: var(--bs-body-bg) !important; /* Usa o fundo escuro padrão do Bootstrap */
-        color: var(--bs-body-color) !important;
-        border-color: var(--bs-border-color) !important;
-    }
+  /* 1. Ajustar os fundos brancos personalizados para tons escuros oficiais */
+  .kpi-card,
+  .bg-white,
+  .action-btn,
+  .border-light-subtle {
+    background-color: var(
+      --bs-body-bg
+    ) !important; /* Usa o fundo escuro padrão do Bootstrap */
+    color: var(--bs-body-color) !important;
+    border-color: var(--bs-border-color) !important;
+  }
 
-    /* 2. Corrigir o miolo do gráfico Donut */
-    .donut-center {
-        background-color: var(--bs-body-bg) !important;
-    }
+  /* 2. Corrigir o miolo do gráfico Donut */
+  .donut-center {
+    background-color: var(--bs-body-bg) !important;
+  }
 
-    /* 3. Ajustar o input group da Topbar */
-    .input-group.bg-light {
-        background-color: var(--bs-tertiary-bg) !important;
-    }
-    
-    .input-group kbd {
-        background-color: var(--bs-body-bg) !important;
-        color: var(--bs-body-color) !important;
-        border-color: var(--bs-border-color) !important;
-    }
+  /* 3. Ajustar o input group da Topbar */
+  .input-group.bg-light {
+    background-color: var(--bs-tertiary-bg) !important;
+  }
 
-    /* 4. Efeitos de Hover no ambiente noturno */
-    .action-btn:hover, 
-    .border-light-subtle:hover {
-        background-color: var(--bs-tertiary-bg) !important;
-    }
+  .input-group kbd {
+    background-color: var(--bs-body-bg) !important;
+    color: var(--bs-body-color) !important;
+    border-color: var(--bs-border-color) !important;
+  }
 
-    /* 5. Forçar textos muted a manterem legibilidade e contraste */
-    .text-muted {
-        color: #aeb9ce !important;
-    }
+  /* 4. Efeitos de Hover no ambiente noturno */
+  .action-btn:hover,
+  .border-light-subtle:hover {
+    background-color: var(--bs-tertiary-bg) !important;
+  }
+
+  /* 5. Forçar textos muted a manterem legibilidade e contraste */
+  .text-muted {
+    color: #aeb9ce !important;
+  }
 }
 
 /* ==========================================
-   SISTEMA DE MODO ESCURO COMPLETO (GIRA)
+   SISTEMA DE MODO ESCURO
    ========================================== */
 
 [data-bs-theme="dark"] {
-    /* 1. Fundo Geral da Página e do Wrapper */
-    body, .main-wrapper {
-        background-color: #0b132b !important; /* Azul quase preto super moderno */
-        color: #f8f9fc !important;
-    }
+  /* 1. Fundo Geral da Página e do Wrapper */
+  body,
+  .main-wrapper {
+    background-color: #0b132b !important; /* Azul quase preto super moderno */
+    color: #f8f9fc !important;
+  }
 
-    /* 2. Topbar, Cartões KPI, Tabelas e Caixas de Ação */
-    .bg-white,
-    .kpi-card,
-    .card,
-    .action-btn,
-    .border-light-subtle {
-        background-color: #1c2541 !important; /* Azul-escuro contrastante */
-        color: #f8f9fc !important;
-        border-color: #2e3b62 !important;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
-    }
+  /* 2. Topbar, Cartões KPI, Tabelas e Caixas de Ação */
+  .bg-white,
+  .kpi-card,
+  .card,
+  .action-btn,
+  .border-light-subtle {
+    background-color: #1c2541 !important; /* Azul-escuro contrastante */
+    color: #f8f9fc !important;
+    border-color: #2e3b62 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+  }
 
-    /* 3. Ajuste da Barra de Pesquisa e Atalho */
-    .input-group.bg-light,
-    .form-control {
-        background-color: #131a31 !important;
-        color: #fff !important;
-    }
+  /* 3. Ajuste da Barra de Pesquisa e Atalho */
+  .input-group.bg-light,
+  .form-control {
+    background-color: #131a31 !important;
+    color: #fff !important;
+  }
 
-    .input-group-text,
-    kbd {
-        background-color: #1c2541 !important;
-        color: #aeb9ce !important;
-        border-color: #2e3b62 !important;
-    }
+  .input-group-text,
+  kbd {
+    background-color: #1c2541 !important;
+    color: #aeb9ce !important;
+    border-color: #2e3b62 !important;
+  }
 
-    /* 4. Miolo do Gráfico Donut */
-    .donut-center {
-        background-color: #1c2541 !important;
-    }
+  /* 4. Miolo do Gráfico Donut */
+  .donut-center {
+    background-color: #1c2541 !important;
+  }
 
-    /* 5. Tabelas e Cabeçalhos */
-    .table {
-        color: #f8f9fc !important;
-    }
-    .table-light,
-    .table th {
-        background-color: #131a31 !important;
-        color: #aeb9ce !important;
-        border-bottom-color: #2e3b62 !important;
-    }
-    .table-hover tbody tr:hover {
-        background-color: #242f52 !important;
-    }
+  /* 5. Tabelas e Cabeçalhos */
+  .table {
+    color: #f8f9fc !important;
+  }
+  .table-light,
+  .table th {
+    background-color: #131a31 !important;
+    color: #aeb9ce !important;
+    border-bottom-color: #2e3b62 !important;
+  }
+  .table-hover tbody tr:hover {
+    background-color: #242f52 !important;
+  }
 
-    /* 6. Efeitos de Hover nos Botões de Ação */
-    .action-btn:hover,
-    .border-light-subtle:hover {
-        background-color: #242f52 !important;
-        border-color: #1a73e8 !important;
-    }
+  /* 6. Efeitos de Hover nos Botões de Ação */
+  .action-btn:hover,
+  .border-light-subtle:hover {
+    background-color: #242f52 !important;
+    border-color: #1a73e8 !important;
+  }
 
-    /* 7. Preservar legibilidade de textos secundários */
-    .text-muted {
-        color: #aeb9ce !important;
-    }
-    .text-secondary {
-        color: #cbd5e1 !important;
-    }
+  /* 7. Preservar legibilidade de textos secundários */
+  .text-muted {
+    color: #aeb9ce !important;
+  }
+  .text-secondary {
+    color: #cbd5e1 !important;
+  }
+}
+
+.text-dark,
+strong.text-dark,
+.table td .text-dark {
+  color: #f8f9fccd !important;
+}
+
+.table td a {
+  color: #3a86ff !important;
+}
+
+[data-bs-theme="dark"] {
+
+  /* CORREÇÃO DO CALENDÁRIO: força a mudança de cor da caixinha */
+  .date-box,
+  .date-box.bg-light {
+    background-color: #131a31 !important; /* tom mais escuro que o cartão */
+    color: #f8f9fc !important; /* mete os numeros brancos */
+  }
+
+  /* Garante que o texto do mês (MAI) mantém um contraste legível */
+  .date-box .text-danger {
+    color: #ff6b6b !important;
+  }
 }
