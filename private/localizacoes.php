@@ -93,6 +93,13 @@ render_header("Gira - Gestão de Localizações");
     </div>
 </div>
 
+Iluminar "Localizações" na sidebar para indicar que estamos nessa secção
+<script>
+    // Remove o 'active' do link do Dashboard e coloca-o no link da Área Pública
+    document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+    // Procura o link que vai para o backoffice e ativa-o
+    document.querySelector('a[href="localizacoes.php"]').classList.add('active');
+</script>
 <?php
 // 3. chamar fim do molde para fechar as tags e aplicar os scripts automáticos
 render_footer();

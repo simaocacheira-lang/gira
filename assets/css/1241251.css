@@ -469,11 +469,18 @@ h3 {
     color: #cbd5e1 !important;
   }
 }
+/* Garante que os textos escuros na área privada ficam claros no modo dark, mas sem afetar a área pública */
+/* CONTEXTUALIZAÇÃO: Garante que as alterações de cor só afetam a área privada */
+[data-bs-theme="dark"] .main-wrapper .text-dark,
+[data-bs-theme="dark"] .main-wrapper strong.text-dark,
+[data-bs-theme="dark"] .table td .text-dark,
+[data-bs-theme="dark"] .table fw-bold {
+    color: #f8f9fc !important;
+}
 
-.text-dark,
-strong.text-dark,
-.table td .text-dark {
-  color: #f8f9fccd !important;
+/* Garante que o H1 e os parágrafos da área pública mantêm a cor original se não houver tema dark ativo na tag html */
+body:not([data-bs-theme="dark"]) .text-dark {
+    color: #212529 !important; /* Força o cinzento escuro padrão do Bootstrap na área pública clara */
 }
 
 .table td a {
