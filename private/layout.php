@@ -26,22 +26,23 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
 
         <nav class="sidebar" id="sidebar">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <div class="sidebar-brand mb-0">
-                    <i class="fa-solid fa-square-plus me-2 text-primary"></i>
-                    <span class="sidebar-text">Gira</span>
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-square-plus text-primary fs-2 m-0 padding-0 lh-1 align-middle"></i>
+                    <div class="sidebar-text d-flex flex-column justify-content-center">
+                        <div class="fw-bold text-white lh-1" style="font-size: 1.4rem; letter-spacing: 0.3px;">Gira</div>
+                    </div>
                 </div>
                 <button id="toggleSidebar" class="btn btn-link text-white p-0 shadow-none border-0">
                     <i class="fa-solid fa-angles-left" id="toggleIcon"></i>
                 </button>
             </div>
 
-            <div class="small-caps text-secondary mb-2 opacity-50 sidebar-text">Dashboard</div>
             <a href="dashboard.php" class="sidebar-link">
                 <i class="fa-solid fa-house"></i>
                 <span class="sidebar-text ms-2">Dashboard</span>
             </a>
 
-            <div class="small-caps text-secondary mt-4 mb-2 opacity-50 sidebar-text">Gestão</div>
+            <div class="small-caps text-secondary mt-3 mb-2 opacity-50 sidebar-text">Gestão</div>
             <a href="equipamentos.php" class="sidebar-link">
                 <i class="fa-solid fa-stethoscope"></i>
                 <span class="sidebar-text ms-2">Equipamentos</span>
@@ -54,32 +55,57 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                 <i class="fa-solid fa-truck-field"></i>
                 <span class="sidebar-text ms-2">Fornecedores</span>
             </a>
-            <div class="small-caps text-secondary mt-4 mb-2 opacity-50 sidebar-text">Configurações</div>
+            <a href="documentos.php" class="sidebar-link">
+                <i class="fa-regular fa-file-lines"></i>
+                <span class="sidebar-text ms-2">Documentos</span>
+            </a>
+            <a href="garantias.php" class="sidebar-link">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span class="sidebar-text ms-2" style="font-size: 0.85rem;">Garantias e Contratos</span>
+            </a>
+            <a href="manutencao.php" class="sidebar-link">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <span class="sidebar-text ms-2">Manutenção</span>
+            </a>
+            <a href="relatorios.php" class="sidebar-link">
+                <i class="fa-solid fa-chart-simple"></i>
+                <span class="sidebar-text ms-2">Relatórios</span>
+            </a>
+            <a href="historico.php" class="sidebar-link">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span class="sidebar-text ms-2">Histórico</span>
+            </a>
+
+            <div class="small-caps text-secondary mt-3 mb-2 opacity-50 sidebar-text">Configurações</div>
+            <a href="utilizadores.php" class="sidebar-link">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="sidebar-text ms-2">Perfil</span>
+            </a>
             <a href="backoffice_publico.php" class="sidebar-link">
                 <i class="fa-solid fa-sliders"></i>
                 <span class="sidebar-text ms-2">Área Pública</span>
             </a>
+            <a href="configuracoes.php" class="sidebar-link">
+                <i class="fa-solid fa-gear"></i>
+                <span class="sidebar-text ms-2">Configurações</span>
+            </a>
 
-            <div class="small-caps text-secondary mt-4 mb-2 opacity-50 sidebar-text">Sessão</div>
-
+            <div class="small-caps text-secondary mt-3 mb-2 opacity-50 sidebar-text">Sessão</div>
             <a href="../public/index.html" target="_blank" class="sidebar-link">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 <span class="sidebar-text ms-2">Ver Site Público</span>
             </a>
-
-            <a href="logout.php" class="sidebar-link text-danger-hover">
+            <a href="logout.php" class="sidebar-link text-danger-hover mb-4">
                 <i class="fa-solid fa-right-from-bracket text-danger"></i>
-                <span class="sidebar-text ms-2 text-danger">Sair do Sistema</span>
+                <span class="sidebar-text ms-2 text-danger">Logout</span>
             </a>
-        </nav>
         </nav>
 
         <div class="main-wrapper">
 
             <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded-4 shadow-sm mb-4 sticky-top" style="top: 20px; z-index: 990;">
-
                 <div class="d-flex align-items-center">
-                    <h5 class="fw-bold m-0 text-secondary opacity-75 sidebar-text"><i class="fa-solid fa-laptop-medical me-2 text-primary"></i>Painel Clínico</h5>
+                    <h5 class="fw-bold m-0 text-secondary opacity-75 sidebar-text"><i class="fa-solid fa-laptop-medical me-2 text-primary"></i>Painel Técnico</h5>
                 </div>
 
                 <div class="d-flex align-items-center gap-3">
@@ -103,19 +129,17 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                     </div>
                 </div>
             </div>
-
         <?php
     }
 
     /**
      * FUNÇÃO 2: render_footer
-     * Esta função serve para fechar as tags HTML que abrimos lá em cima
-     * e rodar os teus scripts de JavaScript (Sidebar e Modo Escuro).
+     * Fecha as tags e corre os scripts unificados do ecossistema.
      */
     function render_footer()
     {
         ?>
-        </div>
+        </div> 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
         <script>
@@ -125,7 +149,6 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                 localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
             });
 
-            // Se o utilizador já tinha o menu encolhido, ativa-o ao carregar
             if (localStorage.getItem('sidebarCollapsed') === 'true') {
                 document.getElementById('sidebar').classList.add('collapsed');
             }
@@ -148,19 +171,15 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                 }
             });
 
-            // Se o utilizador já usava o modo escuro, ativa-o ao carregar
             if (localStorage.getItem('giraTheme') === 'dark') {
                 htmlElement.setAttribute('data-bs-theme', 'dark');
                 themeIcon.className = 'fa-solid fa-sun text-warning';
             }
 
-            // Ativar todos os Tooltips do Bootstrap na aplicação automaticamente
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
         </script>
     </body>
-
-
 
     </html>
 <?php

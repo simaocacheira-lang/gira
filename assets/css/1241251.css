@@ -61,6 +61,7 @@ body {
 
 /* 2. SIDEBAR */
 
+/* Modifica a classe .sidebar para suportar menus longos */
 .sidebar {
   width: 250px;
   height: 100vh;
@@ -71,8 +72,29 @@ body {
   left: 0;
   z-index: 1000;
   padding: 20px;
+  
+  /* CORREÇÃO DO CORTES: Ativa o scroll vertical interno apenas quando necessário */
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
+/* Scrollbar Customizada e Discreta para a Sidebar (WebKit) */
+.sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
 .sidebar-brand {
   font-size: 1.5rem;
   font-weight: 800;
