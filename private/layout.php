@@ -76,18 +76,10 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
 
         <div class="main-wrapper">
 
-            <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded-4 shadow-sm mb-4">
+            <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded-4 shadow-sm mb-4 sticky-top" style="top: 20px; z-index: 990;">
 
-                <div class="flex-grow-1 me-4" style="max-width: 600px;">
-                    <div class="input-group bg-light rounded-3">
-                        <span class="input-group-text border-0 bg-transparent text-muted">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </span>
-                        <input type="text" class="form-control border-0 bg-transparent small" placeholder="Pesquisar equipamento, número de série, modelo..." style="font-size: 0.85rem;">
-                        <span class="input-group-text border-0 bg-transparent">
-                            <kbd class="bg-white text-muted border shadow-sm px-2" style="font-size: 0.7rem;">⌘ K</kbd>
-                        </span>
-                    </div>
+                <div class="d-flex align-items-center">
+                    <h5 class="fw-bold m-0 text-secondary opacity-75 sidebar-text"><i class="fa-solid fa-laptop-medical me-2 text-primary"></i>Painel Clínico</h5>
                 </div>
 
                 <div class="d-flex align-items-center gap-3">
