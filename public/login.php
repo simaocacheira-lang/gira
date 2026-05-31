@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="login-card p-3">
         <div class="text-center mb-4">
-            <a href="../public/index.html" class="text-decoration-none">
+            <a href="index.php" class="text-decoration-none">
                 <h1 class="fw-bold text-primary mb-1">
                     <i class="fa-solid fa-notes-medical me-2"></i>TechMed
                 </h1>

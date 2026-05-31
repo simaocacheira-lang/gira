@@ -398,14 +398,14 @@ h3 {
 }
 
 /* ==========================================
-   SISTEMA DE MODO ESCURO
+   SISTEMA DE MODO ESCURO (GIRA)
    ========================================== */
 
 [data-bs-theme="dark"] {
   /* 1. Fundo Geral da Página e do Wrapper */
   body,
   .main-wrapper {
-    background-color: #0b132b !important; /* Azul quase preto super moderno */
+    background-color: #0b132b !important; /* Azul quase preto moderno */
     color: #f8f9fc !important;
   }
 
@@ -468,36 +468,66 @@ h3 {
   .text-secondary {
     color: #cbd5e1 !important;
   }
+
+  /* 8. CORREÇÃO DO CALENDÁRIO */
+  .date-box,
+  .date-box.bg-light {
+    background-color: #131a31 !important;
+    color: #f8f9fc !important;
+  }
+  .date-box .text-danger {
+    color: #ff6b6b !important;
+  }
 }
-/* Garante que os textos escuros na área privada ficam claros no modo dark, mas sem afetar a área pública */
-/* CONTEXTUALIZAÇÃO: Garante que as alterações de cor só afetam a área privada */
+
+/* ==========================================
+   CONVENÇÃO E CONTRASTES ENTRE ÁREAS
+   ========================================== */
+
+/* Garante que os textos escuros na área privada ficam claros no modo dark */
 [data-bs-theme="dark"] .main-wrapper .text-dark,
 [data-bs-theme="dark"] .main-wrapper strong.text-dark,
 [data-bs-theme="dark"] .table td .text-dark,
 [data-bs-theme="dark"] .table fw-bold {
-    color: #f8f9fc !important;
+  color: #f8f9fc !important;
 }
 
-/* Garante que o H1 e os parágrafos da área pública mantêm a cor original se não houver tema dark ativo na tag html */
+/* Garante que o H1 e os parágrafos da área pública mantêm a cor original */
 body:not([data-bs-theme="dark"]) .text-dark {
-    color: #212529 !important; /* Força o cinzento escuro padrão do Bootstrap na área pública clara */
+  color: #212529 !important;
 }
 
 .table td a {
   color: #3a86ff !important;
 }
 
-[data-bs-theme="dark"] {
+/* Mantém o botão de Sair com realce a vermelho */
+.sidebar-link.text-danger-hover:hover {
+  background-color: rgba(220, 53, 69, 0.1) !important;
+  color: #dc3545 !important;
+}
+/* ==========================================
+   AJUSTES DE ALINHAMENTO DAS TABELAS
+   ========================================== */
 
-  /* CORREÇÃO DO CALENDÁRIO: força a mudança de cor da caixinha */
-  .date-box,
-  .date-box.bg-light {
-    background-color: #131a31 !important; /* tom mais escuro que o cartão */
-    color: #f8f9fc !important; /* mete os numeros brancos */
-  }
+/* Atualização no CSS para suportar o alinhamento perfeito */
+.th-sortable {
+  cursor: pointer;
+  vertical-align: middle; /* Garante alinhamento vertical no meio da célula */
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
 
-  /* Garante que o texto do mês (MAI) mantém um contraste legível */
-  .date-box .text-danger {
-    color: #ff6b6b !important;
-  }
+.th-sortable:hover {
+  color: #1a73e8 !important;
+  background-color: rgba(26, 115, 232, 0.04) !important;
+}
+
+/* Pequeno ajuste na margem do ícone para dar um respiro */
+.th-sort-icon {
+  font-size: 0.75rem;
+  opacity: 0.4;
+  transition: opacity 0.2s;
+  line-height: 1; /* Evita que o ícone empurre a linha para baixo */
 }

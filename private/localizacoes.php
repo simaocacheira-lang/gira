@@ -11,7 +11,7 @@ render_header("Gira - Gestão de Localizações");
         <h2 class="fw-bold m-0">Gestão de Localizações</h2>
         <p class="text-muted m-0 small">Controlo de blocos, pisos e salas onde os dispositivos médicos estão alocados.</p>
     </div>
-    
+
     <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm">
         <i class="fa-solid fa-location-plus me-2"></i> Nova Localização
     </button>
@@ -29,7 +29,7 @@ render_header("Gira - Gestão de Localizações");
 <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
-            
+
             <thead class="table-light">
                 <tr class="text-muted fw-bold">
                     <th>Cód. Sala</th>
@@ -40,9 +40,9 @@ render_header("Gira - Gestão de Localizações");
                     <th class="text-end">Ações</th>
                 </tr>
             </thead>
-            
+
             <tbody>
-                
+
                 <tr>
                     <td class="text-muted fw-mono">#LOC-UCI02</td>
                     <td>
@@ -57,7 +57,7 @@ render_header("Gira - Gestão de Localizações");
                         <button class="btn btn-light btn-sm rounded-3 text-danger border" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
-                
+
                 <tr>
                     <td class="text-muted fw-mono">#LOC-BO03</td>
                     <td>
@@ -87,14 +87,14 @@ render_header("Gira - Gestão de Localizações");
                         <button class="btn btn-light btn-sm rounded-3 text-danger border" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
-                
+
             </tbody>
         </table>
     </div>
 </div>
 
-Iluminar "Localizações" na sidebar para indicar que estamos nessa secção
 <script>
+    //Iluminar "Localizações" na sidebar para indicar que estamos nessa secção
     // Remove o 'active' do link do Dashboard e coloca-o no link da Área Pública
     document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
     // Procura o link que vai para o backoffice e ativa-o

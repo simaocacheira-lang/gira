@@ -1,125 +1,145 @@
 <?php
-// Chamar molde da Sidebar e a Topbar automáticas
+// 1. Chamamos o molde para trazer a Sidebar e a Topbar automáticas
 require_once 'layout.php';
 
-// 2. topo da página com o título correto na aba do browser
-render_header("Gira - Inventário de Equipamentos");
+// 2. Montamos o topo da página com o título correto para a aba do browser
+render_header("Gira - Inventário de Equipamentos Médicos");
 ?>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h2 class="fw-bold m-0">Inventário de Equipamentos</h2>
-        <p class="text-muted m-0 small">Listagem geral e controlo dos dispositivos médicos do hospital.</p>
+        <h2 class="fw-bold m-0">Inventário de Dispositivos Médicos</h2>
+        <p class="text-muted m-0 small">Registo, controlo técnico e classificação de risco do parque tecnológico do hospital.</p>
     </div>
     
     <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm">
-        <i class="fa-solid fa-plus me-2"></i> Adicionar Equipamento
+        <i class="fa-solid fa-plus me-2"></i> Registar Equipamento
     </button>
-</div>
-
-<div class="card border-0 shadow-sm rounded-4 p-3 mb-4 bg-white">
-    <div class="d-flex gap-2 flex-wrap">
-        <button class="btn btn-light btn-sm rounded-pill px-3 active fw-bold">Todos</button>
-        <button class="btn btn-light btn-sm rounded-pill px-3 text-muted">Ativos</button>
-        <button class="btn btn-light btn-sm rounded-pill px-3 text-muted">Em Manutenção</button>
-        <button class="btn btn-light btn-sm rounded-pill px-3 text-muted">Críticos</button>
-    </div>
 </div>
 
 <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
             
-            <thead class="table-light">
-                <tr class="text-muted fw-bold">
-                    <th>ID / Nº Série</th>
-                    <th>Equipamento</th>
-                    <th>Categoria</th>
-                    <th>Localização</th>
-                    <th>Próxima Revisão</th>
-                    <th>Estado</th>
-                    <th class="text-end">Ações</th>
+           <thead class="table-light">
+                <tr class="text-muted fw-bold unselectable">
+                    <th class="th-sortable" onclick="simularOrdenacao('id')">
+                        <div class="d-inline-flex align-items-center gap-1">
+                            Cód. Ativo <i class="fa-solid fa-sort th-sort-icon"></i>
+                        </div>
+                    </th>
+                    <th class="th-sortable" onclick="simularOrdenacao('nome')">
+                        <div class="d-inline-flex align-items-center gap-1">
+                            Equipamento / Fabricante <i class="fa-solid fa-sort th-sort-icon"></i>
+                        </div>
+                    </th>
+                    <th class="th-sortable" onclick="simularOrdenacao('sn')">
+                        <div class="d-inline-flex align-items-center gap-1">
+                            Nº Série (SN) <i class="fa-solid fa-sort th-sort-icon"></i>
+                        </div>
+                    </th>
+                    <th class="th-sortable" onclick="simularOrdenacao('classe')">
+                        <div class="d-inline-flex align-items-center gap-1">
+                            Classe de Risco <i class="fa-solid fa-sort th-sort-icon"></i>
+                        </div>
+                    </th>
+                    <th class="th-sortable" onclick="simularOrdenacao('local')">
+                        <div class="d-inline-flex align-items-center gap-1">
+                            Localização / Serviço <i class="fa-solid fa-sort th-sort-icon"></i>
+                        </div>
+                    </th>
+                    <th class="th-sortable" onclick="simularOrdenacao('revisao')">
+                        <div class="d-inline-flex align-items-center gap-1">
+                            Próxima Revisão <i class="fa-solid fa-sort th-sort-icon"></i>
+                        </div>
+                    </th>
+                    <th class="th-sortable" onclick="simularOrdenacao('estado')">
+                        <div class="d-inline-flex align-items-center gap-1">
+                            Estado Operacional <i class="fa-solid fa-sort th-sort-icon"></i>
+                        </div>
+                    </th>
+                    <th class="text-end">Ações Técnicas</th>
                 </tr>
             </thead>
             
             <tbody>
-                
                 <tr>
-                    <td class="text-muted fw-mono">
-                        #EQ-00124<br>
-                        <small style="font-size:0.65rem;">SN: PH-9921</small>
-                    </td>
+                    <td class="fw-bold text-primary fw-mono">#EQ-2026-001</td>
                     <td>
-                        <div class="fw-bold">Monitor Multiparamétrico</div>
-                        <small class="text-muted">Philips IntelliVue</small>
+                        <div class="fw-bold">Ventilador Pulmonar de Alta Performance</div>
+                        <small class="text-muted">Dräger · Evita Infinity V500</small>
                     </td>
-                    <td><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2">Monitorização</span></td>
-                    <td>UCI - Sala 2</td>
-                    <td>25/06/2026</td>
-                    <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Ativo</span></td>
+                    <td class="fw-mono text-secondary">DG-EV-99214</td>
+                    <td><span class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle px-2">Suporte de Vida</span></td>
+                    <td>Urgências · Sala de Reanimação</td>
+                    <td>15/07/2026</td>
+                    <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Operacional</span></td>
                     <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" title="Editar"><i class="fa-solid fa-pen text-muted"></i></button>
-                        <button class="btn btn-light btn-sm rounded-3 text-danger border" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Equipamento">
+                            <i class="fa-solid fa-pen text-muted"></i>
+                        </button>
+                        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </td>
                 </tr>
                 
                 <tr>
-                    <td class="text-muted fw-mono">
-                        #EQ-00125<br>
-                        <small style="font-size:0.65rem;">SN: BB-4412</small>
-                    </td>
+                    <td class="fw-bold text-primary fw-mono">#EQ-2026-002</td>
                     <td>
-                        <div class="fw-bold">Bomba de Infusão Contínua</div>
-                        <small class="text-muted">B. Braun Space</small>
+                        <div class="fw-bold">Sistema de Ultrassom / Ecógrafo</div>
+                        <small class="text-muted">Philips · Affiniti 70</small>
                     </td>
-                    <td><span class="badge bg-info bg-opacity-10 text-info border border-info-subtle px-2">Suporte de Vida</span></td>
-                    <td>Medicina - Bloco B</td>
-                    <td>12/06/2026</td>
-                    <td><span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-2">Manutenção</span></td>
+                    <td class="fw-mono text-secondary">PH-UL-44122</td>
+                    <td><span class="badge bg-warning bg-opacity-10 text-warning border border-warning-subtle px-2">Médio/Alto Risco</span></td>
+                    <td>Obstetrícia · Consulta 3</td>
+                    <td>02/09/2026</td>
+                    <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Operacional</span></td>
                     <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" title="Editar"><i class="fa-solid fa-pen text-muted"></i></button>
-                        <button class="btn btn-light btn-sm rounded-3 text-danger border" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Equipamento">
+                            <i class="fa-solid fa-pen text-muted"></i>
+                        </button>
+                        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="text-muted fw-mono">
-                        #EQ-00126<br>
-                        <small style="font-size:0.65rem;">SN: DG-7711</small>
-                    </td>
+                    <td class="fw-bold text-primary fw-mono">#EQ-2026-003</td>
                     <td>
-                        <div class="fw-bold">Ventilador Pulmonar Oxilog</div>
-                        <small class="text-muted">Dräger Evita</small>
+                        <div class="fw-bold">Monitor Multiparamétrico de Sinais Vitais</div>
+                        <small class="text-muted">Mindray · BeneVision N17</small>
                     </td>
-                    <td><span class="badge bg-info bg-opacity-10 text-info border border-info-subtle px-2">Suporte de Vida</span></td>
-                    <td>Urgências - Reanimação</td>
-                    <td>30/05/2026</td>
-                    <td><span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2">Crítico</span></td>
+                    <td class="fw-mono text-secondary">MR-MN-77119</td>
+                    <td><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2">Monitorização</span></td>
+                    <td>UCI · Quarto 04 (Isolamento)</td>
+                    <td>12/06/2026</td>
+                    <td><span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-2">Aguardar Calibração</span></td>
                     <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" title="Editar"><i class="fa-solid fa-pen text-muted"></i></button>
-                        <button class="btn btn-light btn-sm rounded-3 text-danger border" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Equipamento">
+                            <i class="fa-solid fa-pen text-muted"></i>
+                        </button>
+                        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </td>
                 </tr>
-                
             </tbody>
         </table>
     </div>
 </div>
 
-Iluminar "Equipamentos" na sidebar para indicar que estamos nessa secção
 <script>
-    // Remove o 'active' do link do Dashboard e coloca-o no link da Área Pública
     document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-    // Procura o link que vai para o backoffice e ativa-o
     document.querySelector('a[href="equipamentos.php"]').classList.add('active');
+
+    function simularOrdenacao(coluna) {
+        console.log("Pronto para ordenar por: " + coluna);
+    }
 </script>
 
 <?php
 // 3. Chamamos o fim do molde
-render_footer();
-?>
-
-<?php
-// Chamar fim do molde para fechar o wrapper e carregar os scripts
 render_footer();
 ?>

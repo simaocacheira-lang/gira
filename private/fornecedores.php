@@ -92,15 +92,12 @@ render_header("Gira - Gestão de Fornecedores");
     </div>
 </div>
 
-Iluminar "Fornecedores" na sidebar para indicar que estamos nessa secção
 <script>
-    // Remove o 'active' do link do Dashboard e coloca-o no link da Área Pública
+    //Iluminar "Fornecedores" na sidebar para indicar que estamos nessa secção
     document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-    // Procura o link que vai para o backoffice e ativa-o
     document.querySelector('a[href="fornecedores.php"]').classList.add('active');
 </script>
 
 <?php
-// Chamar fim do molde para fechar as div's abertas e rodar os scripts
 render_footer();
 ?>

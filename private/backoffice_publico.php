@@ -103,18 +103,10 @@ render_header("Gira - Backoffice da Área Pública");
 
 // Iluminar "Area Pública" na sidebar para indicar que estamos nessa secção
 <script>
-    // Remove o 'active' do link do Dashboard e coloca-o no link da Área Pública
     document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-    // Procura o link que vai para o backoffice e ativa-o
     document.querySelector('a[href="backoffice_publico.php"]').classList.add('active');
 </script>
 
 <?php
-// 3. Chamamos o fim do molde
-render_footer();
-?>
-
-<?php
-// Chama o fim do molde para fechar o layout e rodar os scripts visuais.
 render_footer();
 ?>

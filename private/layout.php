@@ -36,7 +36,7 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
             </div>
 
             <div class="small-caps text-secondary mb-2 opacity-50 sidebar-text">Dashboard</div>
-            <a href="dashboard.php" class="sidebar-link active">
+            <a href="dashboard.php" class="sidebar-link">
                 <i class="fa-solid fa-house"></i>
                 <span class="sidebar-text ms-2">Dashboard</span>
             </a>
@@ -161,8 +161,14 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                 htmlElement.setAttribute('data-bs-theme', 'dark');
                 themeIcon.className = 'fa-solid fa-sun text-warning';
             }
+
+            // Ativar todos os Tooltips do Bootstrap na aplicação automaticamente
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
         </script>
     </body>
+
+
 
     </html>
 <?php
