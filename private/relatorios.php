@@ -9,7 +9,7 @@ render_header("Gira - Relatórios Analíticos e Indicadores");
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h2 class="fw-bold m-0">Relatórios Analíticos</h2>
-        <p class="text-muted m-0 small">Indicadores de desempenho, estatísticas de operacionalidade e custos de manutenção do hospital.</p>
+        <p class="text-muted m-0 small">Indicadores de desempenho, estatísticas de fiabilidade e gestão de custos.</p>
     </div>
     
     <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm">
@@ -19,36 +19,97 @@ render_header("Gira - Relatórios Analíticos e Indicadores");
 
 <div class="row g-3 mb-4">
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
+        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100 border-start border-success border-4">
+            <small class="text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">MTBF Global (Fiabilidade)</small>
+            <h3 class="fw-bold my-1 text-dark">342 <span class="fs-6 text-muted">Dias</span></h3>
+            <small class="text-success fw-bold" style="font-size: 0.75rem;"><i class="fa-solid fa-arrow-trend-up me-1"></i> +12% vs ano passado</small>
+        </div>
+    </div>
+    
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100 border-start border-info border-4">
+            <small class="text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">MTTR Global (Reparação)</small>
+            <h3 class="fw-bold my-1 text-dark">4.2 <span class="fs-6 text-muted">Horas</span></h3>
+            <small class="text-danger fw-bold" style="font-size: 0.75rem;"><i class="fa-solid fa-arrow-trend-down me-1"></i> +0.5h vs alvo</small>
+        </div>
+    </div>
+    
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100 border-start border-primary border-4">
             <small class="text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Disponibilidade Geral</small>
-            <h3 class="fw-bold my-1 text-success">94.8%</h3>
+            <h3 class="fw-bold my-1 text-primary">94.8%</h3>
             <small class="text-muted" style="font-size: 0.75rem;">Metas mínimas de 92% cumpridas</small>
         </div>
     </div>
+    
     <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
-            <small class="text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Tempo Médio de Reparação</small>
-            <h3 class="fw-bold my-1 text-dark">4.2 horas</h3>
-            <small class="text-muted" style="font-size: 0.75rem;">Dispositivos de suporte de vida</small>
-        </div>
-    </div>
-    <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
-            <small class="text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Avarias Ativas</small>
-            <h3 class="fw-bold my-1 text-danger">3 Equipamentos</h3>
-            <small class="text-muted" style="font-size: 0.75rem;">Ordens corretivas em diagnóstico</small>
-        </div>
-    </div>
-    <div class="col-12 col-sm-6 col-xl-3">
-        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
+        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100 border-start border-warning border-4">
             <small class="text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Custos Mensais (Peças)</small>
-            <h3 class="fw-bold my-1 text-primary">1,840 €</h3>
+            <h3 class="fw-bold my-1 text-dark">1.840 €</h3>
             <small class="text-muted" style="font-size: 0.75rem;">Maio 2026 · Filtros e juntas</small>
         </div>
     </div>
 </div>
 
+<div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h6 class="fw-bold mb-0"><i class="fa-solid fa-triangle-exclamation text-warning me-2"></i>Modelos Críticos (Piores MTBF)</h6>
+            <p class="text-muted m-0" style="font-size: 0.7rem;">Dispositivos que avariam com maior frequência e prejudicam o parque.</p>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
+            <thead class="table-light text-muted">
+                <tr>
+                    <th>Fabricante / Modelo</th>
+                    <th>Qtd. no Parque</th>
+                    <th>Total Avarias (Ano)</th>
+                    <th>MTBF Específico</th>
+                    <th>Impacto no Orçamento</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="fw-bold text-dark">B. Braun Space</div>
+                        <small class="text-muted">Bomba de Infusão</small>
+                    </td>
+                    <td class="fw-mono text-secondary">45 uni.</td>
+                    <td class="text-danger fw-bold">82 ocorrências</td>
+                    <td><span class="badge bg-danger text-white rounded-pill px-2">85 Dias</span></td>
+                    <td>
+                        <div class="progress rounded-pill" style="height: 6px; width: 80px;">
+                            <div class="progress-bar bg-danger" style="width: 85%;"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="fw-bold text-dark">Philips Affiniti 70</div>
+                        <small class="text-muted">Ecógrafo</small>
+                    </td>
+                    <td class="fw-mono text-secondary">4 uni.</td>
+                    <td class="text-warning fw-bold">12 ocorrências</td>
+                    <td><span class="badge bg-warning text-dark rounded-pill px-2">120 Dias</span></td>
+                    <td>
+                        <div class="progress rounded-pill" style="height: 6px; width: 80px;">
+                            <div class="progress-bar bg-warning" style="width: 60%;"></div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+    <div class="mb-4">
+        <h6 class="fw-bold mb-0">Histórico de Relatórios Gerados</h6>
+        <p class="text-muted m-0 small">Ficheiros exportados e guardados no sistema.</p>
+    </div>
+
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
             
