@@ -77,7 +77,7 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
             </a>
 
             <div class="small-caps text-secondary mt-3 mb-2 opacity-50 sidebar-text">Configurações</div>
-            <a href="utilizadores.php" class="sidebar-link">
+            <a href="perfis.php" class="sidebar-link">
                 <i class="fa-solid fa-user-gear"></i>
                 <span class="sidebar-text ms-2">Perfis</span>
             </a>
