@@ -227,7 +227,7 @@ render_header("Gira - Dashboard Geral");
 
 <div class="row g-4 mt-3 mb-5">
 
-    <div class="col-lg-5">
+   <div class="col-lg-5">
         <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h6 class="fw-bold mb-0">Equipamentos Recentes</h6>
@@ -244,18 +244,19 @@ render_header("Gira - Dashboard Geral");
                         </tr>
                     </thead>
                     <tbody>
-                        <tr onclick="window.location='equipamentos.php';" style="cursor: pointer;">
+                        <tr data-bs-toggle="modal" data-bs-target="#modalFichaEquipamento" style="cursor: pointer;">
                             <td>
-                                <div class="fw-bold text-primary">Monitor Multiparamétrico</div>
+                                <div class="fw-bold text-dark">Monitor Multiparamétrico</div>
                                 <div class="text-muted" style="font-size: 0.65rem;">SN: MPS-2022-45873</div>
                             </td>
                             <td>Philips IntelliVue</td>
                             <td>UCI - Sala 2</td>
                             <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Ativo</span></td>
                         </tr>
-                        <tr onclick="window.location='equipamentos.php';" style="cursor: pointer;">
+                        
+                        <tr data-bs-toggle="modal" data-bs-target="#modalFichaEquipamento" style="cursor: pointer;">
                             <td>
-                                <div class="fw-bold text-primary">Bomba de Infusão</div>
+                                <div class="fw-bold text-dark">Bomba de Infusão</div>
                                 <div class="text-muted" style="font-size: 0.65rem;">SN: INF-2020-88321</div>
                             </td>
                             <td>B. Braun Space</td>
@@ -302,31 +303,49 @@ render_header("Gira - Dashboard Geral");
 
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm rounded-4 p-4 h-100 position-relative">
-            
+
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h6 class="fw-bold mb-0">Ações Rápidas</h6>
-                
+
                 <div class="dropdown">
                     <button class="btn btn-link text-muted p-0 border-0 shadow-none" type="button" id="dropdownPersonalizarAcoes" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                         <i class="fa-solid fa-ellipsis-vertical fs-5 cursor-pointer text-secondary"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 p-3" aria-labelledby="dropdownPersonalizarAcoes" style="min-width: 280px; font-size: 0.8rem;">
                         <li class="dropdown-header px-1 pb-2 fw-bold text-dark border-bottom mb-2"><i class="fa-solid fa-sliders me-1 text-primary"></i> Personalizar Atalhos (Máx. 6)</li>
-                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="favEq"><label class="form-check-label fw-medium" for="favEq">Equipamentos</label></div></li>
-                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="favMan"><label class="form-check-label fw-medium" for="favMan">Manutenção</label></div></li>
-                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="favDoc"><label class="form-check-label fw-medium" for="favDoc">Documentos</label></div></li>
-                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="favForn"><label class="form-check-label fw-medium" for="favForn">Fornecedores</label></div></li>
-                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="favGar"><label class="form-check-label fw-medium" for="favGar">Garantias e Contratos</label></div></li>
-                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="favLoc"><label class="form-check-label fw-medium" for="favLoc">Localizações</label></div></li>
-                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" id="favRel"><label class="form-check-label fw-medium" for="favRel">Relatórios</label></div></li>
-                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" id="favUtil"><label class="form-check-label fw-medium" for="favUtil">Utilizadores</label></div></li>
-                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" id="favPerf"><label class="form-check-label fw-medium" for="favPerf">Peris de Acesso</label></div></li>
+                        <li class="my-1">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" checked id="favEq"><label class="form-check-label fw-medium" for="favEq">Equipamentos</label></div>
+                        </li>
+                        <li class="my-1">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" checked id="favMan"><label class="form-check-label fw-medium" for="favMan">Manutenção</label></div>
+                        </li>
+                        <li class="my-1">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" checked id="favDoc"><label class="form-check-label fw-medium" for="favDoc">Documentos</label></div>
+                        </li>
+                        <li class="my-1">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" checked id="favForn"><label class="form-check-label fw-medium" for="favForn">Fornecedores</label></div>
+                        </li>
+                        <li class="my-1">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" checked id="favGar"><label class="form-check-label fw-medium" for="favGar">Garantias e Contratos</label></div>
+                        </li>
+                        <li class="my-1">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" checked id="favLoc"><label class="form-check-label fw-medium" for="favLoc">Localizações</label></div>
+                        </li>
+                        <li class="my-1">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="favRel"><label class="form-check-label fw-medium" for="favRel">Relatórios</label></div>
+                        </li>
+                        <li class="my-1">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="favUtil"><label class="form-check-label fw-medium" for="favUtil">Utilizadores</label></div>
+                        </li>
+                        <li class="my-1">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="favPerf"><label class="form-check-label fw-medium" for="favPerf">Peris de Acesso</label></div>
+                        </li>
                     </ul>
                 </div>
             </div>
 
             <div class="row g-2 text-center">
-                
+
                 <div class="col-4 acao-item" id="btnAcaoEquipamentos" data-bs-toggle="modal" data-bs-target="#modalRegistarEquipamento">
                     <div class="action-btn border rounded-3 p-3 h-100 cursor-pointer">
                         <i class="fa-solid fa-circle-plus text-primary fs-4 mb-2"></i>
@@ -700,11 +719,18 @@ render_header("Gira - Dashboard Geral");
                     <div class="row g-3">
                         <div class="col-6">
                             <label class="form-label small fw-bold text-secondary">Piso</label>
-                            <select class="form-select rounded-3 bg-light border-0" name="piso" required><option value="Piso 0">Piso 0</option><option value="Piso 1">Piso 1</option><option value="Piso 2" selected>Piso 2</option></select>
+                            <select class="form-select rounded-3 bg-light border-0" name="piso" required>
+                                <option value="Piso 0">Piso 0</option>
+                                <option value="Piso 1">Piso 1</option>
+                                <option value="Piso 2" selected>Piso 2</option>
+                            </select>
                         </div>
                         <div class="col-6">
                             <label class="form-label small fw-bold text-secondary">Bloco / Ala</label>
-                            <select class="form-select rounded-3 bg-light border-0" name="bloco" required><option value="Bloco Central">Bloco Central</option><option value="Bloco Cirúrgico">Bloco Cirúrgico</option></select>
+                            <select class="form-select rounded-3 bg-light border-0" name="bloco" required>
+                                <option value="Bloco Central">Bloco Central</option>
+                                <option value="Bloco Cirúrgico">Bloco Cirúrgico</option>
+                            </select>
                         </div>
                     </div>
                 </form>
@@ -733,7 +759,10 @@ render_header("Gira - Dashboard Geral");
                         <div class="col-md-5"><label class="form-label small fw-bold text-secondary">Cédula / Nº Mecanográfico</label><input type="text" class="form-control rounded-3 bg-light border-0 fw-mono" name="cedula" placeholder="Ex: EB-44122" required></div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-secondary">Perfil de Acesso</label>
-                            <select class="form-select rounded-3 bg-light border-0" name="perfil_id" required><option value="Administrador">Administrador</option><option value="Eng. Biomédico" selected>Eng. Biomédico</option></select>
+                            <select class="form-select rounded-3 bg-light border-0" name="perfil_id" required>
+                                <option value="Administrador">Administrador</option>
+                                <option value="Eng. Biomédico" selected>Eng. Biomédico</option>
+                            </select>
                         </div>
                         <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Senha Provisória</label><input type="password" class="form-control rounded-3 bg-light border-0" name="password" placeholder="••••••••" required></div>
                     </div>
@@ -768,6 +797,110 @@ render_header("Gira - Dashboard Geral");
                 <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
                 <button type="submit" form="formNovoPerfil" class="btn btn-primary rounded-3 fw-bold small px-4"><i class="fa-solid fa-floppy-disk me-2"></i>Guardar Perfil</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalFichaEquipamento" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content border-0 rounded-4 shadow-lg bg-light">
+            
+            <div class="modal-header border-bottom border-light p-4 bg-white rounded-top-4">
+                <div>
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill border border-primary-subtle px-2">#EQ-2026-001</span>
+                        <span class="badge bg-success rounded-pill px-2"><i class="fa-solid fa-check me-1"></i> Operacional</span>
+                    </div>
+                    <h4 class="modal-title fw-bold text-dark mb-0">Monitor Multiparamétrico - Philips IntelliVue</h4>
+                    <small class="text-muted fw-mono">SN: MPS-2022-45873 · Adquirido em: 15/01/2022</small>
+                </div>
+                <button type="button" class="btn-close shadow-none mb-auto" data-bs-dismiss="modal"></button>
+            </div>
+            
+            <div class="modal-body p-4">
+                <div class="row g-4">
+                    
+                    <div class="col-lg-7">
+                        <div class="bg-white p-4 rounded-4 shadow-sm h-100 border border-light-subtle">
+                            <h6 class="fw-bold mb-4 border-bottom pb-2"><i class="fa-solid fa-info-circle text-primary me-2"></i>Informação Geral</h6>
+                            
+                            <div class="row g-3 mb-4">
+                                <div class="col-sm-6">
+                                    <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">CATEGORIA / CLASSE</small>
+                                    <span class="fw-medium text-dark">Suporte de Vida (Classe III)</span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">LOCALIZAÇÃO ATUAL</small>
+                                    <span class="fw-medium text-dark">UCI - Sala 2</span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">FORNECEDOR OFICIAL</small>
+                                    <span class="fw-medium text-dark">Philips Healthcare Portugal</span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">COBERTURA TÉCNICA</small>
+                                    <span class="badge bg-warning bg-opacity-10 text-warning border border-warning-subtle text-dark">Garantia Expira em 30 Dias</span>
+                                </div>
+                            </div>
+
+                            <h6 class="fw-bold mb-3 border-bottom pb-2 pt-2"><i class="fa-solid fa-clock-rotate-left text-primary me-2"></i>Últimas Intervenções</h6>
+                            <ul class="list-unstyled small">
+                                <li class="mb-2"><i class="fa-solid fa-wrench text-secondary me-2"></i> <strong class="text-dark">12/03/2026:</strong> Substituição do módulo de SpO2 (Corretiva)</li>
+                                <li class="mb-2"><i class="fa-solid fa-check-circle text-success me-2"></i> <strong class="text-dark">10/01/2026:</strong> Calibração anual dos sensores (Preventiva)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div class="bg-white p-4 rounded-4 shadow-sm h-100 border border-light-subtle">
+                            <div class="d-flex justify-content-between align-items-start mb-3 border-bottom pb-2">
+                                <div>
+                                    <h6 class="fw-bold mb-0"><i class="fa-solid fa-chart-line text-danger me-2"></i>Análise TCO</h6>
+                                    <p class="text-muted small m-0" style="font-size: 0.65rem;">Custo de Aquisição vs Manutenção</p>
+                                </div>
+                                <span class="badge bg-danger text-white rounded-pill px-2 py-1" style="font-size: 0.65rem;">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> Risco
+                                </span>
+                            </div>
+
+                            <div class="row g-2 mb-4 text-center">
+                                <div class="col-6">
+                                    <div class="p-2 bg-light rounded-3 border">
+                                        <small class="text-secondary fw-bold text-uppercase d-block mb-1" style="font-size: 0.6rem;">Aquisição</small>
+                                        <h5 class="fw-bold text-dark m-0">24.500 €</h5>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-2 bg-danger bg-opacity-10 rounded-3 border border-danger-subtle">
+                                        <small class="text-danger fw-bold text-uppercase d-block mb-1" style="font-size: 0.6rem;">Gastos</small>
+                                        <h5 class="fw-bold text-danger m-0">26.150 €</h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="d-flex justify-content-between text-muted fw-bold mb-1" style="font-size: 0.7rem;">
+                                    <span>Rentabilidade</span>
+                                    <span class="text-danger">106% do valor original</span>
+                                </div>
+                                <div class="progress rounded-pill mb-2" style="height: 8px;">
+                                    <div class="progress-bar bg-danger" style="width: 100%;"></div>
+                                </div>
+                                <p class="text-muted lh-sm m-0" style="font-size: 0.7rem;">
+                                    O custo acumulado de reparações já superou o valor de compra. Recomenda-se avançar com o plano de abate para este dispositivo.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="modal-footer border-top border-light p-3 bg-white rounded-bottom-4">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Fechar Ficha</button>
+                <a href="equipamentos.php" class="btn btn-primary rounded-3 fw-bold small px-4">Ir para Edição Completa <i class="fa-solid fa-arrow-right ms-2"></i></a>
+            </div>
+
         </div>
     </div>
 </div>

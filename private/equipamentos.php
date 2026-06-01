@@ -11,7 +11,7 @@ render_header("Gira - Inventário de Equipamentos Médicos");
         <h2 class="fw-bold m-0">Inventário de Dispositivos Médicos</h2>
         <p class="text-muted m-0 small">Registo, controlo técnico e classificação de risco do parque tecnológico do hospital.</p>
     </div>
-    
+
     <!-- ATUALIZADO: Adicionados os gatilhos para abrir o Modal do Bootstrap -->
     <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalRegistarEquipamento">
         <i class="fa-solid fa-plus me-2"></i> Registar Equipamento
@@ -21,9 +21,9 @@ render_header("Gira - Inventário de Equipamentos Médicos");
 <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
-            
-           <thead class="table-light">
-                <tr class="text-muted fw-bold unselectable">
+
+            <thead class="table-light">
+                <tr>
                     <th class="th-sortable" onclick="simularOrdenacao('id')">
                         <div class="d-inline-flex align-items-center gap-1">
                             Cód. Ativo <i class="fa-solid fa-sort th-sort-icon"></i>
@@ -62,9 +62,9 @@ render_header("Gira - Inventário de Equipamentos Médicos");
                     <th class="text-end">Ações Técnicas</th>
                 </tr>
             </thead>
-            
+
             <tbody>
-                <tr>
+                <tr data-bs-toggle="modal" data-bs-target="#modalFichaEquipamento" style="cursor: pointer;">
                     <td class="fw-bold text-primary fw-mono">#EQ-2026-001</td>
                     <td>
                         <div class="fw-bold">Ventilador Pulmonar de Alta Performance</div>
@@ -84,8 +84,8 @@ render_header("Gira - Inventário de Equipamentos Médicos");
                         </button>
                     </td>
                 </tr>
-                
-                <tr>
+
+                <tr data-bs-toggle="modal" data-bs-target="#modalFichaEquipamento" style="cursor: pointer;">
                     <td class="fw-bold text-primary fw-mono">#EQ-2026-002</td>
                     <td>
                         <div class="fw-bold">Sistema de Ultrassom / Ecógrafo</div>
@@ -106,7 +106,7 @@ render_header("Gira - Inventário de Equipamentos Médicos");
                     </td>
                 </tr>
 
-                <tr>
+                <tr data-bs-toggle="modal" data-bs-target="#modalFichaEquipamento" style="cursor: pointer;">
                     <td class="fw-bold text-primary fw-mono">#EQ-2026-003</td>
                     <td>
                         <div class="fw-bold">Monitor Multiparamétrico de Sinais Vitais</div>
@@ -137,17 +137,17 @@ render_header("Gira - Inventário de Equipamentos Médicos");
 <div class="modal fade" id="modalRegistarEquipamento" tabindex="-1" aria-labelledby="modalRegistarEquipamentoLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- modal-lg para dar mais espaço aos inputs duplos -->
         <div class="modal-content border-0 rounded-4 shadow">
-            
+
             <div class="modal-header border-bottom border-light p-3">
                 <h5 class="modal-title fw-bold" id="modalRegistarEquipamentoLabel">
                     <i class="fa-solid fa-laptop-medical text-primary me-2"></i>Registar Novo Equipamento no Parque
                 </h5>
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            
+
             <div class="modal-body p-4">
                 <form id="formNovoEquipamento" action="processar_equipamento.php" method="POST">
-                    
+
                     <div class="row g-3">
                         <!-- Nome e Fabricante/Modelo -->
                         <div class="col-md-6">
@@ -205,12 +205,124 @@ render_header("Gira - Inventário de Equipamentos Médicos");
 
                 </form>
             </div>
-            
+
             <div class="modal-footer border-top border-light p-3">
                 <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
                 <button type="submit" form="formNovoEquipamento" class="btn btn-primary rounded-3 fw-bold small px-4">
                     <i class="fa-solid fa-plus me-2"></i>Registar Ativo
                 </button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-footer border-top border-light p-3">
+        <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" form="formNovoEquipamento" class="btn btn-primary rounded-3 fw-bold small px-4">
+            <i class="fa-solid fa-plus me-2"></i>Registar Ativo
+        </button>
+    </div>
+
+</div>
+</div>
+</div>
+<div class="modal fade" id="modalFichaEquipamento" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content border-0 rounded-4 shadow-lg bg-light">
+
+            <div class="modal-header border-bottom border-light p-4 bg-white rounded-top-4">
+                <div>
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill border border-primary-subtle px-2">#EQ-2026-001</span>
+                        <span class="badge bg-success rounded-pill px-2"><i class="fa-solid fa-check me-1"></i> Operacional</span>
+                    </div>
+                    <h4 class="modal-title fw-bold text-dark mb-0">Monitor Multiparamétrico - Philips IntelliVue</h4>
+                    <small class="text-muted fw-mono">SN: MPS-2022-45873 · Adquirido em: 15/01/2022</small>
+                </div>
+                <button type="button" class="btn-close shadow-none mb-auto" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body p-4">
+                <div class="row g-4">
+
+                    <div class="col-lg-7">
+                        <div class="bg-white p-4 rounded-4 shadow-sm h-100 border border-light-subtle">
+                            <h6 class="fw-bold mb-4 border-bottom pb-2"><i class="fa-solid fa-info-circle text-primary me-2"></i>Informação Geral</h6>
+
+                            <div class="row g-3 mb-4">
+                                <div class="col-sm-6">
+                                    <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">CATEGORIA / CLASSE</small>
+                                    <span class="fw-medium text-dark">Suporte de Vida (Classe III)</span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">LOCALIZAÇÃO ATUAL</small>
+                                    <span class="fw-medium text-dark">UCI - Sala 2</span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">FORNECEDOR OFICIAL</small>
+                                    <span class="fw-medium text-dark">Philips Healthcare Portugal</span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">COBERTURA TÉCNICA</small>
+                                    <span class="badge bg-warning bg-opacity-10 text-warning border border-warning-subtle text-dark">Garantia Expira em 30 Dias</span>
+                                </div>
+                            </div>
+
+                            <h6 class="fw-bold mb-3 border-bottom pb-2 pt-2"><i class="fa-solid fa-clock-rotate-left text-primary me-2"></i>Últimas Intervenções</h6>
+                            <ul class="list-unstyled small">
+                                <li class="mb-2"><i class="fa-solid fa-wrench text-secondary me-2"></i> <strong class="text-dark">12/03/2026:</strong> Substituição do módulo de SpO2 (Corretiva)</li>
+                                <li class="mb-2"><i class="fa-solid fa-check-circle text-success me-2"></i> <strong class="text-dark">10/01/2026:</strong> Calibração anual dos sensores (Preventiva)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div class="bg-white p-4 rounded-4 shadow-sm h-100 border border-light-subtle">
+                            <div class="d-flex justify-content-between align-items-start mb-3 border-bottom pb-2">
+                                <div>
+                                    <h6 class="fw-bold mb-0"><i class="fa-solid fa-chart-line text-danger me-2"></i>Análise TCO</h6>
+                                    <p class="text-muted small m-0" style="font-size: 0.65rem;">Custo de Aquisição vs Manutenção</p>
+                                </div>
+                                <span class="badge bg-danger text-white rounded-pill px-2 py-1" style="font-size: 0.65rem;">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> Risco
+                                </span>
+                            </div>
+
+                            <div class="row g-2 mb-4 text-center">
+                                <div class="col-6">
+                                    <div class="p-2 bg-light rounded-3 border">
+                                        <small class="text-secondary fw-bold text-uppercase d-block mb-1" style="font-size: 0.6rem;">Aquisição</small>
+                                        <h5 class="fw-bold text-dark m-0">24.500 €</h5>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-2 bg-danger bg-opacity-10 rounded-3 border border-danger-subtle">
+                                        <small class="text-danger fw-bold text-uppercase d-block mb-1" style="font-size: 0.6rem;">Gastos</small>
+                                        <h5 class="fw-bold text-danger m-0">26.150 €</h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="d-flex justify-content-between text-muted fw-bold mb-1" style="font-size: 0.7rem;">
+                                    <span>Rentabilidade</span>
+                                    <span class="text-danger">106% do valor original</span>
+                                </div>
+                                <div class="progress rounded-pill mb-2" style="height: 8px;">
+                                    <div class="progress-bar bg-danger" style="width: 100%;"></div>
+                                </div>
+                                <p class="text-muted lh-sm m-0" style="font-size: 0.7rem;">
+                                    O custo acumulado de reparações já superou o valor de compra. Recomenda-se avançar com o plano de abate para este dispositivo.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer border-top border-light p-3 bg-white rounded-bottom-4">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Fechar Ficha</button>
             </div>
 
         </div>
