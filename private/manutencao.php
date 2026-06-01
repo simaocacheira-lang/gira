@@ -12,7 +12,7 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
         <p class="text-muted m-0 small">Acompanhamento de avarias, intervenções corretivas e planos de manutenção preventiva do parque médico.</p>
     </div>
 
-    <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm">
+    <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalAbrirOT">
         <i class="fa-solid fa-circle-exclamation me-2"></i> Abrir Ordem de Trabalho
     </button>
 </div>
@@ -104,7 +104,7 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
                         <div class="fw-bold">Monitor Multiparamétrico de Sinais Vitais</div>
                         <small class="text-muted">UCI · Substituição de bateria interna interna afetada</small>
                     </td>
-                    <td><span class="badge bg-info bg-opacity-10 text-info border border-info-subtle px-2">Verificação Técnica</span></td>
+                    <td><span class="badge bg-info bg-opacity-10 text-info border border-info-subtle px-2">Verificação Técnico</span></td>
                     <td><span class="text-warning fw-bold">Alta</span></td>
                     <td>18/05/2026</td>
                     <td><span class="badge bg-light text-muted border rounded-pill px-2">Concluída</span></td>
@@ -119,6 +119,71 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
                 </tr>
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAbrirOT" tabindex="-1" aria-labelledby="modalAbrirOTLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 rounded-4 shadow">
+            
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold" id="modalAbrirOTLabel">
+                    <i class="fa-solid fa-screwdriver-wrench text-primary me-2"></i>Abrir Nova Ordem de Trabalho
+                </h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body p-4">
+                <form id="formNovaOT" action="processar_manutencao.php" method="POST">
+                    
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label for="otEquipamento" class="form-label small fw-bold text-secondary">Dispositivo Médico com Ocorrência</label>
+                            <select class="form-select rounded-3 bg-light border-0 fw-mono" id="otEquipamento" name="equipamento_id" required>
+                                <option value="" selected disabled>Selecione o equipamento afetado...</option>
+                                <option value="#EQ-2026-001">#EQ-2026-001 - Dräger Evita V500 (Urgências)</option>
+                                <option value="#EQ-2026-002">#EQ-2026-002 - Philips Affiniti 70 (Obstetrícia)</option>
+                                <option value="#EQ-2026-003">#EQ-2026-003 - Mindray BeneVision N17 (UCI)</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="otTipo" class="form-label small fw-bold text-secondary">Tipo de Intervenção</label>
+                            <select class="form-select rounded-3 bg-light border-0" id="otTipo" name="tipo_manutencao" required>
+                                <option value="" selected disabled>Escolha o tipo...</option>
+                                <option value="Corretiva (Avaria)">Corretiva (Reparação de Avarias / Falhas)</option>
+                                <option value="Preventiva Planeada">Preventiva (Revisões Planeadas / Calibração)</option>
+                                <option value="Verificação Técnica">Verificação Técnica / Auditoria Interna</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="otPrioridade" class="form-label small fw-bold text-secondary">Nível de Prioridade Clínica</label>
+                            <select class="form-select rounded-3 bg-light border-0" id="otPrioridade" name="prioridade" required>
+                                <option value="" selected disabled>Escolha o nível...</option>
+                                <option value="Crítica">Crítica (Risco para o Doente / Suporte de Vida)</option>
+                                <option value="Alta">Alta (Dispositivo Fora de Serviço no Setor)</option>
+                                <option value="Média" selected>Média (Falha Parcial / Dispositivo com Backup)</option>
+                                <option value="Baixa">Baixa (Ajustes Estéticos / Calibração não Urgente)</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="otDescricao" class="form-label small fw-bold text-secondary">Descrição Detalhada do Sintoma / Intervenção</label>
+                            <textarea class="form-control rounded-3 bg-light border-0" id="otDescricao" name="descricao_avaria" rows="4" placeholder="Ex: Equipamento apresenta erro de fluxo no circuito de oxigénio durante os testes de inicialização. Serviço solicita verificação urgente..." required></textarea>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovaOT" class="btn btn-primary rounded-3 fw-bold small px-4">
+                    <i class="fa-solid fa-circle-exclamation me-2"></i>Emitir O.T.
+                </button>
+            </div>
+
+        </div>
     </div>
 </div>
 
