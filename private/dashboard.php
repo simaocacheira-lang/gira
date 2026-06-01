@@ -272,7 +272,7 @@ render_header("Gira - Dashboard Geral");
         <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h6 class="fw-bold mb-0">Manutenções Agendadas</h6>
-                <a href="#" class="text-primary small text-decoration-none">Calendário</a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#modalAgendaTurno" class="text-primary small text-decoration-none">Calendário</a>
             </div>
             <div class="vstack gap-3">
                 <div class="d-flex align-items-center">
@@ -344,7 +344,100 @@ render_header("Gira - Dashboard Geral");
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalAgendaTurno" tabindex="-1" aria-labelledby="modalAgendaTurnoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content border-0 rounded-4 shadow">
 
+            <div class="modal-header border-bottom border-light p-3">
+                <div>
+                    <h5 class="modal-title fw-bold" id="modalAgendaTurnoLabel">
+                        <i class="fa-solid fa-calendar-day text-primary me-2"></i>Agenda de Manutenções por Turno
+                    </h5>
+                    <small class="text-muted">Planeamento cirúrgico para o dia de hoje · 20 de maio, 2026</small>
+                </div>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-4 bg-light bg-opacity-50">
+                <div class="row g-3">
+
+                    <div class="col-lg-4">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <span class="badge bg-primary rounded-pill px-2.5 py-1.5" style="font-size: 0.7rem;">Manhã</span>
+                            <small class="text-muted fw-bold text-uppercase" style="font-size: 0.65rem;">08:00 - 13:00</small>
+                        </div>
+
+                        <div class="vstack gap-2">
+                            <div class="bg-white p-3 rounded-3 border-start border-success border-3 shadow-sm">
+                                <div class="d-flex justify-content-between align-items-start mb-1">
+                                    <h6 class="small fw-bold mb-0 text-dark">Ventilador Pulmonar</h6>
+                                    <span class="badge bg-success bg-opacity-10 text-success" style="font-size: 0.6rem;">09:00</span>
+                                </div>
+                                <p class="text-muted m-0" style="font-size: 0.7rem;"><i class="fa-solid fa-circle-check text-success me-1"></i>Manutenção Preventiva Semestral</p>
+                                <small class="text-secondary fw-mono" style="font-size: 0.65rem;">Urgências · Bloco Norte</small>
+                            </div>
+
+                            <div class="text-center p-3 rounded-3 border border-dashed opacity-50 bg-white" style="border-style: dashed !important;">
+                                <small class="text-muted style=" font-size: 0.7rem;">Sem mais tarefas agendadas</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <span class="badge bg-warning text-dark rounded-pill px-2.5 py-1.5" style="font-size: 0.7rem;">Tarde</span>
+                            <small class="text-muted fw-bold text-uppercase" style="font-size: 0.65rem;">13:00 - 18:00</small>
+                        </div>
+
+                        <div class="vstack gap-2">
+                            <div class="bg-white p-3 rounded-3 border-start border-warning border-3 shadow-sm">
+                                <div class="d-flex justify-content-between align-items-start mb-1">
+                                    <h6 class="small fw-bold mb-0 text-dark">Autoclave Industrial</h6>
+                                    <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill" style="font-size: 0.6rem;">10:30</span>
+                                </div>
+                                <p class="text-muted m-0" style="font-size: 0.7rem;"><i class="fa-solid fa-clock text-warning me-1"></i>Calibração de Pressão / Sensores</p>
+                                <small class="text-secondary fw-mono" style="font-size: 0.65rem;">Esterilização · Piso -1</small>
+                            </div>
+
+                            <div class="bg-white p-3 rounded-3 border-start border-danger border-3 shadow-sm">
+                                <div class="d-flex justify-content-between align-items-start mb-1">
+                                    <h6 class="small fw-bold mb-0 text-dark">Ecógrafo Philips</h6>
+                                    <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill" style="font-size: 0.6rem;">16:00</span>
+                                </div>
+                                <p class="text-muted m-0" style="font-size: 0.7rem;"><i class="fa-solid fa-wrench text-danger me-1"></i>Intervenção Corretiva (Ecrã)</p>
+                                <small class="text-secondary fw-mono" style="font-size: 0.65rem;">Obstetrícia · Consulta 3</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <span class="badge bg-secondary rounded-pill px-2.5 py-1.5" style="font-size: 0.7rem;">Noite / Banco</span>
+                            <small class="text-muted fw-bold text-uppercase" style="font-size: 0.65rem;">18:00 - 08:00</small>
+                        </div>
+
+                        <div class="vstack gap-2">
+                            <div class="bg-white p-3 rounded-3 border border-light shadow-sm text-center py-4 bg-light bg-opacity-25">
+                                <div class="text-muted mb-2"><i class="fa-solid fa-moon text-secondary fs-4"></i></div>
+                                <h6 class="small fw-bold mb-1 text-secondary">Prevenção e Piquete Técnico</h6>
+                                <p class="text-muted m-0 px-2" style="font-size: 0.65rem;">Nenhuma preventiva planeada para o período noturno. Apenas intervenções de urgência via Banco Clínico.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Fechar Vista</button>
+                <a href="manutencao.php" class="btn btn-primary rounded-3 fw-bold small px-4">
+                    <i class="fa-solid fa-sliders me-2"></i>Gerir Ordens de Trabalho
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
 <?php
 // Função molde que fecha as tags HTML abertas e injeta os scripts do Modo Escuro e da Sidebar
 render_footer();
