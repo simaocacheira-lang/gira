@@ -12,7 +12,7 @@ render_header("Gira - Gestão de Documentos Técnicos");
         <p class="text-muted m-0 small">Arquivo centralizado de manuais de utilizador, certificados de calibração e relatórios de conformidade.</p>
     </div>
     
-    <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm">
+    <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNovoDocumento">
         <i class="fa-solid fa-cloud-arrow-up me-2"></i> Enviar Documento
     </button>
 </div>
@@ -58,7 +58,6 @@ render_header("Gira - Gestão de Documentos Técnicos");
             </thead>
             
             <tbody>
-                
                 <tr>
                     <td class="fw-bold text-primary fw-mono">#DOC-9921</td>
                     <td>
@@ -118,9 +117,68 @@ render_header("Gira - Gestão de Documentos Técnicos");
                         </button>
                     </td>
                 </tr>
-                
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="modal fade" id="modalNovoDocumento" tabindex="-1" aria-labelledby="modalNovoDocumentoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow">
+            
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold" id="modalNovoDocumentoLabel">
+                    <i class="fa-solid fa-file-import text-primary me-2"></i>Upload de Documento Técnico
+                </h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body p-4">
+                <form id="formNovoDocumento" action="processar_documento.php" method="POST" enctype="multipart/form-data">
+                    
+                    <div class="mb-3">
+                        <label for="docNome" class="form-label small fw-bold text-secondary">Nome Identificativo do Documento</label>
+                        <input type="text" class="form-control rounded-3 bg-light border-0" id="docNome" name="nome_doc" placeholder="Ex: Certificado de Calibração Anual 2026" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="docTipo" class="form-label small fw-bold text-secondary">Tipo de Documento</label>
+                        <select class="form-select rounded-3 bg-light border-0" id="docTipo" name="tipo_doc" required>
+                            <option value="" selected disabled>Escolha uma opção...</option>
+                            <option value="Manual Técnico">Manual Técnico / Serviço</option>
+                            <option value="Metrologia / Calibração">Metrologia / Calibração</option>
+                            <option value="Financeiro / Fatura">Financeiro / Fatura</option>
+                            <option value="Relatório Técnico">Relatório Técnico de Instalação</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="docEquipamento" class="form-label small fw-bold text-secondary">Dispositivo Médico Associado</label>
+                        <select class="form-select rounded-3 bg-light border-0 fw-mono" id="docEquipamento" name="equipamento_doc">
+                            <option value="Nenhum" selected>Nenhum (Documento Geral)</option>
+                            <option value="#EQ-2026-001">#EQ-2026-001 - Dräger Evita V500</option>
+                            <option value="#EQ-2026-002">#EQ-2026-002 - Philips Affiniti 70</option>
+                            <option value="#EQ-2026-003">#EQ-2026-003 - Mindray BeneVision N17</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="docFicheiro" class="form-label small fw-bold text-secondary">Selecionar Ficheiro (PDF, PNG, JPG)</label>
+                        <input class="form-control rounded-3" type="file" id="docFicheiro" name="ficheiro_doc" required>
+                        <div class="form-text opacity-75" style="font-size: 0.7rem;">Tamanho máximo permitido: 20MB.</div>
+                    </div>
+
+                </form>
+            </div>
+            
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovoDocumento" class="btn btn-primary rounded-3 fw-bold small px-4">
+                    <i class="fa-solid fa-upload me-2"></i>Submeter Arquivo
+                </button>
+            </div>
+
+        </div>
     </div>
 </div>
 
