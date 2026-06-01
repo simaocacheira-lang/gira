@@ -21,89 +21,101 @@ render_header("Gira - Dashboard Geral");
 <div class="row g-3">
 
     <div class="col-md-2">
-        <div class="kpi-card">
-            <div class="icon-circle bg-primary-light"><i class="fa-solid fa-file-invoice"></i></div>
-            <div>
-                <p class="text-muted small-caps mb-0">Total</p>
-                <h3>1.532</h3>
-                <small class="text-primary fw-bold">↑ 8%</small>
+        <a href="equipamentos.php" class="text-decoration-none text-dark">
+            <div class="kpi-card">
+                <div class="icon-circle bg-primary-light"><i class="fa-solid fa-file-invoice"></i></div>
+                <div>
+                    <p class="text-muted small-caps mb-0">Total</p>
+                    <h3>1.532</h3>
+                    <small class="text-primary fw-bold">↑ 8%</small>
+                </div>
+                <div class="sparkline-box">
+                    <svg viewBox="0 0 100 30" preserveAspectRatio="none" style="width:100%; height:100%;">
+                        <path d="M0 25 Q 20 25, 40 10 T 80 15 T 100 5" fill="none" stroke="#0d6efd" stroke-width="2" />
+                    </svg>
+                </div>
             </div>
-            <div class="sparkline-box">
-                <svg viewBox="0 0 100 30" preserveAspectRatio="none" style="width:100%; height:100%;">
-                    <path d="M0 25 Q 20 25, 40 10 T 80 15 T 100 5" fill="none" stroke="#0d6efd" stroke-width="2" />
-                </svg>
-            </div>
-        </div>
+        </a>
     </div>
 
     <div class="col-md-2">
-        <div class="kpi-card">
-            <div class="icon-circle bg-success-light"><i class="fa-solid fa-calendar-check"></i></div>
-            <div>
-                <p class="text-muted small-caps mb-0">Ativos</p>
-                <h3>1.328</h3>
-                <small class="text-success fw-bold">↑ 5%</small>
+        <a href="equipamentos.php" class="text-decoration-none text-dark">
+            <div class="kpi-card">
+                <div class="icon-circle bg-success-light"><i class="fa-solid fa-calendar-check"></i></div>
+                <div>
+                    <p class="text-muted small-caps mb-0">Ativos</p>
+                    <h3>1.328</h3>
+                    <small class="text-success fw-bold">↑ 5%</small>
+                </div>
+                <div class="sparkline-box">
+                    <svg viewBox="0 0 100 30" preserveAspectRatio="none" style="width:100%; height:100%;">
+                        <path d="M0 20 Q 30 5, 60 20 T 100 10" fill="none" stroke="#198754" stroke-width="2" />
+                    </svg>
+                </div>
             </div>
-            <div class="sparkline-box">
-                <svg viewBox="0 0 100 30" preserveAspectRatio="none" style="width:100%; height:100%;">
-                    <path d="M0 20 Q 30 5, 60 20 T 100 10" fill="none" stroke="#198754" stroke-width="2" />
-                </svg>
-            </div>
-        </div>
+        </a>
     </div>
 
     <div class="col-md-2">
-        <div class="kpi-card">
-            <div class="icon-circle bg-warning-light"><i class="fa-solid fa-wrench"></i></div>
-            <div>
-                <p class="text-muted small-caps mb-0">Reparação</p>
-                <h3>124</h3>
-                <small class="text-danger fw-bold">↓ 3%</small>
+        <a href="manutencao.php" class="text-decoration-none text-dark">
+            <div class="kpi-card">
+                <div class="icon-circle bg-warning-light"><i class="fa-solid fa-wrench"></i></div>
+                <div>
+                    <p class="text-muted small-caps mb-0">Reparação</p>
+                    <h3>124</h3>
+                    <small class="text-danger fw-bold">↓ 3%</small>
+                </div>
+                <div class="sparkline-box">
+                    <svg viewBox="0 0 100 30" preserveAspectRatio="none" style="width:100%; height:100%;">
+                        <path d="M0 10 Q 50 30, 100 20" fill="none" stroke="#fd7e14" stroke-width="2" />
+                    </svg>
+                </div>
             </div>
-            <div class="sparkline-box">
-                <svg viewBox="0 0 100 30" preserveAspectRatio="none" style="width:100%; height:100%;">
-                    <path d="M0 10 Q 50 30, 100 20" fill="none" stroke="#fd7e14" stroke-width="2" />
-                </svg>
-            </div>
-        </div>
+        </a>
     </div>
 
     <div class="col-md-2">
-        <div class="kpi-card">
-            <div class="icon-circle bg-gray-light"><i class="fa-solid fa-power-off"></i></div>
-            <div>
-                <p class="text-muted small-caps mb-0">Inativos</p>
-                <h3>80</h3>
-                <small class="text-secondary fw-bold">↘ 2%</small>
+        <a href="equipamentos.php" class="text-decoration-none text-dark">
+            <div class="kpi-card">
+                <div class="icon-circle bg-gray-light"><i class="fa-solid fa-power-off"></i></div>
+                <div>
+                    <p class="text-muted small-caps mb-0">Inativos</p>
+                    <h3>80</h3>
+                    <small class="text-secondary fw-bold">↘ 2%</small>
+                </div>
+                <div class="sparkline-box">
+                    <svg viewBox="0 0 100 30" preserveAspectRatio="none" style="width:100%; height:100%;">
+                        <path d="M0 25 H 100" fill="none" stroke="#6c757d" stroke-width="2" />
+                    </svg>
+                </div>
             </div>
-            <div class="sparkline-box">
-                <svg viewBox="0 0 100 30" preserveAspectRatio="none" style="width:100%; height:100%;">
-                    <path d="M0 25 H 100" fill="none" stroke="#6c757d" stroke-width="2" />
-                </svg>
-            </div>
-        </div>
+        </a>
     </div>
 
     <div class="col-md-2">
-        <div class="kpi-card border-start border-danger border-4">
-            <div class="icon-circle bg-danger-light"><i class="fa-solid fa-shield-heart"></i></div>
-            <div>
-                <p class="text-muted small-caps mb-0">Garantias</p>
-                <h3 class="text-danger">23</h3>
-                <small class="text-danger fw-bold">30 dias</small>
+        <a href="garantias.php" class="text-decoration-none text-dark">
+            <div class="kpi-card border-start border-danger border-4">
+                <div class="icon-circle bg-danger-light"><i class="fa-solid fa-shield-heart"></i></div>
+                <div>
+                    <p class="text-muted small-caps mb-0">Garantias</p>
+                    <h3 class="text-danger">23</h3>
+                    <small class="text-danger fw-bold">30 dias</small>
+                </div>
             </div>
-        </div>
+        </a>
     </div>
 
     <div class="col-md-2">
-        <div class="kpi-card border-start border-primary border-4">
-            <div class="icon-circle bg-primary-light"><i class="fa-solid fa-file-circle-exclamation"></i></div>
-            <div>
-                <p class="text-muted small-caps mb-0">Docs</p>
-                <h3 class="text-primary">17</h3>
-                <small class="text-primary fw-bold">Ação necessária</small>
+        <a href="documentos.php" class="text-decoration-none text-dark">
+            <div class="kpi-card border-start border-primary border-4">
+                <div class="icon-circle bg-primary-light"><i class="fa-solid fa-file-circle-exclamation"></i></div>
+                <div>
+                    <p class="text-muted small-caps mb-0">Docs</p>
+                    <h3 class="text-primary">17</h3>
+                    <small class="text-primary fw-bold">Ação necessária</small>
+                </div>
             </div>
-        </div>
+        </a>
     </div>
 </div>
 
@@ -113,7 +125,7 @@ render_header("Gira - Dashboard Geral");
         <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h6 class="fw-bold mb-0">Equipamentos por Categoria</h6>
-                <a href="#" class="text-primary small text-decoration-none">Ver todas</a>
+                <a href="equipamentos.php" class="text-primary small text-decoration-none">Ver todas</a>
             </div>
             <div class="d-flex align-items-center">
                 <div class="donut-container me-4">
@@ -148,7 +160,7 @@ render_header("Gira - Dashboard Geral");
         <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h6 class="fw-bold mb-0">Distribuição por Criticidade</h6>
-                <a href="#" class="text-primary small text-decoration-none">Ver relatório</a>
+                <a href="relatorios.php" class="text-primary small text-decoration-none">Ver relatório</a>
             </div>
             <div class="d-flex align-items-center mb-3">
                 <div class="donut-container me-4">
@@ -219,7 +231,7 @@ render_header("Gira - Dashboard Geral");
         <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h6 class="fw-bold mb-0">Equipamentos Recentes</h6>
-                <a href="#" class="text-primary small text-decoration-none">Ver todos</a>
+                <a href="equipamentos.php" class="text-primary small text-decoration-none">Ver todos</a>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0" style="font-size: 0.75rem;">
@@ -284,7 +296,7 @@ render_header("Gira - Dashboard Geral");
                     </div>
                 </div>
             </div>
-            <a href="#" class="btn btn-light btn-sm mt-auto rounded-pill text-primary fw-bold" style="font-size: 0.7rem;">Ver todas as manutenções</a>
+            <a href="manutencao.php" class="btn btn-light btn-sm mt-auto rounded-pill text-primary fw-bold" style="font-size: 0.7rem;">Ver todas as manutenções</a>
         </div>
     </div>
 
