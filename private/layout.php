@@ -79,7 +79,11 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
             <div class="small-caps text-secondary mt-3 mb-2 opacity-50 sidebar-text">Configurações</div>
             <a href="utilizadores.php" class="sidebar-link">
                 <i class="fa-solid fa-user-gear"></i>
-                <span class="sidebar-text ms-2">Perfil</span>
+                <span class="sidebar-text ms-2">Perfis</span>
+            </a>
+            <a href="utilizadores.php" class="sidebar-link">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="sidebar-text ms-2">Utilizadores</span>
             </a>
             <a href="backoffice_publico.php" class="sidebar-link">
                 <i class="fa-solid fa-sliders"></i>
@@ -139,7 +143,7 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
     function render_footer()
     {
         ?>
-        </div> 
+        </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
         <script>
