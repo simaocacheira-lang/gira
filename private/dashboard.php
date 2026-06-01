@@ -244,18 +244,18 @@ render_header("Gira - Dashboard Geral");
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr onclick="window.location='equipamentos.php';" style="cursor: pointer;">
                             <td>
-                                <div class="fw-bold">Monitor Multiparamétrico</div>
+                                <div class="fw-bold text-primary">Monitor Multiparamétrico</div>
                                 <div class="text-muted" style="font-size: 0.65rem;">SN: MPS-2022-45873</div>
                             </td>
                             <td>Philips IntelliVue</td>
                             <td>UCI - Sala 2</td>
                             <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Ativo</span></td>
                         </tr>
-                        <tr>
+                        <tr onclick="window.location='equipamentos.php';" style="cursor: pointer;">
                             <td>
-                                <div class="fw-bold">Bomba de Infusão</div>
+                                <div class="fw-bold text-primary">Bomba de Infusão</div>
                                 <div class="text-muted" style="font-size: 0.65rem;">SN: INF-2020-88321</div>
                             </td>
                             <td>B. Braun Space</td>
@@ -301,53 +301,103 @@ render_header("Gira - Dashboard Geral");
     </div>
 
     <div class="col-lg-4">
-        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
-            <h6 class="fw-bold mb-4">Ações Rápidas</h6>
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 position-relative">
+            
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h6 class="fw-bold mb-0">Ações Rápidas</h6>
+                
+                <div class="dropdown">
+                    <button class="btn btn-link text-muted p-0 border-0 shadow-none" type="button" id="dropdownPersonalizarAcoes" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                        <i class="fa-solid fa-ellipsis-vertical fs-5 cursor-pointer text-secondary"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 p-3" aria-labelledby="dropdownPersonalizarAcoes" style="min-width: 280px; font-size: 0.8rem;">
+                        <li class="dropdown-header px-1 pb-2 fw-bold text-dark border-bottom mb-2"><i class="fa-solid fa-sliders me-1 text-primary"></i> Personalizar Atalhos (Máx. 6)</li>
+                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="favEq"><label class="form-check-label fw-medium" for="favEq">Equipamentos</label></div></li>
+                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="favMan"><label class="form-check-label fw-medium" for="favMan">Manutenção</label></div></li>
+                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="favDoc"><label class="form-check-label fw-medium" for="favDoc">Documentos</label></div></li>
+                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="favForn"><label class="form-check-label fw-medium" for="favForn">Fornecedores</label></div></li>
+                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="favGar"><label class="form-check-label fw-medium" for="favGar">Garantias e Contratos</label></div></li>
+                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="favLoc"><label class="form-check-label fw-medium" for="favLoc">Localizações</label></div></li>
+                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" id="favRel"><label class="form-check-label fw-medium" for="favRel">Relatórios</label></div></li>
+                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" id="favUtil"><label class="form-check-label fw-medium" for="favUtil">Utilizadores</label></div></li>
+                        <li class="my-1"><div class="form-check"><input class="form-check-input" type="checkbox" id="favPerf"><label class="form-check-label fw-medium" for="favPerf">Peris de Acesso</label></div></li>
+                    </ul>
+                </div>
+            </div>
+
             <div class="row g-2 text-center">
-                <div class="col-4">
-                    <div class="action-btn border rounded-3 p-3 h-100">
+                
+                <div class="col-4 acao-item" id="btnAcaoEquipamentos" data-bs-toggle="modal" data-bs-target="#modalRegistarEquipamento">
+                    <div class="action-btn border rounded-3 p-3 h-100 cursor-pointer">
                         <i class="fa-solid fa-circle-plus text-primary fs-4 mb-2"></i>
-                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Novo Equipamento</p>
+                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Registar Equipamento</p>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="action-btn border rounded-3 p-3 h-100">
+
+                <div class="col-4 acao-item" id="btnAcaoManutencao" data-bs-toggle="modal" data-bs-target="#modalAbrirOT">
+                    <div class="action-btn border rounded-3 p-3 h-100 cursor-pointer">
                         <i class="fa-solid fa-wrench text-success fs-4 mb-2"></i>
-                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Nova Manutenção</p>
+                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Abrir Ordem Trabalho</p>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="action-btn border rounded-3 p-3 h-100">
+
+                <div class="col-4 acao-item" id="btnAcaoDocumentos" data-bs-toggle="modal" data-bs-target="#modalNovoDocumento">
+                    <div class="action-btn border rounded-3 p-3 h-100 cursor-pointer">
                         <i class="fa-solid fa-file-arrow-up text-info fs-4 mb-2"></i>
-                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Novo Documento</p>
+                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Enviar Documento</p>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="action-btn border rounded-3 p-3 h-100">
-                        <i class="fa-solid fa-users text-warning fs-4 mb-2"></i>
-                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Novo Fornecedor</p>
+
+                <div class="col-4 acao-item" id="btnAcaoFornecedores" data-bs-toggle="modal" data-bs-target="#modalRegistarFornecedor">
+                    <div class="action-btn border rounded-3 p-3 h-100 cursor-pointer">
+                        <i class="fa-solid fa-truck text-warning fs-4 mb-2"></i>
+                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Registar Fornecedor</p>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="action-btn border rounded-3 p-3 h-100">
-                        <i class="fa-solid fa-chart-line text-purple fs-4 mb-2"></i>
-                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Relatório Rápido</p>
+
+                <div class="col-4 acao-item" id="btnAcaoGarantias" data-bs-toggle="modal" data-bs-target="#modalAdicionarGarantia">
+                    <div class="action-btn border rounded-3 p-3 h-100 cursor-pointer">
+                        <i class="fa-solid fa-file-shield text-danger fs-4 mb-2"></i>
+                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Adicionar Contrato</p>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="action-btn border rounded-3 p-3 h-100">
-                        <i class="fa-solid fa-magnifying-glass text-secondary fs-4 mb-2"></i>
-                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Pesquisa Avançada</p>
+
+                <div class="col-4 acao-item" id="btnAcaoLocalizacoes" data-bs-toggle="modal" data-bs-target="#modalNovaLocalizacao">
+                    <div class="action-btn border rounded-3 p-3 h-100 cursor-pointer">
+                        <i class="fa-solid fa-location-dot text-secondary fs-4 mb-2"></i>
+                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Nova Localização</p>
                     </div>
                 </div>
+
+                <div class="col-4 acao-item d-none" id="btnAcaoRelatorios">
+                    <div class="action-btn border rounded-3 p-3 h-100 cursor-pointer">
+                        <i class="fa-solid fa-chart-pie text-purple fs-4 mb-2"></i>
+                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Exportar Dados Global</p>
+                    </div>
+                </div>
+
+                <div class="col-4 acao-item d-none" id="btnAcaoUtilizadores" data-bs-toggle="modal" data-bs-target="#modalCriarUtilizador">
+                    <div class="action-btn border rounded-3 p-3 h-100 cursor-pointer">
+                        <i class="fa-solid fa-user-plus text-dark fs-4 mb-2"></i>
+                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Criar Utilizador</p>
+                    </div>
+                </div>
+
+                <div class="col-4 acao-item d-none" id="btnAcaoPerfis" data-bs-toggle="modal" data-bs-target="#modalAdicionarPerfil">
+                    <div class="action-btn border rounded-3 p-3 h-100 cursor-pointer">
+                        <i class="fa-solid fa-users-gear text-muted fs-4 mb-2"></i>
+                        <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Adicionar Perfil</p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="modalAgendaTurno" tabindex="-1" aria-labelledby="modalAgendaTurnoLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content border-0 rounded-4 shadow">
-
             <div class="modal-header border-bottom border-light p-3">
                 <div>
                     <h5 class="modal-title fw-bold" id="modalAgendaTurnoLabel">
@@ -357,16 +407,13 @@ render_header("Gira - Dashboard Geral");
                 </div>
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
             <div class="modal-body p-4 bg-light bg-opacity-50">
                 <div class="row g-3">
-
                     <div class="col-lg-4">
                         <div class="d-flex align-items-center gap-2 mb-3">
                             <span class="badge bg-primary rounded-pill px-2.5 py-1.5" style="font-size: 0.7rem;">Manhã</span>
                             <small class="text-muted fw-bold text-uppercase" style="font-size: 0.65rem;">08:00 - 13:00</small>
                         </div>
-
                         <div class="vstack gap-2">
                             <div class="bg-white p-3 rounded-3 border-start border-success border-3 shadow-sm">
                                 <div class="d-flex justify-content-between align-items-start mb-1">
@@ -376,19 +423,16 @@ render_header("Gira - Dashboard Geral");
                                 <p class="text-muted m-0" style="font-size: 0.7rem;"><i class="fa-solid fa-circle-check text-success me-1"></i>Manutenção Preventiva Semestral</p>
                                 <small class="text-secondary fw-mono" style="font-size: 0.65rem;">Urgências · Bloco Norte</small>
                             </div>
-
                             <div class="text-center p-3 rounded-3 border border-dashed opacity-50 bg-white" style="border-style: dashed !important;">
-                                <small class="text-muted style=" font-size: 0.7rem;">Sem mais tarefas agendadas</small>
+                                <small class="text-muted" style="font-size: 0.7rem;">Sem mais tarefas agendadas</small>
                             </div>
                         </div>
                     </div>
-
                     <div class="col-lg-4">
                         <div class="d-flex align-items-center gap-2 mb-3">
                             <span class="badge bg-warning text-dark rounded-pill px-2.5 py-1.5" style="font-size: 0.7rem;">Tarde</span>
                             <small class="text-muted fw-bold text-uppercase" style="font-size: 0.65rem;">13:00 - 18:00</small>
                         </div>
-
                         <div class="vstack gap-2">
                             <div class="bg-white p-3 rounded-3 border-start border-warning border-3 shadow-sm">
                                 <div class="d-flex justify-content-between align-items-start mb-1">
@@ -398,7 +442,6 @@ render_header("Gira - Dashboard Geral");
                                 <p class="text-muted m-0" style="font-size: 0.7rem;"><i class="fa-solid fa-clock text-warning me-1"></i>Calibração de Pressão / Sensores</p>
                                 <small class="text-secondary fw-mono" style="font-size: 0.65rem;">Esterilização · Piso -1</small>
                             </div>
-
                             <div class="bg-white p-3 rounded-3 border-start border-danger border-3 shadow-sm">
                                 <div class="d-flex justify-content-between align-items-start mb-1">
                                     <h6 class="small fw-bold mb-0 text-dark">Ecógrafo Philips</h6>
@@ -409,13 +452,11 @@ render_header("Gira - Dashboard Geral");
                             </div>
                         </div>
                     </div>
-
                     <div class="col-lg-4">
                         <div class="d-flex align-items-center gap-2 mb-3">
                             <span class="badge bg-secondary rounded-pill px-2.5 py-1.5" style="font-size: 0.7rem;">Noite / Banco</span>
                             <small class="text-muted fw-bold text-uppercase" style="font-size: 0.65rem;">18:00 - 08:00</small>
                         </div>
-
                         <div class="vstack gap-2">
                             <div class="bg-white p-3 rounded-3 border border-light shadow-sm text-center py-4 bg-light bg-opacity-25">
                                 <div class="text-muted mb-2"><i class="fa-solid fa-moon text-secondary fs-4"></i></div>
@@ -424,20 +465,313 @@ render_header("Gira - Dashboard Geral");
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
             <div class="modal-footer border-top border-light p-3">
                 <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Fechar Vista</button>
                 <a href="manutencao.php" class="btn btn-primary rounded-3 fw-bold small px-4">
                     <i class="fa-solid fa-sliders me-2"></i>Gerir Ordens de Trabalho
                 </a>
             </div>
-
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modalRegistarEquipamento" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-laptop-medical text-primary me-2"></i>Registar Novo Equipamento</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="formNovoEquipamento" action="processar_equipamento.php" method="POST">
+                    <div class="row g-3">
+                        <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Nome do Equipamento</label><input type="text" class="form-control rounded-3 bg-light border-0" name="nome" placeholder="Ex: Ventilador Pulmonar" required></div>
+                        <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Fabricante / Modelo</label><input type="text" class="form-control rounded-3 bg-light border-0" name="marca" placeholder="Ex: Dräger · Evita V500" required></div>
+                        <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Número de Série (SN)</label><input type="text" class="form-control rounded-3 bg-light border-0 fw-mono" name="sn" placeholder="Ex: DG-EV-99214" required></div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">Classe de Risco</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="classe_risco" required>
+                                <option value="Suporte de Vida">Classe III - Suporte de Vida</option>
+                                <option value="Médio/Alto Risco">Classe IIb - Médio/Alto Risco</option>
+                                <option value="Monitorização">Classe IIa - Monitorização</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">Localização / Serviço</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="localizacao" required>
+                                <option value="Urgências · Sala de Reanimação">Urgências · Sala de Reanimação</option>
+                                <option value="UCI · Quarto 04 (Isolamento)">UCI · Quarto 04 (Isolamento)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Próxima Revisão</label><input type="date" class="form-control rounded-3 bg-light border-0 text-secondary" name="proxima_revisao" required></div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary">Estado Operacional Inicial</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="estado_operacional" required>
+                                <option value="Operacional" selected>Operacional (Pronto para Uso Clínico)</option>
+                                <option value="Aguardar Calibração">Aguardar Calibração</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovoEquipamento" class="btn btn-primary rounded-3 fw-bold small px-4"><i class="fa-solid fa-plus me-2"></i>Registar Ativo</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAbrirOT" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-screwdriver-wrench text-primary me-2"></i>Abrir Ordem de Trabalho</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="formNovaOT" action="processar_manutencao.php" method="POST">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary">Dispositivo Médico com Ocorrência</label>
+                            <select class="form-select rounded-3 bg-light border-0 fw-mono" name="equipamento_id" required>
+                                <option value="#EQ-2026-001">#EQ-2026-001 - Dräger Evita V500 (Urgências)</option>
+                                <option value="#EQ-2026-002">#EQ-2026-002 - Philips Affiniti 70 (Obstetrícia)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">Tipo de Intervenção</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="tipo_manutencao" required>
+                                <option value="Corretiva (Avaria)">Corretiva (Reparação de Avarias)</option>
+                                <option value="Preventiva Planeada">Preventiva (Revisão Planeada)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">Prioridade Clínica</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="prioridade" required>
+                                <option value="Crítica">Crítica (Suporte de Vida)</option>
+                                <option value="Alta">Alta (Fora de Serviço)</option>
+                                <option value="Média" selected>Média</option>
+                            </select>
+                        </div>
+                        <div class="col-12"><label class="form-label small fw-bold text-secondary">Sintomas / Descrição Ocorrência</label><textarea class="form-control rounded-3 bg-light border-0" name="descricao_avaria" rows="4" placeholder="Descreva os sintomas apresentados pelo dispositivo..." required></textarea></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovaOT" class="btn btn-primary rounded-3 fw-bold small px-4"><i class="fa-solid fa-circle-exclamation me-2"></i>Emitir O.T.</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalNovoDocumento" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-file-import text-primary me-2"></i>Upload de Documento Técnico</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="formNovoDocumento" action="processar_documento.php" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3"><label class="form-label small fw-bold text-secondary">Nome do Documento</label><input type="text" class="form-control rounded-3 bg-light border-0" name="nome_doc" placeholder="Ex: Certificado de Calibração Anual 2026" required></div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Tipo</label>
+                        <select class="form-select rounded-3 bg-light border-0" name="tipo_doc" required>
+                            <option value="Manual Técnico">Manual Técnico / Serviço</option>
+                            <option value="Metrologia / Calibração">Metrologia / Calibração</option>
+                            <option value="Financeiro / Fatura">Financeiro / Fatura</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Dispositivo Associado</label>
+                        <select class="form-select rounded-3 bg-light border-0 fw-mono" name="equipamento_doc">
+                            <option value="Nenhum">Nenhum (Documento Geral)</option>
+                            <option value="#EQ-2026-001">#EQ-2026-001 - Dräger Evita V500</option>
+                        </select>
+                    </div>
+                    <div class="mb-2"><label class="form-label small fw-bold text-secondary">Ficheiro (PDF, PNG, JPG)</label><input class="form-control rounded-3" type="file" name="ficheiro_doc" required></div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovoDocumento" class="btn btn-primary rounded-3 fw-bold small px-4"><i class="fa-solid fa-upload me-2"></i>Submeter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalRegistarFornecedor" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-truck-field text-primary me-2"></i>Registar Fornecedor</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="formNovoFornecedor" action="processar_fornecedor.php" method="POST">
+                    <div class="row g-3">
+                        <div class="col-md-7"><label class="form-label small fw-bold text-secondary">Nome da Empresa</label><input type="text" class="form-control rounded-3 bg-light border-0" name="nome_empresa" placeholder="Siemens Healthcare Lda." required></div>
+                        <div class="col-md-5"><label class="form-label small fw-bold text-secondary">NIF</label><input type="text" class="form-control rounded-3 bg-light border-0 fw-mono" name="nif" placeholder="501234567" maxlength="9" required></div>
+                        <div class="col-md-5"><label class="form-label small fw-bold text-secondary">Contacto Telefónico</label><input type="text" class="form-control rounded-3 bg-light border-0" name="contacto" placeholder="210 000 000" required></div>
+                        <div class="col-md-7"><label class="form-label small fw-bold text-secondary">E-mail Oficial Suporte</label><input type="email" class="form-control rounded-3 bg-light border-0" name="email" placeholder="suporte.pt@siemens.com" required></div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">Especialidade Biomédica</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="representacao" required>
+                                <option value="Monitores e Imagiologia">Monitores e Imagiologia Médica</option>
+                                <option value="Ventilação e Anestesia">Ventilação e Anestesia</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">Estado Contrato</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="estado_contrato" required>
+                                <option value="Ativo" selected>Ativo</option>
+                                <option value="Expirado">Expirado</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovoFornecedor" class="btn btn-primary rounded-3 fw-bold small px-4"><i class="fa-solid fa-floppy-disk me-2"></i>Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAdicionarGarantia" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-file-shield text-primary me-2"></i>Adicionar Contrato / Cobertura</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="formNovaGarantia" action="processar_garantia.php" method="POST">
+                    <div class="row g-3">
+                        <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Referência Contrato</label><input type="text" class="form-control rounded-3 bg-light border-0 fw-mono text-uppercase" name="id_contrato" placeholder="Ex: #CTR-2026-088" required></div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">Tipo Cobertura</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="tipo_cobertura" required>
+                                <option value="Garantia de Fábrica">Garantia de Fábrica</option>
+                                <option value="Manutenção Total (SLA)">Manutenção Total (SLA)</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary">Dispositivo Médico Coberto</label>
+                            <select class="form-select rounded-3 bg-light border-0 fw-mono" name="equipamento_id" required>
+                                <option value="#EQ-2026-001">#EQ-2026-001 - Dräger Evita V500</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">Fornecedor Responsável</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="fornecedor" required>
+                                <option value="Dräger Portugal Lda.">Dräger Portugal Lda.</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Fim Validade</label><input type="date" class="form-control rounded-3 bg-light border-0 text-secondary" name="fim_validade" required></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovaGarantia" class="btn btn-primary rounded-3 fw-bold small px-4"><i class="fa-solid fa-floppy-disk me-2"></i>Ativar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalNovaLocalizacao" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-location-dot text-primary me-2"></i>Mapear Nova Localização</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="formNovaLocalizacao" action="processar_localizacao.php" method="POST">
+                    <div class="mb-3"><label class="form-label small fw-bold text-secondary">Código Sala</label><input type="text" class="form-control rounded-3 bg-light border-0 fw-mono text-uppercase" name="cod_sala" placeholder="Ex: #LOC-UCI03" required></div>
+                    <div class="mb-3"><label class="form-label small fw-bold text-secondary">Nome Serviço / Sala</label><input type="text" class="form-control rounded-3 bg-light border-0" name="nome" placeholder="Ex: Unidade Cuidados Intensivos" required></div>
+                    <div class="mb-3"><label class="form-label small fw-bold text-secondary">Sublocalização / Camas</label><input type="text" class="form-control rounded-3 bg-light border-0" name="detalhe" placeholder="Ex: Sala 3 · Camas 9 a 12"></div>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">Piso</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="piso" required><option value="Piso 0">Piso 0</option><option value="Piso 1">Piso 1</option><option value="Piso 2" selected>Piso 2</option></select>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">Bloco / Ala</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="bloco" required><option value="Bloco Central">Bloco Central</option><option value="Bloco Cirúrgico">Bloco Cirúrgico</option></select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovaLocalizacao" class="btn btn-primary rounded-3 fw-bold small px-4"><i class="fa-solid fa-location-dot me-2"></i>Mapear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalCriarUtilizador" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-user-plus text-primary me-2"></i>Registar Novo Utilizador</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="formNovoUtilizador" action="processar_utilizador.php" method="POST" enctype="multipart/form-data">
+                    <div class="row g-3">
+                        <div class="col-md-7"><label class="form-label small fw-bold text-secondary">Nome Completo</label><input type="text" class="form-control rounded-3 bg-light border-0" name="nome" placeholder="Ex: Eng. Maria Helena Barbosa" required></div>
+                        <div class="col-md-5"><label class="form-label small fw-bold text-secondary">Serviço / Departamento</label><input type="text" class="form-control rounded-3 bg-light border-0" name="servico" placeholder="Ex: Engenharia Clínica" required></div>
+                        <div class="col-md-7"><label class="form-label small fw-bold text-secondary">E-mail Institucional</label><input type="email" class="form-control rounded-3 bg-light border-0 fw-mono" name="email" placeholder="mhelena.barbosa@gira.hosp" required></div>
+                        <div class="col-md-5"><label class="form-label small fw-bold text-secondary">Cédula / Nº Mecanográfico</label><input type="text" class="form-control rounded-3 bg-light border-0 fw-mono" name="cedula" placeholder="Ex: EB-44122" required></div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">Perfil de Acesso</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="perfil_id" required><option value="Administrador">Administrador</option><option value="Eng. Biomédico" selected>Eng. Biomédico</option></select>
+                        </div>
+                        <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Senha Provisória</label><input type="password" class="form-control rounded-3 bg-light border-0" name="password" placeholder="••••••••" required></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovoUtilizador" class="btn btn-primary rounded-3 fw-bold small px-4"><i class="fa-solid fa-user-plus me-2"></i>Criar Conta</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAdicionarPerfil" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-users-gear text-primary me-2"></i>Criar Perfil de Acesso</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="formNovoPerfil" action="processar_perfil.php" method="POST">
+                    <div class="mb-3"><label class="form-label small fw-bold text-secondary">Nome do Perfil</label><input type="text" class="form-control rounded-3 bg-light border-0" name="nome_perfil" placeholder="Ex: Técnico Externo" required></div>
+                    <div class="mb-3"><label class="form-label small fw-bold text-secondary">Descrição das Responsabilidades</label><textarea class="form-control rounded-3 bg-light border-0" name="descricao" rows="2" placeholder="Responsabilidades do grupo..." required></textarea></div>
+                    <div class="bg-light rounded-3 p-3">
+                        <div class="form-check mb-2"><input class="form-check-input" type="checkbox" checked id="chkInv"><label class="form-check-label small fw-medium text-secondary" for="chkInv">Inventário e Localizações</label></div>
+                        <div class="form-check mb-0"><input class="form-check-input" type="checkbox" checked id="chkMan"><label class="form-check-label small fw-medium text-secondary" for="chkMan">Ordens de Trabalho</label></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovoPerfil" class="btn btn-primary rounded-3 fw-bold small px-4"><i class="fa-solid fa-floppy-disk me-2"></i>Guardar Perfil</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php
 // Função molde que fecha as tags HTML abertas e injeta os scripts do Modo Escuro e da Sidebar
 render_footer();
