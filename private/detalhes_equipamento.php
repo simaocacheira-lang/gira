@@ -27,38 +27,29 @@ render_header("Gira - Detalhes do Equipamento");
     </div>
 </div>
 
-<!-- ============================================================================== -->
-<!-- ESTILOS CSS NATIVOS PARA AS ABAS (Substitui o antigo JavaScript)               -->
-<!-- ============================================================================== -->
 <style>
-    /* Estilo base para todas as abas */
     #equipamentoTabs .nav-link {
-        color: #6c757d; /* Cor neutra para abas inativas */
+        color: #6c757d;
         border: none;
-        border-bottom: 3px solid transparent; /* Espaço invisível para a borda */
+        border-bottom: 3px solid transparent;
         background-color: transparent;
         padding: 1rem 0.5rem;
         font-weight: 600;
         transition: all 0.2s ease-in-out;
     }
     
-    /* Efeito ao passar o rato (Hover) */
     #equipamentoTabs .nav-link:hover {
         border-bottom: 3px solid #dee2e6;
         color: #495057;
     }
     
-    /* Estilo da aba ativa (A tal linha azul) */
     #equipamentoTabs .nav-link.active {
-        color: #212529 !important; /* Texto escuro/forte */
-        border-bottom: 3px solid #0d6efd !important; /* Linha azul primária */
+        color: #212529 !important;
+        border-bottom: 3px solid #0d6efd !important;
         background-color: transparent;
     }
 </style>
 
-<!-- ============================================================================== -->
-<!-- NAVEGAÇÃO EM ABAS (NAVS & TABS)                                                -->
-<!-- ============================================================================== -->
 <ul class="nav nav-tabs border-bottom mb-4 gap-4" id="equipamentoTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" id="ficha-tab" data-bs-toggle="tab" data-bs-target="#ficha" type="button" role="tab">
@@ -82,9 +73,6 @@ render_header("Gira - Detalhes do Equipamento");
     </li>
 </ul>
 
-<!-- ============================================================================== -->
-<!-- CONTEÚDO DAS ABAS                                                              -->
-<!-- ============================================================================== -->
 <div class="tab-content" id="equipamentoTabsContent">
 
     <div class="tab-pane fade show active" id="ficha" role="tabpanel" tabindex="0">
@@ -92,7 +80,7 @@ render_header("Gira - Detalhes do Equipamento");
             <div class="col-lg-8">
                 <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
                     <h6 class="fw-bold mb-4 border-bottom pb-2 text-dark">Informações Gerais e Rede</h6>
-                    <div class="row g-4">
+                    <div class="row g-4 mb-4">
                         <div class="col-sm-6">
                             <small class="text-muted d-block fw-bold mb-1" style="font-size: 0.7rem;">FABRICANTE E MODELO</small>
                             <span class="fw-medium text-dark">Philips Healthcare · IntelliVue MX400</span>
@@ -108,6 +96,15 @@ render_header("Gira - Detalhes do Equipamento");
                         <div class="col-sm-6">
                             <small class="text-muted d-block fw-bold mb-1" style="font-size: 0.7rem;">METROLOGIA</small>
                             <span class="fw-medium text-dark">Próxima calibração a 15/07/2026</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto">
+                        <h6 class="fw-bold mb-3 border-bottom pb-2 text-dark"><i class="fa-solid fa-boxes-stacked text-secondary me-2"></i>Periféricos e Consumíveis Associados</h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-light text-dark border px-2 py-1 fw-medium"><i class="fa-solid fa-caret-right text-muted me-1"></i> Cabos ECG</span>
+                            <span class="badge bg-light text-dark border px-2 py-1 fw-medium"><i class="fa-solid fa-caret-right text-muted me-1"></i> Módulo SpO2</span>
+                            <span class="badge bg-light text-dark border px-2 py-1 fw-medium"><i class="fa-solid fa-caret-right text-muted me-1"></i> Filtros HEPA</span>
                         </div>
                     </div>
                 </div>
