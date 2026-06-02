@@ -12,7 +12,6 @@ render_header("Gira - Inventário de Equipamentos Médicos");
         <p class="text-muted m-0 small">Registo, controlo técnico e classificação de risco do parque tecnológico do hospital.</p>
     </div>
 
-    <!-- ATUALIZADO: Adicionados os gatilhos para abrir o Modal do Bootstrap -->
     <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalRegistarEquipamento">
         <i class="fa-solid fa-plus me-2"></i> Registar Equipamento
     </button>
@@ -39,21 +38,6 @@ render_header("Gira - Inventário de Equipamentos Médicos");
                             Nº Série (SN) <i class="fa-solid fa-sort th-sort-icon"></i>
                         </div>
                     </th>
-                    <th class="th-sortable" onclick="simularOrdenacao('classe')">
-                        <div class="d-inline-flex align-items-center gap-1">
-                            Classe de Risco <i class="fa-solid fa-sort th-sort-icon"></i>
-                        </div>
-                    </th>
-                    <th class="th-sortable" onclick="simularOrdenacao('local')">
-                        <div class="d-inline-flex align-items-center gap-1">
-                            Localização / Serviço <i class="fa-solid fa-sort th-sort-icon"></i>
-                        </div>
-                    </th>
-                    <th class="th-sortable" onclick="simularOrdenacao('revisao')">
-                        <div class="d-inline-flex align-items-center gap-1">
-                            Próxima Revisão <i class="fa-solid fa-sort th-sort-icon"></i>
-                        </div>
-                    </th>
                     <th class="th-sortable" onclick="simularOrdenacao('estado')">
                         <div class="d-inline-flex align-items-center gap-1">
                             Estado Operacional <i class="fa-solid fa-sort th-sort-icon"></i>
@@ -64,64 +48,55 @@ render_header("Gira - Inventário de Equipamentos Médicos");
             </thead>
 
             <tbody>
-                <tr data-bs-toggle="modal" data-bs-target="#modalFichaEquipamento" style="cursor: pointer;">
+                <tr onclick="window.location.href='detalhes_equipamento.php'" style="cursor: pointer;">
                     <td class="fw-bold text-primary fw-mono">#EQ-2026-001</td>
                     <td>
                         <div class="fw-bold">Ventilador Pulmonar de Alta Performance</div>
                         <small class="text-muted">Dräger · Evita Infinity V500</small>
                     </td>
                     <td class="fw-mono text-secondary">DG-EV-99214</td>
-                    <td><span class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle px-2">Suporte de Vida</span></td>
-                    <td>Urgências · Sala de Reanimação</td>
-                    <td>15/07/2026</td>
                     <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Operacional</span></td>
                     <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Equipamento">
-                            <i class="fa-solid fa-pen text-muted"></i>
+                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
+                            <i class="fa-solid fa-eye text-muted"></i>
                         </button>
-                        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento">
+                        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento" onclick="event.stopPropagation();">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
                 </tr>
 
-                <tr data-bs-toggle="modal" data-bs-target="#modalFichaEquipamento" style="cursor: pointer;">
+                <tr onclick="window.location.href='detalhes_equipamento.php'" style="cursor: pointer;">
                     <td class="fw-bold text-primary fw-mono">#EQ-2026-002</td>
                     <td>
                         <div class="fw-bold">Sistema de Ultrassom / Ecógrafo</div>
                         <small class="text-muted">Philips · Affiniti 70</small>
                     </td>
                     <td class="fw-mono text-secondary">PH-UL-44122</td>
-                    <td><span class="badge bg-warning bg-opacity-10 text-warning border border-warning-subtle px-2">Médio/Alto Risco</span></td>
-                    <td>Obstetrícia · Consulta 3</td>
-                    <td>02/09/2026</td>
                     <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Operacional</span></td>
                     <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Equipamento">
-                            <i class="fa-solid fa-pen text-muted"></i>
+                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
+                            <i class="fa-solid fa-eye text-muted"></i>
                         </button>
-                        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento">
+                        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento" onclick="event.stopPropagation();">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
                 </tr>
 
-                <tr data-bs-toggle="modal" data-bs-target="#modalFichaEquipamento" style="cursor: pointer;">
+                <tr onclick="window.location.href='detalhes_equipamento.php'" style="cursor: pointer;">
                     <td class="fw-bold text-primary fw-mono">#EQ-2026-003</td>
                     <td>
                         <div class="fw-bold">Monitor Multiparamétrico de Sinais Vitais</div>
                         <small class="text-muted">Mindray · BeneVision N17</small>
                     </td>
                     <td class="fw-mono text-secondary">MR-MN-77119</td>
-                    <td><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2">Monitorização</span></td>
-                    <td>UCI · Quarto 04 (Isolamento)</td>
-                    <td>12/06/2026</td>
                     <td><span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-2">Aguardar Calibração</span></td>
                     <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Equipamento">
-                            <i class="fa-solid fa-pen text-muted"></i>
+                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
+                            <i class="fa-solid fa-eye text-muted"></i>
                         </button>
-                        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento">
+                        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento" onclick="event.stopPropagation();">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
@@ -131,9 +106,6 @@ render_header("Gira - Inventário de Equipamentos Médicos");
     </div>
 </div>
 
-<!-- ============================================================================== -->
-<!-- INJEÇÃO: MODAL PARA REGISTAR NOVO EQUIPAMENTO MÉDICO -->
-<!-- ============================================================================== -->
 <div class="modal fade" id="modalRegistarEquipamento" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 rounded-4 shadow-lg">
@@ -301,109 +273,6 @@ render_header("Gira - Inventário de Equipamentos Médicos");
         </div>
     </div>
 </div>
-</div>
-<div class="modal fade" id="modalFichaEquipamento" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content border-0 rounded-4 shadow-lg bg-light">
-
-            <div class="modal-header border-bottom border-light p-4 bg-white rounded-top-4">
-                <div>
-                    <div class="d-flex align-items-center gap-2 mb-1">
-                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill border border-primary-subtle px-2">#EQ-2026-001</span>
-                        <span class="badge bg-success rounded-pill px-2"><i class="fa-solid fa-check me-1"></i> Operacional</span>
-                    </div>
-                    <h4 class="modal-title fw-bold text-dark mb-0">Monitor Multiparamétrico - Philips IntelliVue</h4>
-                    <small class="text-muted fw-mono">SN: MPS-2022-45873 · Adquirido em: 15/01/2022</small>
-                </div>
-                <button type="button" class="btn-close shadow-none mb-auto" data-bs-dismiss="modal"></button>
-            </div>
-
-            <div class="modal-body p-4">
-                <div class="row g-4">
-
-                    <div class="col-lg-7">
-                        <div class="bg-white p-4 rounded-4 shadow-sm h-100 border border-light-subtle">
-                            <h6 class="fw-bold mb-4 border-bottom pb-2"><i class="fa-solid fa-info-circle text-primary me-2"></i>Informação Geral</h6>
-
-                            <div class="row g-3 mb-4">
-                                <div class="col-sm-6">
-                                    <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">CATEGORIA / CLASSE</small>
-                                    <span class="fw-medium text-dark">Suporte de Vida (Classe III)</span>
-                                </div>
-                                <div class="col-sm-6">
-                                    <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">LOCALIZAÇÃO ATUAL</small>
-                                    <span class="fw-medium text-dark">UCI - Sala 2</span>
-                                </div>
-                                <div class="col-sm-6">
-                                    <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">FORNECEDOR OFICIAL</small>
-                                    <span class="fw-medium text-dark">Philips Healthcare Portugal</span>
-                                </div>
-                                <div class="col-sm-6">
-                                    <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">COBERTURA TÉCNICA</small>
-                                    <span class="badge bg-warning bg-opacity-10 text-warning border border-warning-subtle text-dark">Garantia Expira em 30 Dias</span>
-                                </div>
-                            </div>
-
-                            <h6 class="fw-bold mb-3 border-bottom pb-2 pt-2"><i class="fa-solid fa-clock-rotate-left text-primary me-2"></i>Últimas Intervenções</h6>
-                            <ul class="list-unstyled small">
-                                <li class="mb-2"><i class="fa-solid fa-wrench text-secondary me-2"></i> <strong class="text-dark">12/03/2026:</strong> Substituição do módulo de SpO2 (Corretiva)</li>
-                                <li class="mb-2"><i class="fa-solid fa-check-circle text-success me-2"></i> <strong class="text-dark">10/01/2026:</strong> Calibração anual dos sensores (Preventiva)</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-5">
-                        <div class="bg-white p-4 rounded-4 shadow-sm h-100 border border-light-subtle">
-                            <div class="d-flex justify-content-between align-items-start mb-3 border-bottom pb-2">
-                                <div>
-                                    <h6 class="fw-bold mb-0"><i class="fa-solid fa-chart-line text-danger me-2"></i>Análise TCO</h6>
-                                    <p class="text-muted small m-0" style="font-size: 0.65rem;">Custo de Aquisição vs Manutenção</p>
-                                </div>
-                                <span class="badge bg-danger text-white rounded-pill px-2 py-1" style="font-size: 0.65rem;">
-                                    <i class="fa-solid fa-triangle-exclamation"></i> Risco
-                                </span>
-                            </div>
-
-                            <div class="row g-2 mb-4 text-center">
-                                <div class="col-6">
-                                    <div class="p-2 bg-light rounded-3 border">
-                                        <small class="text-secondary fw-bold text-uppercase d-block mb-1" style="font-size: 0.6rem;">Aquisição</small>
-                                        <h5 class="fw-bold text-dark m-0">24.500 €</h5>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="p-2 bg-danger bg-opacity-10 rounded-3 border border-danger-subtle">
-                                        <small class="text-danger fw-bold text-uppercase d-block mb-1" style="font-size: 0.6rem;">Gastos</small>
-                                        <h5 class="fw-bold text-danger m-0">26.150 €</h5>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="d-flex justify-content-between text-muted fw-bold mb-1" style="font-size: 0.7rem;">
-                                    <span>Rentabilidade</span>
-                                    <span class="text-danger">106% do valor original</span>
-                                </div>
-                                <div class="progress rounded-pill mb-2" style="height: 8px;">
-                                    <div class="progress-bar bg-danger" style="width: 100%;"></div>
-                                </div>
-                                <p class="text-muted lh-sm m-0" style="font-size: 0.7rem;">
-                                    O custo acumulado de reparações já superou o valor de compra. Recomenda-se avançar com o plano de abate para este dispositivo.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="modal-footer border-top border-light p-3 bg-white rounded-bottom-4">
-                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Fechar Ficha</button>
-            </div>
-
-        </div>
-    </div>
-</div>
 
 <script>
     document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
@@ -416,7 +285,7 @@ render_header("Gira - Inventário de Equipamentos Médicos");
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         let currentStep = 1;
-        const totalSteps = 5; // Atualizado para 5 passos
+        const totalSteps = 5;
 
         const btnNext = document.getElementById('btnStepperNext');
         const btnPrev = document.getElementById('btnStepperPrev');
@@ -424,11 +293,9 @@ render_header("Gira - Inventário de Equipamentos Médicos");
         const progressBar = document.getElementById('stepperProgressBar');
 
         function updateStepper() {
-            // Esconder todos os passos e mostrar apenas o atual
             for (let i = 1; i <= totalSteps; i++) {
                 document.getElementById(`step-${i}`).classList.add('d-none');
 
-                // Atualizar as bolinhas (indicadores)
                 let indicator = document.getElementById(`ind-step-${i}`);
                 if (i <= currentStep) {
                     indicator.classList.remove('bg-white', 'text-secondary', 'border');
@@ -439,21 +306,17 @@ render_header("Gira - Inventário de Equipamentos Médicos");
                 }
             }
 
-            // Exibir o passo atual
             document.getElementById(`step-${currentStep}`).classList.remove('d-none');
 
-            // Atualizar a Barra de Progresso
             let progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
             progressBar.style.width = progressPercentage + '%';
 
-            // Controlar a exibição do botão Anterior
             if (currentStep === 1) {
                 btnPrev.classList.add('d-none');
             } else {
                 btnPrev.classList.remove('d-none');
             }
 
-            // Controlar a exibição dos botões Seguinte vs Concluir
             if (currentStep === totalSteps) {
                 btnNext.classList.add('d-none');
                 btnSubmit.classList.remove('d-none');
@@ -463,7 +326,6 @@ render_header("Gira - Inventário de Equipamentos Médicos");
             }
         }
 
-        // Ação do botão Seguinte
         btnNext.addEventListener('click', function() {
             if (currentStep < totalSteps) {
                 currentStep++;
@@ -471,7 +333,6 @@ render_header("Gira - Inventário de Equipamentos Médicos");
             }
         });
 
-        // Ação do botão Anterior
         btnPrev.addEventListener('click', function() {
             if (currentStep > 1) {
                 currentStep--;
@@ -479,7 +340,6 @@ render_header("Gira - Inventário de Equipamentos Médicos");
             }
         });
 
-        // Reset ao modal sempre que é fechado
         document.getElementById('modalRegistarEquipamento').addEventListener('hidden.bs.modal', function() {
             currentStep = 1;
             document.getElementById('formNovoEquipamento').reset();
