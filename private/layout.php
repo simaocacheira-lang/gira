@@ -67,6 +67,10 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                 <i class="fa-solid fa-screwdriver-wrench"></i>
                 <span class="sidebar-text ms-2">Manutenção</span>
             </a>
+            <a href="armazem.php" class="sidebar-link">
+                <i class="fa-solid fa-warehouse"></i>
+                <span class="sidebar-text ms-2">Armazém</span>
+            </a>
             <a href="relatorios.php" class="sidebar-link">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span class="sidebar-text ms-2">Relatórios</span>

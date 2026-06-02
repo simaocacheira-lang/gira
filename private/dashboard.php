@@ -227,7 +227,7 @@ render_header("Gira - Dashboard Geral");
 
 <div class="row g-4 mt-3 mb-5">
 
-   <div class="col-lg-5">
+    <div class="col-lg-5">
         <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h6 class="fw-bold mb-0">Equipamentos Recentes</h6>
@@ -253,7 +253,7 @@ render_header("Gira - Dashboard Geral");
                             <td>UCI - Sala 2</td>
                             <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Ativo</span></td>
                         </tr>
-                        
+
                         <tr data-bs-toggle="modal" data-bs-target="#modalFichaEquipamento" style="cursor: pointer;">
                             <td>
                                 <div class="fw-bold text-dark">Bomba de Infusão</div>
@@ -340,6 +340,9 @@ render_header("Gira - Dashboard Geral");
                         <li class="my-1">
                             <div class="form-check"><input class="form-check-input" type="checkbox" id="favPerf"><label class="form-check-label fw-medium" for="favPerf">Peris de Acesso</label></div>
                         </li>
+                        <li class="my-1">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" checked id="favArm"><label class="form-check-label fw-medium" for="favArm">Armazém</label></div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -406,6 +409,12 @@ render_header("Gira - Dashboard Geral");
                     <div class="action-btn border rounded-3 p-3 h-100 cursor-pointer">
                         <i class="fa-solid fa-users-gear text-muted fs-4 mb-2"></i>
                         <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Adicionar Perfil</p>
+                    </div>
+                    <div class="col-4 acao-item" id="btnAcaoArmazem" data-bs-toggle="modal" data-bs-target="#modalNovaEncomenda">
+                        <div class="action-btn border rounded-3 p-3 h-100 cursor-pointer">
+                            <i class="fa-solid fa-cart-plus text-primary fs-4 mb-2"></i>
+                            <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Nova Encomenda</p>
+                        </div>
                     </div>
                 </div>
 
@@ -804,7 +813,7 @@ render_header("Gira - Dashboard Geral");
 <div class="modal fade" id="modalFichaEquipamento" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content border-0 rounded-4 shadow-lg bg-light">
-            
+
             <div class="modal-header border-bottom border-light p-4 bg-white rounded-top-4">
                 <div>
                     <div class="d-flex align-items-center gap-2 mb-1">
@@ -816,14 +825,14 @@ render_header("Gira - Dashboard Geral");
                 </div>
                 <button type="button" class="btn-close shadow-none mb-auto" data-bs-dismiss="modal"></button>
             </div>
-            
+
             <div class="modal-body p-4">
                 <div class="row g-4">
-                    
+
                     <div class="col-lg-7">
                         <div class="bg-white p-4 rounded-4 shadow-sm h-100 border border-light-subtle">
                             <h6 class="fw-bold mb-4 border-bottom pb-2"><i class="fa-solid fa-info-circle text-primary me-2"></i>Informação Geral</h6>
-                            
+
                             <div class="row g-3 mb-4">
                                 <div class="col-sm-6">
                                     <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">CATEGORIA / CLASSE</small>
@@ -895,7 +904,7 @@ render_header("Gira - Dashboard Geral");
 
                 </div>
             </div>
-            
+
             <div class="modal-footer border-top border-light p-3 bg-white rounded-bottom-4">
                 <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Fechar Ficha</button>
                 <a href="equipamentos.php" class="btn btn-primary rounded-3 fw-bold small px-4">Ir para Edição Completa <i class="fa-solid fa-arrow-right ms-2"></i></a>
@@ -904,7 +913,30 @@ render_header("Gira - Dashboard Geral");
         </div>
     </div>
 </div>
-
+<!-- MODAL: NOVA ENCOMENDA (Reutilizado do armazem.php) -->
+<div class="modal fade" id="modalNovaEncomenda" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-cart-plus text-primary me-2"></i>Nova Encomenda</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form action="processar_encomenda.php" method="POST">
+                    <div class="mb-3"><label class="form-label small fw-bold">Artigo</label><select class="form-select bg-light border-0" name="artigo_id">
+                            <option>Módulo SpO2 - Philips</option>
+                            <option>Bateria 12V - Dräger</option>
+                        </select></div>
+                    <div class="mb-3"><label class="form-label small fw-bold">Quantidade</label><input type="number" class="form-control bg-light border-0" name="quantidade" value="1"></div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary rounded-3 fw-bold small px-4">Confirmar Pedido</button>
+            </div>
+        </div>
+    </div>
+</div>
 <?php
 // Função molde que fecha as tags HTML abertas e injeta os scripts do Modo Escuro e da Sidebar
 render_footer();
