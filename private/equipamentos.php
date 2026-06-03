@@ -48,7 +48,7 @@ render_header("Gira - Inventário de Equipamentos Médicos");
             </thead>
 
             <tbody>
-                <tr onclick="window.location.href='detalhes_equipamento.php'" style="cursor: pointer;">
+                <tr>
                     <td class="fw-bold text-primary fw-mono">#EQ-2026-001</td>
                     <td>
                         <div class="fw-bold">Ventilador Pulmonar de Alta Performance</div>
@@ -57,16 +57,16 @@ render_header("Gira - Inventário de Equipamentos Médicos");
                     <td class="fw-mono text-secondary">DG-EV-99214</td>
                     <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Operacional</span></td>
                     <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
+                        <a href="detalhes_equipamento.php" class="btn btn-light btn-sm rounded-3 me-1 border" title="Consultar Equipamento">
                             <i class="fa-solid fa-eye text-muted"></i>
-                        </button>
-                        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento" onclick="event.stopPropagation();">
+                        </a>
+                        <button class="btn btn-light btn-sm rounded-3 text-danger border" title="Eliminar Equipamento">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
                 </tr>
 
-                <tr onclick="window.location.href='detalhes_equipamento.php'" style="cursor: pointer;">
+                <tr>
                     <td class="fw-bold text-primary fw-mono">#EQ-2026-002</td>
                     <td>
                         <div class="fw-bold">Sistema de Ultrassom / Ecógrafo</div>
@@ -75,16 +75,16 @@ render_header("Gira - Inventário de Equipamentos Médicos");
                     <td class="fw-mono text-secondary">PH-UL-44122</td>
                     <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Operacional</span></td>
                     <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
+                        <a href="detalhes_equipamento.php" class="btn btn-light btn-sm rounded-3 me-1 border" title="Consultar Equipamento">
                             <i class="fa-solid fa-eye text-muted"></i>
-                        </button>
-                        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento" onclick="event.stopPropagation();">
+                        </a>
+                        <button class="btn btn-light btn-sm rounded-3 text-danger border" title="Eliminar Equipamento">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
                 </tr>
 
-                <tr onclick="window.location.href='detalhes_equipamento.php'" style="cursor: pointer;">
+                <tr>
                     <td class="fw-bold text-primary fw-mono">#EQ-2026-003</td>
                     <td>
                         <div class="fw-bold">Monitor Multiparamétrico de Sinais Vitais</div>
@@ -93,10 +93,10 @@ render_header("Gira - Inventário de Equipamentos Médicos");
                     <td class="fw-mono text-secondary">MR-MN-77119</td>
                     <td><span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-2">Aguardar Calibração</span></td>
                     <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
+                        <a href="detalhes_equipamento.php" class="btn btn-light btn-sm rounded-3 me-1 border" title="Consultar Equipamento">
                             <i class="fa-solid fa-eye text-muted"></i>
-                        </button>
-                        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento" onclick="event.stopPropagation();">
+                        </a>
+                        <button class="btn btn-light btn-sm rounded-3 text-danger border" title="Eliminar Equipamento">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
@@ -282,72 +282,6 @@ render_header("Gira - Inventário de Equipamentos Médicos");
         console.log("Pronto para ordenar por: " + coluna);
     }
 </script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let currentStep = 1;
-        const totalSteps = 5;
-
-        const btnNext = document.getElementById('btnStepperNext');
-        const btnPrev = document.getElementById('btnStepperPrev');
-        const btnSubmit = document.getElementById('btnStepperSubmit');
-        const progressBar = document.getElementById('stepperProgressBar');
-
-        function updateStepper() {
-            for (let i = 1; i <= totalSteps; i++) {
-                document.getElementById(`step-${i}`).classList.add('d-none');
-
-                let indicator = document.getElementById(`ind-step-${i}`);
-                if (i <= currentStep) {
-                    indicator.classList.remove('bg-white', 'text-secondary', 'border');
-                    indicator.classList.add('bg-primary', 'text-white', 'shadow-sm');
-                } else {
-                    indicator.classList.remove('bg-primary', 'text-white', 'shadow-sm');
-                    indicator.classList.add('bg-white', 'text-secondary', 'border');
-                }
-            }
-
-            document.getElementById(`step-${currentStep}`).classList.remove('d-none');
-
-            let progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
-            progressBar.style.width = progressPercentage + '%';
-
-            if (currentStep === 1) {
-                btnPrev.classList.add('d-none');
-            } else {
-                btnPrev.classList.remove('d-none');
-            }
-
-            if (currentStep === totalSteps) {
-                btnNext.classList.add('d-none');
-                btnSubmit.classList.remove('d-none');
-            } else {
-                btnNext.classList.remove('d-none');
-                btnSubmit.classList.add('d-none');
-            }
-        }
-
-        btnNext.addEventListener('click', function() {
-            if (currentStep < totalSteps) {
-                currentStep++;
-                updateStepper();
-            }
-        });
-
-        btnPrev.addEventListener('click', function() {
-            if (currentStep > 1) {
-                currentStep--;
-                updateStepper();
-            }
-        });
-
-        document.getElementById('modalRegistarEquipamento').addEventListener('hidden.bs.modal', function() {
-            currentStep = 1;
-            document.getElementById('formNovoEquipamento').reset();
-            updateStepper();
-        });
-    });
-</script>
-
 <?php
 // 3. Chamamos o fim do molde
 render_footer();
