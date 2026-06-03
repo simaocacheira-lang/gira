@@ -75,3 +75,63 @@ document.addEventListener('DOMContentLoaded', function () {
         updateStepper();
     });
 });
+
+// ==============================================================================
+// LÓGICA DE PERSONALIZAÇÃO DINÂMICA DAS AÇÕES RÁPIDAS (DASHBOARD)
+// ==============================================================================
+
+// 1. Mapeamento entre o ID de cada Checkbox e o ID de cada Botão de Ação
+const mapeamentoAtalhos = {
+    'favEq': 'btnAcaoEquipamentos',
+    'favMan': 'btnAcaoManutencao',
+    'favDoc': 'btnAcaoDocumentos',
+    'favForn': 'btnAcaoFornecedores',
+    'favGar': 'btnAcaoGarantias',
+    'favLoc': 'btnAcaoLocalizacoes',
+    'favRel': 'btnAcaoRelatorios',
+    'favUtil': 'btnAcaoUtilizadores',
+    'favPerf': 'btnAcaoPerfis',
+    'favArm': 'btnAcaoArmazem'
+};
+
+// 2. Função que lê o estado de uma Checkbox e esconde/mostra o botão
+function alternarAtalho(checkboxId, botaoid) {
+    const checkbox = document.getElementById(checkboxId);
+    const botao = document.getElementById(botaoid);
+
+    if (!checkbox || !botao) return; // Salvaguarda caso os elementos não existam na página
+
+    if (checkbox.checked) {
+        botao.classList.remove('d-none');
+    } else {
+        botao.classList.add('d-none');
+    }
+}
+
+// 3. Ouvir as mudanças em cada Checkbox do Dropdown
+Object.keys(mapeamentoAtalhos).forEach(checkboxId => {
+    const checkbox = document.getElementById(checkboxId);
+    if (checkbox) {
+        checkbox.addEventListener('change', function () {
+            // Executa a alternância visual na hora
+            alternarAtalho(checkboxId, mapeamentoAtalhos[checkboxId]);
+
+            // BÓNUS PREMIUM: Guarda a escolha no LocalStorage do browser
+            // Assim, mesmo que atualizes a página (F5), o hospital lembra-se da tua escolha!
+            localStorage.setItem(`gira_atalho_${checkboxId}`, checkbox.checked);
+        });
+    }
+});
+
+// 4. Recuperar as preferências guardadas sempre que a Dashboard é carregada
+Object.keys(mapeamentoAtalhos).forEach(checkboxId => {
+    const estadoGuardado = localStorage.getItem(`gira_atalho_${checkboxId}`);
+    const checkbox = document.getElementById(checkboxId);
+
+    if (checkbox && estadoGuardado !== null) {
+        // Converte a string do localStorage de volta para um Booleano (true/false)
+        checkbox.checked = (estadoGuardado === 'true');
+        // Aplica o estado visual inicial ao botão
+        alternarAtalho(checkboxId, mapeamentoAtalhos[checkboxId]);
+    }
+});
