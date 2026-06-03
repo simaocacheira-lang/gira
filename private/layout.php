@@ -144,8 +144,18 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
      * FUNÇÃO 2: render_footer
      * Fecha as tags e corre os scripts unificados do ecossistema.
      */
+    /**
+     * FUNÇÃO 2: render_footer
+     * Fecha as tags e corre os scripts unificados do ecossistema.
+     */
+    /**
+     * FUNÇÃO 2: render_footer
+     * Fecha as tags e corre os scripts unificados do ecossistema.
+     */
     function render_footer()
     {
+        // 1. INJETAR TODOS OS MODAIS DO SISTEMA AQUI:
+        require_once 'modals.php';
         ?>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -184,11 +194,13 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                 themeIcon.className = 'fa-solid fa-sun text-warning';
             }
 
-            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
         </script>
+
         <script src="../assets/js/1241251.js"></script>
     </body>
+
     </html>
 <?php
     }

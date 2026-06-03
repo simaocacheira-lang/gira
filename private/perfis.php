@@ -98,67 +98,6 @@ render_header("Gira - Perfis e Grupos de Permissões");
     </div>
 </div>
 
-<!-- ============================================================================== -->
-<!-- INJEÇÃO: MODAL PARA ADICIONAR NOVO PERFIL / GRUPO DE PERMISSÕES -->
-<!-- ============================================================================== -->
-<div class="modal fade" id="modalAdicionarPerfil" tabindex="-1" aria-labelledby="modalAdicionarPerfilLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 rounded-4 shadow">
-            
-            <div class="modal-header border-bottom border-light p-3">
-                <h5 class="modal-title fw-bold" id="modalAdicionarPerfilLabel">
-                    <i class="fa-solid fa-users-gear text-primary me-2"></i>Criar Perfil de Acesso
-                </h5>
-                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            
-            <div class="modal-body p-4">
-                <form id="formNovoPerfil" action="processar_perfil.php" method="POST">
-                    
-                    <div class="mb-3">
-                        <label for="perfNome" class="form-label small fw-bold text-secondary">Nome do Perfil / Grupo</label>
-                        <input type="text" class="form-control rounded-3 bg-light border-0" id="perfNome" name="nome_perfil" placeholder="Ex: Técnico Externo (Fornecedor)" required>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="perfDesc" class="form-label small fw-bold text-secondary">Descrição das Responsabilidades</label>
-                        <textarea class="form-control rounded-3 bg-light border-0" id="perfDesc" name="descricao" rows="2" placeholder="Ex: Acesso limitado para consulta de ordens de trabalho atribuídas por fornecedor." required></textarea>
-                    </div>
-
-                    <!-- Matriz de Permissões Rápidas em Checkboxes -->
-                    <div>
-                        <label class="form-label small fw-bold text-dark d-block mb-2"><i class="fa-solid fa-shield-halved text-primary me-1"></i>Módulos Autorizados</label>
-                        
-                        <div class="bg-light rounded-3 p-3">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" id="checkInv" name="perm_inventario" checked>
-                                <label class="form-check-label small fw-medium text-secondary" for="checkInv">Gestão de Inventário e Localizações</label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" id="checkMan" name="perm_manutencao" checked>
-                                <label class="form-check-label small fw-medium text-secondary" for="checkMan">Abertura e Fecho de Ordens de Trabalho</label>
-                            </div>
-                            <div class="form-check mb-0">
-                                <input class="form-check-input" type="checkbox" id="checkConf" name="perm_configuracoes">
-                                <label class="form-check-label small fw-medium text-secondary" for="checkConf">Definições Globais e Logs de Auditoria</label>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-            </div>
-            
-            <div class="modal-footer border-top border-light p-3">
-                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" form="formNovoPerfil" class="btn btn-primary rounded-3 fw-bold small px-4">
-                    <i class="fa-solid fa-floppy-disk me-2"></i>Guardar Perfil
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
 <script>
     document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
     document.querySelector('a[href="perfis.php"]').classList.add('active');
