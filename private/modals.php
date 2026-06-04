@@ -230,8 +230,12 @@
             <div class="modal-body p-4">
                 <form action="processar_documento.php" method="POST" enctype="multipart/form-data">
                     <div class="mb-3"><label class="form-label small fw-bold">Nome do Documento</label><input type="text" class="form-control bg-light border-0" required></div>
-                    <div class="mb-3"><label class="form-label small fw-bold">Tipo</label><select class="form-select bg-light border-0"><option>Manual Técnico</option></select></div>
-                    <div class="mb-3"><label class="form-label small fw-bold">Equipamento</label><select class="form-select bg-light border-0"><option>#EQ-2026-001</option></select></div>
+                    <div class="mb-3"><label class="form-label small fw-bold">Tipo</label><select class="form-select bg-light border-0">
+                            <option>Manual Técnico</option>
+                        </select></div>
+                    <div class="mb-3"><label class="form-label small fw-bold">Equipamento</label><select class="form-select bg-light border-0">
+                            <option>#EQ-2026-001</option>
+                        </select></div>
                     <div class="mb-2"><label class="form-label small fw-bold">Ficheiro</label><input type="file" class="form-control" required></div>
                 </form>
             </div>
@@ -255,8 +259,12 @@
                     <div class="row g-3">
                         <div class="col-md-7"><label class="form-label small fw-bold">Nome da Empresa</label><input type="text" class="form-control bg-light border-0" required></div>
                         <div class="col-md-5"><label class="form-label small fw-bold">NIF</label><input type="text" class="form-control bg-light border-0" required></div>
-                        <div class="col-md-6"><label class="form-label small fw-bold">Especialidade</label><select class="form-select bg-light border-0"><option>Monitores</option></select></div>
-                        <div class="col-md-6"><label class="form-label small fw-bold">Estado</label><select class="form-select bg-light border-0"><option>Ativo</option></select></div>
+                        <div class="col-md-6"><label class="form-label small fw-bold">Especialidade</label><select class="form-select bg-light border-0">
+                                <option>Monitores</option>
+                            </select></div>
+                        <div class="col-md-6"><label class="form-label small fw-bold">Estado</label><select class="form-select bg-light border-0">
+                                <option>Ativo</option>
+                            </select></div>
                     </div>
                 </form>
             </div>
@@ -279,8 +287,12 @@
                 <form action="processar_garantia.php" method="POST">
                     <div class="row g-3">
                         <div class="col-md-6"><label class="form-label small fw-bold">Referência Contrato</label><input type="text" class="form-control bg-light border-0" required></div>
-                        <div class="col-md-6"><label class="form-label small fw-bold">Tipo Cobertura</label><select class="form-select bg-light border-0"><option>Garantia de Fábrica</option></select></div>
-                        <div class="col-12"><label class="form-label small fw-bold">Dispositivo</label><select class="form-select bg-light border-0"><option>#EQ-2026-001</option></select></div>
+                        <div class="col-md-6"><label class="form-label small fw-bold">Tipo Cobertura</label><select class="form-select bg-light border-0">
+                                <option>Garantia de Fábrica</option>
+                            </select></div>
+                        <div class="col-12"><label class="form-label small fw-bold">Dispositivo</label><select class="form-select bg-light border-0">
+                                <option>#EQ-2026-001</option>
+                            </select></div>
                     </div>
                 </form>
             </div>
@@ -325,7 +337,9 @@
                     <div class="row g-3">
                         <div class="col-md-7"><label class="form-label small fw-bold">Nome Completo</label><input type="text" class="form-control bg-light border-0" required></div>
                         <div class="col-md-5"><label class="form-label small fw-bold">Cédula</label><input type="text" class="form-control bg-light border-0" required></div>
-                        <div class="col-md-6"><label class="form-label small fw-bold">Perfil</label><select class="form-select bg-light border-0"><option>Eng. Biomédico</option></select></div>
+                        <div class="col-md-6"><label class="form-label small fw-bold">Perfil</label><select class="form-select bg-light border-0">
+                                <option>Eng. Biomédico</option>
+                            </select></div>
                     </div>
                 </form>
             </div>
@@ -369,13 +383,134 @@
             </div>
             <div class="modal-body p-4">
                 <form action="processar_encomenda.php" method="POST">
-                    <div class="mb-3"><label class="form-label small fw-bold">Artigo</label><select class="form-select bg-light border-0"><option>Módulo SpO2</option></select></div>
+                    <div class="mb-3"><label class="form-label small fw-bold">Artigo</label><select class="form-select bg-light border-0">
+                            <option>Módulo SpO2</option>
+                        </select></div>
                     <div class="mb-3"><label class="form-label small fw-bold">Qtd</label><input type="number" class="form-control bg-light border-0" value="1"></div>
                 </form>
             </div>
             <div class="modal-footer border-top border-light p-3">
                 <button type="button" class="btn btn-light rounded-3 fw-bold small px-3" data-bs-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-primary rounded-3 fw-bold small px-4">Confirmar Pedido</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEditarLocalizacao" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-pen-to-square text-primary me-2"></i>Editar Localização</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="formEditarLocalizacao" action="processar_edicao_localizacao.php" method="POST">
+
+                    <input type="hidden" name="id_localizacao" value="LOC-001">
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Código Sala</label>
+                        <input type="text" class="form-control rounded-3 bg-light border-0 fw-mono text-uppercase" name="cod_sala" value="#LOC-UCI02" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Nome Serviço / Sala</label>
+                        <input type="text" class="form-control rounded-3 bg-light border-0" name="nome" value="Unidade de Cuidados Intensivos (UCI)" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Sublocalização / Camas</label>
+                        <input type="text" class="form-control rounded-3 bg-light border-0" name="detalhe" value="Sala 2 · Camas 5 a 8">
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">Piso</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="piso" required>
+                                <option value="Piso 0">Piso 0</option>
+                                <option value="Piso 1">Piso 1</option>
+                                <option value="Piso 2" selected>Piso 2</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">Bloco / Ala</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="bloco" required>
+                                <option value="Bloco Central" selected>Bloco Central</option>
+                                <option value="Bloco Cirúrgico">Bloco Cirúrgico</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formEditarLocalizacao" class="btn btn-primary rounded-3 fw-bold small px-4">
+                    <i class="fa-solid fa-floppy-disk me-2"></i>Guardar Alterações
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEditarFornecedor" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-pen-to-square text-primary me-2"></i>Editar Fornecedor</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="formEditarFornecedor" action="processar_edicao_fornecedor.php" method="POST">
+
+                    <input type="hidden" name="id_fornecedor" value="FORN-001">
+
+                    <div class="row g-3">
+                        <div class="col-md-7">
+                            <label class="form-label small fw-bold text-secondary">Nome da Empresa</label>
+                            <input type="text" class="form-control rounded-3 bg-light border-0" name="nome_empresa" value="Philips Healthcare Portugal" required>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label small fw-bold text-secondary">NIF</label>
+                            <input type="text" class="form-control rounded-3 bg-light border-0 fw-mono" name="nif" value="501234567" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">E-mail de Suporte</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0"><i class="fa-solid fa-envelope text-muted"></i></span>
+                                <input type="email" class="form-control rounded-end-3 bg-light border-0" name="email_suporte" value="suporte.pt@philips.com" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">Contacto Telefónico</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0"><i class="fa-solid fa-phone text-muted"></i></span>
+                                <input type="text" class="form-control rounded-end-3 bg-light border-0" name="telefone_suporte" value="210 000 000" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mt-4">
+                            <label class="form-label small fw-bold text-secondary">Especialidade Principal</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="especialidade" required>
+                                <option value="Monitores e Imagiologia" selected>Monitores e Imagiologia</option>
+                                <option value="Ventilação e Suporte de Vida">Ventilação e Suporte de Vida</option>
+                                <option value="Bombas de Infusão">Bombas de Infusão</option>
+                                <option value="Consumíveis Gerais">Consumíveis Gerais</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mt-4">
+                            <label class="form-label small fw-bold text-secondary">Estado da Parceria</label>
+                            <select class="form-select rounded-3 bg-light border-0 fw-bold" name="estado" required>
+                                <option value="Ativo" class="text-success" selected>Ativo (Contrato Válido)</option>
+                                <option value="Inativo" class="text-danger">Suspenso / Expirado</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formEditarFornecedor" class="btn btn-primary rounded-3 fw-bold small px-4">
+                    <i class="fa-solid fa-floppy-disk me-2"></i>Guardar Alterações
+                </button>
             </div>
         </div>
     </div>

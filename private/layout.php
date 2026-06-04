@@ -79,88 +79,158 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                 <i class="fa-solid fa-clock-rotate-left"></i>
                 <span class="sidebar-text ms-2">Histórico</span>
             </a>
-
-            <div class="small-caps text-secondary mt-3 mb-2 opacity-50 sidebar-text">Configurações</div>
-            <a href="perfis.php" class="sidebar-link">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="sidebar-text ms-2">Perfis</span>
-            </a>
-            <a href="utilizadores.php" class="sidebar-link">
-                <i class="fa-solid fa-user-gear"></i>
-                <span class="sidebar-text ms-2">Utilizadores</span>
-            </a>
-            <a href="backoffice_publico.php" class="sidebar-link">
-                <i class="fa-solid fa-sliders"></i>
-                <span class="sidebar-text ms-2">Área Pública</span>
-            </a>
-            <a href="configuracoes.php" class="sidebar-link">
-                <i class="fa-solid fa-gear"></i>
-                <span class="sidebar-text ms-2">Configurações</span>
-            </a>
-
-            <div class="small-caps text-secondary mt-3 mb-2 opacity-50 sidebar-text">Sessão</div>
-            <a href="../public/index.html" target="_blank" class="sidebar-link">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                <span class="sidebar-text ms-2">Ver Site Público</span>
-            </a>
-            <a href="logout.php" class="sidebar-link text-danger-hover mb-4">
-                <i class="fa-solid fa-right-from-bracket text-danger"></i>
-                <span class="sidebar-text ms-2 text-danger">Logout</span>
-            </a>
-        </nav>
+            </nav>
 
         <div class="main-wrapper">
 
             <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded-4 shadow-sm mb-4 sticky-top" style="top: 20px; z-index: 990;">
+                
                 <div class="d-flex align-items-center">
                     <h5 class="fw-bold m-0 text-secondary opacity-75 sidebar-text"><i class="fa-solid fa-laptop-medical me-2 text-primary"></i>Painel Técnico</h5>
                 </div>
 
                 <div class="d-flex align-items-center gap-3">
-                    <button class="btn btn-light rounded-circle position-relative p-2" style="width: 40px; height: 40px;">
-                        <i class="fa-regular fa-bell"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">6</span>
-                    </button>
+                    
+                    <div class="dropdown">
+                        <button class="btn btn-light rounded-circle position-relative p-2 shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px;" title="Notificações do Sistema">
+                            <i class="fa-regular fa-bell"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-white" style="font-size: 0.6rem;">3</span>
+                        </button>
+                        
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-3 p-0 overflow-hidden" style="width: 340px;">
+                            <li class="p-3 bg-light border-bottom d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-dark m-0">Notificações</span>
+                                <span class="badge bg-primary rounded-pill small">3 Novas</span>
+                            </li>
+                            
+                            <li>
+                                <a class="dropdown-item py-3 border-bottom d-flex align-items-start gap-3 text-wrap" href="manutencao.php">
+                                    <div class="bg-danger bg-opacity-10 text-danger p-2 rounded-circle flex-shrink-0 mt-1">
+                                        <i class="fa-solid fa-triangle-exclamation"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-1 fw-bold small text-dark lh-sm">Nova O.T. Crítica</p>
+                                        <p class="mb-1 text-muted" style="font-size: 0.75rem;">Ventilador Evita V500 reportou falha de pressão.</p>
+                                        <small class="text-secondary fw-bold" style="font-size: 0.65rem;"><i class="fa-regular fa-clock me-1"></i>Há 10 min</small>
+                                    </div>
+                                </a>
+                            </li>
+                            
+                            <li>
+                                <a class="dropdown-item py-3 border-bottom d-flex align-items-start gap-3 text-wrap" href="garantias.php">
+                                    <div class="bg-warning bg-opacity-10 text-warning p-2 rounded-circle flex-shrink-0 mt-1">
+                                        <i class="fa-solid fa-file-shield"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-1 fw-bold small text-dark lh-sm">Garantia a Expirar</p>
+                                        <p class="mb-1 text-muted" style="font-size: 0.75rem;">O contrato SLA com a B. Braun termina em 5 dias.</p>
+                                        <small class="text-secondary fw-bold" style="font-size: 0.65rem;"><i class="fa-regular fa-clock me-1"></i>Hoje, 09:00</small>
+                                    </div>
+                                </a>
+                            </li>
 
-                    <button class="btn btn-light rounded-circle p-2" style="width: 40px; height: 40px;" id="themeToggle">
+                            <li>
+                                <a class="dropdown-item py-3 border-bottom d-flex align-items-start gap-3 text-wrap" href="armazem.php">
+                                    <div class="bg-success bg-opacity-10 text-success p-2 rounded-circle flex-shrink-0 mt-1">
+                                        <i class="fa-solid fa-box-open"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-1 fw-bold small text-dark lh-sm">Material Rececionado</p>
+                                        <p class="mb-1 text-muted" style="font-size: 0.75rem;">Encomenda (#ENC-04) deu entrada no armazém.</p>
+                                        <small class="text-secondary fw-bold" style="font-size: 0.65rem;"><i class="fa-regular fa-clock me-1"></i>Ontem</small>
+                                    </div>
+                                </a>
+                            </li>
+                            
+                            <li class="p-2 text-center bg-light">
+                                <a href="#" class="text-decoration-none small fw-bold text-primary d-block py-1">Ver todo o histórico</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <button class="btn btn-light rounded-circle p-2 shadow-none" style="width: 40px; height: 40px;" id="themeToggle" title="Modo Noturno">
                         <i class="fa-regular fa-moon" id="themeIcon"></i>
                     </button>
 
-                    <div class="vr mx-2 text-muted opacity-25" style="height: 30px;"></div>
+                    <div class="vr mx-1 text-muted opacity-25" style="height: 30px;"></div>
 
-                    <div class="d-flex align-items-center cursor-pointer">
+                    <div class="d-flex align-items-center cursor-pointer" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPerfil" aria-controls="offcanvasPerfil" title="Abrir Perfil e Administração">
                         <div class="text-end me-3 d-none d-lg-block">
-                            <p class="fw-bold mb-0 small lh-1">Dr. Miguel Santos</p>
+                            <p class="fw-bold mb-0 small lh-1 text-dark">Dr. Miguel Santos</p>
                             <small class="text-muted" style="font-size: 0.65rem;">Administrador</small>
                         </div>
-                        <img src="https://i.pravatar.cc/150?u=miguel" alt="Perfil" class="rounded-circle border" width="40" height="40">
+                        <img src="https://i.pravatar.cc/150?u=miguel" alt="Perfil" class="rounded-circle border border-2 border-white shadow-sm hover-primary" width="40" height="40" style="transition: transform 0.2s;">
                     </div>
+
                 </div>
             </div>
-        <?php
-    }
 
-    /**
-     * FUNÇÃO 2: render_footer
-     * Fecha as tags e corre os scripts unificados do ecossistema.
-     */
-    /**
-     * FUNÇÃO 2: render_footer
-     * Fecha as tags e corre os scripts unificados do ecossistema.
-     */
-    /**
-     * FUNÇÃO 2: render_footer
-     * Fecha as tags e corre os scripts unificados do ecossistema.
-     */
-    function render_footer()
-    {
-        // 1. INJETAR TODOS OS MODAIS DO SISTEMA AQUI:
-        require_once 'modals.php';
-        ?>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            <div class="offcanvas offcanvas-end border-0 shadow" tabindex="-1" id="offcanvasPerfil" aria-labelledby="offcanvasPerfilLabel">
+                <div class="offcanvas-header bg-light border-bottom p-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="https://i.pravatar.cc/150?u=miguel" alt="Perfil" class="rounded-circle border border-3 border-white shadow-sm" width="60" height="60">
+                        <div>
+                            <h5 class="fw-bold m-0 text-dark" id="offcanvasPerfilLabel">Dr. Miguel Santos</h5>
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2 mt-1">Administrador</span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close shadow-none mb-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                
+                <div class="offcanvas-body p-4 d-flex flex-column">
+                    
+                    <h6 class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">A Minha Conta</h6>
+                    <div class="list-group list-group-flush mb-4">
+                        <a href="configuracoes.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary">
+                            <i class="fa-solid fa-gear text-muted w-20px me-3 text-center"></i> Definições do Sistema
+                        </a>
+                    </div>
+
+                    <h6 class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">Gestão de Acessos</h6>
+                    <div class="list-group list-group-flush mb-4">
+                        <a href="utilizadores.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary">
+                            <i class="fa-solid fa-users text-muted w-20px me-3 text-center"></i> Contas de Utilizadores
+                        </a>
+                        <a href="perfis.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary">
+                            <i class="fa-solid fa-user-shield text-muted w-20px me-3 text-center"></i> Perfis e Permissões
+                        </a>
+                    </div>
+
+                    <h6 class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">Plataforma Pública</h6>
+                    <div class="list-group list-group-flush mb-4">
+                        <a href="backoffice_publico.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary">
+                            <i class="fa-solid fa-laptop text-muted w-20px me-3 text-center"></i> Editar Site Público
+                        </a>
+                        <a href="../public/index.html" target="_blank" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary">
+                            <i class="fa-solid fa-arrow-up-right-from-square text-muted w-20px me-3 text-center"></i> Ver Site (Nova Aba)
+                        </a>
+                    </div>
+
+                    <div class="mt-auto pt-3 border-top">
+                        <a href="logout.php" class="btn btn-danger bg-opacity-10 text-danger border-0 w-100 rounded-3 fw-bold py-2 shadow-none d-flex align-items-center justify-content-center hover-danger">
+                            <i class="fa-solid fa-right-from-bracket me-2"></i> Terminar Sessão
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+<?php
+}
+
+/**
+ * FUNÇÃO 2: render_footer
+ * Fecha as tags e corre os scripts unificados do ecossistema.
+ */
+function render_footer()
+{
+    // 1. INJETAR TODOS OS MODAIS DO SISTEMA AQUI:
+    require_once 'modals.php';
+    ?>
+        </div> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
         <script>
+            // Script da Sidebar
             document.getElementById('toggleSidebar').addEventListener('click', function() {
                 const sidebar = document.getElementById('sidebar');
                 sidebar.classList.toggle('collapsed');
@@ -173,6 +243,7 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
         </script>
 
         <script>
+            // Script do Modo Escuro
             const themeToggle = document.getElementById('themeToggle');
             const themeIcon = document.getElementById('themeIcon');
             const htmlElement = document.documentElement;
@@ -194,6 +265,7 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                 themeIcon.className = 'fa-solid fa-sun text-warning';
             }
 
+            // Inicializar Tooltips
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
         </script>
@@ -203,5 +275,5 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
 
     </html>
 <?php
-    }
+}
 ?>

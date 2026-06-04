@@ -11,7 +11,7 @@ render_header("Gira - Gestão de Fornecedores");
         <h2 class="fw-bold m-0">Gestão de Fornecedores</h2>
         <p class="text-muted m-0 small">Controlo de contratos, contactos e assistência técnica oficial das marcas parceiras.</p>
     </div>
-    
+
     <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalRegistarFornecedor">
         <i class="fa-solid fa-truck-field text-white me-2"></i> Registar Fornecedor
     </button>
@@ -20,7 +20,7 @@ render_header("Gira - Gestão de Fornecedores");
 <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
-            
+
             <thead class="table-light">
                 <tr class="text-muted fw-bold unselectable">
                     <th class="th-sortable" onclick="simularOrdenacao('nif_empresa')">
@@ -51,9 +51,9 @@ render_header("Gira - Gestão de Fornecedores");
                     <th class="text-end">Ações Técnicas</th>
                 </tr>
             </thead>
-            
+
             <tbody>
-                
+
                 <tr>
                     <td class="text-muted fw-mono">
                         501234567<br>
@@ -64,15 +64,15 @@ render_header("Gira - Gestão de Fornecedores");
                     <td><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2">Monitores e Imagiologia</span></td>
                     <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Ativo</span></td>
                     <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Alterar Dados do Fornecedor">
-                            <i class="fa-solid fa-pen text-muted"></i>
+                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor" title="Alterar Dados do Fornecedor">
+                            <i class="fa-solid fa-pen text-primary"></i>
                         </button>
                         <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Revogar Contrato/Fornecedor">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
                 </tr>
-                
+
                 <tr>
                     <td class="text-muted fw-mono">
                         502987654<br>
@@ -83,8 +83,8 @@ render_header("Gira - Gestão de Fornecedores");
                     <td><span class="badge bg-info bg-opacity-10 text-info border border-info-subtle px-2">Ventilação e Anestesia</span></td>
                     <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Ativo</span></td>
                     <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Alterar Dados do Fornecedor">
-                            <i class="fa-solid fa-pen text-muted"></i>
+                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor" title="Alterar Dados do Fornecedor">
+                            <i class="fa-solid fa-pen text-primary"></i>
                         </button>
                         <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Revogar Contrato/Fornecedor">
                             <i class="fa-solid fa-trash"></i>
@@ -102,15 +102,15 @@ render_header("Gira - Gestão de Fornecedores");
                     <td><span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary-subtle px-2">Bombas de Infusão</span></td>
                     <td><span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2">Expirado</span></td>
                     <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Alterar Dados do Fornecedor">
-                            <i class="fa-solid fa-pen text-muted"></i>
+                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor" title="Alterar Dados do Fornecedor">
+                            <i class="fa-solid fa-pen text-primary"></i>
                         </button>
                         <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Revogar Contrato/Fornecedor">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
                 </tr>
-                
+
             </tbody>
         </table>
     </div>

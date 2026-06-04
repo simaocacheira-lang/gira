@@ -11,7 +11,7 @@ render_header("Gira - Gestão de Localizações");
         <h2 class="fw-bold m-0">Gestão de Localizações Hospitalares</h2>
         <p class="text-muted m-0 small">Mapeamento de blocos, pisos e salas para rastreabilidade dos dispositivos médicos.</p>
     </div>
-    
+
     <!-- ATUALIZADO: Adicionados os gatilhos para abrir o Modal do Bootstrap -->
     <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNovaLocalizacao">
         <i class="fa-solid fa-location-dot me-2"></i> Nova Localização
@@ -21,7 +21,7 @@ render_header("Gira - Gestão de Localizações");
 <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
-            
+
             <thead class="table-light">
                 <tr class="text-muted fw-bold unselectable">
                     <th class="th-sortable" onclick="simularOrdenacao('cod_sala')">
@@ -52,9 +52,9 @@ render_header("Gira - Gestão de Localizações");
                     <th class="text-end">Ações Técnicas</th>
                 </tr>
             </thead>
-            
+
             <tbody>
-                
+
                 <tr>
                     <td class="fw-bold text-primary fw-mono">#LOC-UCI02</td>
                     <td>
@@ -65,15 +65,15 @@ render_header("Gira - Gestão de Localizações");
                     <td><span class="fw-bold text-primary">14 equipamentos</span></td>
                     <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Normal</span></td>
                     <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Espaço/Sala">
-                            <i class="fa-solid fa-pen text-muted"></i>
+                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="modal" data-bs-target="#modalEditarLocalizacao" title="Editar Espaço/Sala">
+                            <i class="fa-solid fa-pen text-primary"></i>
                         </button>
                         <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Remover Localização">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
                 </tr>
-                
+
                 <tr>
                     <td class="fw-bold text-primary fw-mono">#LOC-BO03</td>
                     <td>
@@ -84,8 +84,9 @@ render_header("Gira - Gestão de Localizações");
                     <td><span class="fw-bold text-primary">22 equipamentos</span></td>
                     <td><span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2">1 Crítico</span></td>
                     <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Espaço/Sala">
-                            <i class="fa-solid fa-pen text-muted"></i>
+                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="modal" data-bs-target="#modalEditarLocalizacao" title="Editar Espaço/Sala">
+                            <i class="fa-solid fa-pen text-primary"></i>
+                        </button>
                         </button>
                         <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Remover Localização">
                             <i class="fa-solid fa-trash"></i>
@@ -103,15 +104,16 @@ render_header("Gira - Gestão de Localizações");
                     <td><span class="fw-bold text-primary">9 equipamentos</span></td>
                     <td><span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-2">1 Manutenção</span></td>
                     <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Espaço/Sala">
-                            <i class="fa-solid fa-pen text-muted"></i>
+                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="modal" data-bs-target="#modalEditarLocalizacao" title="Editar Espaço/Sala">
+                            <i class="fa-solid fa-pen text-primary"></i>
+                        </button>
                         </button>
                         <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Remover Localização">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </td>
                 </tr>
-                
+
             </tbody>
         </table>
     </div>
