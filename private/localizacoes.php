@@ -118,16 +118,6 @@ render_header("Gira - Gestão de Localizações");
         </table>
     </div>
 </div>
-
-<script>
-    document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-    document.querySelector('a[href="localizacoes.php"]').classList.add('active');
-
-    function simularOrdenacao(coluna) {
-        console.log("Pronto para ordenar localizações por: " + coluna);
-    }
-</script>
-
 <?php
 // 3. Chamamos o fim do molde para renderizar os scripts finais
 render_footer();

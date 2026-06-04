@@ -122,15 +122,6 @@ render_header("Gira - Garantias e Contratos de Manutenção");
         </table>
     </div>
 </div>
-<script>
-    document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-    document.querySelector('a[href="garantias.php"]').classList.add('active');
-
-    function simularOrdenacao(coluna) {
-        console.log("Pronto para ordenar garantias por: " + coluna);
-    }
-</script>
-
 <?php
 // 3. Chamamos o fim do molde
 render_footer();

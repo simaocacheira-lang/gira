@@ -125,16 +125,6 @@ render_header("Gira - Relatórios Analíticos e Indicadores");
         </table>
     </div>
 </div>
-
-<script>
-    document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-    document.querySelector('a[href="relatorios.php"]').classList.add('active');
-
-    function simularOrdenacao(coluna) {
-        console.log("Pronto para ordenar relatórios por: " + coluna);
-    }
-</script>
-
 <?php
 // 3. Chamamos o fim do molde
 render_footer();

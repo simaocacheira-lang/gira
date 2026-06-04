@@ -17,10 +17,12 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
         font-weight: 600;
         transition: all 0.2s ease-in-out;
     }
+
     .nav-tabs .nav-link:hover {
         border-bottom: 3px solid #dee2e6;
         color: #495057;
     }
+
     .nav-tabs .nav-link.active {
         color: #0d6efd !important;
         border-bottom: 3px solid #0d6efd !important;
@@ -33,6 +35,7 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
         grid-template-columns: repeat(7, 1fr);
         gap: 12px;
     }
+
     .calendar-header {
         text-align: center;
         font-weight: 800;
@@ -42,6 +45,7 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
+
     .calendar-day {
         min-height: 110px;
         border: 1px solid #f0f2f5;
@@ -52,15 +56,18 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
         display: flex;
         flex-direction: column;
     }
+
     .calendar-day:hover {
         border-color: #0d6efd;
-        box-shadow: 0 4px 10px rgba(13,110,253,.1);
+        box-shadow: 0 4px 10px rgba(13, 110, 253, .1);
     }
+
     .calendar-day.empty {
         background-color: #f8f9fc;
         border-color: transparent;
         pointer-events: none;
     }
+
     .day-number {
         font-weight: 700;
         color: #495057;
@@ -68,6 +75,7 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
         margin-bottom: 8px;
         display: inline-block;
     }
+
     .day-number.today {
         background-color: #0d6efd;
         color: white;
@@ -76,8 +84,9 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
         text-align: center;
         line-height: 26px;
         border-radius: 50%;
-        box-shadow: 0 2px 5px rgba(13,110,253,.4);
+        box-shadow: 0 2px 5px rgba(13, 110, 253, .4);
     }
+
     .event-badge {
         display: block;
         padding: 6px 8px;
@@ -90,6 +99,7 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
         line-height: 1.2;
         transition: opacity 0.2s;
     }
+
     .event-badge:hover {
         opacity: 0.8;
     }
@@ -204,7 +214,7 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
 
     <div class="tab-pane fade" id="calendario" role="tabpanel" tabindex="0">
         <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
-            
+
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5 class="fw-bold text-dark m-0">Maio 2026</h5>
                 <div class="d-flex gap-2">
@@ -271,7 +281,8 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
                 <div class="calendar-day"><span class="day-number">18</span></div>
                 <div class="calendar-day"><span class="day-number">19</span></div>
                 <div class="calendar-day">
-                    <span class="day-number today">20</span> <div class="event-badge bg-primary bg-opacity-10 text-primary border border-primary-subtle" title="Inspeção Visual Anual">
+                    <span class="day-number today">20</span>
+                    <div class="event-badge bg-primary bg-opacity-10 text-primary border border-primary-subtle" title="Inspeção Visual Anual">
                         <i class="fa-solid fa-bed me-1"></i> Camas Articuladas
                     </div>
                 </div>
@@ -300,21 +311,9 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
                 <span class="small fw-bold text-secondary"><i class="fa-solid fa-circle text-info me-1" style="font-size: 0.5rem;"></i> Calibração / Metrologia</span>
                 <span class="small fw-bold text-secondary"><i class="fa-solid fa-circle text-danger me-1" style="font-size: 0.5rem;"></i> Revisão Crítica (Prioritária)</span>
             </div>
-
         </div>
     </div>
-
 </div>
-
-<script>
-    document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-    document.querySelector('a[href="manutencao.php"]').classList.add('active');
-
-    function simularOrdenacao(coluna) {
-        console.log("Pronto para ordenar ordens de trabalho por: " + coluna);
-    }
-</script>
-
 <?php
 // 3. Chamamos o fim do molde (Atenção: Os Modais estão a ser puxados pelo render_footer() via modals.php)
 render_footer();

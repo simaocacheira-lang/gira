@@ -105,14 +105,6 @@ render_header("Gira - Inventário de Equipamentos Médicos");
         </table>
     </div>
 </div>
-<script>
-    document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-    document.querySelector('a[href="equipamentos.php"]').classList.add('active');
-
-    function simularOrdenacao(coluna) {
-        console.log("Pronto para ordenar por: " + coluna);
-    }
-</script>
 <?php
 // 3. Chamamos o fim do molde
 render_footer();

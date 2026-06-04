@@ -30,7 +30,9 @@ render_header("Gira - Detalhes do Equipamento");
                 <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 small">
                     <li><a class="dropdown-item fw-medium py-2" href="#"><i class="fa-solid fa-qrcode text-muted me-2"></i> Imprimir Etiqueta QR</a></li>
                     <li><a class="dropdown-item fw-medium py-2" href="#"><i class="fa-solid fa-ban text-warning me-2"></i> Suspender Equipamento</a></li>
-                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
                     <li><a class="dropdown-item fw-bold text-danger py-2" href="#"><i class="fa-solid fa-trash-can me-2"></i> Abater Inventário</a></li>
                 </ul>
             </div>
@@ -48,21 +50,21 @@ render_header("Gira - Detalhes do Equipamento");
         <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
             <!-- Nome do equipamento agora é um input -->
             <input type="text" class="form-control form-control-lg fw-bold bg-light border-0 w-auto" name="nome_equipamento" value="Monitor Multiparamétrico IntelliVue" style="min-width: 350px;">
-            
+
             <!-- Estados agora são selects rápidos -->
             <select class="form-select form-select-sm bg-success bg-opacity-10 text-success fw-bold border-success-subtle w-auto rounded-3" name="estado_operacional">
                 <option value="Operacional" selected>Operacional</option>
                 <option value="Avariado">Avariado / Em Reparação</option>
                 <option value="Calibracao">Aguardar Calibração</option>
             </select>
-            
+
             <select class="form-select form-select-sm bg-danger bg-opacity-10 text-danger fw-bold border-danger-subtle w-auto rounded-3" name="classe_risco">
                 <option value="Classe III" selected>Suporte de Vida (Classe III)</option>
                 <option value="Classe IIb">Médio/Alto Risco (Classe IIb)</option>
                 <option value="Classe IIa">Monitorização (Classe IIa)</option>
             </select>
         </div>
-        
+
         <!-- Grelha Rápida Editável -->
         <div class="row g-4 border-top pt-3">
             <div class="col-6 col-md-2">
@@ -129,7 +131,7 @@ render_header("Gira - Detalhes do Equipamento");
                 <div class="col-lg-8">
                     <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
                         <h6 class="fw-bold mb-4 text-dark fs-5">Detalhes Técnicos e IT</h6>
-                        
+
                         <div class="row g-4">
                             <div class="col-sm-6">
                                 <label class="text-muted d-block mb-1 small fw-bold">Número de Série (SN)</label>
@@ -147,7 +149,7 @@ render_header("Gira - Detalhes do Equipamento");
                                 <label class="text-muted d-block mb-1 small fw-bold">Próxima Revisão Obrigatória</label>
                                 <input type="date" class="form-control bg-light border-0 fw-bold text-primary" name="proxima_revisao" value="2026-05-20">
                             </div>
-                            
+
                             <div class="col-12 mt-4 pt-3 border-top">
                                 <label class="text-muted d-block mb-2 small fw-bold">Notas do Engenheiro Clínico</label>
                                 <textarea class="form-control bg-light border-0 text-secondary small" name="notas" rows="3">Equipamento principal de suporte da UCI 2. Requer calibração metrológica semestral obrigatória devido à certificação de risco. O módulo de capnografia apresenta sensibilidade a quedas.</textarea>
@@ -155,7 +157,7 @@ render_header("Gira - Detalhes do Equipamento");
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Coluna Direita: KPIs de Fiabilidade do Equipamento -->
                 <div class="col-lg-4">
                     <div class="vstack gap-4 h-100">
@@ -172,7 +174,7 @@ render_header("Gira - Detalhes do Equipamento");
                             <h2 class="fw-black text-dark mb-0">1.250 <span class="fs-6 fw-medium text-muted">€</span></h2>
                             <small class="text-muted mt-1" style="font-size: 0.7rem;">Gasto em OTs e Peças Substituídas</small>
                         </div>
-                        
+
                         <!-- Alerta de Próxima Manutenção -->
                         <div class="card border-0 shadow-sm rounded-4 p-4 bg-warning bg-opacity-10 border border-warning-subtle flex-grow-1 d-flex flex-column justify-content-center text-center">
                             <i class="fa-solid fa-calendar-check fs-2 text-warning mb-2"></i>
@@ -277,7 +279,7 @@ render_header("Gira - Detalhes do Equipamento");
                         </ul>
                     </div>
                 </div>
-                
+
                 <div class="col-lg-5">
                     <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100 text-center d-flex flex-column justify-content-center">
                         <div class="mb-3">
@@ -306,7 +308,7 @@ render_header("Gira - Detalhes do Equipamento");
                         Ir para Armazém <i class="fa-solid fa-arrow-right ms-1"></i>
                     </a>
                 </div>
-                
+
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
                         <thead class="table-light text-muted">

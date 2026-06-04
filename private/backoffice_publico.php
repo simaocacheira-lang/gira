@@ -100,14 +100,6 @@ render_header("Gira - Backoffice da Área Pública");
 
     </div>
 </div>
-
-
-<script>
-    // Iluminar "Area Pública" na sidebar para indicar que estamos nessa secção
-    document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-    document.querySelector('a[href="backoffice_publico.php"]').classList.add('active');
-</script>
-
 <?php
 render_footer();
 ?>

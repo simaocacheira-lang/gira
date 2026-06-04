@@ -145,10 +145,6 @@ render_header("Gira - Armazém e Gestão de Stock Técnico");
         </div>
     </div>
 </div>
-<script>
-    document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-    // Lembra-te de adicionar o link para 'armazem.php' na tua sidebar.php!
-</script>
 
 <?php
 render_footer();

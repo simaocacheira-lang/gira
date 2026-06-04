@@ -441,10 +441,6 @@ render_header("Gira - Dashboard Geral");
         </div>
     </div>
 </div>
-<script>
-    document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-    document.querySelector('a[href="dashboard.php"]').classList.add('active');
-</script>
 <?php
 // Função molde que fecha as tags HTML abertas e injeta os scripts do Modo Escuro e da Sidebar
 render_footer();

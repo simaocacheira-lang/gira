@@ -115,16 +115,6 @@ render_header("Gira - Gestão de Fornecedores");
         </table>
     </div>
 </div>
-
-<script>
-    document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-    document.querySelector('a[href="fornecedores.php"]').classList.add('active');
-
-    function simularOrdenacao(coluna) {
-        console.log("Pronto para ordenar fornecedores por: " + coluna);
-    }
-</script>
-
 <?php
 // 3. Chamamos o fim do molde para renderizar os scripts finais
 render_footer();

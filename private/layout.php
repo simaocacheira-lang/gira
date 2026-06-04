@@ -1,13 +1,33 @@
 <?php
 
 /**
- * FUNÇÃO 1: render_header
- * Esta função vai desenhar o início do site, importar os estilos,
- * e montar a Sidebar e a Topbar automaticamente.
- * * O ($title) permite que cada página escolha o seu próprio título na aba do browser.
+ * layout.php - Estrutura central do sistema
  */
+
+// ============================================================================
+// FUNÇÃO 1: RENDER_HEADER (Desenha o Head, Sidebar e Topbar)
+// ============================================================================
 function render_header($title = "Gira - Sistema de Gestão Hospitalar")
 {
+
+    // 1. ARRAY DINÂMICO DA SIDEBAR
+    // Para adicionar um menu, basta acrescentar uma linha aqui!
+    $menu_items = [
+        ['link' => 'dashboard.php', 'icon' => 'fa-house', 'label' => 'Dashboard'],
+        ['is_header' => true, 'label' => 'Gestão'],
+        ['link' => 'equipamentos.php', 'icon' => 'fa-stethoscope', 'label' => 'Equipamentos'],
+        ['link' => 'localizacoes.php', 'icon' => 'fa-location-dot', 'label' => 'Localizações'],
+        ['link' => 'fornecedores.php', 'icon' => 'fa-truck-field', 'label' => 'Fornecedores'],
+        ['link' => 'documentos.php', 'icon' => 'fa-regular fa-file-lines', 'label' => 'Documentos'],
+        ['link' => 'garantias.php', 'icon' => 'fa-solid fa-shield-halved', 'label' => 'Garantias e Contratos'],
+        ['link' => 'manutencao.php', 'icon' => 'fa-solid fa-screwdriver-wrench', 'label' => 'Manutenção'],
+        ['link' => 'armazem.php', 'icon' => 'fa-solid fa-warehouse', 'label' => 'Armazém'],
+        ['link' => 'relatorios.php', 'icon' => 'fa-solid fa-chart-simple', 'label' => 'Relatórios'],
+        ['link' => 'historico.php', 'icon' => 'fa-solid fa-clock-rotate-left', 'label' => 'Histórico']
+    ];
+
+    // Descobre em que página o utilizador está agora (ex: 'equipamentos.php')
+    $current_page = basename($_SERVER['PHP_SELF']);
 ?>
     <!DOCTYPE html>
     <html lang="pt-pt">
@@ -18,7 +38,6 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
 
         <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
         <link rel="stylesheet" href="../assets/css/all.min.css">
-
         <link rel="stylesheet" href="../assets/css/1241251.css">
     </head>
 
@@ -37,48 +56,16 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                 </button>
             </div>
 
-            <a href="dashboard.php" class="sidebar-link">
-                <i class="fa-solid fa-house"></i>
-                <span class="sidebar-text ms-2">Dashboard</span>
-            </a>
-
-            <div class="small-caps text-secondary mt-3 mb-2 opacity-50 sidebar-text">Gestão</div>
-            <a href="equipamentos.php" class="sidebar-link">
-                <i class="fa-solid fa-stethoscope"></i>
-                <span class="sidebar-text ms-2">Equipamentos</span>
-            </a>
-            <a href="localizacoes.php" class="sidebar-link">
-                <i class="fa-solid fa-location-dot"></i>
-                <span class="sidebar-text ms-2">Localizações</span>
-            </a>
-            <a href="fornecedores.php" class="sidebar-link">
-                <i class="fa-solid fa-truck-field"></i>
-                <span class="sidebar-text ms-2">Fornecedores</span>
-            </a>
-            <a href="documentos.php" class="sidebar-link">
-                <i class="fa-regular fa-file-lines"></i>
-                <span class="sidebar-text ms-2">Documentos</span>
-            </a>
-            <a href="garantias.php" class="sidebar-link">
-                <i class="fa-solid fa-shield-halved"></i>
-                <span class="sidebar-text ms-2" style="font-size: 0.85rem;">Garantias e Contratos</span>
-            </a>
-            <a href="manutencao.php" class="sidebar-link">
-                <i class="fa-solid fa-screwdriver-wrench"></i>
-                <span class="sidebar-text ms-2">Manutenção</span>
-            </a>
-            <a href="armazem.php" class="sidebar-link">
-                <i class="fa-solid fa-warehouse"></i>
-                <span class="sidebar-text ms-2">Armazém</span>
-            </a>
-            <a href="relatorios.php" class="sidebar-link">
-                <i class="fa-solid fa-chart-simple"></i>
-                <span class="sidebar-text ms-2">Relatórios</span>
-            </a>
-            <a href="historico.php" class="sidebar-link">
-                <i class="fa-solid fa-clock-rotate-left"></i>
-                <span class="sidebar-text ms-2">Histórico</span>
-            </a>
+            <?php foreach ($menu_items as $item): ?>
+                <?php if (isset($item['is_header'])): ?>
+                    <div class="small-caps text-secondary mt-3 mb-2 opacity-50 sidebar-text"><?php echo $item['label']; ?></div>
+                <?php else: ?>
+                    <a href="<?php echo $item['link']; ?>" class="sidebar-link <?php echo ($current_page == $item['link']) ? 'active' : ''; ?>">
+                        <i class="fa-solid <?php echo $item['icon']; ?>"></i>
+                        <span class="sidebar-text ms-2"><?php echo $item['label']; ?></span>
+                    </a>
+                <?php endif; ?>
+            <?php endforeach; ?>
         </nav>
 
         <div class="main-wrapper">
@@ -102,46 +89,6 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                                 <span class="fw-bold text-dark m-0">Notificações</span>
                                 <span class="badge bg-primary rounded-pill small">3 Novas</span>
                             </li>
-
-                            <li>
-                                <a class="dropdown-item py-3 border-bottom d-flex align-items-start gap-3 text-wrap" href="manutencao.php">
-                                    <div class="bg-danger bg-opacity-10 text-danger p-2 rounded-circle flex-shrink-0 mt-1">
-                                        <i class="fa-solid fa-triangle-exclamation"></i>
-                                    </div>
-                                    <div>
-                                        <p class="mb-1 fw-bold small text-dark lh-sm">Nova O.T. Crítica</p>
-                                        <p class="mb-1 text-muted" style="font-size: 0.75rem;">Ventilador Evita V500 reportou falha de pressão.</p>
-                                        <small class="text-secondary fw-bold" style="font-size: 0.65rem;"><i class="fa-regular fa-clock me-1"></i>Há 10 min</small>
-                                    </div>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item py-3 border-bottom d-flex align-items-start gap-3 text-wrap" href="garantias.php">
-                                    <div class="bg-warning bg-opacity-10 text-warning p-2 rounded-circle flex-shrink-0 mt-1">
-                                        <i class="fa-solid fa-file-shield"></i>
-                                    </div>
-                                    <div>
-                                        <p class="mb-1 fw-bold small text-dark lh-sm">Garantia a Expirar</p>
-                                        <p class="mb-1 text-muted" style="font-size: 0.75rem;">O contrato SLA com a B. Braun termina em 5 dias.</p>
-                                        <small class="text-secondary fw-bold" style="font-size: 0.65rem;"><i class="fa-regular fa-clock me-1"></i>Hoje, 09:00</small>
-                                    </div>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item py-3 border-bottom d-flex align-items-start gap-3 text-wrap" href="armazem.php">
-                                    <div class="bg-success bg-opacity-10 text-success p-2 rounded-circle flex-shrink-0 mt-1">
-                                        <i class="fa-solid fa-box-open"></i>
-                                    </div>
-                                    <div>
-                                        <p class="mb-1 fw-bold small text-dark lh-sm">Material Rececionado</p>
-                                        <p class="mb-1 text-muted" style="font-size: 0.75rem;">Encomenda (#ENC-04) deu entrada no armazém.</p>
-                                        <small class="text-secondary fw-bold" style="font-size: 0.65rem;"><i class="fa-regular fa-clock me-1"></i>Ontem</small>
-                                    </div>
-                                </a>
-                            </li>
-
                             <li class="p-2 text-center bg-light">
                                 <a href="#" class="text-decoration-none small fw-bold text-primary d-block py-1">Ver todo o histórico</a>
                             </li>
@@ -176,74 +123,51 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                     </div>
                     <button type="button" class="btn-close shadow-none mb-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-
                 <div class="offcanvas-body p-4 d-flex flex-column">
-
-                    <h6 class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">A Minha Conta</h6>
-                    <div class="list-group list-group-flush mb-4">
-                        <a href="configuracoes.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary">
-                            <i class="fa-solid fa-gear text-muted w-20px me-3 text-center"></i> Definições do Sistema
-                        </a>
-                    </div>
-
                     <h6 class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">Gestão de Acessos</h6>
                     <div class="list-group list-group-flush mb-4">
-                        <a href="utilizadores.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary">
-                            <i class="fa-solid fa-users text-muted w-20px me-3 text-center"></i> Contas de Utilizadores
-                        </a>
-                        <a href="perfis.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary">
-                            <i class="fa-solid fa-user-shield text-muted w-20px me-3 text-center"></i> Perfis e Permissões
-                        </a>
+                        <a href="utilizadores.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-users text-muted w-20px me-3 text-center"></i> Contas de Utilizadores</a>
+                        <a href="perfis.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-user-shield text-muted w-20px me-3 text-center"></i> Perfis e Permissões</a>
                     </div>
-
-                    <h6 class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">Plataforma Pública</h6>
-                    <div class="list-group list-group-flush mb-4">
-                        <a href="backoffice_publico.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary">
-                            <i class="fa-solid fa-laptop text-muted w-20px me-3 text-center"></i> Editar Site Público
-                        </a>
-                        <a href="../public/index.html" target="_blank" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary">
-                            <i class="fa-solid fa-arrow-up-right-from-square text-muted w-20px me-3 text-center"></i> Ver Site (Nova Aba)
-                        </a>
-                    </div>
-
                     <div class="mt-auto pt-3 border-top">
                         <a href="logout.php" class="btn btn-danger bg-opacity-10 text-danger border-0 w-100 rounded-3 fw-bold py-2 shadow-none d-flex align-items-center justify-content-center hover-danger">
                             <i class="fa-solid fa-right-from-bracket me-2"></i> Terminar Sessão
                         </a>
                     </div>
-
                 </div>
             </div>
 
         <?php
-    }
+    } // <--- FIM OBRIGATÓRIO DA FUNÇÃO RENDER_HEADER
 
-    /**
-     * FUNÇÃO 2: render_footer
-     * Fecha as tags e corre os scripts unificados do ecossistema.
-     */
+
+    // ============================================================================
+    // FUNÇÃO 2: RENDER_FOOTER (Fecha as tags e centraliza os scripts comuns)
+    // ============================================================================
     function render_footer()
     {
-        // 1. INJETAR TODOS OS MODAIS DO SISTEMA AQUI:
         require_once 'modals.php';
         ?>
         </div>
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
+
         <script>
-            // Script da Sidebar
             document.getElementById('toggleSidebar').addEventListener('click', function() {
                 const sidebar = document.getElementById('sidebar');
                 sidebar.classList.toggle('collapsed');
                 localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
             });
-
             if (localStorage.getItem('sidebarCollapsed') === 'true') {
                 document.getElementById('sidebar').classList.add('collapsed');
             }
         </script>
 
         <script>
-            // Script do Modo Escuro
+            // Ativa Tooltips globalmente
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+            // Gestão do Dark Mode
             const themeToggle = document.getElementById('themeToggle');
             const themeIcon = document.getElementById('themeIcon');
             const htmlElement = document.documentElement;
@@ -264,10 +188,6 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                 htmlElement.setAttribute('data-bs-theme', 'dark');
                 themeIcon.className = 'fa-solid fa-sun text-warning';
             }
-
-            // Inicializar Tooltips
-            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
         </script>
 
         <script src="../assets/js/1241251.js"></script>
@@ -275,5 +195,5 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
 
     </html>
 <?php
-    }
+    } // <--- FIM OBRIGATÓRIO DA FUNÇÃO RENDER_FOOTER
 ?>

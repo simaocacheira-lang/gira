@@ -137,16 +137,6 @@ render_header("Gira - Gestão de Utilizadores e Acessos");
         </table>
     </div>
 </div>
-
-<script>
-    document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-    document.querySelector('a[href="utilizadores.php"]').classList.add('active');
-
-    function simularOrdenacao(coluna) {
-        console.log("Pronto para ordenar utilizadores por: " + coluna);
-    }
-</script>
-
 <?php
 // 3. Chamamos o fim do molde
 render_footer();

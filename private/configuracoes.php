@@ -95,12 +95,6 @@ render_header("Gira - Configurações Gerais do Sistema");
 
     </div>
 </form>
-
-<script>
-    document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-    document.querySelector('a[href="configuracoes.php"]').classList.add('active');
-</script>
-
 <?php
 // 3. Chamamos o fim do molde
 render_footer();

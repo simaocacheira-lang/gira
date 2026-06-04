@@ -112,16 +112,6 @@ render_header("Gira - Histórico de Atividades e Logs");
         </table>
     </div>
 </div>
-
-<script>
-    document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-    document.querySelector('a[href="historico.php"]').classList.add('active');
-
-    function simularOrdenacao(coluna) {
-        console.log("Pronto para ordenar logs por: " + coluna);
-    }
-</script>
-
 <?php
 // 3. Chamamos o fim do molde
 render_footer();

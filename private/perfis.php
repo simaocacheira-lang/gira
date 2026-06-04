@@ -97,16 +97,6 @@ render_header("Gira - Perfis e Grupos de Permissões");
         </table>
     </div>
 </div>
-
-<script>
-    document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-    document.querySelector('a[href="perfis.php"]').classList.add('active');
-
-    function simularOrdenacao(coluna) {
-        console.log("Pronto para ordenar perfis por: " + coluna);
-    }
-</script>
-
 <?php
 // 3. Chamamos o fim do molde
 render_footer();
