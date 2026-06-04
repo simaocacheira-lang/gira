@@ -16,8 +16,8 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
         <meta charset="UTF-8">
         <title><?php echo $title; ?></title>
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../assets/css/all.min.css">
 
         <link rel="stylesheet" href="../assets/css/1241251.css">
     </head>
@@ -79,30 +79,30 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                 <i class="fa-solid fa-clock-rotate-left"></i>
                 <span class="sidebar-text ms-2">Histórico</span>
             </a>
-            </nav>
+        </nav>
 
         <div class="main-wrapper">
 
             <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded-4 shadow-sm mb-4 sticky-top" style="top: 20px; z-index: 990;">
-                
+
                 <div class="d-flex align-items-center">
                     <h5 class="fw-bold m-0 text-secondary opacity-75 sidebar-text"><i class="fa-solid fa-laptop-medical me-2 text-primary"></i>Painel Técnico</h5>
                 </div>
 
                 <div class="d-flex align-items-center gap-3">
-                    
+
                     <div class="dropdown">
                         <button class="btn btn-light rounded-circle position-relative p-2 shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px;" title="Notificações do Sistema">
                             <i class="fa-regular fa-bell"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-white" style="font-size: 0.6rem;">3</span>
                         </button>
-                        
+
                         <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-3 p-0 overflow-hidden" style="width: 340px;">
                             <li class="p-3 bg-light border-bottom d-flex justify-content-between align-items-center">
                                 <span class="fw-bold text-dark m-0">Notificações</span>
                                 <span class="badge bg-primary rounded-pill small">3 Novas</span>
                             </li>
-                            
+
                             <li>
                                 <a class="dropdown-item py-3 border-bottom d-flex align-items-start gap-3 text-wrap" href="manutencao.php">
                                     <div class="bg-danger bg-opacity-10 text-danger p-2 rounded-circle flex-shrink-0 mt-1">
@@ -115,7 +115,7 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                                     </div>
                                 </a>
                             </li>
-                            
+
                             <li>
                                 <a class="dropdown-item py-3 border-bottom d-flex align-items-start gap-3 text-wrap" href="garantias.php">
                                     <div class="bg-warning bg-opacity-10 text-warning p-2 rounded-circle flex-shrink-0 mt-1">
@@ -141,13 +141,13 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                                     </div>
                                 </a>
                             </li>
-                            
+
                             <li class="p-2 text-center bg-light">
                                 <a href="#" class="text-decoration-none small fw-bold text-primary d-block py-1">Ver todo o histórico</a>
                             </li>
                         </ul>
                     </div>
-                    
+
                     <button class="btn btn-light rounded-circle p-2 shadow-none" style="width: 40px; height: 40px;" id="themeToggle" title="Modo Noturno">
                         <i class="fa-regular fa-moon" id="themeIcon"></i>
                     </button>
@@ -176,9 +176,9 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                     </div>
                     <button type="button" class="btn-close shadow-none mb-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                
+
                 <div class="offcanvas-body p-4 d-flex flex-column">
-                    
+
                     <h6 class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">A Minha Conta</h6>
                     <div class="list-group list-group-flush mb-4">
                         <a href="configuracoes.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary">
@@ -215,20 +215,20 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                 </div>
             </div>
 
-<?php
-}
+        <?php
+    }
 
-/**
- * FUNÇÃO 2: render_footer
- * Fecha as tags e corre os scripts unificados do ecossistema.
- */
-function render_footer()
-{
-    // 1. INJETAR TODOS OS MODAIS DO SISTEMA AQUI:
-    require_once 'modals.php';
-    ?>
-        </div> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+    /**
+     * FUNÇÃO 2: render_footer
+     * Fecha as tags e corre os scripts unificados do ecossistema.
+     */
+    function render_footer()
+    {
+        // 1. INJETAR TODOS OS MODAIS DO SISTEMA AQUI:
+        require_once 'modals.php';
+        ?>
+        </div>
+        <script src="../assets/js/bootstrap.bundle.min.js"></script>
         <script>
             // Script da Sidebar
             document.getElementById('toggleSidebar').addEventListener('click', function() {
@@ -275,5 +275,5 @@ function render_footer()
 
     </html>
 <?php
-}
+    }
 ?>
