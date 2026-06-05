@@ -17,95 +17,78 @@ render_header("Gira - Inventário de Equipamentos Médicos");
     </button>
 </div>
 
-<div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
-    <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
-
-            <thead class="table-light">
-                <tr>
-                    <th class="th-sortable" onclick="simularOrdenacao('id')">
-                        <div class="d-inline-flex align-items-center gap-1">
-                            Cód. Ativo <i class="fa-solid fa-sort th-sort-icon"></i>
-                        </div>
-                    </th>
-                    <th class="th-sortable" onclick="simularOrdenacao('nome')">
-                        <div class="d-inline-flex align-items-center gap-1">
-                            Equipamento / Fabricante <i class="fa-solid fa-sort th-sort-icon"></i>
-                        </div>
-                    </th>
-                    <th class="th-sortable" onclick="simularOrdenacao('sn')">
-                        <div class="d-inline-flex align-items-center gap-1">
-                            Nº Série (SN) <i class="fa-solid fa-sort th-sort-icon"></i>
-                        </div>
-                    </th>
-                    <th class="th-sortable" onclick="simularOrdenacao('estado')">
-                        <div class="d-inline-flex align-items-center gap-1">
-                            Estado Operacional <i class="fa-solid fa-sort th-sort-icon"></i>
-                        </div>
-                    </th>
-                    <th class="text-end">Ações Técnicas</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <td class="fw-bold text-primary fw-mono">#EQ-2026-001</td>
-                    <td>
-                        <div class="fw-bold">Ventilador Pulmonar de Alta Performance</div>
-                        <small class="text-muted">Dräger · Evita Infinity V500</small>
-                    </td>
-                    <td class="fw-mono text-secondary">DG-EV-99214</td>
-                    <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Operacional</span></td>
-                    <td class="text-end">
-                        <a href="detalhes_equipamento.php" class="btn btn-light btn-sm rounded-3 me-1 border" title="Consultar Equipamento">
-                            <i class="fa-solid fa-eye text-muted"></i>
-                        </a>
-                        <button class="btn btn-light btn-sm rounded-3 text-danger border" title="Eliminar Equipamento">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="fw-bold text-primary fw-mono">#EQ-2026-002</td>
-                    <td>
-                        <div class="fw-bold">Sistema de Ultrassom / Ecógrafo</div>
-                        <small class="text-muted">Philips · Affiniti 70</small>
-                    </td>
-                    <td class="fw-mono text-secondary">PH-UL-44122</td>
-                    <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Operacional</span></td>
-                    <td class="text-end">
-                        <a href="detalhes_equipamento.php" class="btn btn-light btn-sm rounded-3 me-1 border" title="Consultar Equipamento">
-                            <i class="fa-solid fa-eye text-muted"></i>
-                        </a>
-                        <button class="btn btn-light btn-sm rounded-3 text-danger border" title="Eliminar Equipamento">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="fw-bold text-primary fw-mono">#EQ-2026-003</td>
-                    <td>
-                        <div class="fw-bold">Monitor Multiparamétrico de Sinais Vitais</div>
-                        <small class="text-muted">Mindray · BeneVision N17</small>
-                    </td>
-                    <td class="fw-mono text-secondary">MR-MN-77119</td>
-                    <td><span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-2">Aguardar Calibração</span></td>
-                    <td class="text-end">
-                        <a href="detalhes_equipamento.php" class="btn btn-light btn-sm rounded-3 me-1 border" title="Consultar Equipamento">
-                            <i class="fa-solid fa-eye text-muted"></i>
-                        </a>
-                        <button class="btn btn-light btn-sm rounded-3 text-danger border" title="Eliminar Equipamento">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
 <?php
-// 3. Chamamos o fim do molde
+// 1. Definimos as colunas da tabela
+$colunas = [
+    ['label' => 'Cód. Ativo', 'sort' => 'id'],
+    ['label' => 'Equipamento / Modelo', 'sort' => 'nome'],
+    ['label' => 'Nº Série / Património'],
+    ['label' => 'Estado', 'sort' => 'estado'],
+    ['label' => 'Ações', 'align' => 'end']
+];
+
+// 2. Desenhamos a caixa exterior e os cabeçalhos automaticamente!
+render_table_start($colunas);
+?>
+
+<tr>
+    <td class="fw-bold text-primary fw-mono">#EQ-2026-001</td>
+    <td>
+        <div class="fw-bold">Monitor Multiparamétrico de Sinais Vitais</div>
+        <small class="text-muted">Mindray · BeneVision N17</small>
+    </td>
+    <td class="fw-mono text-secondary">MR-MN-77119</td>
+    <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Operacional</span></td>
+    <td class="text-end">
+        <a href="detalhes_equipamento.php" class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
+            <i class="fa-solid fa-eye text-primary"></i>
+        </a>
+        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento">
+            <i class="fa-solid fa-trash"></i>
+        </button>
+    </td>
+</tr>
+
+<tr>
+    <td class="fw-bold text-primary fw-mono">#EQ-2026-002</td>
+    <td>
+        <div class="fw-bold">Bomba de Infusão Volumétrica</div>
+        <small class="text-muted">B. Braun · Infusomat Space</small>
+    </td>
+    <td class="fw-mono text-secondary">BB-IV-44210</td>
+    <td><span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-2">Aguardar Calibração</span></td>
+    <td class="text-end">
+        <a href="detalhes_equipamento.php" class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
+            <i class="fa-solid fa-eye text-primary"></i>
+        </a>
+        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento">
+            <i class="fa-solid fa-trash"></i>
+        </button>
+    </td>
+</tr>
+
+<tr>
+    <td class="fw-bold text-primary fw-mono">#EQ-2026-003</td>
+    <td>
+        <div class="fw-bold">Ventilador de Cuidados Intensivos</div>
+        <small class="text-muted">Dräger · Evita V800</small>
+    </td>
+    <td class="fw-mono text-secondary">DR-VT-99302</td>
+    <td><span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2">Inoperacional</span></td>
+    <td class="text-end">
+        <a href="detalhes_equipamento.php" class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
+            <i class="fa-solid fa-eye text-primary"></i>
+        </a>
+        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento">
+            <i class="fa-solid fa-trash"></i>
+        </button>
+    </td>
+</tr>
+
+<?php
+// 3. Fechamos as tags da tabela automaticamente!
+render_table_end();
+
+// 4. Fechamos a página e injetamos os scripts
 render_footer();
 ?>

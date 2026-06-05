@@ -17,105 +17,68 @@ render_header("Gira - Gestão de Fornecedores");
     </button>
 </div>
 
-<div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
-    <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
-
-            <thead class="table-light">
-                <tr class="text-muted fw-bold unselectable">
-                    <th class="th-sortable" onclick="simularOrdenacao('nif_empresa')">
-                        <div class="d-inline-flex align-items-center gap-1">
-                            NIF / Empresa <i class="fa-solid fa-sort th-sort-icon"></i>
-                        </div>
-                    </th>
-                    <th class="th-sortable" onclick="simularOrdenacao('contacto')">
-                        <div class="d-inline-flex align-items-center gap-1">
-                            Contacto Principal <i class="fa-solid fa-sort th-sort-icon"></i>
-                        </div>
-                    </th>
-                    <th class="th-sortable" onclick="simularOrdenacao('email')">
-                        <div class="d-inline-flex align-items-center gap-1">
-                            E-mail de Suporte <i class="fa-solid fa-sort th-sort-icon"></i>
-                        </div>
-                    </th>
-                    <th class="th-sortable" onclick="simularOrdenacao('representacao')">
-                        <div class="d-inline-flex align-items-center gap-1">
-                            Representação Oficial <i class="fa-solid fa-sort th-sort-icon"></i>
-                        </div>
-                    </th>
-                    <th class="th-sortable" onclick="simularOrdenacao('estado_contrato')">
-                        <div class="d-inline-flex align-items-center gap-1">
-                            Estado do Contrato <i class="fa-solid fa-sort th-sort-icon"></i>
-                        </div>
-                    </th>
-                    <th class="text-end">Ações Técnicas</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                <tr>
-                    <td class="text-muted fw-mono">
-                        501234567<br>
-                        <strong class="text-dark fs-6 d-block mt-1">Philips Healthcare Portugal</strong>
-                    </td>
-                    <td>210 000 000</td>
-                    <td><a href="mailto:suporte.pt@philips.com" class="text-decoration-none">suporte.pt@philips.com</a></td>
-                    <td><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2">Monitores e Imagiologia</span></td>
-                    <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Ativo</span></td>
-                    <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor" title="Alterar Dados do Fornecedor">
-                            <i class="fa-solid fa-pen text-primary"></i>
-                        </button>
-                        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Revogar Contrato/Fornecedor">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="text-muted fw-mono">
-                        502987654<br>
-                        <strong class="text-dark fs-6 d-block mt-1">Dräger Portugal Lda.</strong>
-                    </td>
-                    <td>219 999 999</td>
-                    <td><a href="mailto:service.pt@draeger.com" class="text-decoration-none">service.pt@draeger.com</a></td>
-                    <td><span class="badge bg-info bg-opacity-10 text-info border border-info-subtle px-2">Ventilação e Anestesia</span></td>
-                    <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Ativo</span></td>
-                    <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor" title="Alterar Dados do Fornecedor">
-                            <i class="fa-solid fa-pen text-primary"></i>
-                        </button>
-                        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Revogar Contrato/Fornecedor">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="text-muted fw-mono">
-                        503444555<br>
-                        <strong class="text-dark fs-6 d-block mt-1">B. Braun Medical S.A.</strong>
-                    </td>
-                    <td>214 444 444</td>
-                    <td><a href="mailto:apoio.tecnico@bbraun.com" class="text-decoration-none">apoio.tecnico@bbraun.com</a></td>
-                    <td><span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary-subtle px-2">Bombas de Infusão</span></td>
-                    <td><span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2">Expirado</span></td>
-                    <td class="text-end">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor" title="Alterar Dados do Fornecedor">
-                            <i class="fa-solid fa-pen text-primary"></i>
-                        </button>
-                        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Revogar Contrato/Fornecedor">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-    </div>
-</div>
 <?php
-// 3. Chamamos o fim do molde para renderizar os scripts finais
+// 1. Definimos as colunas da tabela
+$colunas = [
+    ['label' => 'Fornecedor / NIF', 'sort' => 'nif_empresa'],
+    ['label' => 'Contacto Técnico'],
+    ['label' => 'Categoria Principal'],
+    ['label' => 'Estado da Parceria', 'sort' => 'estado'],
+    ['label' => 'Ações', 'align' => 'end']
+];
+
+// 2. Desenhamos a caixa exterior e os cabeçalhos automaticamente!
+render_table_start($colunas);
+?>
+
+<tr>
+    <td>
+        <div class="fw-bold text-primary">Mindray Medical Portugal</div>
+        <small class="text-muted fw-mono">NIF: 512987654</small>
+    </td>
+    <td><a href="mailto:suporte@mindray.pt" class="text-decoration-none">suporte@mindray.pt</a></td>
+    <td><span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary-subtle px-2">Monitores de Sinais Vitais</span></td>
+    <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Ativo</span></td>
+    <td class="text-end">
+        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Alterar Dados do Fornecedor">
+            <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor">
+                <i class="fa-solid fa-pen text-primary"></i>
+            </button>
+        </span>
+        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Revogar Contrato/Fornecedor">
+            <button class="btn btn-light btn-sm rounded-3 text-danger border">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </span>
+    </td>
+</tr>
+
+<tr>
+    <td>
+        <div class="fw-bold text-primary">B. Braun Medical S.A.</div>
+        <small class="text-muted fw-mono">NIF: 500123456</small>
+    </td>
+    <td><a href="mailto:apoio.tecnico@bbraun.com" class="text-decoration-none">apoio.tecnico@bbraun.com</a></td>
+    <td><span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary-subtle px-2">Bombas de Infusão</span></td>
+    <td><span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2">Expirado</span></td>
+    <td class="text-end">
+        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Alterar Dados do Fornecedor">
+            <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor">
+                <i class="fa-solid fa-pen text-primary"></i>
+            </button>
+        </span>
+        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Revogar Contrato/Fornecedor">
+            <button class="btn btn-light btn-sm rounded-3 text-danger border">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </span>
+    </td>
+</tr>
+
+<?php
+// 3. Fechamos as tags da tabela automaticamente!
+render_table_end();
+
+// 4. Fechamos a página e injetamos os scripts centrais
 render_footer();
 ?>

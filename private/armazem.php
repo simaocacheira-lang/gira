@@ -12,14 +12,11 @@ render_header("Gira - Armazém e Gestão de Stock Técnico");
         <p class="text-muted m-0 small">Gestão de peças sobresselentes, consumíveis e alertas de stock crítico.</p>
     </div>
 
-   <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNovaEncomenda">
-    <i class="fa-solid fa-cart-plus me-2"></i> Nova Encomenda
-</button>
+    <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNovaEncomenda">
+        <i class="fa-solid fa-cart-plus me-2"></i> Nova Encomenda
+    </button>
 </div>
 
-<!-- ============================================================================== -->
-<!-- ESTATÍSTICAS RÁPIDAS DE STOCK -->
-<!-- ============================================================================== -->
 <div class="row g-3 mb-4">
     <div class="col-12 col-md-4">
         <div class="card border-0 shadow-sm rounded-4 p-3 bg-white border-start border-danger border-4">
@@ -44,52 +41,50 @@ render_header("Gira - Armazém e Gestão de Stock Técnico");
     </div>
 </div>
 
-<!-- ============================================================================== -->
-<!-- TABELA DE INVENTÁRIO -->
-<!-- ============================================================================== -->
-<div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
-    <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="table-light text-muted">
-                <tr>
-                    <th>Ref. Peça</th>
-                    <th>Designação do Artigo</th>
-                    <th>Fornecedor</th>
-                    <th>Stock Atual</th>
-                    <th>Stock Mínimo</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="fw-bold text-primary fw-mono">P01</td>
-                    <td>
-                        <div class="fw-bold text-dark">Módulo SpO2 - Philips</div>
-                        <small class="text-muted">Compatível com série IntelliVue</small>
-                    </td>
-                    <td>Philips Healthcare</td>
-                    <td class="fw-bold text-danger">0</td>
-                    <td>5</td>
-                    <td><span class="badge bg-danger rounded-pill px-2">Rutura</span></td>
-                </tr>
-                <tr>
-                    <td class="fw-bold text-primary fw-mono">P02</td>
-                    <td>
-                        <div class="fw-bold text-dark">Bateria 12V - Dräger</div>
-                        <small class="text-muted">Célula de chumbo selada</small>
-                    </td>
-                    <td>Dräger Portugal</td>
-                    <td class="fw-bold text-dark">12</td>
-                    <td>10</td>
-                    <td><span class="badge bg-success rounded-pill px-2">Saudável</span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-<!-- ============================================================================== -->
-<!-- MODAL: NOVA ENCOMENDA DE STOCK                                                 -->
-<!-- ============================================================================== -->
+<?php
+// 1. Definimos as colunas da tabela
+$colunas = [
+    ['label' => 'Ref. Peça', 'sort' => 'id_peca'],
+    ['label' => 'Designação do Artigo', 'sort' => 'nome'],
+    ['label' => 'Fornecedor', 'sort' => 'fornecedor'],
+    ['label' => 'Stock Atual', 'sort' => 'stock_atual'],
+    ['label' => 'Stock Mínimo', 'sort' => 'stock_minimo'],
+    ['label' => 'Estado', 'sort' => 'estado']
+];
+
+// 2. Desenhamos a caixa exterior e os cabeçalhos automaticamente!
+render_table_start($colunas);
+?>
+
+<tr>
+    <td class="fw-bold text-primary fw-mono">P01</td>
+    <td>
+        <div class="fw-bold text-dark">Módulo SpO2 - Philips</div>
+        <small class="text-muted">Compatível com série IntelliVue</small>
+    </td>
+    <td>Philips Healthcare</td>
+    <td class="fw-bold text-danger">0</td>
+    <td>5</td>
+    <td><span class="badge bg-danger rounded-pill px-2">Rutura</span></td>
+</tr>
+
+<tr>
+    <td class="fw-bold text-primary fw-mono">P02</td>
+    <td>
+        <div class="fw-bold text-dark">Bateria 12V - Dräger</div>
+        <small class="text-muted">Célula de chumbo selada</small>
+    </td>
+    <td>Dräger Portugal</td>
+    <td class="fw-bold text-dark">12</td>
+    <td>10</td>
+    <td><span class="badge bg-success rounded-pill px-2">Saudável</span></td>
+</tr>
+
+<?php
+// 3. Fechamos as tags da tabela automaticamente!
+render_table_end();
+?>
+
 <div class="modal fade" id="modalNovaEncomenda" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 rounded-4 shadow-lg">
@@ -104,7 +99,6 @@ render_header("Gira - Armazém e Gestão de Stock Técnico");
             <div class="modal-body p-4">
                 <form id="formNovaEncomenda" action="processar_encomenda.php" method="POST">
                     <div class="row g-3">
-                        <!-- Seleção do Artigo -->
                         <div class="col-12">
                             <label class="form-label small fw-bold text-secondary">Artigo a Encomendar</label>
                             <select class="form-select rounded-3 bg-light border-0" name="artigo_id" required>
@@ -114,19 +108,16 @@ render_header("Gira - Armazém e Gestão de Stock Técnico");
                             </select>
                         </div>
 
-                        <!-- Quantidade -->
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-secondary">Quantidade</label>
                             <input type="number" class="form-control rounded-3 bg-light border-0" name="quantidade" min="1" value="1" required>
                         </div>
 
-                        <!-- Data Prevista -->
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-secondary">Data Prevista Chegada</label>
                             <input type="date" class="form-control rounded-3 bg-light border-0" name="data_prevista" required>
                         </div>
 
-                        <!-- Observações -->
                         <div class="col-12">
                             <label class="form-label small fw-bold text-secondary">Notas ao Fornecedor</label>
                             <textarea class="form-control rounded-3 bg-light border-0" name="notas" rows="2" placeholder="Ex: Urgente, stock em rutura."></textarea>

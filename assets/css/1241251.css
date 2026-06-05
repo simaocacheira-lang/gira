@@ -553,3 +553,100 @@ body:not([data-bs-theme="dark"]) .text-dark {
   transition: opacity 0.2s;
   line-height: 1; /* Evita que o ícone empurre a linha para baixo */
 }
+/* ==========================================
+   ESTILOS DO CALENDÁRIO E SEPARADORES (MANUTENÇÃO)
+   ========================================== */
+.nav-tabs .nav-link {
+    color: #6c757d;
+    border: none;
+    border-bottom: 3px solid transparent;
+    background-color: transparent;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+}
+
+.nav-tabs .nav-link:hover {
+    border-bottom: 3px solid #dee2e6;
+    color: #495057;
+}
+
+.nav-tabs .nav-link.active {
+    color: #0d6efd !important;
+    border-bottom: 3px solid #0d6efd !important;
+    background-color: transparent;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+}
+
+.calendar-header {
+    text-align: center;
+    font-weight: 800;
+    color: #aeb9ce;
+    padding-bottom: 10px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.calendar-day {
+    min-height: 110px;
+    border: 1px solid #f0f2f5;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #fff;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-day:hover {
+    border-color: #0d6efd;
+    box-shadow: 0 4px 10px rgba(13, 110, 253, .1);
+}
+
+.calendar-day.empty {
+    background-color: #f8f9fc;
+    border-color: transparent;
+    pointer-events: none;
+}
+
+.day-number {
+    font-weight: 700;
+    color: #495057;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+.day-number.today {
+    background-color: #0d6efd;
+    color: white;
+    width: 26px;
+    height: 26px;
+    text-align: center;
+    line-height: 26px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(13, 110, 253, .4);
+}
+
+.event-badge {
+    display: block;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    line-height: 1.2;
+    transition: opacity 0.2s;
+}
+
+.event-badge:hover {
+    opacity: 0.8;
+}
