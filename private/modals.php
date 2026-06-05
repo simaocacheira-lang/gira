@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="modal-body p-4">
-                <form id="formNovoEquipamento" action="processar_equipamento.php" method="POST" enctype="multipart/form-data">
+                <form id="formNovoEquipamento" action="/gira/private/processar_equipamento.php" method="POST" enctype="multipart/form-data">
                     <div class="form-step" id="step-1">
                         <h6 class="fw-bold mb-3 text-dark border-bottom pb-2"><i class="fa-solid fa-fingerprint text-muted me-2"></i>Passo 1: Identificação e Rede</h6>
                         <div class="row g-3">
@@ -121,7 +121,7 @@
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formNovaOT" action="processar_manutencao.php" method="POST">
+                <form id="formNovaOT" action="/gira/private/processar_manutencao.php" method="POST">
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label small fw-bold text-secondary">Dispositivo Médico com Ocorrência</label>
@@ -171,7 +171,7 @@
                 <button type="button" class="btn-close shadow-none mb-auto" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formFecharOT" action="processar_fecho_ot.php" method="POST">
+                <form id="formFecharOT" action="/gira/private/processar_fecho_ot.php" method="POST">
                     <h6 class="fw-bold mb-3 pb-2 border-bottom"><i class="fa-solid fa-clipboard-check text-primary me-2"></i>Relatório Técnico</h6>
                     <div class="row g-3 mb-4">
                         <div class="col-12">
@@ -228,7 +228,7 @@
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="processar_documento.php" method="POST" enctype="multipart/form-data">
+                <form action="/gira/private/processar_documento.php" method="POST" enctype="multipart/form-data">
                     <div class="mb-3"><label class="form-label small fw-bold">Nome do Documento</label><input type="text" class="form-control bg-light border-0" required></div>
                     <div class="mb-3"><label class="form-label small fw-bold">Tipo</label><select class="form-select bg-light border-0">
                             <option>Manual Técnico</option>
@@ -255,7 +255,7 @@
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="processar_fornecedor.php" method="POST">
+                <form action="/gira/private/processar_fornecedor.php" method="POST">
                     <div class="row g-3">
                         <div class="col-md-7"><label class="form-label small fw-bold">Nome da Empresa</label><input type="text" class="form-control bg-light border-0" required></div>
                         <div class="col-md-5"><label class="form-label small fw-bold">NIF</label><input type="text" class="form-control bg-light border-0" required></div>
@@ -284,7 +284,7 @@
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="processar_garantia.php" method="POST">
+                <form action="/gira/private/processar_garantia.php" method="POST">
                     <div class="row g-3">
                         <div class="col-md-6"><label class="form-label small fw-bold">Referência Contrato</label><input type="text" class="form-control bg-light border-0" required></div>
                         <div class="col-md-6"><label class="form-label small fw-bold">Tipo Cobertura</label><select class="form-select bg-light border-0">
@@ -312,7 +312,7 @@
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="processar_localizacao.php" method="POST">
+                <form action="/gira/private/processar_localizacao.php" method="POST">
                     <div class="mb-3"><label class="form-label small fw-bold">Código Sala</label><input type="text" class="form-control bg-light border-0" required></div>
                     <div class="mb-3"><label class="form-label small fw-bold">Nome Serviço</label><input type="text" class="form-control bg-light border-0" required></div>
                 </form>
@@ -333,7 +333,7 @@
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="processar_utilizador.php" method="POST">
+                <form action="/gira/private/processar_utilizador.php" method="POST">
                     <div class="row g-3">
                         <div class="col-md-7"><label class="form-label small fw-bold">Nome Completo</label><input type="text" class="form-control bg-light border-0" required></div>
                         <div class="col-md-5"><label class="form-label small fw-bold">Cédula</label><input type="text" class="form-control bg-light border-0" required></div>
@@ -359,7 +359,7 @@
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="processar_perfil.php" method="POST">
+                <form action="/gira/private/processar_perfil.php" method="POST">
                     <div class="mb-3"><label class="form-label small fw-bold">Nome do Perfil</label><input type="text" class="form-control bg-light border-0" required></div>
                     <div class="bg-light rounded-3 p-3">
                         <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label small">Acesso Completo</label></div>
@@ -382,7 +382,7 @@
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="processar_encomenda.php" method="POST">
+                <form action="/gira/private/processar_encomenda.php" method="POST">
                     <div class="mb-3"><label class="form-label small fw-bold">Artigo</label><select class="form-select bg-light border-0">
                             <option>Módulo SpO2</option>
                         </select></div>
@@ -405,7 +405,7 @@
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formEditarLocalizacao" action="processar_edicao_localizacao.php" method="POST">
+                <form id="formEditarLocalizacao" action="/gira/private/processar_edicao_localizacao.php" method="POST">
 
                     <input type="hidden" name="id_localizacao" value="LOC-001">
 
@@ -458,7 +458,7 @@
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formEditarFornecedor" action="processar_edicao_fornecedor.php" method="POST">
+                <form id="formEditarFornecedor" action="/gira/private/processar_edicao_fornecedor.php" method="POST">
 
                     <input type="hidden" name="id_fornecedor" value="FORN-001">
 

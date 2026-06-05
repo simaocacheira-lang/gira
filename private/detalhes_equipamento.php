@@ -1,13 +1,13 @@
 <?php
 // 1. Chamamos o molde
-require_once 'layout.php';
+require_once __DIR__ . '/layout.php';
 
 // 2. Montamos o topo da página
 render_header("Gira - Detalhes do Equipamento");
 ?>
 
 <!-- Transformamos a página num formulário vivo -->
-<form action="processar_edicao_equipamento.php" method="POST">
+<form action="/gira/private/processar_edicao_equipamento.php" method="POST">
 
     <!-- ============================================================================== -->
     <!-- 1. HEADER (Botões de Ação e Submissão)                                         -->
@@ -15,12 +15,12 @@ render_header("Gira - Detalhes do Equipamento");
     <div class="mb-3 d-flex justify-content-between align-items-center">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0 small fw-bold">
-                <li class="breadcrumb-item"><a href="equipamentos.php" class="text-decoration-none text-muted">Equipamentos</a></li>
+                <li class="breadcrumb-item"><a href="/gira/private/equipamentos.php" class="text-decoration-none text-muted">Equipamentos</a></li>
                 <li class="breadcrumb-item active text-primary" aria-current="page">Ficha Técnica e Edição</li>
             </ol>
         </nav>
         <div class="d-flex gap-2">
-            <a href="equipamentos.php" class="btn btn-light border rounded-3 fw-bold small px-3 py-2 shadow-sm text-secondary">
+            <a href="/gira/private/equipamentos.php" class="btn btn-light border rounded-3 fw-bold small px-3 py-2 shadow-sm text-secondary">
                 <i class="fa-solid fa-arrow-left me-2"></i>Voltar
             </a>
             <div class="dropdown">
@@ -304,7 +304,7 @@ render_header("Gira - Detalhes do Equipamento");
                         <h6 class="fw-bold mb-0 text-dark">Peças e Consumíveis Compatíveis</h6>
                         <small class="text-muted">Artigos do armazém validados para uso neste modelo.</small>
                     </div>
-                    <a href="armazem.php" class="btn btn-sm btn-light border rounded-3 fw-bold text-secondary">
+                    <a href="/gira/private/armazem.php" class="btn btn-sm btn-light border rounded-3 fw-bold text-secondary">
                         Ir para Armazém <i class="fa-solid fa-arrow-right ms-1"></i>
                     </a>
                 </div>

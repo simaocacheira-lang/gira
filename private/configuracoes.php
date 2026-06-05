@@ -1,6 +1,6 @@
 <?php
 // 1. Chamamos o molde para trazer a Sidebar e a Topbar automáticas
-require_once 'layout.php';
+require_once __DIR__ . '/layout.php';
 
 // 2. Montamos o topo da página com o título correto para a aba do browser
 render_header("Gira - Configurações Gerais do Sistema");
@@ -17,7 +17,7 @@ render_header("Gira - Configurações Gerais do Sistema");
     </button>
 </div>
 
-<form id="form-configuracoes" action="guardar_config.php" method="POST">
+<form id="form-configuracoes" action="/gira/private/guardar_config.php" method="POST">
     <div class="row g-4">
 
         <div class="col-12 col-md-6">

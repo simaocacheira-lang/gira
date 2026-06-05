@@ -1,6 +1,6 @@
 <?php
-// 1. Chamamos o molde para trazer a Sidebar e a Topbar automáticas
-require_once 'layout.php';
+// 1. Chamamos o molde para trazer a Sidebar e a Topbar automáticas (CAMINHO ABSOLUTO SERVIDOR)
+require_once __DIR__ . '/layout.php';
 
 // 2. Montamos o topo da página com o título correto para a aba do browser
 render_header("Gira - Inventário de Equipamentos Médicos");
@@ -34,13 +34,13 @@ render_table_start($colunas);
 <tr>
     <td class="fw-bold text-primary fw-mono">#EQ-2026-001</td>
     <td>
-        <div class="fw-bold">Monitor Multiparamétrico de Sinais Vitais</div>
-        <small class="text-muted">Mindray · BeneVision N17</small>
+        <div class="fw-bold">Monitor Multiparamétrico</div>
+        <small class="text-muted">Philips · IntelliVue X3</small>
     </td>
-    <td class="fw-mono text-secondary">MR-MN-77119</td>
+    <td class="fw-mono text-secondary">PH-X3-10294</td>
     <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Operacional</span></td>
     <td class="text-end">
-        <a href="detalhes_equipamento.php" class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
+        <a href="/gira/private/detalhes_equipamento.php" class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
             <i class="fa-solid fa-eye text-primary"></i>
         </a>
         <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento">
@@ -52,13 +52,13 @@ render_table_start($colunas);
 <tr>
     <td class="fw-bold text-primary fw-mono">#EQ-2026-002</td>
     <td>
-        <div class="fw-bold">Bomba de Infusão Volumétrica</div>
-        <small class="text-muted">B. Braun · Infusomat Space</small>
+        <div class="fw-bold">Bomba de Infusão Seringa</div>
+        <small class="text-muted">B. Braun · Perfusor Space</small>
     </td>
-    <td class="fw-mono text-secondary">BB-IV-44210</td>
-    <td><span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-2">Aguardar Calibração</span></td>
+    <td class="fw-mono text-secondary">BB-PS-55102</td>
+    <td><span class="badge bg-warning bg-opacity-10 text-warning text-dark border border-warning-subtle rounded-pill px-2">Em Manutenção</span></td>
     <td class="text-end">
-        <a href="detalhes_equipamento.php" class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
+        <a href="/gira/private/detalhes_equipamento.php" class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
             <i class="fa-solid fa-eye text-primary"></i>
         </a>
         <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento">
@@ -76,7 +76,7 @@ render_table_start($colunas);
     <td class="fw-mono text-secondary">DR-VT-99302</td>
     <td><span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2">Inoperacional</span></td>
     <td class="text-end">
-        <a href="detalhes_equipamento.php" class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
+        <a href="/gira/private/detalhes_equipamento.php" class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
             <i class="fa-solid fa-eye text-primary"></i>
         </a>
         <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento">
@@ -89,6 +89,6 @@ render_table_start($colunas);
 // 3. Fechamos as tags da tabela automaticamente!
 render_table_end();
 
-// 4. Fechamos a página e injetamos os scripts
+// 4. Fechamos a página e injetamos os scripts centrais
 render_footer();
 ?>

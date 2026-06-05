@@ -1,6 +1,6 @@
 <?php
 // 1. Chamamos o molde
-require_once 'layout.php';
+require_once __DIR__ . '/layout.php';
 
 // 2. Montamos o topo
 render_header("Gira - Armazém e Gestão de Stock Técnico");
@@ -97,7 +97,7 @@ render_table_end();
             </div>
 
             <div class="modal-body p-4">
-                <form id="formNovaEncomenda" action="processar_encomenda.php" method="POST">
+                <form id="formNovaEncomenda" action="/gira/private/processar_encomenda.php" method="POST">
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label small fw-bold text-secondary">Artigo a Encomendar</label>
