@@ -65,7 +65,7 @@ render_header("Gira - Backoffice da Área Pública");
                     </div>
                     <div class="col-12">
                         <label for="sobreText1" class="form-label small fw-bold text-secondary">Parágrafo 1</label>
-                        <textarea class="form-control bg-light border-0 p-2.5" id="sobreText1" rows="3">A TechMed nasceu com um propósito claro: eliminar o caos administrativo e garantir que as equipas médicas têm sempre os equipamentos certos, prontos a usar e com as manutenções em dia.</textarea>
+                        <textarea class="form-control bg-light border-0 p-2.5" id="sobreText1" rows="3">A Gira nasceu com um propósito claro: eliminar o caos administrativo e garantir que as equipas médicas têm sempre os equipamentos certos, prontos a usar e com as manutenções em dia.</textarea>
                     </div>
                 </div>
 
@@ -80,7 +80,7 @@ render_header("Gira - Backoffice da Área Pública");
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="contEmail" class="form-label small fw-bold text-secondary">E-mail Institucional</label>
-                        <input type="email" class="form-control bg-light border-0 p-2.5" id="contEmail" value="geral@techmed.pt">
+                        <input type="email" class="form-control bg-light border-0 p-2.5" id="contEmail" value="geral@gira.pt">
                     </div>
                     <div class="col-md-6">
                         <label for="contPhone" class="form-label small fw-bold text-secondary">Telefone / Contacto</label>

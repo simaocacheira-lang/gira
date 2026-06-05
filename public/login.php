@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - TechMed Inventory</title>
+    <title>Login - Gira Inventory</title>
 
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
 
@@ -76,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="text-center mb-4">
             <a href="index.php" class="text-decoration-none">
                 <h1 class="fw-bold text-primary mb-1">
-                    <i class="fa-solid fa-notes-medical me-2"></i>TechMed
+                    <i class="fa-solid fa-notes-medical me-2"></i>Gira
                 </h1>
             </a>
             <p class="text-secondary small">Gestão de Inventário Hospitalar</p>
@@ -122,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <div class="text-center mt-4">
-            <p class="small text-muted">&copy; 2026 TechMed Solutions. <br>Sistema de Apoio ao Inventário Hospitalar.</p>
+            <p class="small text-muted">&copy; 2026 Gira Solutions. <br>Sistema de Apoio ao Inventário Hospitalar.</p>
         </div>
     </div>
 
