@@ -82,7 +82,7 @@ render_table_start($colunas);
 </tr>
 
 <?php
-// 3. Fechamos as tags da tabela automaticamente!
+// 3. Fechamos as tags da tabela automaticamente
 render_table_end();
 
 // 4. Fechamos a página e injetamos os scripts centrais
