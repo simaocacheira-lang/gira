@@ -79,6 +79,6 @@ render_table_start($colunas);
 // 3. Fechamos as tags da tabela automaticamentegit config user.name "Simão Cacheira"
 render_table_end();
 
-// 4. Fechamos a página e injetamos os scripts centrais
+// 4. Fechamos a página e injetamos os scripts centrais!
 render_footer();
 ?>
