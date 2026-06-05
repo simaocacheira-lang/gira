@@ -1,7 +1,7 @@
 <?php
 // PHP vai buscar as funções do ficheiro de molde.
 // 'require_once'-> garante que o ficheiro é carregado apenas uma vez.
-require_once 'layout.php';
+require_once __DIR__ . '/layout.php';
 
 // Função molde que desenha o topo (HTML base, Sidebar e Topbar).
 // Passamos o texto "Gira - Dashboard Geral" para ser o título na aba do navegador.
@@ -21,7 +21,7 @@ render_header("Gira - Dashboard Geral");
 <div class="row g-3">
 
     <div class="col-md-2">
-        <a href="relatorios.php" class="text-decoration-none text-dark">
+        <a href="/gira/private/relatorios.php" class="text-decoration-none text-dark">
             <div class="kpi-card border-start border-danger border-4">
                 <div class="icon-circle bg-danger-light"><i class="fa-solid fa-euro-sign text-danger"></i></div>
                 <div>
@@ -34,7 +34,7 @@ render_header("Gira - Dashboard Geral");
     </div>
 
     <div class="col-md-2">
-        <a href="equipamentos.php" class="text-decoration-none text-dark">
+        <a href="/gira/private/equipamentos.php" class="text-decoration-none text-dark">
             <div class="kpi-card border-start border-success border-4">
                 <div class="icon-circle bg-success-light"><i class="fa-solid fa-calendar-check text-success"></i></div>
                 <div>
@@ -47,7 +47,7 @@ render_header("Gira - Dashboard Geral");
     </div>
 
     <div class="col-md-2">
-        <a href="manutencao.php" class="text-decoration-none text-dark">
+        <a href="/gira/private/manutencao.php" class="text-decoration-none text-dark">
             <div class="kpi-card border-start border-warning border-4">
                 <div class="icon-circle bg-warning-light"><i class="fa-solid fa-wrench text-warning"></i></div>
                 <div>
@@ -60,7 +60,7 @@ render_header("Gira - Dashboard Geral");
     </div>
 
     <div class="col-md-2">
-        <a href="equipamentos.php" class="text-decoration-none text-dark">
+        <a href="/gira/private/equipamentos.php" class="text-decoration-none text-dark">
             <div class="kpi-card border-start border-secondary border-4">
                 <div class="icon-circle bg-gray-light"><i class="fa-solid fa-power-off text-secondary"></i></div>
                 <div>
@@ -73,7 +73,7 @@ render_header("Gira - Dashboard Geral");
     </div>
 
     <div class="col-md-2">
-        <a href="garantias.php" class="text-decoration-none text-dark">
+        <a href="/gira/private/garantias.php" class="text-decoration-none text-dark">
             <div class="kpi-card border-start border-danger border-4">
                 <div class="icon-circle bg-danger-light"><i class="fa-solid fa-shield-heart text-danger"></i></div>
                 <div>
@@ -86,7 +86,7 @@ render_header("Gira - Dashboard Geral");
     </div>
 
     <div class="col-md-2">
-        <a href="documentos.php" class="text-decoration-none text-dark">
+        <a href="/gira/private/documentos.php" class="text-decoration-none text-dark">
             <div class="kpi-card border-start border-primary border-4">
                 <div class="icon-circle bg-primary-light"><i class="fa-solid fa-file-circle-exclamation text-primary"></i></div>
                 <div>
@@ -105,7 +105,7 @@ render_header("Gira - Dashboard Geral");
         <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h6 class="fw-bold mb-0">Rácio de Intervenções</h6>
-                <a href="manutencao.php" class="text-primary small text-decoration-none">Análise Mês</a>
+                <a href="/gira/private/manutencao.php" class="text-primary small text-decoration-none">Análise Mês</a>
             </div>
 
             <div class="mb-4 mt-2">
@@ -149,7 +149,7 @@ render_header("Gira - Dashboard Geral");
         <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h6 class="fw-bold mb-0">Distribuição por Criticidade</h6>
-                <a href="relatorios.php" class="text-primary small text-decoration-none">Ver relatório</a>
+                <a href="/gira/private/relatorios.php" class="text-primary small text-decoration-none">Ver relatório</a>
             </div>
             <div class="d-flex align-items-center mb-3">
                 <div class="donut-container me-4">
@@ -236,7 +236,7 @@ render_header("Gira - Dashboard Geral");
                     <h6 class="fw-bold mb-0">Distribuição por Localização</h6>
                     <small class="text-muted" style="font-size: 0.65rem;">Carga física e criticidade de manutenção por serviço.</small>
                 </div>
-                <a href="localizacoes.php" class="text-primary small text-decoration-none fw-bold">Ver todas</a>
+                <a href="/gira/private/localizacoes.php" class="text-primary small text-decoration-none fw-bold">Ver todas</a>
             </div>
 
             <div class="vstack gap-4">
@@ -320,7 +320,7 @@ render_header("Gira - Dashboard Geral");
                 <p class="text-muted m-0 mx-2" style="font-size: 0.7rem; line-height: 1.2;">342 de 410 equipamentos aferidos até ao momento.</p>
             </div>
 
-            <a href="manutencao.php" class="btn btn-light border border-light-subtle w-100 mt-4 rounded-pill fw-bold text-primary shadow-sm text-decoration-none" style="font-size: 0.75rem;">
+            <a href="/gira/private/manutencao.php" class="btn btn-light border border-light-subtle w-100 mt-4 rounded-pill fw-bold text-primary shadow-sm text-decoration-none" style="font-size: 0.75rem;">
                 Plano Mensal (68 OTs em falta)
             </a>
         </div>

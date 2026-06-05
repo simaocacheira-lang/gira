@@ -3,10 +3,6 @@
 // FUNÇÕES DE TABELA (DRY - Don't Repeat Yourself)
 // ============================================================================
 
-/**
- * Inicia a estrutura da tabela e gera os cabeçalhos dinamicamente
- * Aceita um array de cabeçalhos. Ex: ['label' => 'Nome', 'sort' => 'coluna_bd', 'align' => 'end']
- */
 function render_table_start($headers)
 {
     echo '<div class="card border-0 shadow-sm rounded-4 p-4 bg-white">';
@@ -19,12 +15,10 @@ function render_table_start($headers)
         $align = isset($th['align']) ? ' text-' . $th['align'] : '';
 
         if (isset($th['sort'])) {
-            // Cabeçalho com ordenação (setas clicáveis)
             echo '<th class="th-sortable' . $align . '" onclick="simularOrdenacao(\'' . $th['sort'] . '\')">';
             echo '<div class="d-inline-flex align-items-center gap-1">' . $th['label'] . '<i class="fa-solid fa-sort text-muted opacity-50 ms-1" style="font-size: 0.7rem;"></i></div>';
             echo '</th>';
         } else {
-            // Cabeçalho normal
             echo '<th class="' . $align . '">' . $th['label'] . '</th>';
         }
     }
@@ -34,9 +28,6 @@ function render_table_start($headers)
     echo '            <tbody>';
 }
 
-/**
- * Fecha a estrutura da tabela
- */
 function render_table_end()
 {
     echo '            </tbody>';
@@ -45,17 +36,12 @@ function render_table_end()
     echo '</div>';
 }
 
-/**
- * layout.php - Estrutura central do sistema
- */
-
 // ============================================================================
 // FUNÇÃO 1: RENDER_HEADER (Desenha o Head, Sidebar e Topbar)
 // ============================================================================
 function render_header($title = "Gira - Sistema de Gestão Hospitalar")
 {
-
-    // 1. ARRAY DINÂMICO DA SIDEBAR
+    // ARRAY DINÂMICO DA SIDEBAR
     $menu_items = [
         ['link' => 'dashboard.php', 'icon' => 'fa-house', 'label' => 'Dashboard'],
         ['is_header' => true, 'label' => 'Gestão'],
@@ -70,7 +56,6 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
         ['link' => 'historico.php', 'icon' => 'fa-solid fa-clock-rotate-left', 'label' => 'Histórico']
     ];
 
-    // Descobre em que página o utilizador está agora (ex: 'equipamentos.php')
     $current_page = basename($_SERVER['PHP_SELF']);
 ?>
     <!DOCTYPE html>
@@ -80,9 +65,9 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
         <meta charset="UTF-8">
         <title><?php echo $title; ?></title>
 
-        <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-        <link rel="stylesheet" href="../assets/css/all.min.css">
-        <link rel="stylesheet" href="../assets/css/1241251.css">
+        <link rel="stylesheet" href="/gira/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/gira/assets/css/all.min.css">
+        <link rel="stylesheet" href="/gira/assets/css/1241251.css">
     </head>
 
     <body>
@@ -104,7 +89,7 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                 <?php if (isset($item['is_header'])): ?>
                     <div class="small-caps text-secondary mt-3 mb-2 opacity-50 sidebar-text"><?php echo $item['label']; ?></div>
                 <?php else: ?>
-                    <a href="<?php echo $item['link']; ?>" class="sidebar-link <?php echo ($current_page == $item['link']) ? 'active' : ''; ?>">
+                    <a href="/gira/private/<?php echo $item['link']; ?>" class="sidebar-link <?php echo ($current_page == $item['link']) ? 'active' : ''; ?>">
                         <i class="fa-solid <?php echo $item['icon']; ?>"></i>
                         <span class="sidebar-text ms-2"><?php echo $item['label']; ?></span>
                     </a>
@@ -173,18 +158,18 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                     <h6 class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">A Minha Conta</h6>
                     <div class="list-group list-group-flush mb-4">
                         <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-regular fa-id-badge text-muted w-20px me-3 text-center"></i> O Meu Perfil</a>
-                        <a href="configuracoes.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-sliders text-muted w-20px me-3 text-center"></i> Configurações do Sistema</a>
-                        <a href="backoffice_publico.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-globe text-muted w-20px me-3 text-center"></i> Gerir Site Público</a>
+                        <a href="/gira/private/configuracoes.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-sliders text-muted w-20px me-3 text-center"></i> Configurações do Sistema</a>
+                        <a href="/gira/private/backoffice_publico.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-globe text-muted w-20px me-3 text-center"></i> Gerir Site Público</a>
                     </div>
 
                     <h6 class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">Gestão de Acessos</h6>
                     <div class="list-group list-group-flush mb-4">
-                        <a href="utilizadores.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-users text-muted w-20px me-3 text-center"></i> Contas de Utilizadores</a>
-                        <a href="perfis.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-user-shield text-muted w-20px me-3 text-center"></i> Perfis e Permissões</a>
+                        <a href="/gira/private/utilizadores.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-users text-muted w-20px me-3 text-center"></i> Contas de Utilizadores</a>
+                        <a href="/gira/private/perfis.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-user-shield text-muted w-20px me-3 text-center"></i> Perfis e Permissões</a>
                     </div>
 
                     <div class="mt-auto pt-3 border-top">
-                        <a href="logout.php" class="btn btn-danger bg-opacity-10 text-danger border-0 w-100 rounded-3 fw-bold py-2 shadow-none d-flex align-items-center justify-content-center hover-danger">
+                        <a href="/gira/public/login.php" class="btn btn-danger bg-opacity-10 text-danger border-0 w-100 rounded-3 fw-bold py-2 shadow-none d-flex align-items-center justify-content-center hover-danger">
                             <i class="fa-solid fa-right-from-bracket me-2"></i> Terminar Sessão
                         </a>
                     </div>
@@ -200,11 +185,13 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
     // ============================================================================
     function render_footer()
     {
-        require_once 'modals.php';
+        // CAMINHO ABSOLUTO DO PHP: Puxa o modals.php da mesma pasta física deste ficheiro
+        require_once __DIR__ . '/modals.php';
         ?>
         </div>
-        <script src="../assets/js/bootstrap.bundle.min.js"></script>
-        <script src="../assets/js/1241251.js"></script>
+
+        <script src="/gira/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="/gira/assets/js/1241251.js"></script>
 
         <script>
             // Alternar Sidebar
@@ -240,7 +227,6 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
             }
 
             // INICIALIZAÇÃO BLINDADA DOS TOOLTIPS
-            // Percorre todos os elementos e força o Bootstrap a ativá-los
             document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(elemento) {
                 new bootstrap.Tooltip(elemento);
             });

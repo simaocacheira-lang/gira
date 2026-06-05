@@ -2,9 +2,9 @@
 // 1. Iniciar a "Sessão" (para o servidor se lembrar de quem entrou)
 session_start();
 
-// Se o utilizador já estiver logado, redireciona logo para o dashboard
+// Se o utilizador já estiver logado, redireciona logo para o dashboard (CAMINHO ABSOLUTO URL)
 if (isset($_SESSION['user_id'])) {
-    header("Location: ../private/dashboard.php");
+    header("Location: /gira/private/dashboard.php");
     exit;
 }
 
@@ -12,7 +12,8 @@ $erro = ""; // Variável para guardar mensagens de erro
 
 // 2. Verificar se o formulário foi submetido (se clicaram no botão "Entrar")
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    require_once '../private/db.php'; // Chamar a nossa ponte
+    // CAMINHO ABSOLUTO DE SERVIDOR PARA INCLUDES (Blindado)
+    require_once __DIR__ . '/../private/db.php';
 
     // Apanhar o que foi escrito nos campos (com proteção contra espaços vazios)
     $user = trim($_POST['username'] ?? '');
@@ -32,8 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['username'] = $utilizador['username'];
             $_SESSION['nome'] = $utilizador['nome'];
 
-            // Redirecionar para o Dashboard
-            header("Location: ../private/dashboard.php");
+            // Redirecionar para o Dashboard (CAMINHO ABSOLUTO URL)
+            header("Location: /gira/private/dashboard.php");
             exit;
         } else {
             $erro = "Utilizador ou palavra-passe incorretos.";
@@ -52,11 +53,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Gira Inventory</title>
 
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-
-    <link rel="stylesheet" href="../assets/css/all.min.css">
-
-    <link rel="stylesheet" href="../assets/css/1241251.css">
+    <link rel="stylesheet" href="/gira/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/gira/assets/css/all.min.css">
+    <link rel="stylesheet" href="/gira/assets/css/1241251.css">
 
     <style>
         body {
@@ -74,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="login-card p-3">
         <div class="text-center mb-4">
-            <a href="index.php" class="text-decoration-none">
+            <a href="/gira/public/index.html" class="text-decoration-none">
                 <h1 class="fw-bold text-primary mb-1">
                     <i class="fa-solid fa-notes-medical me-2"></i>Gira
                 </h1>
@@ -86,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="card-body p-4 p-md-5">
                 <h4 class="fw-bold text-dark mb-4 text-center">Acesso Restrito</h4>
 
-                <form action="" method="POST">
+                <form action="/gira/public/login.php" method="POST">
                     <?php if (!empty($erro)): ?>
                         <div class="alert alert-danger text-center small mb-3">
                             <i class="fa-solid fa-triangle-exclamation me-1"></i> <?php echo $erro; ?>
@@ -113,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </button>
 
                     <div class="text-center">
-                        <a href="index.php" class="text-decoration-none small text-muted">
+                        <a href="/gira/public/index.html" class="text-decoration-none small text-muted">
                             <i class="fa-solid fa-arrow-left me-1"></i> Voltar à página inicial
                         </a>
                     </div>
@@ -126,9 +125,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 
-    <script src="../assets/js/bootstrap.bundle.min.js"></script>
-
-    <script src="../assets/js/1241251.js"></script>
+    <script src="/gira/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/gira/assets/js/1241251.js"></script>
 </body>
 
 </html>

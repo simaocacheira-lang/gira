@@ -9,12 +9,12 @@ $_SESSION = array();
 if (ini_get("session.use_cookies")) {
     $params = session_get_cookie_params();
     setcookie(
-        session_name(), 
-        '', 
+        session_name(),
+        '',
         time() - 42000,
-        $params["path"], 
+        $params["path"],
         $params["domain"],
-        $params["secure"], 
+        $params["secure"],
         $params["httponly"]
     );
 }
@@ -22,7 +22,6 @@ if (ini_get("session.use_cookies")) {
 // 4. Destrói a sessão no servidor por completo
 session_destroy();
 
-// 5. Redireciona o utilizador de volta para a página de login pública
-header("Location: ../public/login.php");
+// 5. Redireciona o utilizador de volta para a página de login pública (CAMINHO ABSOLUTO)
+header("Location: /gira/public/login.php");
 exit;
-?>
