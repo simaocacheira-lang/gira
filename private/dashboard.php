@@ -10,7 +10,7 @@ render_header("Gira - Dashboard Geral");
 
 <div class="d-flex justify-content-between align-items-center mb-5">
     <div>
-        <h2 class="fw-bold m-0">Bom dia, Dr. Miguel! 👋</h2>
+        <h2 class="fw-bold m-0">Bom dia, <?php echo htmlspecialchars($_SESSION['nome'] ?? 'Utilizador'); ?>! 👋</h2>
         <p class="text-muted m-0 small">Aqui está o panorama do inventário de equipamentos médicos.</p>
     </div>
     <div class="bg-white p-2 px-3 rounded-4 shadow-sm fw-bold small">

@@ -1,6 +1,18 @@
 <?php
 // ============================================================================
-// FUNÇÕES DE TABELA
+// BLOQUEIO DE SEGURANÇA (VERIFICAÇÃO DE SESSÃO)
+// ============================================================================
+session_start(); // Inicia a memória da sessão para ler quem está logado
+
+// Se a variável 'user_id' NÃO existir na sessão, significa que não passou pelo login
+if (!isset($_SESSION['user_id'])) {
+    // Expulsa o intruso de volta para a página de entrada (Caminho Absoluto)
+    header("Location: /gira/public/login.php");
+    exit; // Obrigatório: impede que o resto do código da página seja executado
+}
+
+// ============================================================================
+// FUNÇÕES DE TABELA (DRY - Don't Repeat Yourself)
 // ============================================================================
 
 function render_table_start($headers)
@@ -132,7 +144,7 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
 
                     <div class="d-flex align-items-center cursor-pointer" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPerfil" aria-controls="offcanvasPerfil" title="Abrir Perfil e Administração">
                         <div class="text-end me-3 d-none d-lg-block">
-                            <p class="fw-bold mb-0 small lh-1 text-dark">Dr. Miguel Santos</p>
+                            <p class="fw-bold mb-0 small lh-1 text-dark"><?php echo htmlspecialchars($_SESSION['nome'] ?? 'Utilizador'); ?></p>
                             <small class="text-muted" style="font-size: 0.65rem;">Administrador</small>
                         </div>
                         <img src="https://i.pravatar.cc/150?u=miguel" alt="Perfil" class="rounded-circle border border-2 border-white shadow-sm hover-primary" width="40" height="40" style="transition: transform 0.2s;">
@@ -146,7 +158,7 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                     <div class="d-flex align-items-center gap-3">
                         <img src="https://i.pravatar.cc/150?u=miguel" alt="Perfil" class="rounded-circle border border-3 border-white shadow-sm" width="60" height="60">
                         <div>
-                            <h5 class="fw-bold m-0 text-dark" id="offcanvasPerfilLabel">Dr. Miguel Santos</h5>
+                            <h5 class="fw-bold m-0 text-dark" id="offcanvasPerfilLabel"><?php echo htmlspecialchars($_SESSION['nome'] ?? 'Utilizador'); ?></h5>
                             <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2 mt-1">Administrador</span>
                         </div>
                     </div>
@@ -169,7 +181,7 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                     </div>
 
                     <div class="mt-auto pt-3 border-top">
-                        <a href="/gira/public/login.php" class="btn btn-danger bg-opacity-10 text-danger border-0 w-100 rounded-3 fw-bold py-2 shadow-none d-flex align-items-center justify-content-center hover-danger">
+                        <a href="/gira/private/logout.php" class="btn btn-danger bg-opacity-10 text-danger border-0 w-100 rounded-3 fw-bold py-2 shadow-none d-flex align-items-center justify-content-center hover-danger">
                             <i class="fa-solid fa-right-from-bracket me-2"></i> Terminar Sessão
                         </a>
                     </div>
