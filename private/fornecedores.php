@@ -24,7 +24,13 @@ try {
         <i class="fa-solid fa-truck-field text-white me-2"></i> Registar Fornecedor
     </button>
 </div>
-
+<?php if (isset($_GET['erro']) && $_GET['erro'] == 'fornecedor_ocupado'): ?>
+    <div class="alert alert-danger alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
+        <i class="fa-solid fa-shield-halved me-2"></i>
+        <strong>Ação Bloqueada pelo Sistema!</strong> Não podes eliminar este fornecedor porque existem equipamentos no inventário associados a ele. Tens de alterar o fornecedor dessas máquinas primeiro.
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
+    </div>
+<?php endif; ?>
 <?php
 // Tabela
 $colunas = [
@@ -62,14 +68,25 @@ foreach ($lista_fornecedores as $forn):
         <td><span class="badge bg-<?php echo $cor_badge; ?> bg-opacity-10 text-<?php echo $cor_badge; ?> rounded-pill px-2"><?php echo htmlspecialchars($forn['estado']); ?></span></td>
         <td class="text-end">
             <span data-bs-toggle="tooltip" data-bs-placement="top" title="Alterar Dados do Fornecedor">
-                <button class="btn btn-light btn-sm rounded-3 me-1 border" onclick="alert('Edição em desenvolvimento!');">
+                <button class="btn btn-light btn-sm rounded-3 me-1 border"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalEditarFornecedor"
+                    data-id="<?php echo $forn['id']; ?>"
+                    data-nome="<?php echo htmlspecialchars($forn['nome_empresa']); ?>"
+                    data-nif="<?php echo htmlspecialchars($forn['nif']); ?>"
+                    data-email="<?php echo htmlspecialchars($forn['email_suporte'] ?? ''); ?>"
+                    data-telefone="<?php echo htmlspecialchars($forn['telefone_suporte'] ?? ''); ?>"
+                    data-especialidade="<?php echo htmlspecialchars($forn['especialidade']); ?>"
+                    data-estado="<?php echo htmlspecialchars($forn['estado']); ?>">
                     <i class="fa-solid fa-pen text-primary"></i>
                 </button>
             </span>
             <span data-bs-toggle="tooltip" data-bs-placement="top" title="Revogar Contrato/Fornecedor">
-                <button class="btn btn-light btn-sm rounded-3 text-danger border" onclick="alert('Eliminar em desenvolvimento!');">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
+                <a href="/gira/private/eliminar_fornecedor.php?id=<?php echo $forn['id']; ?>"
+                    class="btn btn-light btn-sm rounded-3 border"
+                    onclick="return confirm('⚠️ ATENÇÃO: Tens a certeza que queres revogar o contrato e eliminar o fornecedor <?php echo htmlspecialchars($forn['nome_empresa']); ?>?');">
+                    <i class="fa-solid fa-trash text-danger"></i>
+                </a>
             </span>
         </td>
     </tr>
@@ -87,6 +104,38 @@ if (count($lista_fornecedores) === 0):
 <?php
 endif;
 
-render_table_end();
+render_table_end(); ?>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modalEditarForn = document.getElementById('modalEditarFornecedor');
+        if (modalEditarForn) {
+            modalEditarForn.addEventListener('show.bs.modal', function(event) {
+                // 1. Descobrir qual foi o botão clicado
+                const button = event.relatedTarget;
+
+                // 2. Extrair os dados
+                const id = button.getAttribute('data-id');
+                const nome = button.getAttribute('data-nome');
+                const nif = button.getAttribute('data-nif');
+                const email = button.getAttribute('data-email');
+                const telefone = button.getAttribute('data-telefone');
+                const especialidade = button.getAttribute('data-especialidade');
+                const estado = button.getAttribute('data-estado');
+
+                // 3. Injetar nos campos do formulário (que já tens no teu modals.php)
+                const form = document.getElementById('formEditarFornecedor');
+                form.querySelector('input[name="id_fornecedor"]').value = id;
+                form.querySelector('input[name="nome_empresa"]').value = nome;
+                form.querySelector('input[name="nif"]').value = nif;
+                form.querySelector('input[name="email_suporte"]').value = email;
+                form.querySelector('input[name="telefone_suporte"]').value = telefone;
+                form.querySelector('select[name="especialidade"]').value = especialidade;
+                form.querySelector('select[name="estado"]').value = estado;
+            });
+        }
+    });
+</script>
+<?php
 render_footer();
 ?>
