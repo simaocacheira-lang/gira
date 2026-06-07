@@ -1,19 +1,20 @@
 <?php
-// 1. Declaramos logo que vamos querer usar o $pdo global (seja ele qual for)
 global $pdo;
-
-// 2. Se a página atual (ex: garantias.php) ainda não abriu a base de dados, abrimos agora!
 if (empty($pdo)) {
     require_once __DIR__ . '/db.php';
 }
 
-// 3. Agora temos 100% de certeza que o $pdo existe e está ligado
 try {
+    // 1. Ir buscar os Equipamentos para a O.T.
     $stmt_lista_eq = $pdo->query("SELECT id, codigo_ativo, nome FROM equipamentos ORDER BY codigo_ativo ASC");
     $equipamentos_dropdown = $stmt_lista_eq->fetchAll();
+
+    // 2. Ir buscar as Localizações para o Registo de Equipamento (NOVO)
+    $stmt_lista_loc = $pdo->query("SELECT id, cod_sala, nome FROM localizacoes ORDER BY nome ASC");
+    $localizacoes_dropdown = $stmt_lista_loc->fetchAll();
 } catch (Exception $e) {
-    // Se a tabela ainda não existir ou houver erro, devolve uma lista vazia para não quebrar a página
     $equipamentos_dropdown = [];
+    $localizacoes_dropdown = [];
 }
 ?>
 
@@ -68,8 +69,13 @@ try {
                                 <label class="form-label small fw-bold text-secondary">Localização / Serviço Alocado</label>
                                 <select class="form-select rounded-3 bg-light border-0" name="localizacao_id" required>
                                     <option value="" selected disabled>Escolha o serviço...</option>
-                                    <option value="1">Serviço de Urgência Hospitalar · Reanimação</option>
-                                    <option value="2">Cuidados Intensivos · Box 4</option>
+
+                                    <?php foreach ($localizacoes_dropdown as $loc): ?>
+                                        <option value="<?php echo $loc['id']; ?>">
+                                            <?php echo htmlspecialchars($loc['cod_sala'] . ' · ' . $loc['nome']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+
                                 </select>
                             </div>
                         </div>
@@ -277,22 +283,54 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="/gira/private/processar_fornecedor.php" method="POST">
+                <form id="formNovoFornecedor" action="/gira/private/processar_fornecedor.php" method="POST">
                     <div class="row g-3">
-                        <div class="col-md-7"><label class="form-label small fw-bold">Nome da Empresa</label><input type="text" class="form-control bg-light border-0" required></div>
-                        <div class="col-md-5"><label class="form-label small fw-bold">NIF</label><input type="text" class="form-control bg-light border-0" required></div>
-                        <div class="col-md-6"><label class="form-label small fw-bold">Especialidade</label><select class="form-select bg-light border-0">
-                                <option>Monitores</option>
-                            </select></div>
-                        <div class="col-md-6"><label class="form-label small fw-bold">Estado</label><select class="form-select bg-light border-0">
-                                <option>Ativo</option>
-                            </select></div>
+                        <div class="col-md-7">
+                            <label class="form-label small fw-bold text-secondary">Nome da Empresa</label>
+                            <input type="text" class="form-control bg-light border-0" name="nome_empresa" required>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label small fw-bold text-secondary">NIF</label>
+                            <input type="text" class="form-control bg-light border-0 fw-mono" name="nif" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">E-mail de Suporte</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0"><i class="fa-solid fa-envelope text-muted"></i></span>
+                                <input type="email" class="form-control rounded-end-3 bg-light border-0" name="email_suporte">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">Telefone / Linha de Apoio</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0"><i class="fa-solid fa-phone text-muted"></i></span>
+                                <input type="text" class="form-control rounded-end-3 bg-light border-0" name="telefone_suporte">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">Especialidade / Equipamentos</label>
+                            <select class="form-select bg-light border-0" name="especialidade" required>
+                                <option value="Monitores e Imagiologia">Monitores e Imagiologia</option>
+                                <option value="Ventilação e Suporte de Vida">Ventilação e Suporte de Vida</option>
+                                <option value="Bombas de Infusão">Bombas de Infusão</option>
+                                <option value="Consumíveis Gerais">Consumíveis Gerais</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">Estado da Parceria</label>
+                            <select class="form-select bg-light border-0 fw-bold text-success" name="estado">
+                                <option value="Ativo" selected>Ativo (Contrato Válido)</option>
+                                <option value="Inativo" class="text-danger">Suspenso / Inativo</option>
+                            </select>
+                        </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer border-top border-light p-3">
-                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary rounded-3 fw-bold small px-4">Guardar</button>
+                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3 text-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovoFornecedor" class="btn btn-primary rounded-3 fw-bold small px-4">Guardar Fornecedor</button>
             </div>
         </div>
     </div>

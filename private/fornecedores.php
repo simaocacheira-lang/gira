@@ -1,9 +1,17 @@
 <?php
-// 1. Chamamos o molde para trazer a Sidebar e a Topbar automáticas
+// 1. Ligar à Base de Dados e carregar o Layout
+require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/layout.php';
 
-// 2. Montamos o topo da página com o título correto para a aba do browser
 render_header("Gira - Gestão de Fornecedores");
+
+// 2. Ir à base de dados buscar todos os fornecedores
+try {
+    $stmt = $pdo->query("SELECT * FROM fornecedores ORDER BY nome_empresa ASC");
+    $lista_fornecedores = $stmt->fetchAll();
+} catch (PDOException $e) {
+    die("Erro ao carregar fornecedores: " . $e->getMessage());
+}
 ?>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -18,7 +26,7 @@ render_header("Gira - Gestão de Fornecedores");
 </div>
 
 <?php
-// 1. Definimos as colunas da tabela
+// Tabela
 $colunas = [
     ['label' => 'Fornecedor / NIF', 'sort' => 'nif_empresa'],
     ['label' => 'Contacto Técnico'],
@@ -27,58 +35,58 @@ $colunas = [
     ['label' => 'Ações', 'align' => 'end']
 ];
 
-// 2. Desenhamos a caixa exterior e os cabeçalhos automaticamente!
 render_table_start($colunas);
+
+// 3. Desenhar os fornecedores reais
+foreach ($lista_fornecedores as $forn):
+    // Lógica para a cor da etiqueta
+    $cor_badge = ($forn['estado'] == 'Ativo') ? 'success' : 'danger';
 ?>
-
-<tr>
-    <td>
-        <div class="fw-bold text-primary">Mindray Medical Portugal</div>
-        <small class="text-muted fw-mono">NIF: 512987654</small>
-    </td>
-    <td><a href="mailto:suporte@mindray.pt" class="text-decoration-none">suporte@mindray.pt</a></td>
-    <td><span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary-subtle px-2">Monitores de Sinais Vitais</span></td>
-    <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Ativo</span></td>
-    <td class="text-end">
-        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Alterar Dados do Fornecedor">
-            <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor">
-                <i class="fa-solid fa-pen text-primary"></i>
-            </button>
-        </span>
-        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Revogar Contrato/Fornecedor">
-            <button class="btn btn-light btn-sm rounded-3 text-danger border">
-                <i class="fa-solid fa-trash"></i>
-            </button>
-        </span>
-    </td>
-</tr>
-
-<tr>
-    <td>
-        <div class="fw-bold text-primary">B. Braun Medical S.A.</div>
-        <small class="text-muted fw-mono">NIF: 500123456</small>
-    </td>
-    <td><a href="mailto:apoio.tecnico@bbraun.com" class="text-decoration-none">apoio.tecnico@bbraun.com</a></td>
-    <td><span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary-subtle px-2">Bombas de Infusão</span></td>
-    <td><span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2">Expirado</span></td>
-    <td class="text-end">
-        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Alterar Dados do Fornecedor">
-            <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor">
-                <i class="fa-solid fa-pen text-primary"></i>
-            </button>
-        </span>
-        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Revogar Contrato/Fornecedor">
-            <button class="btn btn-light btn-sm rounded-3 text-danger border">
-                <i class="fa-solid fa-trash"></i>
-            </button>
-        </span>
-    </td>
-</tr>
-
+    <tr>
+        <td>
+            <div class="fw-bold text-primary"><?php echo htmlspecialchars($forn['nome_empresa']); ?></div>
+            <small class="text-muted fw-mono">NIF: <?php echo htmlspecialchars($forn['nif']); ?></small>
+        </td>
+        <td>
+            <?php if (!empty($forn['email_suporte'])): ?>
+                <a href="mailto:<?php echo htmlspecialchars($forn['email_suporte']); ?>" class="text-decoration-none">
+                    <i class="fa-solid fa-envelope text-muted me-1"></i><?php echo htmlspecialchars($forn['email_suporte']); ?>
+                </a>
+                <br>
+            <?php endif; ?>
+            <?php if (!empty($forn['telefone_suporte'])): ?>
+                <small class="text-muted"><i class="fa-solid fa-phone me-1"></i><?php echo htmlspecialchars($forn['telefone_suporte']); ?></small>
+            <?php endif; ?>
+        </td>
+        <td><span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary-subtle px-2"><?php echo htmlspecialchars($forn['especialidade']); ?></span></td>
+        <td><span class="badge bg-<?php echo $cor_badge; ?> bg-opacity-10 text-<?php echo $cor_badge; ?> rounded-pill px-2"><?php echo htmlspecialchars($forn['estado']); ?></span></td>
+        <td class="text-end">
+            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Alterar Dados do Fornecedor">
+                <button class="btn btn-light btn-sm rounded-3 me-1 border" onclick="alert('Edição em desenvolvimento!');">
+                    <i class="fa-solid fa-pen text-primary"></i>
+                </button>
+            </span>
+            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Revogar Contrato/Fornecedor">
+                <button class="btn btn-light btn-sm rounded-3 text-danger border" onclick="alert('Eliminar em desenvolvimento!');">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </span>
+        </td>
+    </tr>
 <?php
-// 3. Fechamos as tags da tabela automaticamentegit config user.name "Simão Cacheira"
-render_table_end();
+endforeach;
 
-// 4. Fechamos a página e injetamos os scripts centrais!
+if (count($lista_fornecedores) === 0):
+?>
+    <tr>
+        <td colspan="5" class="text-center text-muted py-5">
+            <i class="fa-solid fa-building fs-1 text-light mb-3"></i><br>
+            Ainda não tens fornecedores registados no sistema.
+        </td>
+    </tr>
+<?php
+endif;
+
+render_table_end();
 render_footer();
 ?>
