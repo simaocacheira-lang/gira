@@ -18,19 +18,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // 4. Injetar os dados do formulário
         $stmt->execute([
             ':numero'      => $numero_ot,
-            ':equipamento' => (int) $_POST['equipamento_id'], // Garantimos que é gravado como número inteiro
+            ':equipamento' => (int) $_POST['equipamento_id'],
             ':tipo'        => $_POST['tipo_manutencao'],
             ':prioridade'  => $_POST['prioridade'],
             ':descricao'   => $_POST['descricao_avaria']
         ]);
 
-        // 5. Sucesso! Volta para a página de equipamentos com uma mensagem
-        header("Location: /gira/private/equipamentos.php?sucesso=ot_criada");
+        // 5. MUDANÇA AQUI: Redirecionar para o Dashboard de Manutenção!
+        header("Location: /gira/private/manutencao.php?sucesso=ot_criada");
         exit;
     } catch (PDOException $e) {
         die("Erro ao emitir Ordem de Trabalho: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/equipamentos.php");
+    // Redirecionamento de segurança alterado para manutenção também
+    header("Location: /gira/private/manutencao.php");
     exit;
 }

@@ -1,7 +1,21 @@
 <?php
-// 1. Chamamos o molde para trazer a Sidebar e a Topbar automáticas
+// 1. Ligar à Base de Dados e chamar o molde
+require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/layout.php';
-// 2. Montamos o topo da página com o título correto para a aba do browser
+
+// 2. O Motor de Busca: Fazer JOIN para juntar as OTs com os dados dos Equipamentos
+try {
+    $sql = "SELECT ot.*, e.nome AS equip_nome, e.modelo AS equip_modelo 
+            FROM ordens_trabalho ot
+            LEFT JOIN equipamentos e ON ot.equipamento_id = e.id
+            ORDER BY ot.id DESC";
+    $stmt = $pdo->query($sql);
+    $lista_ots = $stmt->fetchAll();
+} catch (PDOException $e) {
+    die("Erro ao carregar o dashboard de manutenção: " . $e->getMessage());
+}
+
+// 3. Montamos o topo da página
 render_header("Gira - Ordens de Trabalho e Manutenção");
 ?>
 
@@ -33,7 +47,6 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
 
     <div class="tab-pane fade show active" id="lista" role="tabpanel" tabindex="0">
         <?php
-        // 1. Definimos as colunas da tabela de Ordens de Trabalho
         $colunas = [
             ['label' => 'Nº O.T.', 'sort' => 'id_ot'],
             ['label' => 'Equipamento / Modelo', 'sort' => 'equipamento'],
@@ -44,182 +57,108 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
             ['label' => 'Ações Técnicas', 'align' => 'end']
         ];
 
-        // 2. Invocamos a função da tabela
         render_table_start($colunas);
+
+        // =======================================================
+        // O LOOP DINÂMICO QUE SUBSTITUI OS EXEMPLOS ESTÁTICOS
+        // =======================================================
+        foreach ($lista_ots as $ot):
+            // 1. Lógica para as cores do Tipo de Intervenção
+            $tipo_badge = 'secondary';
+            if (strpos($ot['tipo_manutencao'], 'Corretiva') !== false) $tipo_badge = 'danger';
+            elseif (strpos($ot['tipo_manutencao'], 'Preventiva') !== false) $tipo_badge = 'success';
+
+            // 2. Lógica para as cores da Prioridade
+            $prioridade_icon = '';
+            $prioridade_class = 'text-muted fw-medium';
+            if ($ot['prioridade'] == 'Crítica') {
+                $prioridade_class = 'text-danger fw-bold';
+                $prioridade_icon = '<i class="fa-solid fa-triangle-exclamation me-1"></i>';
+            } elseif ($ot['prioridade'] == 'Alta') {
+                $prioridade_class = 'text-warning fw-bold';
+            }
+
+            // 3. Lógica para as cores do Estado (Assumindo 'Pendente' se não existir ainda)
+            $estado_atual = isset($ot['estado']) ? $ot['estado'] : 'Pendente';
+            $estado_badge = 'danger text-white';
+            if ($estado_atual == 'Em Curso') $estado_badge = 'warning text-dark';
+            elseif ($estado_atual == 'Concluída') $estado_badge = 'light text-muted border';
+
+            // 4. Formatação de Data
+            $data_abertura = isset($ot['data_abertura']) ? date('d/m/Y', strtotime($ot['data_abertura'])) : date('d/m/Y');
         ?>
-
-        <tr>
-            <td class="fw-bold text-primary fw-mono">#OT-2026-102</td>
-            <td>
-                <div class="fw-bold">Ventilador Pulmonar de Alta Performance</div>
-                <small class="text-muted">Urgências · Erro de fluxo de oxigénio</small>
-            </td>
-            <td><span class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle px-2">Corretiva (Avaria)</span></td>
-            <td><span class="text-danger fw-bold"><i class="fa-solid fa-triangle-exclamation me-1"></i> Crítica</span></td>
-            <td>31/05/2026</td>
-            <td><span class="badge bg-danger text-white rounded-pill px-2">Pendente</span></td>
-            <td class="text-end">
-                <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Assumir Reparação">
-                    <i class="fa-solid fa-wrench text-primary"></i>
-                </button>
-                <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Cancelar Ordem">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="fw-bold text-primary fw-mono">#OT-2026-098</td>
-            <td>
-                <div class="fw-bold">Sistema de Ultrassom / Ecógrafo</div>
-                <small class="text-muted">Obstetrícia · Calibração semestral</small>
-            </td>
-            <td><span class="badge bg-success bg-opacity-10 text-success border border-success-subtle px-2">Preventiva Planeada</span></td>
-            <td><span class="text-muted fw-medium">Média</span></td>
-            <td>25/05/2026</td>
-            <td><span class="badge bg-warning text-dark rounded-pill px-2">Em Curso</span></td>
-            <td class="text-end">
-                <span data-bs-toggle="tooltip" data-bs-placement="top" title="Fechar Relatório Técnico">
-                    <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="modal" data-bs-target="#modalFecharOT">
-                        <i class="fa-solid fa-check text-success"></i>
+            <tr>
+                <td class="fw-bold text-primary fw-mono"><?php echo htmlspecialchars($ot['numero_ot']); ?></td>
+                <td>
+                    <div class="fw-bold"><?php echo htmlspecialchars($ot['equip_nome']); ?></div>
+                    <small class="text-muted"><i class="fa-solid fa-industry me-1"></i><?php echo htmlspecialchars($ot['equip_modelo']); ?></small>
+                </td>
+                <td><span class="badge bg-<?php echo $tipo_badge; ?> bg-opacity-10 text-<?php echo $tipo_badge; ?> border border-<?php echo $tipo_badge; ?>-subtle px-2"><?php echo htmlspecialchars($ot['tipo_manutencao']); ?></span></td>
+                <td><span class="<?php echo $prioridade_class; ?>"><?php echo $prioridade_icon . htmlspecialchars($ot['prioridade']); ?></span></td>
+                <td><?php echo $data_abertura; ?></td>
+                <td><span class="badge bg-<?php echo $estado_badge; ?> rounded-pill px-2"><?php echo htmlspecialchars($estado_atual); ?></span></td>
+                <td class="text-end">
+                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="Gerir Ordem de Trabalho">
+                        <button class="btn btn-light btn-sm rounded-3 me-1 border btn-fechar-ot"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalFecharOT"
+                            data-id="<?php echo $ot['id']; ?>"
+                            data-numero="<?php echo htmlspecialchars($ot['numero_ot']); ?>"
+                            data-equipamento="<?php echo $ot['equipamento_id']; ?>">
+                            <i class="fa-solid fa-check text-success"></i>
+                        </button>
+                    </span>
+                    <button class="btn btn-light btn-sm rounded-3 text-danger border" onclick="alert('Funcionalidade de cancelar a desenvolver!');">
+                        <i class="fa-solid fa-xmark"></i>
                     </button>
-                </span>
-                <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Cancelar Ordem">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="fw-bold text-primary fw-mono">#OT-2026-085</td>
-            <td>
-                <div class="fw-bold">Monitor Multiparamétrico de Sinais Vitais</div>
-                <small class="text-muted">UCI · Substituição de bateria afetada</small>
-            </td>
-            <td><span class="badge bg-info bg-opacity-10 text-info border border-info-subtle px-2">Verificação Técnica</span></td>
-            <td><span class="text-warning fw-bold">Alta</span></td>
-            <td>18/05/2026</td>
-            <td><span class="badge bg-light text-muted border rounded-pill px-2">Concluída</span></td>
-            <td class="text-end">
-                <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar Histórico">
-                    <i class="fa-solid fa-eye text-primary"></i>
-                </button>
-                <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Registo">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
-            </td>
-        </tr>
-
+                </td>
+            </tr>
         <?php
-        // 3. Fechamos as tags da tabela automaticamente
+        endforeach;
+
+        if (count($lista_ots) === 0):
+        ?>
+            <tr>
+                <td colspan="7" class="text-center text-muted py-5">
+                    <i class="fa-solid fa-clipboard-check fs-1 text-light mb-3"></i><br>
+                    Tudo operacional! Não existem Ordens de Trabalho pendentes.
+                </td>
+            </tr>
+        <?php
+        endif;
+
         render_table_end();
         ?>
     </div>
 
     <div class="tab-pane fade" id="calendario" role="tabpanel" tabindex="0">
         <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
-
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5 class="fw-bold text-dark m-0">Maio 2026</h5>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-light border rounded-3 btn-sm"><i class="fa-solid fa-chevron-left"></i></button>
-                    <button class="btn btn-light border rounded-3 fw-bold small text-secondary">Mês Atual</button>
-                    <button class="btn btn-light border rounded-3 btn-sm"><i class="fa-solid fa-chevron-right"></i></button>
-                </div>
-            </div>
-
-            <div class="calendar-grid">
-                <div class="calendar-header">Segunda</div>
-                <div class="calendar-header">Terça</div>
-                <div class="calendar-header">Quarta</div>
-                <div class="calendar-header">Quinta</div>
-                <div class="calendar-header">Sexta</div>
-                <div class="calendar-header">Sábado</div>
-                <div class="calendar-header">Domingo</div>
-
-                <div class="calendar-day empty"></div>
-                <div class="calendar-day empty"></div>
-                <div class="calendar-day empty"></div>
-                <div class="calendar-day empty"></div>
-
-                <div class="calendar-day"><span class="day-number">1</span></div>
-                <div class="calendar-day"><span class="day-number">2</span></div>
-                <div class="calendar-day"><span class="day-number">3</span></div>
-
-                <div class="calendar-day"><span class="day-number">4</span></div>
-                <div class="calendar-day">
-                    <span class="day-number">5</span>
-                    <div class="event-badge bg-info bg-opacity-10 text-info border border-info-subtle" title="Calibração Mensal">
-                        <i class="fa-solid fa-heart-pulse me-1"></i> 15 Monitores
-                    </div>
-                </div>
-                <div class="calendar-day"><span class="day-number">6</span></div>
-                <div class="calendar-day"><span class="day-number">7</span></div>
-                <div class="calendar-day"><span class="day-number">8</span></div>
-                <div class="calendar-day"><span class="day-number">9</span></div>
-                <div class="calendar-day"><span class="day-number">10</span></div>
-
-                <div class="calendar-day">
-                    <span class="day-number">11</span>
-                    <div class="event-badge bg-warning bg-opacity-10 text-dark border border-warning-subtle" title="Manutenção Semestral em Lote">
-                        <i class="fa-solid fa-layer-group text-warning me-1"></i> 40 Ecógrafos (Dia 1/3)
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <span class="day-number">12</span>
-                    <div class="event-badge bg-warning bg-opacity-10 text-dark border border-warning-subtle" title="Manutenção Semestral em Lote">
-                        <i class="fa-solid fa-layer-group text-warning me-1"></i> 40 Ecógrafos (Dia 2/3)
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <span class="day-number">13</span>
-                    <div class="event-badge bg-warning bg-opacity-10 text-dark border border-warning-subtle" title="Manutenção Semestral em Lote">
-                        <i class="fa-solid fa-layer-group text-warning me-1"></i> 40 Ecógrafos (Dia 3/3)
-                    </div>
-                </div>
-                <div class="calendar-day"><span class="day-number">14</span></div>
-                <div class="calendar-day"><span class="day-number">15</span></div>
-                <div class="calendar-day"><span class="day-number">16</span></div>
-                <div class="calendar-day"><span class="day-number">17</span></div>
-
-                <div class="calendar-day"><span class="day-number">18</span></div>
-                <div class="calendar-day"><span class="day-number">19</span></div>
-                <div class="calendar-day">
-                    <span class="day-number today">20</span>
-                    <div class="event-badge bg-primary bg-opacity-10 text-primary border border-primary-subtle" title="Inspeção Visual Anual">
-                        <i class="fa-solid fa-bed me-1"></i> Camas Articuladas
-                    </div>
-                </div>
-                <div class="calendar-day"><span class="day-number">21</span></div>
-                <div class="calendar-day"><span class="day-number">22</span></div>
-                <div class="calendar-day"><span class="day-number">23</span></div>
-                <div class="calendar-day"><span class="day-number">24</span></div>
-
-                <div class="calendar-day"><span class="day-number">25</span></div>
-                <div class="calendar-day"><span class="day-number">26</span></div>
-                <div class="calendar-day"><span class="day-number">27</span></div>
-                <div class="calendar-day border-danger border-2 shadow-sm">
-                    <span class="day-number text-danger">28</span>
-                    <div class="event-badge bg-danger text-white shadow-sm" title="Revisão Obrigatória de Suporte de Vida">
-                        <i class="fa-solid fa-triangle-exclamation me-1"></i> Revisão Ventiladores BO
-                    </div>
-                </div>
-                <div class="calendar-day"><span class="day-number">29</span></div>
-                <div class="calendar-day"><span class="day-number">30</span></div>
-                <div class="calendar-day"><span class="day-number">31</span></div>
-            </div>
-
-            <div class="d-flex align-items-center gap-4 mt-4 pt-3 border-top border-light">
-                <span class="small fw-bold text-secondary"><i class="fa-solid fa-circle text-primary me-1" style="font-size: 0.5rem;"></i> Inspeção</span>
-                <span class="small fw-bold text-secondary"><i class="fa-solid fa-circle text-warning me-1" style="font-size: 0.5rem;"></i> Intervenção em Lote</span>
-                <span class="small fw-bold text-secondary"><i class="fa-solid fa-circle text-info me-1" style="font-size: 0.5rem;"></i> Calibração / Metrologia</span>
-                <span class="small fw-bold text-secondary"><i class="fa-solid fa-circle text-danger me-1" style="font-size: 0.5rem;"></i> Revisão Crítica (Prioritária)</span>
+                <p class="text-muted small mt-4"><em>(Visualização do Calendário Estática para Efeitos de Design)</em></p>
             </div>
         </div>
     </div>
 </div>
 
-<?php
-// Fechamos a página e injetamos os scripts
-render_footer();
-?>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modalFecharOT = document.getElementById('modalFecharOT');
+        if (modalFecharOT) {
+            modalFecharOT.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+
+                // Apanhar os dados
+                const idOt = button.getAttribute('data-id');
+                const numOt = button.getAttribute('data-numero');
+                const idEquip = button.getAttribute('data-equipamento');
+
+                // Preencher o modal
+                document.getElementById('fecho_id_ot').value = idOt;
+                document.getElementById('fecho_id_equipamento').value = idEquip;
+                document.getElementById('fecho_numero_ot').textContent = numOt;
+            });
+        }
+    });
+</script>
+<?php render_footer(); ?>
