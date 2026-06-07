@@ -12,8 +12,11 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $id_equipamento = (int) $_GET['id'];
 
 try {
-    // 3. Ir à base de dados buscar os dados do equipamento
-    $sql = "SELECT * FROM equipamentos WHERE id = :id";
+    // 3. Ir buscar os dados do equipamento E do Fornecedor associado
+    $sql = "SELECT e.*, f.nome_empresa, f.email_suporte, f.telefone_suporte 
+            FROM equipamentos e 
+            LEFT JOIN fornecedores f ON e.fornecedor_id = f.id 
+            WHERE e.id = :id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':id' => $id_equipamento]);
     $eq = $stmt->fetch();
@@ -21,6 +24,12 @@ try {
     if (!$eq) {
         die("<h3>Erro 404: Equipamento não encontrado no parque tecnológico.</h3><a href='/gira/private/equipamentos.php'>Voltar à lista</a>");
     }
+
+    // 4. NOVA PESQUISA: Ir buscar o histórico clínico (OTs) DESTE equipamento específico
+    $sql_historico = "SELECT * FROM ordens_trabalho WHERE equipamento_id = :id ORDER BY id DESC";
+    $stmt_historico = $pdo->prepare($sql_historico);
+    $stmt_historico->execute([':id' => $id_equipamento]);
+    $historico_ots = $stmt_historico->fetchAll();
 } catch (PDOException $e) {
     die("Erro ao carregar dados: " . $e->getMessage());
 }
@@ -69,8 +78,8 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
 
             <select class="form-select form-select-sm bg-success bg-opacity-10 text-success fw-bold border-success-subtle w-auto rounded-3" name="estado_operacional">
                 <option value="Operacional" <?php echo ($eq['estado'] == 'Operacional') ? 'selected' : ''; ?>>Operacional</option>
-                <option value="Avariado" <?php echo ($eq['estado'] == 'Inoperacional') ? 'selected' : ''; ?>>Avariado / Em Reparação</option>
-                <option value="Aguardar Calibração" <?php echo ($eq['estado'] == 'Manutenção' || $eq['estado'] == 'Aguardar Calibração') ? 'selected' : ''; ?>>Aguardar Calibração</option>
+                <option value="Inoperacional" <?php echo ($eq['estado'] == 'Inoperacional') ? 'selected' : ''; ?>>Avariado / Em Reparação</option>
+                <option value="Manutenção" <?php echo ($eq['estado'] == 'Manutenção' || $eq['estado'] == 'Aguardar Calibração') ? 'selected' : ''; ?>>Aguardar Calibração</option>
             </select>
 
             <select class="form-select form-select-sm bg-danger bg-opacity-10 text-danger fw-bold border-danger-subtle w-auto rounded-3" name="classe_risco">
@@ -185,9 +194,58 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
         </div>
 
         <div class="tab-pane fade" id="manutencao" role="tabpanel" tabindex="0">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white text-center py-5">
-                <i class="fa-solid fa-screwdriver-wrench text-muted fs-1 mb-3 opacity-50"></i>
-                <p class="text-muted">Ainda não existem ordens de trabalho para este equipamento.</p>
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                <h6 class="fw-bold mb-4 text-dark fs-5"><i class="fa-solid fa-clock-rotate-left text-primary me-2"></i>Histórico de Intervenções</h6>
+
+                <?php if (count($historico_ots) === 0): ?>
+                    <div class="text-center py-5">
+                        <i class="fa-solid fa-screwdriver-wrench text-muted fs-1 mb-3 opacity-50"></i>
+                        <p class="text-muted">Excelente! Ainda não existem avarias ou manutenções registadas para este equipamento.</p>
+                    </div>
+                <?php else: ?>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light text-secondary small fw-bold">
+                                <tr>
+                                    <th>Nº O.T.</th>
+                                    <th>Data / Hora</th>
+                                    <th>Tipo de Avaria</th>
+                                    <th>Relatório Técnico</th>
+                                    <th>Tempo</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($historico_ots as $ot): ?>
+                                    <tr>
+                                        <td class="fw-bold text-primary fw-mono"><?php echo htmlspecialchars($ot['numero_ot']); ?></td>
+                                        <td class="text-muted small">
+                                            <?php echo date('d/m/Y', strtotime($ot['data_abertura'])); ?><br>
+                                            <span style="font-size: 0.7rem;"><?php echo date('H:i', strtotime($ot['data_abertura'])); ?></span>
+                                        </td>
+                                        <td>
+                                            <div class="fw-bold small"><?php echo htmlspecialchars($ot['tipo_manutencao']); ?></div>
+                                            <small class="text-muted"><?php echo htmlspecialchars($ot['descricao_avaria']); ?></small>
+                                        </td>
+                                        <td class="small text-secondary">
+                                            <?php echo !empty($ot['relatorio_tecnico']) ? htmlspecialchars($ot['relatorio_tecnico']) : '<em>Aguardando relatório...</em>'; ?>
+                                        </td>
+                                        <td class="fw-bold text-dark">
+                                            <?php echo !empty($ot['tempo_gasto']) ? htmlspecialchars($ot['tempo_gasto']) . 'h' : '-'; ?>
+                                        </td>
+                                        <td>
+                                            <?php if ($ot['estado'] == 'Concluída'): ?>
+                                                <span class="badge bg-light text-muted border rounded-pill px-2">Fechada</span>
+                                            <?php else: ?>
+                                                <span class="badge bg-warning text-dark rounded-pill px-2">Em Curso</span>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -199,9 +257,88 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
         </div>
 
         <div class="tab-pane fade" id="comercial" role="tabpanel" tabindex="0">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white text-center py-5">
-                <i class="fa-solid fa-handshake text-muted fs-1 mb-3 opacity-50"></i>
-                <p class="text-muted">Gestor Comercial em desenvolvimento.</p>
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
+                        <h6 class="fw-bold mb-4 text-dark fs-5"><i class="fa-solid fa-file-invoice-dollar text-primary me-2"></i>Processo de Aquisição</h6>
+
+                        <div class="row g-4">
+                            <div class="col-sm-6">
+                                <label class="text-muted d-block mb-1 small fw-bold">Fornecedor Oficial</label>
+                                <div class="fw-bold text-dark"><?php echo !empty($eq['nome_empresa']) ? htmlspecialchars($eq['nome_empresa']) : '<em class="text-muted">Não definido</em>'; ?></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="text-muted d-block mb-1 small fw-bold">Data de Aquisição</label>
+                                <div class="fw-bold text-dark"><?php echo !empty($eq['data_aquisicao']) ? date('d/m/Y', strtotime($eq['data_aquisicao'])) : '-'; ?></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="text-muted d-block mb-1 small fw-bold">Valor de Aquisição</label>
+                                <div class="fw-bold text-dark fs-5"><?php echo !empty($eq['custo_aquisicao']) ? number_format($eq['custo_aquisicao'], 2, ',', ' ') . ' €' : '-'; ?></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="text-muted d-block mb-1 small fw-bold">Contactos de Suporte</label>
+                                <?php if (!empty($eq['email_suporte']) || !empty($eq['telefone_suporte'])): ?>
+                                    <div class="small">
+                                        <?php if (!empty($eq['email_suporte'])) echo '<i class="fa-solid fa-envelope text-muted me-1"></i> ' . htmlspecialchars($eq['email_suporte']) . '<br>'; ?>
+                                        <?php if (!empty($eq['telefone_suporte'])) echo '<i class="fa-solid fa-phone text-muted me-1"></i> ' . htmlspecialchars($eq['telefone_suporte']); ?>
+                                    </div>
+                                <?php else: ?>
+                                    <em class="text-muted small">Sem contactos diretos</em>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h6 class="fw-bold text-dark fs-5 m-0"><i class="fa-solid fa-shield-halved text-success me-2"></i>Cobertura</h6>
+                            <button type="button" class="btn btn-sm btn-outline-primary rounded-pill fw-bold" style="font-size: 0.7rem;" data-bs-toggle="modal" data-bs-target="#modalAdicionarGarantia" data-idequip="<?php echo $eq['id']; ?>">
+                                <i class="fa-solid fa-pen me-1"></i> Atualizar
+                            </button>
+                        </div>
+
+                        <?php
+                        // Lógica de cálculo da garantia (Válida ou Expirada)
+                        $tem_garantia = !empty($eq['fim_garantia']);
+                        $garantia_expirada = false;
+                        if ($tem_garantia) {
+                            $data_fim = new DateTime($eq['fim_garantia']);
+                            $hoje = new DateTime();
+                            $hoje->setTime(0, 0, 0); // Limpar horas para comparar apenas os dias
+                            $garantia_expirada = $data_fim < $hoje;
+                        }
+                        ?>
+
+                        <?php if (!$tem_garantia): ?>
+                            <div class="text-center py-4 bg-light rounded-3 border border-dashed">
+                                <i class="fa-solid fa-file-shield text-muted fs-3 mb-2 opacity-50"></i>
+                                <p class="text-muted small m-0">Sem data de garantia registada.</p>
+                            </div>
+                        <?php else: ?>
+                            <div class="p-3 rounded-3 border <?php echo $garantia_expirada ? 'border-danger bg-danger bg-opacity-10' : 'border-success bg-success bg-opacity-10'; ?>">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fa-solid <?php echo $garantia_expirada ? 'fa-shield-virus text-danger' : 'fa-shield-check text-success'; ?> fs-1 me-3"></i>
+                                    <div>
+                                        <h6 class="fw-bold m-0 <?php echo $garantia_expirada ? 'text-danger' : 'text-success'; ?>">Garantia de Fábrica</h6>
+                                        <small class="<?php echo $garantia_expirada ? 'text-danger' : 'text-success'; ?> opacity-75">
+                                            <?php echo $garantia_expirada ? 'Expirou a ' : 'Válida até '; ?>
+                                            <strong><?php echo date('d/m/Y', strtotime($eq['fim_garantia'])); ?></strong>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
+                        <div class="mt-4 pt-3 border-top">
+                            <label class="text-muted d-block mb-2 small fw-bold">Contratos de Manutenção (Extensões)</label>
+                            <div class="text-center py-3 bg-light rounded-3 border border-dashed">
+                                <span class="text-muted small">Funcionalidade de extensões em desenvolvimento.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -221,5 +358,31 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
 
     </div>
 </form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 1. Passar o ID para o Modal da Garantia
+        const modalGarantia = document.getElementById('modalAdicionarGarantia');
+        if (modalGarantia) {
+            modalGarantia.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const idEquip = button.getAttribute('data-idequip');
+                document.getElementById('garantia_id_equipamento').value = idEquip;
+            });
+        }
+
+        // 2. NOVA MAGIA: Ler o URL e abrir a aba correta automaticamente
+        const urlParams = new URLSearchParams(window.location.search);
+        const abaAtiva = urlParams.get('tab');
+
+        if (abaAtiva) {
+            // Procurar o botão da aba (ex: 'comercial-tab') e "clicar" nele
+            const botaoAba = document.getElementById(abaAtiva + '-tab');
+            if (botaoAba) {
+                botaoAba.click();
+            }
+        }
+    });
+</script>
 
 <?php render_footer(); ?>
