@@ -320,28 +320,25 @@ try {
 </div>
 
 <div class="modal fade" id="modalAdicionarGarantia" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 rounded-4 shadow">
             <div class="modal-header border-bottom border-light p-3">
-                <h5 class="modal-title fw-bold"><i class="fa-solid fa-file-shield text-primary me-2"></i>Adicionar Contrato</h5>
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-file-shield text-primary me-2"></i>Atualizar Garantia</h5>
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="/gira/private/processar_garantia.php" method="POST">
-                    <div class="row g-3">
-                        <div class="col-md-6"><label class="form-label small fw-bold">Referência Contrato</label><input type="text" class="form-control bg-light border-0" required></div>
-                        <div class="col-md-6"><label class="form-label small fw-bold">Tipo Cobertura</label><select class="form-select bg-light border-0">
-                                <option>Garantia de Fábrica</option>
-                            </select></div>
-                        <div class="col-12"><label class="form-label small fw-bold">Dispositivo</label><select class="form-select bg-light border-0">
-                                <option>#EQ-2026-001</option>
-                            </select></div>
+                <form id="formGarantia" action="/gira/private/processar_garantia.php" method="POST">
+                    <input type="hidden" name="id_equipamento" id="garantia_id_equipamento">
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Data de Fim da Garantia</label>
+                        <input type="date" class="form-control rounded-3 bg-light border-0" name="fim_garantia" required>
                     </div>
                 </form>
             </div>
             <div class="modal-footer border-top border-light p-3">
-                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary rounded-3 fw-bold small px-4">Ativar</button>
+                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3 text-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formGarantia" class="btn btn-primary rounded-3 fw-bold small px-4">Guardar Alteração</button>
             </div>
         </div>
     </div>
