@@ -29,7 +29,13 @@ try {
         <i class="fa-solid fa-location-dot me-2"></i> Nova Localização
     </button>
 </div>
-
+<?php if (isset($_GET['erro']) && $_GET['erro'] == 'sala_ocupada'): ?>
+    <div class="alert alert-danger alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
+        <i class="fa-solid fa-shield-halved me-2"></i>
+        <strong>Ação Bloqueada pelo Sistema!</strong> Não podes apagar esta localização porque ainda tem equipamentos médicos alocados a ela. Transfere-os primeiro para outra sala.
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
+    </div>
+<?php endif; ?>
 <?php
 $colunas = [
     ['label' => 'Cód. Espaço', 'sort' => 'id_localizacao'],
@@ -77,9 +83,12 @@ foreach ($lista_locais as $loc):
                     <i class="fa-solid fa-pen text-primary"></i>
                 </button>
             </span>
-            <button class="btn btn-light btn-sm rounded-3 text-danger border" onclick="alert('Eliminar em desenvolvimento!');" data-bs-toggle="tooltip" data-bs-placement="top" title="Remover Localização">
-                <i class="fa-solid fa-trash"></i>
-            </button>
+            <a href="/gira/private/eliminar_localizacao.php?id=<?php echo $loc['id']; ?>"
+                class="btn btn-light btn-sm rounded-3 border"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="Remover Localização"
+                onclick="return confirm('⚠️ ATENÇÃO: Tens a certeza que queres eliminar o espaço <?php echo htmlspecialchars($loc['cod_sala']); ?>?');">
+                <i class="fa-solid fa-trash text-danger"></i>
+            </a>
         </td>
     </tr>
 
