@@ -1,3 +1,22 @@
+<?php
+// 1. Declaramos logo que vamos querer usar o $pdo global (seja ele qual for)
+global $pdo;
+
+// 2. Se a página atual (ex: garantias.php) ainda não abriu a base de dados, abrimos agora!
+if (empty($pdo)) {
+    require_once __DIR__ . '/db.php';
+}
+
+// 3. Agora temos 100% de certeza que o $pdo existe e está ligado
+try {
+    $stmt_lista_eq = $pdo->query("SELECT id, codigo_ativo, nome FROM equipamentos ORDER BY codigo_ativo ASC");
+    $equipamentos_dropdown = $stmt_lista_eq->fetchAll();
+} catch (Exception $e) {
+    // Se a tabela ainda não existir ou houver erro, devolve uma lista vazia para não quebrar a página
+    $equipamentos_dropdown = [];
+}
+?>
+
 <div class="modal fade" id="modalRegistarEquipamento" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 rounded-4 shadow-lg">
@@ -125,8 +144,12 @@
                         <div class="col-12">
                             <label class="form-label small fw-bold text-secondary">Dispositivo Médico com Ocorrência</label>
                             <select class="form-select rounded-3 bg-light border-0 fw-mono" name="equipamento_id" required>
-                                <option value="#EQ-2026-001">#EQ-2026-001 - Dräger Evita V500 (Urgências)</option>
-                                <option value="#EQ-2026-002">#EQ-2026-002 - Philips Affiniti 70 (Obstetrícia)</option>
+                                <option value="" selected disabled>Selecione o equipamento...</option>
+                                <?php foreach ($equipamentos_dropdown as $opt): ?>
+                                    <option value="<?php echo $opt['id']; ?>">
+                                        <?php echo htmlspecialchars($opt['codigo_ativo'] . ' - ' . $opt['nome']); ?>
+                                    </option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="col-md-6">
