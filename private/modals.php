@@ -334,14 +334,43 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="/gira/private/processar_localizacao.php" method="POST">
-                    <div class="mb-3"><label class="form-label small fw-bold">Código Sala</label><input type="text" class="form-control bg-light border-0" required></div>
-                    <div class="mb-3"><label class="form-label small fw-bold">Nome Serviço</label><input type="text" class="form-control bg-light border-0" required></div>
+                <form id="formNovaLocalizacao" action="/gira/private/processar_localizacao.php" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Código Sala</label>
+                        <input type="text" class="form-control bg-light border-0 fw-mono text-uppercase" name="cod_sala" placeholder="Ex: #LOC-BLO01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Nome Serviço / Sala</label>
+                        <input type="text" class="form-control bg-light border-0" name="nome" placeholder="Ex: Bloco Operatório" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Sublocalização / Camas</label>
+                        <input type="text" class="form-control bg-light border-0" name="detalhe" placeholder="Ex: Sala 2 · Camas 5 a 8">
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">Piso</label>
+                            <select class="form-select bg-light border-0" name="piso">
+                                <option value="" selected disabled>Escolha...</option>
+                                <option value="Piso 0">Piso 0</option>
+                                <option value="Piso 1">Piso 1</option>
+                                <option value="Piso 2">Piso 2</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">Bloco / Ala</label>
+                            <select class="form-select bg-light border-0" name="bloco">
+                                <option value="" selected disabled>Escolha...</option>
+                                <option value="Bloco Central">Bloco Central</option>
+                                <option value="Bloco Cirúrgico">Bloco Cirúrgico</option>
+                            </select>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer border-top border-light p-3">
-                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary rounded-3 fw-bold small px-4">Mapear</button>
+                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3 text-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovaLocalizacao" class="btn btn-primary rounded-3 fw-bold small px-4">Mapear</button>
             </div>
         </div>
     </div>
