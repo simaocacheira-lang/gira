@@ -47,11 +47,10 @@
                             </div>
                             <div class="col-12">
                                 <label class="form-label small fw-bold text-secondary">Localização / Serviço Alocado</label>
-                                <select class="form-select rounded-3 bg-light border-0" name="localizacao" required>
+                                <select class="form-select rounded-3 bg-light border-0" name="localizacao_id" required>
                                     <option value="" selected disabled>Escolha o serviço...</option>
-                                    <option value="Urgências · Sala de Reanimação">Urgências · Sala de Reanimação</option>
-                                    <option value="Obstetrícia · Consulta 3">Obstetrícia · Consulta 3</option>
-                                    <option value="UCI · Quarto 04 (Isolamento)">UCI · Quarto 04 (Isolamento)</option>
+                                    <option value="1">Serviço de Urgência Hospitalar · Reanimação</option>
+                                    <option value="2">Cuidados Intensivos · Box 4</option>
                                 </select>
                             </div>
                         </div>
@@ -65,8 +64,8 @@
                                 <label class="form-label small fw-bold text-secondary">Fornecedor Oficial</label>
                                 <select class="form-select rounded-3 bg-light border-0" name="fornecedor_id" required>
                                     <option value="" selected disabled>Selecione o fornecedor...</option>
-                                    <option value="Philips Healthcare">Philips Healthcare</option>
-                                    <option value="Dräger Portugal">Dräger Portugal</option>
+                                    <option value="1">B. Braun Medical S.A.</option>
+                                    <option value="2">Dräger Portugal</option>
                                 </select>
                             </div>
                             <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Fim da Garantia de Fábrica</label><input type="date" class="form-control rounded-3 bg-light border-0" name="fim_garantia" required></div>
