@@ -106,9 +106,12 @@ foreach ($lista_equipamentos as $eq):
             <a href="/gira/private/detalhes_equipamento.php?id=<?php echo $eq['id']; ?>" class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
                 <i class="fa-solid fa-eye text-primary"></i>
             </a>
-            <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento">
-                <i class="fa-solid fa-trash"></i>
-            </button>
+            <a href="/gira/private/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>"
+                class="btn btn-light btn-sm rounded-3 border""
+                data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento"
+                onclick="return confirm('⚠️ ATENÇÃO: Tens a certeza absoluta que queres eliminar permanentemente o dispositivo <?php echo htmlspecialchars($eq['codigo_ativo']); ?>? Esta ação não pode ser desfeita!');">
+                <i class="fa-solid fa-trash text-danger"></i>
+            </a>
         </td>
     </tr>
 <?php
