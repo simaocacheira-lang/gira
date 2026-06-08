@@ -1,6 +1,6 @@
 <?php
 // 1. Ligar à Base de Dados
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../db.php';
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -25,13 +25,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ]);
 
         // 5. MUDANÇA AQUI: Redirecionar para o Dashboard de Manutenção!
-        header("Location: /gira/private/manutencao.php?sucesso=ot_criada");
+        header("Location: /gira/private/manutencoes/manutencao.php?sucesso=ot_criada");
         exit;
     } catch (PDOException $e) {
         die("Erro ao emitir Ordem de Trabalho: " . $e->getMessage());
     }
 } else {
     // Redirecionamento de segurança alterado para manutenção também
-    header("Location: /gira/private/manutencao.php");
+    header("Location: /gira/private/manutencoes/manutencao.php");
     exit;
 }

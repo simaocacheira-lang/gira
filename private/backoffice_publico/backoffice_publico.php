@@ -1,6 +1,7 @@
 <?php
 // Chama o molde para trazer a Sidebar e a Topbar automáticas
-require_once __DIR__ . '/layout.php';
+require_once __DIR__ . '/../db.php';
+require_once __DIR__ . '/../layout.php';
 
 // Monta o topo da página com o título correto para a aba
 render_header("Gira - Backoffice da Área Pública");

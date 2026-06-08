@@ -1,7 +1,7 @@
 <?php
 // 1. Ligar à Base de Dados e chamar o molde
-require_once __DIR__ . '/db.php';
-require_once __DIR__ . '/layout.php';
+require_once __DIR__ . '/../db.php';
+require_once __DIR__ . '/../layout.php';
 
 // 2. O Motor de Busca: Fazer JOIN para juntar as OTs com os dados dos Equipamentos
 try {

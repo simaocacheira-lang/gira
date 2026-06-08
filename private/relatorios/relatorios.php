@@ -1,6 +1,7 @@
 <?php
 // 1. Chamamos o molde para trazer a Sidebar e a Topbar automáticas
-require_once __DIR__ . '/layout.php';
+require_once __DIR__ . '/../db.php';
+require_once __DIR__ . '/../layout.php';
 
 // 2. Montamos o topo da página com o título correto para a aba do browser
 render_header("Gira - Relatórios Analíticos e Indicadores");

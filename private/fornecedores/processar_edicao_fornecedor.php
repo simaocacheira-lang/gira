@@ -1,6 +1,6 @@
 <?php
 // 1. Ligar à Base de Dados
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../db.php';
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -35,12 +35,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ]);
 
         // 4. Sucesso! Recarregar a página
-        header("Location: /gira/private/fornecedores.php?sucesso=editado");
+        header("Location: /gira/private/fornecedores/fornecedores.php?sucesso=editado");
         exit;
     } catch (PDOException $e) {
         die("Erro ao atualizar o fornecedor: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/fornecedores.php");
+    header("Location: /gira/private/fornecedores/fornecedores.php");
     exit;
 }

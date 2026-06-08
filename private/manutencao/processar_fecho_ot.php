@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../db.php';
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Confirmar a transação
         $pdo->commit();
 
-        header("Location: /gira/private/manutencao.php?sucesso=ot_fechada");
+        header("Location: /gira/private/manutencoes/manutencao.php?sucesso=ot_fechada");
         exit;
     } catch (PDOException $e) {
         // Se houver erro, desfaz tudo
@@ -47,6 +47,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Erro crítico ao fechar OT: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/manutencao.php");
+    header("Location: /gira/private/manutencoes/manutencao.php");
     exit;
 }

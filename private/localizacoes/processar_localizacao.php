@@ -1,6 +1,6 @@
 <?php
 // 1. Ligar à Base de Dados
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../db.php';
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -22,13 +22,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ]);
 
         // 4. Sucesso! Volta à página com os dados atualizados
-        header("Location: /gira/private/localizacoes.php?sucesso=1");
+        header("Location: /gira/private/localizacoes/localizacoes.php?sucesso=1");
         exit;
     } catch (PDOException $e) {
         die("Erro ao guardar localização na base de dados: " . $e->getMessage());
     }
 } else {
     // Se acederem por link direto, recambiamos de volta
-    header("Location: /gira/private/localizacoes.php");
+    header("Location: /gira/private/localizacoes/localizacoes.php");
     exit;
 }

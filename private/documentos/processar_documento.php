@@ -1,6 +1,6 @@
 <?php
 // Ligar à Base de Dados
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../db.php';
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ]);
 
                 // Sucesso! Volta e abre a aba dos documentos
-                header("Location: /gira/private/detalhes_equipamento.php?id=" . $id_equipamento . "&sucesso=doc_adicionado&tab=documentos");
+                header("Location: /gira/private/equipamentos/detalhes_equipamento.php?id=" . $id_equipamento . "&sucesso=doc_adicionado&tab=documentos");
                 exit;
             } catch (PDOException $e) {
                 die("Erro na BD: " . $e->getMessage());
@@ -68,6 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Erro no upload: Nenhuma imagem válida recebida ou ficheiro corrompido.");
     }
 } else {
-    header("Location: /gira/private/equipamentos.php");
+    header("Location: /gira/private/equipamentos/equipamentos.php");
     exit;
 }

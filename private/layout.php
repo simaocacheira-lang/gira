@@ -57,15 +57,15 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
     $menu_items = [
         ['link' => 'dashboard.php', 'icon' => 'fa-house', 'label' => 'Dashboard'],
         ['is_header' => true, 'label' => 'Gestão'],
-        ['link' => 'equipamentos.php', 'icon' => 'fa-stethoscope', 'label' => 'Equipamentos'],
-        ['link' => 'localizacoes.php', 'icon' => 'fa-location-dot', 'label' => 'Localizações'],
-        ['link' => 'fornecedores.php', 'icon' => 'fa-truck-field', 'label' => 'Fornecedores'],
-        ['link' => 'documentos.php', 'icon' => 'fa-regular fa-file-lines', 'label' => 'Documentos'],
-        ['link' => 'garantias.php', 'icon' => 'fa-solid fa-shield-halved', 'label' => 'Garantias e Contratos'],
-        ['link' => 'manutencao.php', 'icon' => 'fa-solid fa-screwdriver-wrench', 'label' => 'Manutenção'],
-        ['link' => 'armazem.php', 'icon' => 'fa-solid fa-warehouse', 'label' => 'Armazém'],
-        ['link' => 'relatorios.php', 'icon' => 'fa-solid fa-chart-simple', 'label' => 'Relatórios'],
-        ['link' => 'historico.php', 'icon' => 'fa-solid fa-clock-rotate-left', 'label' => 'Histórico']
+        ['link' => 'equipamentos/equipamentos.php', 'icon' => 'fa-stethoscope', 'label' => 'Equipamentos'],
+        ['link' => 'localizacoes/localizacoes.php', 'icon' => 'fa-location-dot', 'label' => 'Localizações'],
+        ['link' => 'fornecedores/fornecedores.php', 'icon' => 'fa-truck-field', 'label' => 'Fornecedores'],
+        ['link' => 'documentos/documentos.php', 'icon' => 'fa-regular fa-file-lines', 'label' => 'Documentos'],
+        ['link' => 'garantias/garantias.php', 'icon' => 'fa-solid fa-shield-halved', 'label' => 'Garantias e Contratos'],
+        ['link' => 'manutencao/manutencao.php', 'icon' => 'fa-solid fa-screwdriver-wrench', 'label' => 'Manutenção'],
+        ['link' => 'armazem/armazem.php', 'icon' => 'fa-solid fa-warehouse', 'label' => 'Armazém'],
+        ['link' => 'relatorios/relatorios.php', 'icon' => 'fa-solid fa-chart-simple', 'label' => 'Relatórios'],
+        ['link' => 'historico/historico.php', 'icon' => 'fa-solid fa-clock-rotate-left', 'label' => 'Histórico']
     ];
 
     $current_page = basename($_SERVER['PHP_SELF']);
@@ -101,7 +101,21 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                 <?php if (isset($item['is_header'])): ?>
                     <div class="small-caps text-secondary mt-3 mb-2 opacity-50 sidebar-text"><?php echo $item['label']; ?></div>
                 <?php else: ?>
-                    <a href="/gira/private/<?php echo $item['link']; ?>" class="sidebar-link <?php echo ($current_page == $item['link']) ? 'active' : ''; ?>">
+                    <?php
+                    // Divide o link para perceber se está dentro de uma pasta ou solto
+                    $partes_link = explode('/', $item['link']);
+
+                    if (count($partes_link) > 1) {
+                        // É um módulo com pasta (ex: equipamentos/equipamentos.php)
+                        $modulo = $partes_link[0];
+                        $ativo = (strpos($_SERVER['PHP_SELF'], '/' . $modulo . '/') !== false) ? 'active' : '';
+                    } else {
+                        // É um ficheiro na raiz (ex: dashboard.php)
+                        $ficheiro = $partes_link[0];
+                        $ativo = (basename($_SERVER['PHP_SELF']) == $ficheiro) ? 'active' : '';
+                    }
+                    ?>
+                    <a href="/gira/private/<?php echo $item['link']; ?>" class="sidebar-link <?php echo $ativo; ?>">
                         <i class="fa-solid <?php echo $item['icon']; ?>"></i>
                         <span class="sidebar-text ms-2"><?php echo $item['label']; ?></span>
                     </a>
@@ -171,13 +185,13 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                     <div class="list-group list-group-flush mb-4">
                         <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-regular fa-id-badge text-muted w-20px me-3 text-center"></i> O Meu Perfil</a>
                         <a href="/gira/private/configuracoes.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-sliders text-muted w-20px me-3 text-center"></i> Configurações do Sistema</a>
-                        <a href="/gira/private/backoffice_publico.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-globe text-muted w-20px me-3 text-center"></i> Gerir Site Público</a>
+                        <a href="/gira/private/backoffice_publico/backoffice_publico.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-globe text-muted w-20px me-3 text-center"></i> Gerir Site Público</a>
                     </div>
 
                     <h6 class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">Gestão de Acessos</h6>
                     <div class="list-group list-group-flush mb-4">
-                        <a href="/gira/private/utilizadores.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-users text-muted w-20px me-3 text-center"></i> Contas de Utilizadores</a>
-                        <a href="/gira/private/perfis.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-user-shield text-muted w-20px me-3 text-center"></i> Perfis e Permissões</a>
+                        <a href="/gira/private/utilizadores/utilizadores.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-users text-muted w-20px me-3 text-center"></i> Contas de Utilizadores</a>
+                        <a href="/gira/private/perfis/perfis.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-user-shield text-muted w-20px me-3 text-center"></i> Perfis e Permissões</a>
                     </div>
 
                     <div class="mt-auto pt-3 border-top">

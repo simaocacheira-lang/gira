@@ -1,6 +1,6 @@
 <?php
 // 1. Ligar à Base de Dados
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../db.php';
 session_start();
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
@@ -16,7 +16,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         // 3. A LÓGICA DE DEFESA
         if ($equipamentos_na_sala > 0) {
             // A sala tem máquinas! Abortar missão e devolver erro.
-            header("Location: /gira/private/localizacoes.php?erro=sala_ocupada");
+            header("Location: /gira/private/localizacoes/localizacoes.php?erro=sala_ocupada");
             exit;
         } else {
             // A sala está vazia. É seguro destruir.
@@ -24,13 +24,13 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             $stmt_apagar = $pdo->prepare($sql_apagar);
             $stmt_apagar->execute([':id' => $id_para_apagar]);
 
-            header("Location: /gira/private/localizacoes.php?sucesso=eliminado");
+            header("Location: /gira/private/localizacoes/localizacoes.php?sucesso=eliminado");
             exit;
         }
     } catch (PDOException $e) {
         die("Erro ao processar eliminação: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/localizacoes.php");
+    header("Location: /gira/private/localizacoes/localizacoes.php");
     exit;
 }

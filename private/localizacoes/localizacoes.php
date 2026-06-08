@@ -1,7 +1,7 @@
 <?php
 // 1. Chamamos a base de dados e o molde
-require_once __DIR__ . '/db.php';
-require_once __DIR__ . '/layout.php';
+require_once __DIR__ . '/../db.php';
+require_once __DIR__ . '/../layout.php';
 
 render_header("Gira - Gestão de Localizações");
 
@@ -83,7 +83,7 @@ foreach ($lista_locais as $loc):
                     <i class="fa-solid fa-pen text-primary"></i>
                 </button>
             </span>
-            <a href="/gira/private/eliminar_localizacao.php?id=<?php echo $loc['id']; ?>"
+            <a href="/gira/private/localizacoes/eliminar_localizacao.php?id=<?php echo $loc['id']; ?>"
                 class="btn btn-light btn-sm rounded-3 border"
                 data-bs-toggle="tooltip" data-bs-placement="top" title="Remover Localização"
                 onclick="return confirm('⚠️ ATENÇÃO: Tens a certeza que queres eliminar o espaço <?php echo htmlspecialchars($loc['cod_sala']); ?>?');">

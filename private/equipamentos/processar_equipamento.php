@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../db.php';
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -25,12 +25,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':data'        => $_POST['data_aquisicao']
         ]);
 
-        header("Location: /gira/private/equipamentos.php?sucesso=1");
+        header("Location: /gira/private/equipamentos/equipamentos.php?sucesso=1");
         exit;
     } catch (PDOException $e) {
         die("Erro ao guardar na base de dados: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/equipamentos.php");
+    header("Location: /gira/private/equipamentos/equipamentos.php");
     exit;
 }

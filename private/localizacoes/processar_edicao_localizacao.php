@@ -1,6 +1,6 @@
 <?php
 // 1. Ligar à Base de Dados
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../db.php';
 session_start();
 
 // 2. Verificar se a informação veio por POST
@@ -34,12 +34,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ]);
 
         // 5. Missão cumprida! Voltar ao mapa de localizações.
-        header("Location: /gira/private/localizacoes.php?sucesso=editado");
+        header("Location: /gira/private/localizacoes/localizacoes.php?sucesso=editado");
         exit;
     } catch (PDOException $e) {
         die("Erro ao atualizar a localização: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/localizacoes.php");
+    header("Location: /gira/private/localizacoes/localizacoes.php");
     exit;
 }

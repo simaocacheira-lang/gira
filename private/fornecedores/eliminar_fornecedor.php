@@ -1,6 +1,6 @@
 <?php
 // 1. Ligar à Base de Dados
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../db.php';
 session_start();
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
@@ -16,7 +16,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         // 3. LÓGICA DE DEFESA
         if ($equipamentos_associados > 0) {
             // O fornecedor tem equipamentos associados! Abortar.
-            header("Location: /gira/private/fornecedores.php?erro=fornecedor_ocupado");
+            header("Location: /gira/private/fornecedores/fornecedores.php?erro=fornecedor_ocupado");
             exit;
         } else {
             // O fornecedor está "limpo". É seguro apagar.
@@ -24,7 +24,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             $stmt_apagar = $pdo->prepare($sql_apagar);
             $stmt_apagar->execute([':id' => $id_para_apagar]);
             
-            header("Location: /gira/private/fornecedores.php?sucesso=eliminado");
+            header("Location: /gira/private/fornecedores/fornecedores.php?sucesso=eliminado");
             exit;
         }
         
@@ -32,7 +32,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         die("Erro ao processar eliminação: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/fornecedores.php");
+    header("Location: /gira/private/fornecedores/fornecedores.php");
     exit;
 }
 ?>

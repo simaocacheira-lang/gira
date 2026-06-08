@@ -1,11 +1,11 @@
 <?php
 // 1. Ligar à Base de Dados e carregar o Layout
-require_once __DIR__ . '/db.php';
-require_once __DIR__ . '/layout.php';
+require_once __DIR__ . '/../db.php';
+require_once __DIR__ . '/../layout.php';
 
 // 2. Verificar se recebemos um ID válido pelo URL
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    header("Location: /gira/private/equipamentos.php");
+    header("Location: /gira/private/equipamentos/equipamentos.php");
     exit;
 }
 
@@ -22,7 +22,7 @@ try {
     $eq = $stmt->fetch();
 
     if (!$eq) {
-        die("<h3>Erro 404: Equipamento não encontrado no parque tecnológico.</h3><a href='/gira/private/equipamentos.php'>Voltar à lista</a>");
+        die("<h3>Erro 404: Equipamento não encontrado no parque tecnológico.</h3><a href='/gira/private/equipamentos/equipamentos.php'>Voltar à lista</a>");
     }
 
     // 4. NOVA PESQUISA: Ir buscar o histórico clínico (OTs) DESTE equipamento específico
@@ -50,19 +50,19 @@ try {
 render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
 ?>
 
-<form action="/gira/private/processar_edicao_equipamento.php" method="POST">
+<form action="/gira/private/equipamentos/processar_edicao_equipamento.php" method="POST">
 
     <input type="hidden" name="id_equipamento" value="<?php echo $eq['id']; ?>">
 
     <div class="mb-3 d-flex justify-content-between align-items-center">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0 small fw-bold">
-                <li class="breadcrumb-item"><a href="/gira/private/equipamentos.php" class="text-decoration-none text-muted">Equipamentos</a></li>
+                <li class="breadcrumb-item"><a href="/gira/private/equipamentos/equipamentos.php" class="text-decoration-none text-muted">Equipamentos</a></li>
                 <li class="breadcrumb-item active text-primary" aria-current="page">Ficha Técnica e Edição</li>
             </ol>
         </nav>
         <div class="d-flex gap-2">
-            <a href="/gira/private/equipamentos.php" class="btn btn-light border rounded-3 fw-bold small px-3 py-2 shadow-sm text-secondary">
+            <a href="/gira/private/equipamentos/equipamentos.php" class="btn btn-light border rounded-3 fw-bold small px-3 py-2 shadow-sm text-secondary">
                 <i class="fa-solid fa-arrow-left me-2"></i>Voltar
             </a>
             <div class="dropdown">
@@ -75,7 +75,7 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item fw-bold text-danger py-2" href="/gira/private/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>" onclick="return confirm('Tem a certeza que deseja abater este equipamento?');"><i class="fa-solid fa-trash-can me-2"></i> Abater Inventário</a></li>
+                    <li><a class="dropdown-item fw-bold text-danger py-2" href="/gira/private/equipamentos/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>" onclick="return confirm('Tem a certeza que deseja abater este equipamento?');"><i class="fa-solid fa-trash-can me-2"></i> Abater Inventário</a></li>
                 </ul>
             </div>
             <button type="submit" class="btn btn-success rounded-3 fw-bold small px-3 py-2 shadow-sm">

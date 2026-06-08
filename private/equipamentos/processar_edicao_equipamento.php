@@ -1,6 +1,6 @@
 <?php
 // 1. Ligar à Base de Dados
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../db.php';
 session_start();
 
 // 2. Verificar se a informação veio do formulário (POST)
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ]);
         
         // 6. Sucesso! Volta para a ficha do próprio equipamento para veres o resultado
-        header("Location: /gira/private/detalhes_equipamento.php?id=" . $id_equipamento . "&sucesso=1");
+        header("Location: /gira/private/equipamentos/detalhes_equipamento.php?id=" . $id_equipamento . "&sucesso=1");
         exit;
         
     } catch (PDOException $e) {
@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 } else {
     // Se alguém tentar aceder a este ficheiro diretamente pela barra do browser
-    header("Location: /gira/private/equipamentos.php");
+    header("Location: /gira/private/equipamentos/equipamentos.php");
     exit;
 }
 ?>

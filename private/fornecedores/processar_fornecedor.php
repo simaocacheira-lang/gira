@@ -1,6 +1,6 @@
 <?php
 // 1. Ligar à Base de Dados
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../db.php';
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -22,14 +22,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ]);
         
         // Sucesso! Volta ao ecrã dos fornecedores
-        header("Location: /gira/private/fornecedores.php?sucesso=registado");
+        header("Location: /gira/private/fornecedores/fornecedores.php?sucesso=registado");
         exit;
         
     } catch (PDOException $e) {
         die("Erro ao registar fornecedor (o NIF pode já existir): " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/fornecedores.php");
+    header("Location: /gira/private/fornecedores/fornecedores.php");
     exit;
 }
 ?>

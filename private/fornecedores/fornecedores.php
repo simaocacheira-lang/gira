@@ -1,7 +1,7 @@
 <?php
 // 1. Ligar à Base de Dados e carregar o Layout
-require_once __DIR__ . '/db.php';
-require_once __DIR__ . '/layout.php';
+require_once __DIR__ . '/../db.php';
+require_once __DIR__ . '/../layout.php';
 
 render_header("Gira - Gestão de Fornecedores");
 
@@ -82,7 +82,7 @@ foreach ($lista_fornecedores as $forn):
                 </button>
             </span>
             <span data-bs-toggle="tooltip" data-bs-placement="top" title="Revogar Contrato/Fornecedor">
-                <a href="/gira/private/eliminar_fornecedor.php?id=<?php echo $forn['id']; ?>"
+                <a href="/gira/private/fornecedores/eliminar_fornecedor.php?id=<?php echo $forn['id']; ?>"
                     class="btn btn-light btn-sm rounded-3 border"
                     onclick="return confirm('⚠️ ATENÇÃO: Tens a certeza que queres revogar o contrato e eliminar o fornecedor <?php echo htmlspecialchars($forn['nome_empresa']); ?>?');">
                     <i class="fa-solid fa-trash text-danger"></i>
