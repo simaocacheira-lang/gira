@@ -30,6 +30,18 @@ try {
     $stmt_historico = $pdo->prepare($sql_historico);
     $stmt_historico->execute([':id' => $id_equipamento]);
     $historico_ots = $stmt_historico->fetchAll();
+
+    // 4. NOVA PESQUISA: Ir buscar o histórico clínico (OTs) DESTE equipamento específico
+    $sql_historico = "SELECT * FROM ordens_trabalho WHERE equipamento_id = :id ORDER BY id DESC";
+    $stmt_historico = $pdo->prepare($sql_historico);
+    $stmt_historico->execute([':id' => $id_equipamento]);
+    $historico_ots = $stmt_historico->fetchAll();
+
+    // 5. NOVA PESQUISA: Ir buscar os documentos técnicos anexados
+    $sql_docs = "SELECT * FROM documentos_equipamento WHERE equipamento_id = :id ORDER BY data_upload DESC";
+    $stmt_docs = $pdo->prepare($sql_docs);
+    $stmt_docs->execute([':id' => $id_equipamento]);
+    $lista_documentos = $stmt_docs->fetchAll();
 } catch (PDOException $e) {
     die("Erro ao carregar dados: " . $e->getMessage());
 }
@@ -250,9 +262,51 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
         </div>
 
         <div class="tab-pane fade" id="documentos" role="tabpanel" tabindex="0">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white text-center py-5">
-                <i class="fa-solid fa-file-pdf text-muted fs-1 mb-3 opacity-50"></i>
-                <p class="text-muted">Gestão de Documentos em desenvolvimento.</p>
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h6 class="fw-bold text-dark fs-5 m-0"><i class="fa-solid fa-file-pdf text-danger me-2"></i>Documentação Técnica</h6>
+                    <button type="button" class="btn btn-sm btn-primary rounded-pill fw-bold px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNovoDocumento" onclick="document.getElementById('doc_id_equipamento').value = '<?php echo $eq['id']; ?>';">
+                        <i class="fa-solid fa-cloud-arrow-up me-1"></i> Upload Ficheiro
+                    </button>
+                </div>
+
+                <?php if (count($lista_documentos) === 0): ?>
+                    <div class="text-center py-5 bg-light rounded-3 border border-dashed">
+                        <i class="fa-solid fa-folder-open text-muted fs-1 mb-3 opacity-50"></i>
+                        <p class="text-muted m-0">Ainda não existem documentos anexados a este equipamento.</p>
+                    </div>
+                <?php else: ?>
+                    <div class="row g-3">
+                        <?php foreach ($lista_documentos as $doc): ?>
+                            <div class="col-md-6 col-xl-4">
+                                <div class="card border border-light shadow-sm rounded-3 h-100">
+                                    <div class="card-body p-3 d-flex align-items-start gap-3">
+                                        <div class="bg-danger bg-opacity-10 p-2 rounded-3 text-danger">
+                                            <i class="fa-solid fa-file-pdf fs-3"></i>
+                                        </div>
+                                        <div class="overflow-hidden w-100">
+                                            <h6 class="fw-bold mb-1 text-truncate" title="<?php echo htmlspecialchars($doc['nome_documento']); ?>">
+                                                <?php echo htmlspecialchars($doc['nome_documento']); ?>
+                                            </h6>
+                                            <small class="text-muted d-block mb-2"><?php echo htmlspecialchars($doc['tipo_documento']); ?></small>
+                                            <div class="d-flex gap-2">
+                                                <a href="/gira/private/<?php echo htmlspecialchars($doc['caminho_ficheiro']); ?>" target="_blank" class="btn btn-sm btn-light border rounded-2" style="font-size: 0.75rem;">
+                                                    <i class="fa-solid fa-eye me-1"></i>Abrir
+                                                </a>
+                                                <button class="btn btn-sm btn-light text-danger border rounded-2 ms-auto" onclick="alert('Funcionalidade de apagar documento em desenvolvimento!');" style="font-size: 0.75rem;">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-light border-top border-light py-2 px-3 small text-muted text-end" style="font-size: 0.7rem;">
+                                        Adicionado a <?php echo date('d/m/Y', strtotime($doc['data_upload'])); ?>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -361,22 +415,30 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+
         // 1. Passar o ID para o Modal da Garantia
         const modalGarantia = document.getElementById('modalAdicionarGarantia');
         if (modalGarantia) {
             modalGarantia.addEventListener('show.bs.modal', function(event) {
                 const button = event.relatedTarget;
-                const idEquip = button.getAttribute('data-idequip');
-                document.getElementById('garantia_id_equipamento').value = idEquip;
+                document.getElementById('garantia_id_equipamento').value = button.getAttribute('data-idequip');
             });
         }
 
-        // 2. NOVA MAGIA: Ler o URL e abrir a aba correta automaticamente
+        // 2. Passar o ID para o Modal de Documentos (Agora dentro da zona segura!)
+        const modalDoc = document.getElementById('modalNovoDocumento');
+        if (modalDoc) {
+            modalDoc.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                document.getElementById('doc_id_equipamento').value = button.getAttribute('data-idequip');
+            });
+        }
+
+        // 3. Ler o URL e abrir a aba correta automaticamente
         const urlParams = new URLSearchParams(window.location.search);
         const abaAtiva = urlParams.get('tab');
 
         if (abaAtiva) {
-            // Procurar o botão da aba (ex: 'comercial-tab') e "clicar" nele
             const botaoAba = document.getElementById(abaAtiva + '-tab');
             if (botaoAba) {
                 botaoAba.click();
@@ -384,5 +446,6 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
         }
     });
 </script>
+
 
 <?php render_footer(); ?>

@@ -239,20 +239,34 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="/gira/private/processar_documento.php" method="POST" enctype="multipart/form-data">
-                    <div class="mb-3"><label class="form-label small fw-bold">Nome do Documento</label><input type="text" class="form-control bg-light border-0" required></div>
-                    <div class="mb-3"><label class="form-label small fw-bold">Tipo</label><select class="form-select bg-light border-0">
-                            <option>Manual Técnico</option>
-                        </select></div>
-                    <div class="mb-3"><label class="form-label small fw-bold">Equipamento</label><select class="form-select bg-light border-0">
-                            <option>#EQ-2026-001</option>
-                        </select></div>
-                    <div class="mb-2"><label class="form-label small fw-bold">Ficheiro</label><input type="file" class="form-control" required></div>
+                <form id="formNovoDocumento" action="/gira/private/processar_documento.php" method="POST" enctype="multipart/form-data">
+
+                    <input type="hidden" name="id_equipamento" id="doc_id_equipamento">
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Nome / Título do Documento</label>
+                        <input type="text" class="form-control bg-light border-0" name="nome_documento" placeholder="Ex: Manual de Serviço" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Tipo de Documento</label>
+                        <select class="form-select bg-light border-0" name="tipo_documento" required>
+                            <option value="Manual Técnico">Manual Técnico / Instruções</option>
+                            <option value="Certificado Conformidade (CE)">Certificado de Conformidade (CE)</option>
+                            <option value="Guia de Calibração">Guia de Calibração</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small fw-bold text-secondary">Ficheiro (PDF, JPG, PNG)</label>
+                        <input type="file" class="form-control bg-white border shadow-sm rounded-3" name="ficheiro" accept=".pdf,.jpg,.jpeg,.png" required>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer border-top border-light p-3">
-                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary rounded-3 fw-bold small px-4">Submeter</button>
+                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3 text-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovoDocumento" class="btn btn-primary rounded-3 fw-bold small px-4">
+                    <i class="fa-solid fa-cloud-arrow-up me-2"></i>Submeter Documento
+                </button>
             </div>
         </div>
     </div>
