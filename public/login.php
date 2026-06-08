@@ -16,28 +16,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require_once __DIR__ . '/../private/db.php';
 
     // Apanhar o que foi escrito nos campos (com proteção contra espaços vazios)
-    $user = trim($_POST['username'] ?? '');
+    $email = trim($_POST['email'] ?? '');
     $pass = trim($_POST['password'] ?? '');
 
-    if (!empty($user) && !empty($pass)) {
-        // 3. Procurar o utilizador na base de dados
-        $sql = "SELECT id, username, password_hash, nome FROM utilizadores WHERE username = :username";
+    if (!empty($email) && !empty($pass)) {
+        // 3. Procurar o utilizador na base de dados usando o EMAIL
+        $sql = "SELECT id, email, password_hash, nome, estado FROM utilizadores WHERE email = :email";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([':username' => $user]);
+        $stmt->execute([':email' => $email]);
         $utilizador = $stmt->fetch();
 
         // 4. Se o utilizador existir, testar se a password bate certo com o Hash!
         if ($utilizador && password_verify($pass, $utilizador['password_hash'])) {
-            // SUCESSO! Guardar os dados do utilizador na memória da sessão
-            $_SESSION['user_id'] = $utilizador['id'];
-            $_SESSION['username'] = $utilizador['username'];
-            $_SESSION['nome'] = $utilizador['nome'];
 
-            // Redirecionar para o Dashboard (CAMINHO ABSOLUTO URL)
-            header("Location: /gira/private/dashboard.php");
-            exit;
+            // 5. BARREIRA DE SEGURANÇA: Verificar se a conta não está suspensa
+            if ($utilizador['estado'] === 'Suspenso') {
+                $erro = "Acesso negado. Esta conta encontra-se suspensa.";
+            } else {
+                // SUCESSO ABSOLUTO! Guardar os dados do utilizador na memória da sessão
+                $_SESSION['user_id'] = $utilizador['id'];
+                $_SESSION['email'] = $utilizador['email'];
+                $_SESSION['nome'] = $utilizador['nome'];
+
+                // Redirecionar para o Dashboard (CAMINHO ABSOLUTO URL)
+                header("Location: /gira/private/dashboard.php");
+                exit;
+            }
         } else {
-            $erro = "Utilizador ou palavra-passe incorretos.";
+            $erro = "E-mail ou palavra-passe incorretos.";
         }
     } else {
         $erro = "Por favor, preencha todos os campos.";
@@ -56,20 +62,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="/gira/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/gira/assets/css/all.min.css">
     <link rel="stylesheet" href="/gira/assets/css/1241251.css">
-
-    <style>
-        body {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        }
-
-        .login-card {
-            max-width: 400px;
-            width: 100%;
-        }
-    </style>
 </head>
 
-<body class="vh-100 d-flex align-items-center justify-content-center">
+<body class="vh-100 d-flex align-items-center justify-content-center login-bg">
 
     <div class="login-card p-3">
         <div class="text-center mb-4">
@@ -91,11 +86,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <i class="fa-solid fa-triangle-exclamation me-1"></i> <?php echo $erro; ?>
                         </div>
                     <?php endif; ?>
+
                     <div class="mb-3">
-                        <label for="username" class="form-label small fw-bold text-secondary">Utilizador *</label>
+                        <label for="email" class="form-label small fw-bold text-secondary">E-mail de Acesso *</label>
                         <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-user text-muted"></i></span>
-                            <input type="text" class="form-control bg-light border-start-0" id="username" name="username" placeholder="Seu username" required>
+                            <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-envelope text-muted"></i></span>
+                            <input type="email" class="form-control bg-light border-start-0" id="email" name="email" placeholder="nome@hospital.pt" required>
                         </div>
                     </div>
 

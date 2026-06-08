@@ -650,3 +650,15 @@ body:not([data-bs-theme="dark"]) .text-dark {
 .event-badge:hover {
     opacity: 0.8;
 }
+
+/* ============================================================================
+   ESTILOS EXCLUSIVOS DA PÁGINA DE LOGIN
+============================================================================ */
+body.login-bg {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.login-card {
+    max-width: 400px;
+    width: 100%;
+}
