@@ -12,6 +12,11 @@ try {
     // 2. Ir buscar as Localizações para o Registo de Equipamento (NOVO)
     $stmt_lista_loc = $pdo->query("SELECT id, cod_sala, nome FROM localizacoes ORDER BY nome ASC");
     $localizacoes_dropdown = $stmt_lista_loc->fetchAll();
+
+    // 3. Ir buscar os Perfis para o modal de Utilizadores
+    $stmt_perfis = $pdo->query("SELECT id, nome_perfil FROM perfis_acesso ORDER BY nivel_acesso DESC");
+    $perfis_dropdown = $stmt_perfis->fetchAll();
+} catch (Exception $e) {
 } catch (Exception $e) {
     $equipamentos_dropdown = [];
     $localizacoes_dropdown = [];
@@ -416,19 +421,93 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="/gira/private/utilizadores/processar_utilizador.php" method="POST">
+                <form id="formNovoUtilizador" action="/gira/private/utilizadores/processar_utilizador.php" method="POST">
                     <div class="row g-3">
-                        <div class="col-md-7"><label class="form-label small fw-bold">Nome Completo</label><input type="text" class="form-control bg-light border-0" required></div>
-                        <div class="col-md-5"><label class="form-label small fw-bold">Cédula</label><input type="text" class="form-control bg-light border-0" required></div>
-                        <div class="col-md-6"><label class="form-label small fw-bold">Perfil</label><select class="form-select bg-light border-0">
-                                <option>Eng. Biomédico</option>
-                            </select></div>
+                        <div class="col-md-7">
+                            <label class="form-label small fw-bold text-secondary">Nome Completo</label>
+                            <input type="text" class="form-control bg-light border-0" name="nome" required>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label small fw-bold text-secondary">Cédula Profissional</label>
+                            <input type="text" class="form-control bg-light border-0 fw-mono" name="cedula" placeholder="Opcional">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">E-mail de Acesso</label>
+                            <input type="email" class="form-control bg-light border-0" name="email" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">Palavra-passe Inicial</label>
+                            <input type="password" class="form-control bg-light border-0" name="password" required>
+                        </div>
+                        <div class="col-md-12 border-top pt-3 mt-3">
+                            <label class="form-label small fw-bold text-secondary">Perfil de Acesso / Permissões</label>
+                            <select class="form-select bg-light border-0 fw-bold text-primary" name="perfil_id" required>
+                                <option value="" selected disabled>Selecione o perfil...</option>
+                                <?php foreach ($perfis_dropdown as $perfil): ?>
+                                    <option value="<?php echo $perfil['id']; ?>">
+                                        <?php echo htmlspecialchars($perfil['nome_perfil']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer border-top border-light p-3">
-                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary rounded-3 fw-bold small px-4">Criar Conta</button>
+                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3 text-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovoUtilizador" class="btn btn-primary rounded-3 fw-bold small px-4">Criar Conta</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEditarUtilizador" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-user-pen text-primary me-2"></i>Editar Utilizador</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="formEditarUtilizador" action="/gira/private/utilizadores/processar_edicao_utilizador.php" method="POST">
+
+                    <input type="hidden" name="id_utilizador" id="edit_id_utilizador">
+
+                    <div class="row g-3">
+                        <div class="col-md-7">
+                            <label class="form-label small fw-bold text-secondary">Nome Completo</label>
+                            <input type="text" class="form-control rounded-3 bg-light border-0" name="nome" id="edit_nome_utilizador" required>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label small fw-bold text-secondary">Cédula Profissional</label>
+                            <input type="text" class="form-control rounded-3 bg-light border-0 fw-mono" name="cedula" id="edit_cedula_utilizador">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">E-mail de Acesso</label>
+                            <input type="email" class="form-control rounded-3 bg-light border-0" name="email" id="edit_email_utilizador" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">Nova Palavra-passe</label>
+                            <input type="password" class="form-control rounded-3 bg-light border-0" name="password" placeholder="Deixar em branco para não alterar">
+                        </div>
+                        <div class="col-md-12 border-top pt-3 mt-3">
+                            <label class="form-label small fw-bold text-secondary">Perfil de Acesso / Permissões</label>
+                            <select class="form-select rounded-3 bg-light border-0 fw-bold text-primary" name="perfil_id" id="edit_perfil_utilizador" required>
+                                <?php foreach ($perfis_dropdown as $perfil): ?>
+                                    <option value="<?php echo $perfil['id']; ?>">
+                                        <?php echo htmlspecialchars($perfil['nome_perfil']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formEditarUtilizador" class="btn btn-primary rounded-3 fw-bold small px-4">
+                    <i class="fa-solid fa-floppy-disk me-2"></i>Guardar Alterações
+                </button>
             </div>
         </div>
     </div>
