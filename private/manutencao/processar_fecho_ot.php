@@ -38,11 +38,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Confirmar a transação
         $pdo->commit();
+        // ... (resto do código)
         // --> TRANSMISSOR DE LOG <--
         if (function_exists('registar_log')) {
             registar_log($pdo, $_SESSION['user_id'], "Encerrou a Ordem de Trabalho (ID: $id_ot) e definiu estado do equipamento (ID: $id_equipamento) como '$novo_estado'", "Manutenção");
         }
-        header("Location: /gira/private/manutencoes/manutencao.php?sucesso=ot_fechada");
+        header("Location: /gira/private/manutencao/manutencao.php?sucesso=ot_fechada");
         exit;
     } catch (PDOException $e) {
         // Se houver erro, desfaz tudo
@@ -50,6 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Erro crítico ao fechar OT: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/manutencoes/manutencao.php");
+    header("Location: /gira/private/manutencao/manutencao.php");
     exit;
 }

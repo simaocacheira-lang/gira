@@ -98,19 +98,26 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
                 <td><?php echo $data_abertura; ?></td>
                 <td><span class="badge bg-<?php echo $estado_badge; ?> rounded-pill px-2"><?php echo htmlspecialchars($estado_atual); ?></span></td>
                 <td class="text-end">
-                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="Gerir Ordem de Trabalho">
-                        <button class="btn btn-light btn-sm rounded-3 me-1 border btn-fechar-ot"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalFecharOT"
-                            data-id="<?php echo $ot['id']; ?>"
-                            data-numero="<?php echo htmlspecialchars($ot['numero_ot']); ?>"
-                            data-equipamento="<?php echo $ot['equipamento_id']; ?>">
-                            <i class="fa-solid fa-check text-success"></i>
-                        </button>
-                    </span>
-                    <button class="btn btn-light btn-sm rounded-3 text-danger border" onclick="alert('Funcionalidade de cancelar a desenvolver!');">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
+                    <?php if ($estado_atual != 'Concluída'): ?>
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Gerir / Fechar Ordem">
+                            <button class="btn btn-light btn-sm rounded-3 me-1 border btn-fechar-ot hover-success"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalFecharOT"
+                                data-id="<?php echo $ot['id']; ?>"
+                                data-numero="<?php echo htmlspecialchars($ot['numero_ot']); ?>"
+                                data-equipamento="<?php echo $ot['equipamento_id']; ?>">
+                                <i class="fa-solid fa-check text-success"></i>
+                            </button>
+                        </span>
+                    <?php endif; ?>
+
+                    <form action="/gira/private/manutencao/eliminar_ot.php?id=<?php echo $ot['id']; ?>" method="POST" class="d-inline" onsubmit="return confirm('Tem a certeza que deseja cancelar e eliminar a O.T. <?php echo htmlspecialchars($ot['numero_ot']); ?>? Esta ação não pode ser desfeita.');">
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Cancelar O.T.">
+                            <button type="submit" class="btn btn-light btn-sm rounded-3 text-danger border hover-danger">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </span>
+                    </form>
                 </td>
             </tr>
         <?php
@@ -161,4 +168,8 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
         }
     });
 </script>
-<?php render_footer(); ?>
+<?php
+// IMPORTAR TODOS OS MODAIS ANTES DO RODAPÉ
+require_once __DIR__ . '/../modals.php';
+
+render_footer(); ?>
