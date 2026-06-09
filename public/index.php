@@ -1,0 +1,781 @@
+<?php
+// 1. Ligar à Base de Dados
+require_once __DIR__ . '/../private/db.php';
+
+// 2. Ir buscar os conteúdos para alimentar a página
+try {
+  $stmt = $pdo->query("SELECT chave, texto FROM conteudos_site");
+  $resultados = $stmt->fetchAll();
+
+  $conteudos = [];
+  foreach ($resultados as $row) {
+    $conteudos[$row['chave']] = $row['texto'];
+  }
+} catch (PDOException $e) {
+  // Se a base de dados falhar, criamos um array vazio para o site não explodir
+  $conteudos = [];
+}
+?>
+<!doctype html>
+<html lang="pt-PT">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventário Hospitalar</title>
+
+  <link
+    href="/gira/assets/css/bootstrap.min.css"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/gira/assets/css/all.min.css">
+
+  <link rel="stylesheet" href="/gira/assets/css/1241251.css" />
+</head>
+
+<body>
+  <script src="/gira/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="/gira/assets/js/1241251.js"></script>
+
+  <nav
+    class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary" href="/gira/public/index.php">
+        <i class="fa-solid fa-notes-medical fs-4 me-2"></i>Gira
+      </a>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-medium">
+        <li class="nav-item"><a class="nav-link active" href="#inicio">Início</a></li>
+        <li class="nav-item"><a class="nav-link" href="#funcionalidades">Funcionalidades</a></li>
+        <li class="nav-item"><a class="nav-link" href="#tecnologias">Tecnologias</a></li>
+        <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+        <li class="nav-item"><a class="nav-link" href="#sobre">Sobre Nós</a></li>
+      </ul>
+      <div class="d-flex gap-2">
+        <a href="/gira/public/login.php" class="btn btn-outline-primary px-4 fw-medium">Entrar</a>
+        <a href="#contacto" class="btn btn-primary px-4 fw-medium">Fale Connosco</a>
+      </div>
+    </div>
+    </div>
+  </nav>
+
+  <section
+    id="inicio"
+    class="py-5 bg-light"
+    style="background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%)">
+    <div class="container py-5">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <span
+            class="badge bg-info text-dark rounded-pill px-3 py-2 mb-3 fw-semibold">
+            <i class="fa-solid fa-hospital me-1"></i> SISTEMA DE GESTÃO
+            HOSPITALAR
+          </span>
+          <h1 class="display-4 fw-bold text-dark mb-3">
+            <?php echo isset($conteudos['hero_titulo']) ? htmlspecialchars($conteudos['hero_titulo']) : 'Tecnologia que <span class="text-primary">transforma</span> a gestão hospitalar.'; ?>
+          </h1>
+          <p class="lead text-secondary mb-4">
+            <?php echo htmlspecialchars($conteudos['hero_subtitulo'] ?? 'Solução completa para inventário de equipamentos médicos, gestão de fornecedores, documentação técnica e muito mais. Mais controlo, menos tempo perdido.'); ?>
+          </p>
+
+          <div class="d-flex flex-wrap gap-3 mb-4">
+            <a
+              href="#funcionalidades"
+              class="btn btn-primary btn-lg px-4 shadow-sm">
+              Explorar Plataforma <i class="fa-solid fa-arrow-right ms-2"></i>
+            </a>
+            <a
+              href="/gira/public/login.php"
+              class="btn btn-light btn-lg border px-4 shadow-sm">
+              Ver Dashboard
+              <i class="fa-solid fa-chart-line ms-2 text-primary"></i>
+            </a>
+          </div>
+
+          <div
+            class="d-flex flex-wrap gap-4 mt-4 text-secondary small fw-medium">
+            <div>
+              <i
+                class="fa-solid fa-shield-halved text-success fs-5 me-2 align-middle"></i>100% Web
+            </div>
+            <div>
+              <i
+                class="fa-solid fa-lock text-success fs-5 me-2 align-middle"></i>Seguro
+            </div>
+            <div>
+              <i
+                class="fa-solid fa-heart-pulse text-success fs-5 me-2 align-middle"></i>Confiável
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="position-relative">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Gira healthcare dashboard interface displaying patient data, medical charts, and equipment management metrics on a modern computer screen with professional medical imagery in the background" class="img-fluid rounded-4 shadow-lg border border-white border-4">
+
+            <div
+              class="position-absolute bottom-0 start-0 translate-middle-x bg-white p-3 rounded-3 shadow border d-none d-md-block"
+              style="margin-bottom: 50%">
+              <div class="d-flex align-items-center gap-3">
+                <div
+                  class="bg-primary bg-opacity-10 p-2 rounded text-primary">
+                  <i class="fa-solid fa-stethoscope fs-3"></i>
+                </div>
+                <div>
+                  <h6 class="mb-0 fw-bold">+1.500</h6>
+                  <small class="text-muted">Equipamentos Geridos</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="funcionalidades" class="py-5 bg-white">
+    <div class="container py-5 mb-2">
+      <div class="row align-items-end">
+        <div class="col-lg-8">
+          <span class="text-primary fw-bold text-uppercase small tracking-wide">Funcionalidades</span>
+          <h2 class="display-5 fw-bold text-dark mt-2">
+            Tudo o que precisa, <br>numa única plataforma.
+          </h2>
+        </div>
+        <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+          <a href="/gira/public/login.php" class="btn btn-light btn-lg border px-4 shadow-sm"> Ver todas as funcionalidades <i class="fa-solid fa-arrow-right ms-2"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="slider-container">
+      <div class="slider-track px-3">
+
+        <div class="slider-group">
+          <div class="slider-card">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-light bg-opacity-50 hover-lift text-center">
+              <div class="card-body p-2">
+                <div class="mb-3 text-primary bg-white shadow-sm d-inline-flex align-items-center justify-content-center rounded-3" style="width: 45px; height: 45px;">
+                  <i class="fa-solid fa-box-open fs-5"></i>
+                </div>
+                <h6 class="card-title fw-bold">Equipamentos</h6>
+                <p class="card-text text-secondary" style="font-size: 0.8rem;">Controlo total do ciclo de vida tecnológico.</p>
+              </div>
+            </div>
+          </div>
+          <div class="slider-card">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-light bg-opacity-50 hover-lift text-center">
+              <div class="card-body p-2">
+                <div class="mb-3 text-success bg-white shadow-sm d-inline-flex align-items-center justify-content-center rounded-3" style="width: 45px; height: 45px;">
+                  <i class="fa-solid fa-folder-open fs-5"></i>
+                </div>
+                <h6 class="card-title fw-bold">Documentação</h6>
+                <p class="card-text text-secondary" style="font-size: 0.8rem;">Manuais e certificados num só lugar.</p>
+              </div>
+            </div>
+          </div>
+          <div class="slider-card">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-light bg-opacity-50 hover-lift text-center">
+              <div class="card-body p-2">
+                <div class="mb-3 text-warning bg-white shadow-sm d-inline-flex align-items-center justify-content-center rounded-3" style="width: 45px; height: 45px;">
+                  <i class="fa-solid fa-shield-halved fs-5"></i>
+                </div>
+                <h6 class="card-title fw-bold">Garantias</h6>
+                <p class="card-text text-secondary" style="font-size: 0.8rem;">Alertas automáticos de validade.</p>
+              </div>
+            </div>
+          </div>
+          <div class="slider-card">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-light bg-opacity-50 hover-lift text-center">
+              <div class="card-body p-2">
+                <div class="mb-3 text-info bg-white shadow-sm d-inline-flex align-items-center justify-content-center rounded-3" style="width: 45px; height: 45px;">
+                  <i class="fa-regular fa-building fs-5"></i>
+                </div>
+                <h6 class="card-title fw-bold">Localizações</h6>
+                <p class="card-text text-secondary" style="font-size: 0.8rem;">Rastreabilidade por piso e serviço.</p>
+              </div>
+            </div>
+          </div>
+          <div class="slider-card">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-light bg-opacity-50 hover-lift text-center">
+              <div class="card-body p-2">
+                <div class="mb-3 text-danger bg-white shadow-sm d-inline-flex align-items-center justify-content-center rounded-3" style="width: 45px; height: 45px;">
+                  <i class="fa-solid fa-users-gear fs-5"></i>
+                </div>
+                <h6 class="card-title fw-bold">Fornecedores</h6>
+                <p class="card-text text-secondary" style="font-size: 0.8rem;">Gestão de contactos e assistências.</p>
+              </div>
+            </div>
+          </div>
+          <div class="slider-card">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-light bg-opacity-50 hover-lift text-center">
+              <div class="card-body p-2">
+                <div class="mb-3 text-primary bg-white shadow-sm d-inline-flex align-items-center justify-content-center rounded-3" style="width: 45px; height: 45px;">
+                  <i class="fa-solid fa-chart-pie fs-5"></i>
+                </div>
+                <h6 class="card-title fw-bold">Estatísticas</h6>
+                <p class="card-text text-secondary" style="font-size: 0.8rem;">Dashboards para apoio à decisão.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-card">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-light bg-opacity-50 hover-lift text-center">
+              <div class="card-body p-2">
+                <div class="mb-3 text-primary bg-white shadow-sm d-inline-flex align-items-center justify-content-center rounded-3" style="width: 45px; height: 45px;">
+                  <i class="fa-solid fa-box-open fs-5"></i>
+                </div>
+                <h6 class="card-title fw-bold">Equipamentos</h6>
+                <p class="card-text text-secondary" style="font-size: 0.8rem;">Controlo total do ciclo de vida tecnológico.</p>
+              </div>
+            </div>
+          </div>
+          <div class="slider-card">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-light bg-opacity-50 hover-lift text-center">
+              <div class="card-body p-2">
+                <div class="mb-3 text-success bg-white shadow-sm d-inline-flex align-items-center justify-content-center rounded-3" style="width: 45px; height: 45px;">
+                  <i class="fa-solid fa-folder-open fs-5"></i>
+                </div>
+                <h6 class="card-title fw-bold">Documentação</h6>
+                <p class="card-text text-secondary" style="font-size: 0.8rem;">Manuais e certificados num só lugar.</p>
+              </div>
+            </div>
+          </div>
+          <div class="slider-card">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-light bg-opacity-50 hover-lift text-center">
+              <div class="card-body p-2">
+                <div class="mb-3 text-warning bg-white shadow-sm d-inline-flex align-items-center justify-content-center rounded-3" style="width: 45px; height: 45px;">
+                  <i class="fa-solid fa-shield-halved fs-5"></i>
+                </div>
+                <h6 class="card-title fw-bold">Garantias</h6>
+                <p class="card-text text-secondary" style="font-size: 0.8rem;">Alertas automáticos de validade.</p>
+              </div>
+            </div>
+          </div>
+          <div class="slider-card">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-light bg-opacity-50 hover-lift text-center">
+              <div class="card-body p-2">
+                <div class="mb-3 text-info bg-white shadow-sm d-inline-flex align-items-center justify-content-center rounded-3" style="width: 45px; height: 45px;">
+                  <i class="fa-regular fa-building fs-5"></i>
+                </div>
+                <h6 class="card-title fw-bold">Localizações</h6>
+                <p class="card-text text-secondary" style="font-size: 0.8rem;">Rastreabilidade por piso e serviço.</p>
+              </div>
+            </div>
+          </div>
+          <div class="slider-card">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-light bg-opacity-50 hover-lift text-center">
+              <div class="card-body p-2">
+                <div class="mb-3 text-danger bg-white shadow-sm d-inline-flex align-items-center justify-content-center rounded-3" style="width: 45px; height: 45px;">
+                  <i class="fa-solid fa-users-gear fs-5"></i>
+                </div>
+                <h6 class="card-title fw-bold">Fornecedores</h6>
+                <p class="card-text text-secondary" style="font-size: 0.8rem;">Gestão de contactos e assistências.</p>
+              </div>
+            </div>
+          </div>
+          <div class="slider-card">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-light bg-opacity-50 hover-lift text-center">
+              <div class="card-body p-2">
+                <div class="mb-3 text-primary bg-white shadow-sm d-inline-flex align-items-center justify-content-center rounded-3" style="width: 45px; height: 45px;">
+                  <i class="fa-solid fa-chart-pie fs-5"></i>
+                </div>
+                <h6 class="card-title fw-bold">Estatísticas</h6>
+                <p class="card-text text-secondary" style="font-size: 0.8rem;">Dashboards para apoio à decisão.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="como-funciona" class="py-5 bg-light">
+    <div class="container py-5">
+      <div class="text-center mb-5">
+        <span class="text-primary fw-bold text-uppercase small tracking-wide">Como Funciona</span>
+        <h2 class="display-6 fw-bold text-dark mt-2">
+          Um processo simples para uma <br /><span class="text-primary">gestão inteligente.</span>
+        </h2>
+      </div>
+
+      <div
+        class="row position-relative text-center g-4 justify-content-center mt-4">
+        <div
+          class="position-absolute top-0 start-50 translate-middle-x w-75 d-none d-lg-block"
+          style="height: 25px; border-bottom: 2px dashed #dee2e6; z-index: 0"></div>
+
+        <div class="col-12 col-md-4 col-lg-2">
+          <div
+            class="d-flex flex-column align-items-center position-relative">
+            <div
+              class="bg-white text-primary border border-primary border-2 rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm mb-3"
+              style="width: 50px; height: 50px; z-index: 1">
+              1
+            </div>
+            <h6 class="fw-bold">Registo</h6>
+            <p class="text-secondary small">
+              Registe os equipamentos de forma rápida com código único.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4 col-lg-2">
+          <div
+            class="d-flex flex-column align-items-center position-relative">
+            <div
+              class="bg-white text-primary border border-primary border-2 rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm mb-3"
+              style="width: 50px; height: 50px; z-index: 1">
+              2
+            </div>
+            <h6 class="fw-bold">Documentação</h6>
+            <p class="text-secondary small">
+              Associe certificados, manuais e contratos relevantes.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4 col-lg-2">
+          <div
+            class="d-flex flex-column align-items-center position-relative">
+            <div
+              class="bg-white text-primary border border-primary border-2 rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm mb-3"
+              style="width: 50px; height: 50px; z-index: 1">
+              3
+            </div>
+            <h6 class="fw-bold">Localização</h6>
+            <p class="text-secondary small">
+              Defina o edifício, piso e serviço onde o equipamento está
+              alocado.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4 col-lg-2">
+          <div
+            class="d-flex flex-column align-items-center position-relative">
+            <div
+              class="bg-white text-primary border border-primary border-2 rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm mb-3"
+              style="width: 50px; height: 50px; z-index: 1">
+              4
+            </div>
+            <h6 class="fw-bold">Monitorização</h6>
+            <p class="text-secondary small">
+              Acompanhe estados de manutenção e validade das garantias.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4 col-lg-2">
+          <div
+            class="d-flex flex-column align-items-center position-relative">
+            <div
+              class="bg-white text-primary border border-primary border-2 rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm mb-3"
+              style="width: 50px; height: 50px; z-index: 1">
+              5
+            </div>
+            <h6 class="fw-bold">Decisão</h6>
+            <p class="text-secondary small">
+              Tome decisões informadas com base nos dados do painel.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section
+    id="tecnologias"
+    class="py-5 bg-dark text-white"
+    style="background-color: #0b1c2d !important">
+    <div class="container py-4">
+      <div class="row align-items-center">
+        <div class="col-lg-4 text-center text-lg-start mb-4 mb-lg-0">
+          <span class="text-info fw-bold text-uppercase small tracking-wide">Tecnologia de Confiança</span>
+          <h3 class="fw-bold mt-2">
+            Construído com tecnologias modernas e seguras.
+          </h3>
+        </div>
+
+        <div class="col-lg-8">
+          <div class="d-flex flex-wrap justify-content-center justify-content-lg-end gap-4 gap-md-5 text-center">
+            <div>
+              <i class="fa-brands fa-html5 text-orange fs-1 mb-2" style="color: #e34f26"></i>
+              <div class="small fw-bold">HTML5</div>
+            </div>
+
+            <div>
+              <i class="fa-brands fa-css3-alt text-primary fs-1 mb-2"></i>
+              <div class="small fw-bold">CSS3</div>
+            </div>
+
+            <div>
+              <i class="fa-brands fa-bootstrap text-purple fs-1 mb-2" style="color: #7952b3"></i>
+              <div class="small fw-bold">Bootstrap</div>
+            </div>
+
+            <div>
+              <i class="fa-brands fa-js text-warning fs-1 mb-2"></i>
+              <div class="small fw-bold">JavaScript</div>
+            </div>
+
+            <div>
+              <i class="fa-brands fa-php fs-1 mb-2" style="color: #777bb4"></i>
+              <div class="small fw-bold">PHP</div>
+            </div>
+
+            <div>
+              <i class="fa-solid fa-database text-info fs-1 mb-2"></i>
+              <div class="small fw-bold">MySQL</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="py-5 bg-white">
+    <div class="container py-5">
+
+      <div class="row justify-content-center text-center mb-5">
+        <div class="col-lg-8">
+          <span class="text-primary fw-bold text-uppercase small tracking-wide">Esclareça as suas dúvidas</span>
+          <h2 class="display-6 fw-bold text-dark mt-2">Perguntas Frequentes</h2>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="accordion shadow-sm rounded-4 overflow-hidden" id="accordionFAQ">
+
+            <div class="accordion-item border-0 border-bottom">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button bg-light fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  O sistema permite gerir diferentes localizações do hospital?
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionFAQ">
+                <div class="accordion-body text-secondary">
+                  Sim! A nossa plataforma permite organizar o inventário de forma hierárquica. Pode registar equipamentos especificando o edifício, o piso, o serviço e até a sala onde se encontram, garantindo total rastreabilidade.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item border-0 border-bottom">
+              <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed bg-light fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Posso associar documentos técnicos aos equipamentos?
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionFAQ">
+                <div class="accordion-body text-secondary">
+                  Absolutamente. Pode anexar e consultar manuais de utilizador, certificados de calibração, faturas e relatórios técnicos diretamente na ficha de cada dispositivo médico, mantendo toda a documentação centralizada.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item border-0 border-bottom">
+              <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed bg-light fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  O software emite alertas de garantias?
+                </button>
+              </h2>
+              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionFAQ">
+                <div class="accordion-body text-secondary">
+                  Sim. O sistema possui um dashboard inteligente que destaca os equipamentos cuja garantia ou contrato de manutenção esteja prestes a expirar, auxiliando na tomada de decisão preventiva.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item border-0">
+              <h2 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed bg-light fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                  Como funciona a gestão de fornecedores?
+                </button>
+              </h2>
+              <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionFAQ">
+                <div class="accordion-body text-secondary">
+                  O módulo de fornecedores permite registar os contactos de fabricantes, distribuidores e empresas de assistência técnica, podendo associar múltiplos fornecedores a um único equipamento médico, conforme a necessidade.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="sobre" class="py-5 bg-light">
+    <div class="container py-5">
+      <div class="row align-items-center g-5">
+
+        <div class="col-lg-6 position-relative">
+          <div class="position-absolute top-0 start-0 translate-middle z-0 bg-primary bg-opacity-10 rounded-4" style="width: 200px; height: 200px;"></div>
+
+          <img src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=800&q=80" alt="Profissionais de saúde a usar tecnologia" class="img-fluid rounded-4 shadow-lg position-relative z-1 border border-white border-4">
+
+          <div class="position-absolute bottom-0 end-0 translate-middle-y z-2 bg-white p-3 rounded-4 shadow-sm border me-3 d-none d-md-block">
+            <div class="d-flex align-items-center gap-3">
+              <div class="bg-success bg-opacity-10 text-success p-3 rounded-circle">
+                <i class="fa-solid fa-hospital fs-4"></i>
+              </div>
+              <div>
+                <h4 class="fw-bold mb-0">100%</h4>
+                <span class="text-secondary small">Focado na Saúde</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <span class="text-primary fw-bold text-uppercase small tracking-wide">A Nossa Missão</span>
+          <h2 class="display-6 fw-bold text-dark mt-2 mb-4">
+            Tecnologia ao serviço da <span class="text-primary">excelência hospitalar.</span>
+          </h2>
+
+          <p class="text-secondary mb-4" style="line-height: 1.7;">
+            <?php echo nl2br(htmlspecialchars($conteudos['sobre_texto'] ?? "A Gira nasceu com um propósito claro: eliminar o caos administrativo e garantir que as equipas médicas têm sempre os equipamentos certos, prontos a usar e com as manutenções em dia.\n\nAcreditamos que, ao simplificar a gestão tecnológica, devolvemos tempo precioso aos profissionais de saúde para que se foquem no que realmente importa: os doentes.")); ?>
+          </p>
+
+          <ul class="list-unstyled mb-4">
+            <li class="mb-3 d-flex align-items-center text-dark">
+              <i class="fa-solid fa-check text-success bg-success bg-opacity-10 p-1 rounded-circle me-3"></i>
+              <span class="fw-medium">Rastreabilidade total e em tempo real</span>
+            </li>
+            <li class="mb-3 d-flex align-items-center text-dark">
+              <i class="fa-solid fa-check text-success bg-success bg-opacity-10 p-1 rounded-circle me-3"></i>
+              <span class="fw-medium">Segurança e conformidade de dados</span>
+            </li>
+            <li class="d-flex align-items-center text-dark">
+              <i class="fa-solid fa-check text-success bg-success bg-opacity-10 p-1 rounded-circle me-3"></i>
+              <span class="fw-medium">Apoio à decisão preventiva</span>
+            </li>
+          </ul>
+
+          <a href="#equipa" class="btn btn-outline-primary rounded-pill px-4">Conheça a equipa</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="equipa" class="py-5 bg-white">
+    <div class="container py-5">
+
+      <div class="row justify-content-center text-center mb-5">
+        <div class="col-lg-8">
+          <span class="text-primary fw-bold text-uppercase small tracking-wide">Os Rostos por trás da Tecnologia</span>
+          <h2 class="display-6 fw-bold text-dark mt-2">A Nossa Equipa</h2>
+          <p class="text-secondary mt-3">Especialistas dedicados a criar as melhores soluções para a gestão hospitalar moderna.</p>
+        </div>
+      </div>
+
+      <div class="row g-4 justify-content-center">
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card border-0 shadow-sm rounded-4 h-100 text-center p-4 hover-lift">
+            <div class="mb-4 d-inline-block position-relative">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="Lead Developer" class="rounded-circle shadow-sm border border-white border-4" style="width: 130px; height: 130px; object-fit: cover;">
+              <span class="position-absolute bottom-0 end-0 bg-primary text-white p-2 rounded-circle shadow-sm" style="width: 40px; height: 40px;">
+                <i class="fa-solid fa-code small"></i>
+              </span>
+            </div>
+            <h5 class="fw-bold mb-1">Nome 1</h5>
+            <span class="text-primary small fw-bold text-uppercase tracking-wider">Lead Developer & Founder</span>
+            <p class="text-secondary mt-3 mb-4 small">
+              Responsável pela arquitetura do sistema e implementação de toda a lógica backend em PHP e base de dados.
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+              <a href="#" class="text-secondary hover-primary"><i class="fa-brands fa-linkedin fs-5"></i></a>
+              <a href="#" class="text-secondary hover-primary"><i class="fa-brands fa-github fs-5"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card border-0 shadow-sm rounded-4 h-100 text-center p-4 hover-lift">
+            <div class="mb-4 d-inline-block position-relative">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80" alt="UI/UX Designer" class="rounded-circle shadow-sm border border-white border-4" style="width: 130px; height: 130px; object-fit: cover;">
+              <span class="position-absolute bottom-0 end-0 bg-success text-white p-2 rounded-circle shadow-sm" style="width: 40px; height: 40px;">
+                <i class="fa-solid fa-palette small"></i>
+              </span>
+            </div>
+            <h5 class="fw-bold mb-1">Nome 2</h5>
+            <span class="text-primary small fw-bold text-uppercase tracking-wider">UI/UX Designer</span>
+            <p class="text-secondary mt-3 mb-4 small">
+              Focada em garantir que a Gira seja intuitiva e acessível para todos os profissionais de saúde.
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+              <a href="#" class="text-secondary hover-primary"><i class="fa-brands fa-linkedin fs-5"></i></a>
+              <a href="#" class="text-secondary hover-primary"><i class="fa-brands fa-behance fs-5"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="card border-0 shadow-sm rounded-4 h-100 text-center p-4 hover-lift">
+            <div class="mb-4 d-inline-block position-relative">
+              <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80" alt="Product Manager" class="rounded-circle shadow-sm border border-white border-4" style="width: 130px; height: 130px; object-fit: cover;">
+              <span class="position-absolute bottom-0 end-0 bg-info text-white p-2 rounded-circle shadow-sm" style="width: 40px; height: 40px;">
+                <i class="fa-solid fa-stethoscope small"></i>
+              </span>
+            </div>
+            <h5 class="fw-bold mb-1">Nome 3</h5>
+            <span class="text-primary small fw-bold text-uppercase tracking-wider">Medical Consultant</span>
+            <p class="text-secondary mt-3 mb-4 small">
+              Consultor clínico que garante que o software cumpre as normas e necessidades reais do ambiente hospitalar.
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+              <a href="#" class="text-secondary hover-primary"><i class="fa-brands fa-linkedin fs-5"></i></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5 bg-light border-bottom">
+    <div class="container">
+      <div class="bg-white rounded-4 shadow-sm border p-4 p-md-5">
+        <div class="row align-items-center text-center text-lg-start">
+          <div class="col-lg-2 mb-3 mb-lg-0 text-center">
+            <i class="fa-solid fa-plus fs-1 text-primary bg-primary bg-opacity-10 p-3 rounded-circle"></i>
+          </div>
+
+          <div class="col-lg-6 mb-4 mb-lg-0">
+            <h3 class="fw-bold mb-1">
+              Pronto para transformar a gestão do seu hospital?
+            </h3>
+            <p class="text-secondary mb-0">
+              Fale connosco e descubra como a Gira pode simplificar
+              processos e reduzir custos.
+            </p>
+          </div>
+
+          <div class="col-lg-4 text-lg-end">
+            <a href="#contacto" class="btn btn-primary btn-lg px-4 rounded-pill shadow-sm">
+              Fale com um especialista
+              <i class="fa-solid fa-arrow-right ms-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="text-white pt-5 pb-3" style="background-color: #081420">
+    <div class="container pt-3">
+      <div class="row mb-4">
+        <div class="col-lg-4 mb-4 mb-lg-0">
+          <a
+            class="navbar-brand fw-bold text-white fs-4 d-flex align-items-center mb-3"
+            href="/gira/public/index.php">
+            <i class="fa-solid fa-notes-medical text-primary me-2"></i>Gira
+          </a>
+          <p class="text-white-50 small mb-4 pe-lg-4">
+            Solução web para gestão do inventário hospitalar de equipamentos
+            médicos. Desenvolvido para simplificar o controlo e garantir a
+            rastreabilidade total no ciclo de vida tecnológico.
+          </p>
+          <div class="d-flex gap-3">
+            <a href="#" class="text-white-50 text-decoration-none"><i class="fa-brands fa-linkedin fs-5"></i></a>
+            <a href="#" class="text-white-50 text-decoration-none"><i class="fa-brands fa-facebook fs-5"></i></a>
+            <a href="#" class="text-white-50 text-decoration-none"><i class="fa-brands fa-instagram fs-5"></i></a>
+          </div>
+        </div>
+
+        <div class="col-6 col-lg-2 mb-4 mb-lg-0">
+          <h6 class="fw-bold mb-3">Soluções</h6>
+          <ul class="list-unstyled small">
+            <li class="mb-2">
+              <a
+                href="#funcionalidades"
+                class="text-white-50 text-decoration-none">Gestão de Equipamentos</a>
+            </li>
+            <li class="mb-2">
+              <a
+                href="#funcionalidades"
+                class="text-white-50 text-decoration-none">Documentação Técnica</a>
+            </li>
+            <li class="mb-2">
+              <a
+                href="#funcionalidades"
+                class="text-white-50 text-decoration-none">Fornecedores</a>
+            </li>
+            <li class="mb-2">
+              <a
+                href="#funcionalidades"
+                class="text-white-50 text-decoration-none">Relatórios</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-6 col-lg-2 mb-4 mb-lg-0">
+          <h6 class="fw-bold mb-3">Empresa</h6>
+          <ul class="list-unstyled small">
+            <li class="mb-2">
+              <a href="#sobre" class="text-white-50 text-decoration-none">Sobre Nós</a>
+            </li>
+            <li class="mb-2">
+              <a href="#" class="text-white-50 text-decoration-none">Missão e Visão</a>
+            </li>
+            <li class="mb-2">
+              <a href="#contacto" class="text-white-50 text-decoration-none">Contacto</a>
+            </li>
+            <li class="mb-2">
+              <a href="#" class="text-white-50 text-decoration-none">Carreiras</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-lg-4">
+          <h6 class="fw-bold mb-3" id="contacto">Contacto</h6>
+          <ul class="list-unstyled small text-white-50">
+            <li class="mb-3 d-flex align-items-start">
+              <i class="fa-solid fa-envelope mt-1 me-3 text-primary"></i>
+              <?php echo htmlspecialchars($conteudos['contacto_email'] ?? 'geral@gira.pt'); ?>
+            </li>
+            <li class="mb-3 d-flex align-items-start">
+              <i class="fa-solid fa-phone mt-1 me-3 text-primary"></i>
+              <?php echo htmlspecialchars($conteudos['contacto_telefone'] ?? '+351 912 345 678'); ?>
+            </li>
+            <li class="mb-3 d-flex align-items-start">
+              <i class="fa-solid fa-location-dot mt-1 me-3 text-primary"></i>
+              <div>
+                <?php echo nl2br(htmlspecialchars($conteudos['contacto_morada'] ?? "Rua Dr. António Bernardino de Almeida, 431\n4249-015 Porto, Portugal")); ?>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="border-secondary my-4" style="opacity: 0.3" />
+
+      <div class="row align-items-center small text-white-50">
+        <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+          &copy; 2026 Gira Solutions. Todos os direitos reservados.
+        </div>
+        <div class="col-md-6 text-center text-md-end">
+          <a href="#" class="text-white-50 text-decoration-none me-3">Política de Privacidade</a>
+          <a href="#" class="text-white-50 text-decoration-none">Termos de Utilização</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
