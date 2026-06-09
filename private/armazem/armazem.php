@@ -3,7 +3,27 @@
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../layout.php';
 
-// 2. Montamos o topo
+// 2. LÓGICA DINÂMICA: Buscar artigos e contar ruturas
+try {
+    $sql = "SELECT a.*, f.nome_empresa 
+            FROM artigos_armazem a 
+            LEFT JOIN fornecedores f ON a.fornecedor_id = f.id 
+            ORDER BY a.nome ASC";
+    $stmt = $pdo->query($sql);
+    $artigos = $stmt->fetchAll();
+
+    // Contar quantas peças estão abaixo do mínimo
+    $total_ruturas = 0;
+    foreach ($artigos as $artigo) {
+        if ($artigo['quantidade_atual'] < $artigo['quantidade_minima']) {
+            $total_ruturas++;
+        }
+    }
+} catch (PDOException $e) {
+    die("Erro ao carregar o armazém: " . $e->getMessage());
+}
+
+// 3. Montamos o topo
 render_header("Gira - Armazém e Gestão de Stock Técnico");
 ?>
 
@@ -22,68 +42,88 @@ render_header("Gira - Armazém e Gestão de Stock Técnico");
     <div class="col-12 col-md-4">
         <div class="card border-0 shadow-sm rounded-4 p-3 bg-white border-start border-danger border-4">
             <small class="text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Stock em Rutura</small>
-            <h3 class="fw-bold my-1 text-danger">4 Artigos</h3>
+            <h3 class="fw-bold my-1 text-danger"><?php echo $total_ruturas; ?> Artigos</h3>
             <small class="text-muted" style="font-size: 0.75rem;">A necessitar de compra urgente</small>
         </div>
     </div>
     <div class="col-12 col-md-4">
         <div class="card border-0 shadow-sm rounded-4 p-3 bg-white border-start border-warning border-4">
             <small class="text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Valor Total em Stock</small>
-            <h3 class="fw-bold my-1 text-dark">42.500 €</h3>
-            <small class="text-muted" style="font-size: 0.75rem;">Valor contabilístico das peças</small>
+            <h3 class="fw-bold my-1 text-dark">-- €</h3>
+            <small class="text-muted" style="font-size: 0.75rem;">Módulo financeiro em desenvolvimento</small>
         </div>
     </div>
     <div class="col-12 col-md-4">
         <div class="card border-0 shadow-sm rounded-4 p-3 bg-white border-start border-success border-4">
             <small class="text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Movimentações (Mês)</small>
-            <h3 class="fw-bold my-1 text-success">128</h3>
-            <small class="text-muted" style="font-size: 0.75rem;">Saídas registadas em OTs</small>
+            <h3 class="fw-bold my-1 text-success">--</h3>
+            <small class="text-muted" style="font-size: 0.75rem;">Módulo estatístico em desenvolvimento</small>
         </div>
     </div>
 </div>
 
 <?php
-// 1. Definimos as colunas da tabela
+// 1. Definimos as colunas da tabela (Adicionámos o "Em Trânsito")
 $colunas = [
-    ['label' => 'Ref. Peça', 'sort' => 'id_peca'],
+    ['label' => 'Ref. Peça', 'sort' => 'referencia'],
     ['label' => 'Designação do Artigo', 'sort' => 'nome'],
-    ['label' => 'Fornecedor', 'sort' => 'fornecedor'],
-    ['label' => 'Stock Atual', 'sort' => 'stock_atual'],
-    ['label' => 'Stock Mínimo', 'sort' => 'stock_minimo'],
-    ['label' => 'Estado', 'sort' => 'estado']
+    ['label' => 'Fornecedor', 'sort' => 'fornecedor_id'],
+    ['label' => 'Stock Atual', 'sort' => 'quantidade_atual'],
+    ['label' => 'Em Trânsito', 'align' => 'center'], // NOVA COLUNA
+    ['label' => 'Estado']
 ];
 
-// 2. Desenhamos a caixa exterior e os cabeçalhos automaticamente!
+// 2. Desenhamos a caixa exterior e os cabeçalhos
 render_table_start($colunas);
+
+// ============================================================================
+// O LOOP: Preencher o armazém com dados reais da base de dados
+// ============================================================================
+foreach ($artigos as $artigo):
+
+    $em_rutura = ($artigo['quantidade_atual'] < $artigo['quantidade_minima']);
+    $cor_texto = $em_rutura ? 'text-danger' : 'text-dark';
+    $classe_badge = $em_rutura ? 'bg-danger badge-rutura' : 'bg-success';
+    $texto_badge = $em_rutura ? 'Rutura' : 'Saudável';
+    $nome_fornecedor = $artigo['nome_empresa'] ? $artigo['nome_empresa'] : '<span class="text-muted fst-italic">Sem Fornecedor</span>';
+
+    // LÓGICA DO "EM TRÂNSITO": Se for maior que 0, mostra o camião azul
+    $html_transito = '<span class="text-muted">-</span>';
+    if ($artigo['quantidade_em_transito'] > 0) {
+        $html_transito = '<span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2 py-1"><i class="fa-solid fa-truck-fast me-1"></i> +' . $artigo['quantidade_em_transito'] . '</span>';
+    }
 ?>
-
-<tr>
-    <td class="fw-bold text-primary fw-mono">P01</td>
-    <td>
-        <div class="fw-bold text-dark">Módulo SpO2 - Philips</div>
-        <small class="text-muted">Compatível com série IntelliVue</small>
-    </td>
-    <td>Philips Healthcare</td>
-    <td class="fw-bold text-danger">0</td>
-    <td>5</td>
-    <td><span class="badge bg-danger rounded-pill px-2">Rutura</span></td>
-</tr>
-
-<tr>
-    <td class="fw-bold text-primary fw-mono">P02</td>
-    <td>
-        <div class="fw-bold text-dark">Bateria 12V - Dräger</div>
-        <small class="text-muted">Célula de chumbo selada</small>
-    </td>
-    <td>Dräger Portugal</td>
-    <td class="fw-bold text-dark">12</td>
-    <td>10</td>
-    <td><span class="badge bg-success rounded-pill px-2">Saudável</span></td>
-</tr>
-
+    <tr>
+        <td class="fw-bold text-primary fw-mono"><?php echo htmlspecialchars($artigo['referencia']); ?></td>
+        <td>
+            <div class="fw-bold text-dark"><?php echo htmlspecialchars($artigo['nome']); ?></div>
+            <small class="text-muted"><?php echo htmlspecialchars($artigo['categoria']); ?></small>
+        </td>
+        <td><?php echo $nome_fornecedor; ?></td>
+        <td>
+            <span class="fw-bold <?php echo $cor_texto; ?> fs-6"><?php echo $artigo['quantidade_atual']; ?></span>
+            <small class="text-muted ms-1">(Mín: <?php echo $artigo['quantidade_minima']; ?>)</small>
+        </td>
+        <td class="text-center"><?php echo $html_transito; ?></td>
+        <td><span class="badge <?php echo $classe_badge; ?> rounded-pill px-3 py-2 shadow-sm"><?php echo $texto_badge; ?></span></td>
+    </tr>
 <?php
-// 3. Fechamos as tags da tabela automaticamente!
+endforeach;
+
+if (count($artigos) === 0):
+?>
+    <tr>
+        <td colspan="6" class="text-center text-muted py-5">
+            <i class="fa-solid fa-box-open fs-1 text-light mb-3"></i><br>
+            Não existem artigos registados no armazém.
+        </td>
+    </tr>
+<?php
+endif;
+
+// 3. Fechamos as tags da tabela
 render_table_end();
+?>
 ?>
 
 <div class="modal fade" id="modalNovaEncomenda" tabindex="-1" aria-hidden="true">
@@ -104,8 +144,11 @@ render_table_end();
                             <label class="form-label small fw-bold text-secondary">Artigo a Encomendar</label>
                             <select class="form-select rounded-3 bg-light border-0" name="artigo_id" required>
                                 <option value="" selected disabled>Escolha o artigo...</option>
-                                <option value="P01">P01 - Módulo SpO2 - Philips</option>
-                                <option value="P02">P02 - Bateria 12V - Dräger</option>
+                                <?php foreach ($artigos as $artigo_modal): ?>
+                                    <option value="<?php echo $artigo_modal['id']; ?>">
+                                        <?php echo htmlspecialchars($artigo_modal['referencia'] . ' - ' . $artigo_modal['nome']); ?>
+                                    </option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
 
