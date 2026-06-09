@@ -16,19 +16,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $stmt->execute([
             ':codigo'      => $codigo_gerado,
-            ':nome'        => $_POST['nome'],             // Correspondente a name="nome"
-            ':modelo'      => $_POST['marca'],            // Correspondente a name="marca"
-            ':serie'       => $_POST['sn'],               // Correspondente a name="sn"
-            ':estado'      => $_POST['estado_operacional'], // Correspondente a name="estado_operacional"
-            ':localizacao' => $_POST['localizacao_id'],   // Correspondente a name="localizacao_id"
-            ':fornecedor'  => $_POST['fornecedor_id'],    // Correspondente a name="fornecedor_id"
+            ':nome'        => trim($_POST['nome']),
+            ':modelo'      => trim($_POST['marca']),
+            ':serie'       => trim($_POST['sn']),
+            ':estado'      => $_POST['estado_operacional'],
+            ':localizacao' => (int) $_POST['localizacao_id'],
+            ':fornecedor'  => (int) $_POST['fornecedor_id'],
             ':data'        => $_POST['data_aquisicao']
         ]);
+
+        // --> O NOSSO NOVO TRANSMISSOR DE LOG <--
+        if (function_exists('registar_log')) {
+            $nome_eq = trim($_POST['nome']);
+            registar_log($pdo, $_SESSION['user_id'], "Registou o equipamento: $nome_eq ($codigo_gerado)", "Equipamentos");
+        }
 
         header("Location: /gira/private/equipamentos/equipamentos.php?sucesso=1");
         exit;
     } catch (PDOException $e) {
-        die("Erro ao guardar na base de dados: " . $e->getMessage());
+        die("Erro ao registar equipamento: " . $e->getMessage());
     }
 } else {
     header("Location: /gira/private/equipamentos/equipamentos.php");

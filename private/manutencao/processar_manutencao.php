@@ -23,7 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':prioridade'  => $_POST['prioridade'],
             ':descricao'   => $_POST['descricao_avaria']
         ]);
-
+        // --> TRANSMISSOR DE LOG <--
+        if (function_exists('registar_log')) {
+            $id_eq = (int)$_POST['equipamento_id'];
+            registar_log($pdo, $_SESSION['user_id'], "Emitiu a Ordem de Trabalho $numero_ot para o equipamento ID: $id_eq", "Manutenção");
+        }
         // 5. MUDANÇA AQUI: Redirecionar para o Dashboard de Manutenção!
         header("Location: /gira/private/manutencoes/manutencao.php?sucesso=ot_criada");
         exit;

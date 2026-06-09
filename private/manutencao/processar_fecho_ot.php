@@ -38,7 +38,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Confirmar a transação
         $pdo->commit();
-
+        // --> TRANSMISSOR DE LOG <--
+        if (function_exists('registar_log')) {
+            registar_log($pdo, $_SESSION['user_id'], "Encerrou a Ordem de Trabalho (ID: $id_ot) e definiu estado do equipamento (ID: $id_equipamento) como '$novo_estado'", "Manutenção");
+        }
         header("Location: /gira/private/manutencoes/manutencao.php?sucesso=ot_fechada");
         exit;
     } catch (PDOException $e) {

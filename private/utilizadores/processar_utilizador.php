@@ -31,7 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':password' => $password_encriptada,
             ':perfil' => $perfil_id
         ]);
-
+        // --> TRANSMISSOR DE LOG <--
+        if (function_exists('registar_log')) {
+            registar_log($pdo, $_SESSION['user_id'], "Criou o utilizador: $nome ($email)", "Utilizadores");
+        }
         // Sucesso! Volta para a página de utilizadores
         header("Location: /gira/private/utilizadores/utilizadores.php?sucesso=utilizador_criado");
         exit;

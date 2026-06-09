@@ -22,6 +22,11 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 ':novo_estado' => $novo_estado,
                 ':id' => $id_utilizador
             ]);
+
+            // --> TRANSMISSOR DE LOG (DENTRO DO BLOCO DE SUCESSO) <--
+            if (function_exists('registar_log')) {
+                registar_log($pdo, $_SESSION['user_id'], "Alterou o estado do utilizador (ID: $id_utilizador) para '$novo_estado'", "Utilizadores");
+            }
         }
 
         // Volta para a página com sucesso

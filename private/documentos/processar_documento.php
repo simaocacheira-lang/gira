@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // 2. BARREIRA DE SEGURANÇA NORMAL
-   // 2. BARREIRA DE SEGURANÇA
+    // 2. BARREIRA DE SEGURANÇA
     if (empty($_GET['id'])) {
         die("<div style='font-family: sans-serif; padding: 20px;'><h3>Erro de Ligação</h3><p>O ID do equipamento não foi encontrado no URL.</p><a href='javascript:history.back()'>Voltar atrás</a></div>");
     }
@@ -56,7 +56,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     ':tipo'  => $tipo_doc,
                     ':caminho' => $caminho_db
                 ]);
-
+                // --> TRANSMISSOR DE LOG <--
+                if (function_exists('registar_log')) {
+                    registar_log($pdo, $_SESSION['user_id'], "Fez upload do documento '$nome_doc' ($tipo_doc) para o equipamento ID: $id_equipamento", "Documentos");
+                }
                 // Sucesso! Volta e abre a aba dos documentos
                 header("Location: /gira/private/equipamentos/detalhes_equipamento.php?id=" . $id_equipamento . "&sucesso=doc_adicionado&tab=documentos");
                 exit;

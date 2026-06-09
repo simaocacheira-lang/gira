@@ -38,6 +38,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['email'] = $utilizador['email'];
                 $_SESSION['nome'] = $utilizador['nome'];
 
+                // --> REGISTAR LOG DE AUDITORIA <--
+                if (function_exists('registar_log')) {
+                    registar_log($pdo, $utilizador['id'], 'Início de Sessão bem-sucedido', 'Autenticação');
+                }
+
                 // Redirecionar para o Dashboard (CAMINHO ABSOLUTO URL)
                 header("Location: /gira/private/dashboard.php");
                 exit;
