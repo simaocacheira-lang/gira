@@ -1,90 +1,147 @@
 <?php
-// 1. Chamamos o molde para trazer a Sidebar e a Topbar automáticas
+// 1. Chamamos o molde e a ligação à base de dados
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../layout.php';
 
-// 2. Montamos o topo da página com o título correto para a aba do browser
+// 2. LÓGICA DINÂMICA: Buscar perfis e contar quantos utilizadores pertencem a cada um
+try {
+    $sql = "SELECT p.*, COUNT(u.id) as total_users 
+            FROM perfis_acesso p
+            LEFT JOIN utilizadores u ON p.id = u.perfil_id
+            GROUP BY p.id
+            ORDER BY p.nivel_acesso DESC, p.nome_perfil ASC";
+    $stmt = $pdo->query($sql);
+    $lista_perfis = $stmt->fetchAll();
+} catch (PDOException $e) {
+    die("Erro ao carregar perfis de acesso: " . $e->getMessage());
+}
+
+// 3. Montamos o topo da página
 render_header("Gira - Perfis e Grupos de Permissões");
 ?>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h2 class="fw-bold m-0">Perfis de Acesso</h2>
-        <p class="text-muted m-0 small">Configuração de grupos de utilizadores, níveis de autorização e politicas de segurança.</p>
+        <p class="text-muted m-0 small">Configuração de grupos de utilizadores, níveis de autorização e políticas de segurança.</p>
     </div>
 
-    <!-- Gatilho para abrir o Modal do Bootstrap -->
     <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalAdicionarPerfil">
         <i class="fa-solid fa-users-gear me-2"></i> Adicionar Perfil
     </button>
 </div>
 
 <?php
-// 1. Definimos as colunas da tabela
+// Mensagem de erro caso tente apagar um perfil que ainda tenha utilizadores
+if (isset($_GET['erro']) && $_GET['erro'] == 'perfil_ocupado'):
+?>
+    <div class="alert alert-danger alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
+        <i class="fa-solid fa-shield-halved me-2"></i>
+        <strong>Ação Bloqueada!</strong> Não podes eliminar este perfil porque existem contas de utilizador associadas a ele. Altera o perfil dessas pessoas primeiro.
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
+    </div>
+<?php endif; ?>
+
+<?php
+// Definimos as colunas da tabela
 $colunas = [
     ['label' => 'Nome do Perfil', 'sort' => 'nome_perfil'],
-    ['label' => 'Descrição do Escopo', 'sort' => 'descricao'],
+    ['label' => 'Nível (Interno)'],
     ['label' => 'Nº Utilizadores', 'sort' => 'total_users'],
-    ['label' => 'Nível de Permissão', 'sort' => 'nivel_acesso'],
+    ['label' => 'Permissões Globais', 'sort' => 'nivel_acesso'],
     ['label' => 'Ações', 'align' => 'end']
 ];
 
-// 2. Desenhamos a caixa exterior e os cabeçalhos automaticamente!
 render_table_start($colunas);
+
+// ============================================================================
+// O LOOP: Desenhar uma linha por cada perfil encontrado na Base de Dados
+// ============================================================================
+foreach ($lista_perfis as $perfil):
+
+    // Lógica inteligente para as cores e ícones baseada no nível de acesso
+    $nivel = (int) $perfil['nivel_acesso'];
+
+    if ($nivel >= 3) {
+        $badge_class = 'danger';
+        $icon = '<i class="fa-solid fa-shield me-1"></i> Escrita Total (Admin)';
+        $descricao = 'Acesso total e irrestrito ao sistema.';
+    } elseif ($nivel == 2) {
+        $badge_class = 'primary';
+        $icon = '<i class="fa-solid fa-pen-to-square me-1"></i> Modificação';
+        $descricao = 'Gestão de equipamentos, manutenção e armazém.';
+    } else {
+        $badge_class = 'info';
+        $icon = '<i class="fa-solid fa-eye me-1"></i> Apenas Leitura';
+        $descricao = 'Visualização de dados e relatórios. Não pode alterar.';
+    }
 ?>
+    <tr>
+        <td>
+            <div class="fw-bold text-dark"><?php echo htmlspecialchars($perfil['nome_perfil']); ?></div>
+            <small class="text-secondary"><?php echo $descricao; ?></small>
+        </td>
+        <td class="fw-mono text-muted">Nível <?php echo $nivel; ?></td>
+        <td>
+            <?php if ($perfil['total_users'] > 0): ?>
+                <span class="fw-bold text-primary"><?php echo $perfil['total_users']; ?> utilizador(es)</span>
+            <?php else: ?>
+                <span class="text-muted small">Sem utilizadores</span>
+            <?php endif; ?>
+        </td>
+        <td>
+            <span class="badge bg-<?php echo $badge_class; ?> bg-opacity-10 text-<?php echo $badge_class; ?> border border-<?php echo $badge_class; ?>-subtle px-2">
+                <?php echo $icon; ?>
+            </span>
+        </td>
+        <td class="text-end">
+            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Configurar Direitos">
+                <button class="btn btn-light btn-sm rounded-3 me-1 border"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalEditarPerfil"
+                    data-id="<?php echo $perfil['id']; ?>"
+                    data-nome="<?php echo htmlspecialchars($perfil['nome_perfil']); ?>"
+                    data-nivel="<?php echo $perfil['nivel_acesso']; ?>">
+                    <i class="fa-solid fa-key text-primary"></i>
+                </button>
+            </span>
 
-<!-- ==================== PERFIL 1 ==================== -->
-<tr>
-    <td class="fw-bold text-dark">Administrador</td>
-    <td class="text-secondary">Acesso total e irrestrito a todos os módulos, configurações de sistema e logs de auditoria.</td>
-    <td><span class="fw-bold text-primary">1 utilizador</span></td>
-    <td><span class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle px-2"><i class="fa-solid fa-shield me-1"></i> Escrita Total</span></td>
-    <td class="text-end">
-        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Configurar Direitos do Grupo">
-            <i class="fa-solid fa-key text-primary"></i>
-        </button>
-        <button class="btn btn-light btn-sm rounded-3 text-danger border disabled" data-bs-toggle="tooltip" data-bs-placement="top" title="Perfil de Sistema (Bloqueado)">
-            <i class="fa-solid fa-lock"></i>
-        </button>
-    </td>
-</tr>
+            <?php if ($nivel >= 3): ?>
+                <button class="btn btn-light btn-sm rounded-3 text-danger border disabled" data-bs-toggle="tooltip" data-bs-placement="top" title="Perfil de Sistema (Bloqueado)">
+                    <i class="fa-solid fa-lock"></i>
+                </button>
+            <?php else: ?>
+                <a href="/gira/private/perfis/eliminar_perfil.php?id=<?php echo $perfil['id']; ?>"
+                    class="btn btn-light btn-sm rounded-3 border"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Perfil"
+                    onclick="return confirm('Tem a certeza que deseja eliminar o perfil <?php echo htmlspecialchars($perfil['nome_perfil']); ?>?');">
+                    <i class="fa-solid fa-trash text-danger"></i>
+                </a>
+            <?php endif; ?>
+        </td>
+    </tr>
+<?php
+endforeach;
 
-<!-- ==================== PERFIL 2 ==================== -->
-<tr>
-    <td class="fw-bold text-dark">Eng. Biomédico</td>
-    <td class="text-secondary">Gestão completa de inventário, localizações, fornecedores, documentos e abertura de O.T.</td>
-    <td><span class="fw-bold text-primary">1 utilizador</span></td>
-    <td><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2"><i class="fa-solid fa-pen-to-square me-1"></i> Modificação</span></td>
-    <td class="text-end">
-        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Configurar Direitos do Grupo">
-            <i class="fa-solid fa-key text-primary"></i>
-        </button>
-        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Perfil">
-            <i class="fa-solid fa-trash"></i>
-        </button>
-    </td>
-</tr>
+render_table_end(); ?>
 
-<!-- ==================== PERFIL 3 ==================== -->
-<tr>
-    <td class="fw-bold text-dark">Técnico Interno</td>
-    <td class="text-secondary">Visualização do parque tecnológico e alteração/conclusão de ordens de trabalho atribuídas.</td>
-    <td><span class="fw-bold text-primary">1 utilizador</span></td>
-    <td><span class="badge bg-info bg-opacity-10 text-info border border-info-subtle px-2"><i class="fa-solid fa-wrench me-1"></i> Operação</span></td>
-    <td class="text-end">
-        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Configurar Direitos do Grupo">
-            <i class="fa-solid fa-key text-primary"></i>
-        </button>
-        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Perfil">
-            <i class="fa-solid fa-trash"></i>
-        </button>
-    </td>
-</tr>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modalEditar = document.getElementById('modalEditarPerfil');
+        if (modalEditar) {
+            modalEditar.addEventListener('show.bs.modal', function(event) {
+                // Qual foi o botão que ativou o modal?
+                const button = event.relatedTarget;
+
+                // Transportar os dados do botão para dentro do formulário de edição
+                document.getElementById('edit_id_perfil').value = button.getAttribute('data-id');
+                document.getElementById('edit_nome_perfil').value = button.getAttribute('data-nome');
+                document.getElementById('edit_nivel_perfil').value = button.getAttribute('data-nivel');
+            });
+        }
+    });
+</script>
 
 <?php
-// 3. Fechamos as tags da tabela automaticamente!
-render_table_end();
-
-// 4. Fechamos a página e injetamos os scripts centrais
 render_footer();
 ?>

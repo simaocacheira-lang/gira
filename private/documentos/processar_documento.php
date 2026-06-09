@@ -12,11 +12,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // 2. BARREIRA DE SEGURANÇA NORMAL
-    if (empty($_POST['id_equipamento'])) {
-        die("<div style='font-family: sans-serif; padding: 20px;'><h3>Erro de Ligação</h3><p>O ID do equipamento não chegou ao servidor. O JavaScript não conseguiu preencher o campo escondido.</p><a href='javascript:history.back()'>Voltar atrás</a></div>");
+   // 2. BARREIRA DE SEGURANÇA
+    if (empty($_GET['id'])) {
+        die("<div style='font-family: sans-serif; padding: 20px;'><h3>Erro de Ligação</h3><p>O ID do equipamento não foi encontrado no URL.</p><a href='javascript:history.back()'>Voltar atrás</a></div>");
     }
 
-    $id_equipamento = (int) $_POST['id_equipamento'];
+    // Apanhamos o ID do URL (GET) e os restantes dados do formulário (POST)
+    $id_equipamento = (int) $_GET['id'];
     $nome_doc = trim($_POST['nome_documento']);
     $tipo_doc = $_POST['tipo_documento'];
 

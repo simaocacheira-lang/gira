@@ -9,7 +9,7 @@ try {
     $stmt_lista_eq = $pdo->query("SELECT id, codigo_ativo, nome FROM equipamentos ORDER BY codigo_ativo ASC");
     $equipamentos_dropdown = $stmt_lista_eq->fetchAll();
 
-    // 2. Ir buscar as Localizações para o Registo de Equipamento (NOVO)
+    // 2. Ir buscar as Localizações para o Registo de Equipamento
     $stmt_lista_loc = $pdo->query("SELECT id, cod_sala, nome FROM localizacoes ORDER BY nome ASC");
     $localizacoes_dropdown = $stmt_lista_loc->fetchAll();
 
@@ -17,9 +17,9 @@ try {
     $stmt_perfis = $pdo->query("SELECT id, nome_perfil FROM perfis_acesso ORDER BY nivel_acesso DESC");
     $perfis_dropdown = $stmt_perfis->fetchAll();
 } catch (Exception $e) {
-} catch (Exception $e) {
     $equipamentos_dropdown = [];
     $localizacoes_dropdown = [];
+    $perfis_dropdown = [];
 }
 ?>
 
@@ -74,13 +74,11 @@ try {
                                 <label class="form-label small fw-bold text-secondary">Localização / Serviço Alocado</label>
                                 <select class="form-select rounded-3 bg-light border-0" name="localizacao_id" required>
                                     <option value="" selected disabled>Escolha o serviço...</option>
-
                                     <?php foreach ($localizacoes_dropdown as $loc): ?>
                                         <option value="<?php echo $loc['id']; ?>">
                                             <?php echo htmlspecialchars($loc['cod_sala'] . ' · ' . $loc['nome']); ?>
                                         </option>
                                     <?php endforeach; ?>
-
                                 </select>
                             </div>
                         </div>
@@ -245,9 +243,7 @@ try {
             </div>
             <div class="modal-body p-4">
                 <form id="formNovoDocumento" action="/gira/private/documentos/processar_documento.php" method="POST" enctype="multipart/form-data">
-
                     <input type="hidden" name="id_equipamento" id="doc_id_equipamento">
-
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Nome / Título do Documento</label>
                         <input type="text" class="form-control bg-light border-0" name="nome_documento" placeholder="Ex: Manual de Serviço" required>
@@ -277,6 +273,30 @@ try {
     </div>
 </div>
 
+<div class="modal fade" id="modalAdicionarGarantia" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-file-shield text-primary me-2"></i>Atualizar Garantia</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="formGarantia" action="/gira/private/garantias/processar_garantia.php" method="POST">
+                    <input type="hidden" name="id_equipamento" id="garantia_id_equipamento">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Data de Fim da Garantia</label>
+                        <input type="date" class="form-control rounded-3 bg-light border-0" name="fim_garantia" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3 text-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formGarantia" class="btn btn-primary rounded-3 fw-bold small px-4">Guardar Alteração</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modalRegistarFornecedor" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 rounded-4 shadow">
@@ -295,7 +315,6 @@ try {
                             <label class="form-label small fw-bold text-secondary">NIF</label>
                             <input type="text" class="form-control bg-light border-0 fw-mono" name="nif" required>
                         </div>
-
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-secondary">E-mail de Suporte</label>
                             <div class="input-group">
@@ -310,7 +329,6 @@ try {
                                 <input type="text" class="form-control rounded-end-3 bg-light border-0" name="telefone_suporte">
                             </div>
                         </div>
-
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-secondary">Especialidade / Equipamentos</label>
                             <select class="form-select bg-light border-0" name="especialidade" required>
@@ -338,26 +356,63 @@ try {
     </div>
 </div>
 
-<div class="modal fade" id="modalAdicionarGarantia" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="modalEditarFornecedor" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 rounded-4 shadow">
             <div class="modal-header border-bottom border-light p-3">
-                <h5 class="modal-title fw-bold"><i class="fa-solid fa-file-shield text-primary me-2"></i>Atualizar Garantia</h5>
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-pen-to-square text-primary me-2"></i>Editar Fornecedor</h5>
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formGarantia" action="/gira/private/garantias/processar_garantia.php" method="POST">
-                    <input type="hidden" name="id_equipamento" id="garantia_id_equipamento">
-
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">Data de Fim da Garantia</label>
-                        <input type="date" class="form-control rounded-3 bg-light border-0" name="fim_garantia" required>
+                <form id="formEditarFornecedor" action="/gira/private/fornecedores/processar_edicao_fornecedor.php" method="POST">
+                    <input type="hidden" name="id_fornecedor" id="edit_id_fornecedor">
+                    <div class="row g-3">
+                        <div class="col-md-7">
+                            <label class="form-label small fw-bold text-secondary">Nome da Empresa</label>
+                            <input type="text" class="form-control rounded-3 bg-light border-0" name="nome_empresa" required>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label small fw-bold text-secondary">NIF</label>
+                            <input type="text" class="form-control rounded-3 bg-light border-0 fw-mono" name="nif" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">E-mail de Suporte</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0"><i class="fa-solid fa-envelope text-muted"></i></span>
+                                <input type="email" class="form-control rounded-end-3 bg-light border-0" name="email_suporte" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">Contacto Telefónico</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0"><i class="fa-solid fa-phone text-muted"></i></span>
+                                <input type="text" class="form-control rounded-end-3 bg-light border-0" name="telefone_suporte" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-4">
+                            <label class="form-label small fw-bold text-secondary">Especialidade Principal</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="especialidade" required>
+                                <option value="Monitores e Imagiologia">Monitores e Imagiologia</option>
+                                <option value="Ventilação e Suporte de Vida">Ventilação e Suporte de Vida</option>
+                                <option value="Bombas de Infusão">Bombas de Infusão</option>
+                                <option value="Consumíveis Gerais">Consumíveis Gerais</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mt-4">
+                            <label class="form-label small fw-bold text-secondary">Estado da Parceria</label>
+                            <select class="form-select rounded-3 bg-light border-0 fw-bold" name="estado" required>
+                                <option value="Ativo" class="text-success">Ativo (Contrato Válido)</option>
+                                <option value="Inativo" class="text-danger">Suspenso / Expirado</option>
+                            </select>
+                        </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer border-top border-light p-3">
-                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3 text-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" form="formGarantia" class="btn btn-primary rounded-3 fw-bold small px-4">Guardar Alteração</button>
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formEditarFornecedor" class="btn btn-primary rounded-3 fw-bold small px-4">
+                    <i class="fa-solid fa-floppy-disk me-2"></i>Guardar Alterações
+                </button>
             </div>
         </div>
     </div>
@@ -408,6 +463,80 @@ try {
             <div class="modal-footer border-top border-light p-3">
                 <button type="button" class="btn btn-light rounded-3 fw-bold small px-3 text-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="submit" form="formNovaLocalizacao" class="btn btn-primary rounded-3 fw-bold small px-4">Mapear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEditarLocalizacao" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-pen-to-square text-primary me-2"></i>Editar Localização</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="formEditarLocalizacao" action="/gira/private/localizacoes/processar_edicao_localizacao.php" method="POST">
+                    <input type="hidden" name="id_localizacao" id="edit_id_localizacao">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Código Sala</label>
+                        <input type="text" class="form-control rounded-3 bg-light border-0 fw-mono text-uppercase" name="cod_sala" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Nome Serviço / Sala</label>
+                        <input type="text" class="form-control rounded-3 bg-light border-0" name="nome" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Sublocalização / Camas</label>
+                        <input type="text" class="form-control rounded-3 bg-light border-0" name="detalhe">
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">Piso</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="piso" required>
+                                <option value="Piso 0">Piso 0</option>
+                                <option value="Piso 1">Piso 1</option>
+                                <option value="Piso 2">Piso 2</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">Bloco / Ala</label>
+                            <select class="form-select rounded-3 bg-light border-0" name="bloco" required>
+                                <option value="Bloco Central">Bloco Central</option>
+                                <option value="Bloco Cirúrgico">Bloco Cirúrgico</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formEditarLocalizacao" class="btn btn-primary rounded-3 fw-bold small px-4">
+                    <i class="fa-solid fa-floppy-disk me-2"></i>Guardar Alterações
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalNovaEncomenda" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-cart-plus text-primary me-2"></i>Nova Encomenda</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form action="/gira/private/armazem/processar_encomenda.php" method="POST">
+                    <div class="mb-3"><label class="form-label small fw-bold">Artigo</label><select class="form-select bg-light border-0">
+                            <option>Módulo SpO2</option>
+                        </select></div>
+                    <div class="mb-3"><label class="form-label small fw-bold">Qtd</label><input type="number" class="form-control bg-light border-0" value="1"></div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary rounded-3 fw-bold small px-4">Confirmar Pedido</button>
             </div>
         </div>
     </div>
@@ -470,9 +599,7 @@ try {
             </div>
             <div class="modal-body p-4">
                 <form id="formEditarUtilizador" action="/gira/private/utilizadores/processar_edicao_utilizador.php" method="POST">
-
                     <input type="hidden" name="id_utilizador" id="edit_id_utilizador">
-
                     <div class="row g-3">
                         <div class="col-md-7">
                             <label class="form-label small fw-bold text-secondary">Nome Completo</label>
@@ -517,162 +644,61 @@ try {
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 rounded-4 shadow">
             <div class="modal-header border-bottom border-light p-3">
-                <h5 class="modal-title fw-bold"><i class="fa-solid fa-users-gear text-primary me-2"></i>Criar Perfil</h5>
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-users-gear text-primary me-2"></i>Novo Perfil</h5>
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="/gira/private/perfis/processar_perfil.php" method="POST">
-                    <div class="mb-3"><label class="form-label small fw-bold">Nome do Perfil</label><input type="text" class="form-control bg-light border-0" required></div>
-                    <div class="bg-light rounded-3 p-3">
-                        <div class="form-check"><input class="form-check-input" type="checkbox" checked><label class="form-check-label small">Acesso Completo</label></div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer border-top border-light p-3">
-                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary rounded-3 fw-bold small px-4">Guardar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modalNovaEncomenda" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 rounded-4 shadow">
-            <div class="modal-header border-bottom border-light p-3">
-                <h5 class="modal-title fw-bold"><i class="fa-solid fa-cart-plus text-primary me-2"></i>Nova Encomenda</h5>
-                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body p-4">
-                <form action="/gira/private/armazem/processar_encomenda.php" method="POST">
-                    <div class="mb-3"><label class="form-label small fw-bold">Artigo</label><select class="form-select bg-light border-0">
-                            <option>Módulo SpO2</option>
-                        </select></div>
-                    <div class="mb-3"><label class="form-label small fw-bold">Qtd</label><input type="number" class="form-control bg-light border-0" value="1"></div>
-                </form>
-            </div>
-            <div class="modal-footer border-top border-light p-3">
-                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary rounded-3 fw-bold small px-4">Confirmar Pedido</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modalEditarLocalizacao" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 rounded-4 shadow">
-            <div class="modal-header border-bottom border-light p-3">
-                <h5 class="modal-title fw-bold"><i class="fa-solid fa-pen-to-square text-primary me-2"></i>Editar Localização</h5>
-                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body p-4">
-                <form id="formEditarLocalizacao" action="/gira/private/localizacoes/processar_edicao_localizacao.php" method="POST">
-
-                    <input type="hidden" name="id_localizacao" value="LOC-001">
-
+                <form id="formAdicionarPerfil" action="/gira/private/perfis/processar_perfil.php" method="POST">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">Código Sala</label>
-                        <input type="text" class="form-control rounded-3 bg-light border-0 fw-mono text-uppercase" name="cod_sala" value="#LOC-UCI02" required>
+                        <label class="form-label small fw-bold text-secondary">Nome do Perfil / Grupo</label>
+                        <input type="text" class="form-control bg-light border-0" name="nome_perfil" placeholder="Ex: Técnico Auxiliar" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">Nome Serviço / Sala</label>
-                        <input type="text" class="form-control rounded-3 bg-light border-0" name="nome" value="Unidade de Cuidados Intensivos (UCI)" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">Sublocalização / Camas</label>
-                        <input type="text" class="form-control rounded-3 bg-light border-0" name="detalhe" value="Sala 2 · Camas 5 a 8">
-                    </div>
-                    <div class="row g-3">
-                        <div class="col-6">
-                            <label class="form-label small fw-bold text-secondary">Piso</label>
-                            <select class="form-select rounded-3 bg-light border-0" name="piso" required>
-                                <option value="Piso 0">Piso 0</option>
-                                <option value="Piso 1">Piso 1</option>
-                                <option value="Piso 2" selected>Piso 2</option>
-                            </select>
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label small fw-bold text-secondary">Bloco / Ala</label>
-                            <select class="form-select rounded-3 bg-light border-0" name="bloco" required>
-                                <option value="Bloco Central" selected>Bloco Central</option>
-                                <option value="Bloco Cirúrgico">Bloco Cirúrgico</option>
-                            </select>
-                        </div>
+                        <label class="form-label small fw-bold text-secondary">Nível de Acesso do Profissional</label>
+                        <select class="form-select bg-light border-0 fw-bold text-primary" name="nivel_acesso" required>
+                            <option value="" selected disabled>Selecione as permissões...</option>
+                            <option value="1">Nível 1 - Apenas Leitura (Médicos/Enfermeiros)</option>
+                            <option value="2">Nível 2 - Modificação (Técnicos/Engenheiros)</option>
+                            <option value="3" class="text-danger">Nível 3 - Administração Total</option>
+                        </select>
                     </div>
                 </form>
             </div>
             <div class="modal-footer border-top border-light p-3">
                 <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" form="formEditarLocalizacao" class="btn btn-primary rounded-3 fw-bold small px-4">
-                    <i class="fa-solid fa-floppy-disk me-2"></i>Guardar Alterações
-                </button>
+                <button type="submit" form="formAdicionarPerfil" class="btn btn-primary rounded-3 fw-bold small px-4">Criar Perfil</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="modalEditarFornecedor" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+<div class="modal fade" id="modalEditarPerfil" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 rounded-4 shadow">
             <div class="modal-header border-bottom border-light p-3">
-                <h5 class="modal-title fw-bold"><i class="fa-solid fa-pen-to-square text-primary me-2"></i>Editar Fornecedor</h5>
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-key text-primary me-2"></i>Configurar Direitos</h5>
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formEditarFornecedor" action="/gira/private/fornecedores/processar_edicao_fornecedor.php" method="POST">
-
-                    <input type="hidden" name="id_fornecedor" value="FORN-001">
-
-                    <div class="row g-3">
-                        <div class="col-md-7">
-                            <label class="form-label small fw-bold text-secondary">Nome da Empresa</label>
-                            <input type="text" class="form-control rounded-3 bg-light border-0" name="nome_empresa" value="Philips Healthcare Portugal" required>
-                        </div>
-                        <div class="col-md-5">
-                            <label class="form-label small fw-bold text-secondary">NIF</label>
-                            <input type="text" class="form-control rounded-3 bg-light border-0 fw-mono" name="nif" value="501234567" required>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold text-secondary">E-mail de Suporte</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-0"><i class="fa-solid fa-envelope text-muted"></i></span>
-                                <input type="email" class="form-control rounded-end-3 bg-light border-0" name="email_suporte" value="suporte.pt@philips.com" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold text-secondary">Contacto Telefónico</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-0"><i class="fa-solid fa-phone text-muted"></i></span>
-                                <input type="text" class="form-control rounded-end-3 bg-light border-0" name="telefone_suporte" value="210 000 000" required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 mt-4">
-                            <label class="form-label small fw-bold text-secondary">Especialidade Principal</label>
-                            <select class="form-select rounded-3 bg-light border-0" name="especialidade" required>
-                                <option value="Monitores e Imagiologia" selected>Monitores e Imagiologia</option>
-                                <option value="Ventilação e Suporte de Vida">Ventilação e Suporte de Vida</option>
-                                <option value="Bombas de Infusão">Bombas de Infusão</option>
-                                <option value="Consumíveis Gerais">Consumíveis Gerais</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mt-4">
-                            <label class="form-label small fw-bold text-secondary">Estado da Parceria</label>
-                            <select class="form-select rounded-3 bg-light border-0 fw-bold" name="estado" required>
-                                <option value="Ativo" class="text-success" selected>Ativo (Contrato Válido)</option>
-                                <option value="Inativo" class="text-danger">Suspenso / Expirado</option>
-                            </select>
-                        </div>
+                <form id="formEditarPerfil" action="/gira/private/perfis/processar_edicao_perfil.php" method="POST">
+                    <input type="hidden" name="id_perfil" id="edit_id_perfil">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Nome do Perfil / Grupo</label>
+                        <input type="text" class="form-control bg-light border-0" name="nome_perfil" id="edit_nome_perfil" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Nível de Acesso do Profissional</label>
+                        <select class="form-select bg-light border-0 fw-bold text-primary" name="nivel_acesso" id="edit_nivel_perfil" required>
+                            <option value="1">Nível 1 - Apenas Leitura (Médicos/Enfermeiros)</option>
+                            <option value="2">Nível 2 - Modificação (Técnicos/Engenheiros)</option>
+                            <option value="3" class="text-danger">Nível 3 - Administração Total</option>
+                        </select>
                     </div>
                 </form>
             </div>
             <div class="modal-footer border-top border-light p-3">
                 <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" form="formEditarFornecedor" class="btn btn-primary rounded-3 fw-bold small px-4">
-                    <i class="fa-solid fa-floppy-disk me-2"></i>Guardar Alterações
-                </button>
+                <button type="submit" form="formEditarPerfil" class="btn btn-primary rounded-3 fw-bold small px-4">Guardar Alterações</button>
             </div>
         </div>
     </div>

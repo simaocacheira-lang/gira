@@ -425,12 +425,16 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
             });
         }
 
-        // 2. Passar o ID para o Modal de Documentos (Agora dentro da zona segura!)
+        // 2. Passar o ID para o Modal de Documentos (A Tática do Bypass!)
         const modalDoc = document.getElementById('modalNovoDocumento');
         if (modalDoc) {
             modalDoc.addEventListener('show.bs.modal', function(event) {
                 const button = event.relatedTarget;
-                document.getElementById('doc_id_equipamento').value = button.getAttribute('data-idequip');
+                const idEquip = button.getAttribute('data-idequip');
+
+                // Em vez de preencher um input, injetamos o ID diretamente no URL de destino do formulário
+                const formDoc = modalDoc.querySelector('form');
+                formDoc.action = "/gira/private/equipamentos/processar_documento.php?id=" + idEquip;
             });
         }
 
