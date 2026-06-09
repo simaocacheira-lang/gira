@@ -3,7 +3,20 @@
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../layout.php';
 
-// 2. Montamos o topo da página com o título correto para a aba do browser
+// 2. LÓGICA DINÂMICA: Buscar equipamentos que tenham garantia
+try {
+    $sql = "SELECT e.id, e.codigo_ativo, e.nome, e.modelo, e.fim_garantia, f.nome_empresa 
+            FROM equipamentos e
+            LEFT JOIN fornecedores f ON e.fornecedor_id = f.id
+            WHERE e.fim_garantia IS NOT NULL
+            ORDER BY e.fim_garantia ASC";
+    $stmt = $pdo->query($sql);
+    $equipamentos = $stmt->fetchAll();
+} catch (PDOException $e) {
+    die("Erro ao carregar garantias: " . $e->getMessage());
+}
+
+// 3. Montamos o topo da página
 render_header("Gira - Garantias e Contratos de Manutenção");
 ?>
 
@@ -12,16 +25,12 @@ render_header("Gira - Garantias e Contratos de Manutenção");
         <h2 class="fw-bold m-0">Garantias e Contratos</h2>
         <p class="text-muted m-0 small">Controlo de coberturas de fábrica, contratos de assistência técnica externa e SLAs de fornecedores.</p>
     </div>
-
-    <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalAdicionarGarantia">
-        <i class="fa-solid fa-file-shield me-2"></i> Adicionar Contrato / Cobertura
-    </button>
 </div>
 
 <?php
 // 1. Definimos as colunas da tabela
 $colunas = [
-    ['label' => 'Cód. Contrato', 'sort' => 'id_contrato'],
+    ['label' => 'Cód. Ativo', 'sort' => 'id_contrato'],
     ['label' => 'Equipamento / Sistema', 'sort' => 'equipamento'],
     ['label' => 'Fornecedor Oficial', 'sort' => 'fornecedor'],
     ['label' => 'Tipo de Cobertura', 'sort' => 'tipo'],
@@ -30,62 +39,86 @@ $colunas = [
     ['label' => 'Ações', 'align' => 'end']
 ];
 
-// 2. Desenhamos a caixa exterior e os cabeçalhos automaticamente!
+// 2. Desenhamos a caixa exterior
 render_table_start($colunas);
+
+// 3. O LOOP MÁGICO
+$hoje = new DateTime();
+$hoje->setTime(0, 0, 0);
+
+foreach ($equipamentos as $eq):
+    // Calcular diferença de dias
+    $data_fim = new DateTime($eq['fim_garantia']);
+    $data_fim->setTime(0, 0, 0);
+    $intervalo = $hoje->diff($data_fim);
+    $dias_restantes = (int)$intervalo->format('%R%a');
+
+    // Lógica das Cores
+    if ($dias_restantes < 0) {
+        $cor = 'danger';
+        $estado = 'Expirado';
+    } elseif ($dias_restantes <= 60) {
+        $cor = 'warning';
+        $estado = 'A Expirar';
+    } else {
+        $cor = 'success';
+        $estado = 'Ativo';
+    }
+?>
+    <tr>
+        <td class="fw-bold text-primary fw-mono"><?php echo htmlspecialchars($eq['codigo_ativo']); ?></td>
+        <td>
+            <div class="fw-bold text-dark"><?php echo htmlspecialchars($eq['nome']); ?></div>
+            <small class="text-muted"><?php echo htmlspecialchars($eq['modelo']); ?></small>
+        </td>
+        <td><?php echo htmlspecialchars($eq['nome_empresa'] ?? 'Desconhecido'); ?></td>
+        <td><span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary-subtle px-2">Garantia de Fábrica</span></td>
+        <td><?php echo date('d/m/Y', strtotime($eq['fim_garantia'])); ?></td>
+        <td><span class="badge bg-<?php echo $cor; ?> bg-opacity-10 text-<?php echo $cor; ?> rounded-pill px-2"><?php echo $estado; ?></span></td>
+        <td class="text-end">
+            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Atualizar Data">
+                <button class="btn btn-light btn-sm rounded-3 me-1 border"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalAdicionarGarantia"
+                    data-id="<?php echo $eq['id']; ?>"
+                    data-data="<?php echo $eq['fim_garantia']; ?>">
+                    <i class="fa-solid fa-pen text-primary"></i>
+                </button>
+            </span>
+        </td>
+    </tr>
+<?php
+endforeach;
+
+if (count($equipamentos) === 0):
+?>
+    <tr>
+        <td colspan="7" class="text-center text-muted py-5">Não há equipamentos registados.</td>
+    </tr>
+<?php
+endif;
+
+render_table_end();
 ?>
 
-<tr>
-    <td class="fw-bold text-primary fw-mono">#GAR-2026-088</td>
-    <td>
-        <div class="fw-bold">Monitor Multiparamétrico de Sinais Vitais</div>
-        <small class="text-muted">Mindray · BeneVision N17</small>
-    </td>
-    <td>Mindray Medical Portugal</td>
-    <td><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2">Garantia de Fábrica (3 Anos)</span></td>
-    <td>15/10/2028</td>
-    <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Ativo</span></td>
-    <td class="text-end">
-        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Termos do Contrato">
-            <button class="btn btn-light btn-sm rounded-3 me-1 border">
-                <i class="fa-solid fa-eye text-primary"></i>
-            </button>
-        </span>
-        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Terminar Cobertura">
-            <button class="btn btn-light btn-sm rounded-3 text-danger border">
-                <i class="fa-solid fa-ban"></i>
-            </button>
-        </span>
-    </td>
-</tr>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modalGarantia = document.getElementById('modalAdicionarGarantia');
+        if (modalGarantia) {
+            modalGarantia.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const eqId = button.getAttribute('data-id');
+                const dataGarantia = button.getAttribute('data-data');
 
-<tr>
-    <td class="fw-bold text-primary fw-mono">#GAR-2023-012</td>
-    <td>
-        <div class="fw-bold">Bomba de Infusão Volumétrica</div>
-        <small class="text-muted">Lote Geral Volumétricas</small>
-    </td>
-    <td>B. Braun Medical S.A.</td>
-    <td><span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary-subtle px-2">Suporte Técnico Básico</span></td>
-    <td>01/01/2026</td>
-    <td><span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2">Expirado</span></td>
-    <td class="text-end">
-        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Termos do Contrato">
-            <button class="btn btn-light btn-sm rounded-3 me-1 border">
-                <i class="fa-solid fa-eye text-primary"></i>
-            </button>
-        </span>
-        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Terminar Cobertura">
-            <button class="btn btn-light btn-sm rounded-3 text-danger border">
-                <i class="fa-solid fa-ban"></i>
-            </button>
-        </span>
-    </td>
-</tr>
+                document.getElementById('garantia_id_equipamento').value = eqId;
+                document.querySelector('#formGarantia input[name="fim_garantia"]').value = dataGarantia;
+            });
+        }
+    });
+</script>
 
 <?php
-// 3. Fechamos as tags da tabela automaticamente
-render_table_end();
-
-// 4. Fechamos a página e injetamos os scripts centrais
+// Incluir os modais e fechar
+require_once __DIR__ . '/../modals.php';
 render_footer();
 ?>

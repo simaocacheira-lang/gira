@@ -17,13 +17,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':id' => $id_equipamento
         ]);
 
-        // Voltar para a ficha do equipamento que estávamos a editar
-        header("Location: /gira/private/equipamentos/detalhes_equipamento.php?id=" . $id_equipamento . "&sucesso=garantia_atualizada&tab=comercial");
+        // --> TRANSMISSOR DE LOG <--
+        if (function_exists('registar_log')) {
+            registar_log($pdo, $_SESSION['user_id'], "Atualizou a data de garantia do equipamento (ID: $id_equipamento) para $fim_garantia", "Garantias");
+        }
+
+        // Redirecionar DE VOLTA para a página das Garantias!
+        header("Location: /gira/private/garantias/garantias.php?sucesso=garantia_atualizada");
         exit;
     } catch (PDOException $e) {
         die("Erro ao atualizar a garantia: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/equipamentos/equipamentos.php");
+    header("Location: /gira/private/garantias/garantias.php");
     exit;
 }
