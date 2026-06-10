@@ -20,8 +20,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pass = trim($_POST['password'] ?? '');
 
     if (!empty($email) && !empty($pass)) {
-        // 3. Procurar o utilizador na base de dados usando o EMAIL
-        $sql = "SELECT id, email, password_hash, nome, estado FROM utilizadores WHERE email = :email";
+        // 3. Procurar o utilizador e fazer um JOIN para saber o seu nível de acesso!
+        $sql = "SELECT u.id, u.email, u.password_hash, u.nome, u.estado, p.nivel_acesso 
+                FROM utilizadores u 
+                LEFT JOIN perfis_acesso p ON u.perfil_id = p.id 
+                WHERE u.email = :email";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':email' => $email]);
         $utilizador = $stmt->fetch();
@@ -44,6 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user_id'] = $utilizador['id'];
                 $_SESSION['email'] = $utilizador['email'];
                 $_SESSION['nome'] = $utilizador['nome'];
+                $_SESSION['nivel_acesso'] = $utilizador['nivel_acesso']; // A CHAVE DA SEGURANÇA!
 
                 // --> REGISTAR LOG DE AUDITORIA <--
                 if (function_exists('registar_log')) {

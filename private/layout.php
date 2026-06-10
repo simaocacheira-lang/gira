@@ -53,20 +53,50 @@ function render_table_end()
 // ============================================================================
 function render_header($title = "Gira - Sistema de Gestão Hospitalar")
 {
-    // ARRAY DINÂMICO DA SIDEBAR
+    // ============================================================================
+    // LÓGICA DE NÍVEIS DE ACESSO (RBAC) PARA CONSTRUÇÃO DA SIDEBAR
+    // ============================================================================
+    $nivel = $_SESSION['nivel_acesso'] ?? 1; // Se não tiver nível, assume o Nível 1 (Básico)
+
+    // Identificar visualmente o cargo
+    $nome_cargo = 'Corpo Clínico (Leitura)';
+    if ($nivel == 2) $nome_cargo = 'Engenheiro / Técnico';
+    if ($nivel >= 3) $nome_cargo = 'Administrador de Sistema';
+
+    // Construção Dinâmica do Menu (Toda a gente vê estes)
     $menu_items = [
         ['link' => 'dashboard.php', 'icon' => 'fa-house', 'label' => 'Dashboard'],
         ['is_header' => true, 'label' => 'Gestão'],
-        ['link' => 'equipamentos/equipamentos.php', 'icon' => 'fa-stethoscope', 'label' => 'Equipamentos'],
-        ['link' => 'localizacoes/localizacoes.php', 'icon' => 'fa-location-dot', 'label' => 'Localizações'],
-        ['link' => 'fornecedores/fornecedores.php', 'icon' => 'fa-truck-field', 'label' => 'Fornecedores'],
-        ['link' => 'documentos/documentos.php', 'icon' => 'fa-regular fa-file-lines', 'label' => 'Documentos'],
-        ['link' => 'garantias/garantias.php', 'icon' => 'fa-solid fa-shield-halved', 'label' => 'Garantias e Contratos'],
-        ['link' => 'manutencao/manutencao.php', 'icon' => 'fa-solid fa-screwdriver-wrench', 'label' => 'Manutenção'],
-        ['link' => 'armazem/armazem.php', 'icon' => 'fa-solid fa-warehouse', 'label' => 'Armazém'],
-        ['link' => 'relatorios/relatorios.php', 'icon' => 'fa-solid fa-chart-simple', 'label' => 'Relatórios'],
-        ['link' => 'historico/historico.php', 'icon' => 'fa-solid fa-clock-rotate-left', 'label' => 'Histórico']
+        ['link' => 'equipamentos/equipamentos.php', 'icon' => 'fa-stethoscope', 'label' => 'Equipamentos']
     ];
+
+    // Só Nível 2 e 3 veem isto
+    if ($nivel >= 2) {
+        $menu_items[] = ['link' => 'localizacoes/localizacoes.php', 'icon' => 'fa-location-dot', 'label' => 'Localizações'];
+        $menu_items[] = ['link' => 'fornecedores/fornecedores.php', 'icon' => 'fa-truck-field', 'label' => 'Fornecedores'];
+    }
+
+    // Toda a gente vê manuais e relatórios técnicos
+    $menu_items[] = ['link' => 'documentos/documentos.php', 'icon' => 'fa-regular fa-file-lines', 'label' => 'Documentos'];
+
+    // Só Nível 2 e 3 veem garantias
+    if ($nivel >= 2) {
+        $menu_items[] = ['link' => 'garantias/garantias.php', 'icon' => 'fa-solid fa-shield-halved', 'label' => 'Garantias e Contratos'];
+    }
+
+    // Toda a gente vê manutenção (os médicos precisam abrir avarias)
+    $menu_items[] = ['link' => 'manutencao/manutencao.php', 'icon' => 'fa-solid fa-screwdriver-wrench', 'label' => 'Manutenção'];
+
+    // Só Nível 2 e 3 veem peças e relatórios financeiros/globais
+    if ($nivel >= 2) {
+        $menu_items[] = ['link' => 'armazem/armazem.php', 'icon' => 'fa-solid fa-warehouse', 'label' => 'Armazém'];
+        $menu_items[] = ['link' => 'relatorios/relatorios.php', 'icon' => 'fa-solid fa-chart-simple', 'label' => 'Relatórios'];
+    }
+
+    // SÓ O NÍVEL 3 (ADMIN) vê a Auditoria Completa
+    if ($nivel >= 3) {
+        $menu_items[] = ['link' => 'historico/historico.php', 'icon' => 'fa-solid fa-clock-rotate-left', 'label' => 'Histórico'];
+    }
 
     $current_page = basename($_SERVER['PHP_SELF']);
 ?>
@@ -159,9 +189,9 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                     <div class="d-flex align-items-center cursor-pointer" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPerfil" aria-controls="offcanvasPerfil" title="Abrir Perfil e Administração">
                         <div class="text-end me-3 d-none d-lg-block">
                             <p class="fw-bold mb-0 small lh-1 text-dark"><?php echo htmlspecialchars($_SESSION['nome'] ?? 'Utilizador'); ?></p>
-                            <small class="text-muted" style="font-size: 0.65rem;">Administrador</small>
+                            <small class="text-muted" style="font-size: 0.65rem;"><?php echo $nome_cargo; ?></small>
                         </div>
-                        <img src="https://i.pravatar.cc/150?u=miguel" alt="Perfil" class="rounded-circle border border-2 border-white shadow-sm hover-primary" width="40" height="40" style="transition: transform 0.2s;">
+                        <img src="https://i.pravatar.cc/150?u=<?php echo urlencode($_SESSION['nome'] ?? 'miguel'); ?>" alt="Perfil" class="rounded-circle border border-2 border-white shadow-sm hover-primary" width="40" height="40" style="transition: transform 0.2s;">
                     </div>
 
                 </div>
@@ -170,10 +200,10 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
             <div class="offcanvas offcanvas-end border-0 shadow" tabindex="-1" id="offcanvasPerfil" aria-labelledby="offcanvasPerfilLabel">
                 <div class="offcanvas-header bg-light border-bottom p-4">
                     <div class="d-flex align-items-center gap-3">
-                        <img src="https://i.pravatar.cc/150?u=miguel" alt="Perfil" class="rounded-circle border border-3 border-white shadow-sm" width="60" height="60">
+                        <img src="https://i.pravatar.cc/150?u=<?php echo urlencode($_SESSION['nome'] ?? 'miguel'); ?>" alt="Perfil" class="rounded-circle border border-3 border-white shadow-sm" width="60" height="60">
                         <div>
                             <h5 class="fw-bold m-0 text-dark" id="offcanvasPerfilLabel"><?php echo htmlspecialchars($_SESSION['nome'] ?? 'Utilizador'); ?></h5>
-                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2 mt-1">Administrador</span>
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2 mt-1"><?php echo $nome_cargo; ?></span>
                         </div>
                     </div>
                     <button type="button" class="btn-close shadow-none mb-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -184,15 +214,22 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                     <h6 class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">A Minha Conta</h6>
                     <div class="list-group list-group-flush mb-4">
                         <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-regular fa-id-badge text-muted w-20px me-3 text-center"></i> O Meu Perfil</a>
-                        <a href="/sibdas/1241251/gira/private/configuracoes.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-sliders text-muted w-20px me-3 text-center"></i> Configurações do Sistema</a>
-                        <a href="/sibdas/1241251/gira/private/backoffice_publico/backoffice_publico.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-globe text-muted w-20px me-3 text-center"></i> Gerir Site Público</a>
+
+                        <?php if ($nivel >= 3): // Apenas Administradores podem aceder às definições globais 
+                        ?>
+                            <a href="/sibdas/1241251/gira/private/configuracoes.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-sliders text-muted w-20px me-3 text-center"></i> Configurações do Sistema</a>
+                            <a href="/sibdas/1241251/gira/private/backoffice_publico/backoffice_publico.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-globe text-muted w-20px me-3 text-center"></i> Gerir Site Público</a>
+                        <?php endif; ?>
                     </div>
 
-                    <h6 class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">Gestão de Acessos</h6>
-                    <div class="list-group list-group-flush mb-4">
-                        <a href="/sibdas/1241251/gira/private/utilizadores/utilizadores.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-users text-muted w-20px me-3 text-center"></i> Contas de Utilizadores</a>
-                        <a href="/sibdas/1241251/gira/private/perfis/perfis.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-user-shield text-muted w-20px me-3 text-center"></i> Perfis e Permissões</a>
-                    </div>
+                    <?php if ($nivel >= 3): // Apenas Administradores têm acesso a criar Perfis e Utilizadores 
+                    ?>
+                        <h6 class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">Gestão de Acessos</h6>
+                        <div class="list-group list-group-flush mb-4">
+                            <a href="/sibdas/1241251/gira/private/utilizadores/utilizadores.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-users text-muted w-20px me-3 text-center"></i> Contas de Utilizadores</a>
+                            <a href="/sibdas/1241251/gira/private/perfis/perfis.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-user-shield text-muted w-20px me-3 text-center"></i> Perfis e Permissões</a>
+                        </div>
+                    <?php endif; ?>
 
                     <div class="mt-auto pt-3 border-top">
                         <a href="/sibdas/1241251/gira/private/logout.php" class="btn btn-danger bg-opacity-10 text-danger border-0 w-100 rounded-3 fw-bold py-2 shadow-none d-flex align-items-center justify-content-center hover-danger">

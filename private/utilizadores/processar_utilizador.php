@@ -3,6 +3,12 @@
 require_once __DIR__ . '/../db.php';
 session_start();
 
+// Defesa Absoluta: Expulsar quem não for Administrador (Nível 3)
+if (!isset($_SESSION['nivel_acesso']) || $_SESSION['nivel_acesso'] < 3) {
+    header("Location: /sibdas/1241251/gira/private/dashboard.php");
+    exit;
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $nome = trim($_POST['nome']);
@@ -10,16 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST['email']);
     $password_limpa = $_POST['password'];
     $perfil_id = (int) $_POST['perfil_id'];
-
-    // =======================================================
-    // APLICAÇÃO DA FICHA 13: VALIDAÇÃO COM PREG_MATCH
-    // =======================================================
-    // Verificar se contém apenas números ou mistura de Letras com números
-    if (preg_match('/\d/', $nome)) {
-        // Encontrou um número! Abortar e devolver à página com erro específico
-        header("Location: /sibdas/1241251/gira/private/utilizadores/utilizadores.php?erro=nome_invalido");
-        exit;
-    }
 
     // 1. SEGURANÇA MÁXIMA: Encriptar a palavra-passe antes de guardar!
     $password_encriptada = password_hash($password_limpa, PASSWORD_DEFAULT);

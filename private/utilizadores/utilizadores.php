@@ -3,6 +3,12 @@
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../layout.php';
 
+// Defesa Absoluta: Expulsar quem não for Administrador (Nível 3)
+if (!isset($_SESSION['nivel_acesso']) || $_SESSION['nivel_acesso'] < 3) {
+    header("Location: /sibdas/1241251/gira/private/dashboard.php");
+    exit;
+}
+
 // 2. Montamos o topo da página com o título correto para a aba do browser
 render_header("Gira - Gestão de Utilizadores e Acessos");
 
