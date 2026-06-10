@@ -31,6 +31,24 @@ try {
         <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
     </div>
 <?php endif; ?>
+
+<?php if (isset($_GET['sucesso'])): ?>
+    <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
+        <i class="fa-solid fa-circle-check text-success me-2"></i>
+        <strong>Ação concluída!</strong>
+        <?php
+        if ($_GET['sucesso'] == 'registado') {
+            echo "O novo fornecedor foi registado com sucesso.";
+        } elseif ($_GET['sucesso'] == 'editado') {
+            echo "Os dados do fornecedor foram atualizados.";
+        } elseif ($_GET['sucesso'] == 'eliminado') {
+            echo "O fornecedor foi removido do sistema.";
+        }
+        ?>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
+    </div>
+<?php endif; ?>
+
 <?php
 // Tabela
 $colunas = [

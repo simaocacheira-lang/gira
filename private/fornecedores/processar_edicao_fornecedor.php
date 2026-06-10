@@ -34,6 +34,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':telefone' => !empty($_POST['telefone_suporte']) ? $_POST['telefone_suporte'] : null
         ]);
 
+        // --> TRANSMISSOR DE LOG <--
+        if (function_exists('registar_log')) {
+            registar_log($pdo, $_SESSION['user_id'], "Editou os dados do fornecedor: " . $_POST['nome_empresa'], "Fornecedores");
+        }
+
         // 4. Sucesso! Recarregar a página
         header("Location: /gira/private/fornecedores/fornecedores.php?sucesso=editado");
         exit;
