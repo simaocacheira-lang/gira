@@ -445,7 +445,7 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
                 const button = event.relatedTarget;
                 const idEquip = button.getAttribute('data-idequip');
                 const formDoc = modalDoc.querySelector('form');
-                formDoc.action = "/gira/private/equipamentos/processar_documento.php?id=" + idEquip;
+                formDoc.action = "/gira/private/documentos/processar_documento.php?id=" + idEquip;
             });
         }
 

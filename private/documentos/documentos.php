@@ -1,9 +1,20 @@
 <?php
-// 1. Chamamos o molde para trazer a Sidebar e a Topbar automáticas
+// 1. Chamamos o molde
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../layout.php';
 
-// 2. Montamos o topo da página com o título correto para a aba do browser
+// 2. Consulta à Base de Dados: Juntar os documentos com o nome do equipamento correspondente
+try {
+    $sql = "SELECT d.*, e.codigo_ativo, e.nome AS equipamento_nome 
+            FROM documentos_equipamento d
+            LEFT JOIN equipamentos e ON d.equipamento_id = e.id
+            ORDER BY d.data_upload DESC";
+    $stmt = $pdo->query($sql);
+    $lista_documentos = $stmt->fetchAll();
+} catch (PDOException $e) {
+    die("Erro ao carregar documentos: " . $e->getMessage());
+}
+
 render_header("Gira - Gestão de Documentos Técnicos");
 ?>
 
@@ -12,92 +23,71 @@ render_header("Gira - Gestão de Documentos Técnicos");
         <h2 class="fw-bold m-0">Repositório de Documentos</h2>
         <p class="text-muted m-0 small">Arquivo centralizado de manuais de utilizador, certificados de calibração e relatórios de conformidade.</p>
     </div>
-
-    <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNovoDocumento">
-        <i class="fa-solid fa-cloud-arrow-up me-2"></i> Enviar Documento
-    </button>
 </div>
 
+<?php if (isset($_GET['sucesso'])): ?>
+    <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
+        <i class="fa-solid fa-circle-check text-success me-2"></i>
+        <strong>Ação concluída!</strong> O documento foi carregado e guardado com sucesso.
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
+    </div>
+<?php endif; ?>
+
 <?php
-// 1. Definimos as colunas da tabela
 $colunas = [
-    ['label' => 'Ref. Doc', 'sort' => 'id_doc'],
-    ['label' => 'Nome do Documento / Ficheiro', 'sort' => 'nome'],
-    ['label' => 'Tipo', 'sort' => 'tipo'],
-    ['label' => 'Dispositivo Associado', 'sort' => 'equipamento'],
-    ['label' => 'Data de Upload', 'sort' => 'data_upload'],
-    ['label' => 'Tamanho', 'sort' => 'tamanho'],
+    ['label' => 'Nome do Documento / Ficheiro'],
+    ['label' => 'Tipo'],
+    ['label' => 'Dispositivo Associado'],
+    ['label' => 'Data de Registo'],
     ['label' => 'Ações', 'align' => 'end']
 ];
 
-// 2. Desenhamos a caixa exterior e os cabeçalhos automaticamente!
 render_table_start($colunas);
+
+foreach ($lista_documentos as $doc):
+    // Lógica para ícones consoante o tipo de extensão do ficheiro
+    $extensao = pathinfo($doc['caminho_ficheiro'], PATHINFO_EXTENSION);
+    $icone_file = ($extensao == 'pdf') ? 'fa-file-pdf text-danger' : 'fa-file-image text-primary';
 ?>
-
-<tr>
-    <td class="fw-bold text-primary fw-mono">#DOC-9921</td>
-    <td>
-        <div class="fw-bold"><i class="fa-regular fa-file-pdf text-danger me-2 fs-5 align-middle"></i>Manual Técnico de Serviço - Evita V500</div>
-        <small class="text-muted">Evita_Infinity_V500_Service_EN.pdf</small>
-    </td>
-    <td><span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary-subtle px-2">Manual Técnico</span></td>
-    <td class="fw-mono text-secondary">#EQ-2026-001</td>
-    <td>28/05/2026</td>
-    <td>14.2 MB</td>
-    <td class="text-end">
-        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Descarregar Ficheiro">
-            <i class="fa-solid fa-download text-primary"></i>
-        </button>
-        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Documento">
-            <i class="fa-solid fa-trash"></i>
-        </button>
-    </td>
-</tr>
-
-<tr>
-    <td class="fw-bold text-primary fw-mono">#DOC-9922</td>
-    <td>
-        <div class="fw-bold"><i class="fa-regular fa-file-pdf text-danger me-2 fs-5 align-middle"></i>Certificado de Calibração Anual 2026</div>
-        <small class="text-muted">Certificado_Philips_Affiniti_70_Assinado.pdf</small>
-    </td>
-    <td><span class="badge bg-success bg-opacity-10 text-success border border-success-subtle px-2">Metrologia / Calibração</span></td>
-    <td class="fw-mono text-secondary">#EQ-2026-002</td>
-    <td>14/04/2026</td>
-    <td>2.4 MB</td>
-    <td class="text-end">
-        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Descarregar Ficheiro">
-            <i class="fa-solid fa-download text-primary"></i>
-        </button>
-        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Documento">
-            <i class="fa-solid fa-trash"></i>
-        </button>
-    </td>
-</tr>
-
-<tr>
-    <td class="fw-bold text-primary fw-mono">#DOC-9923</td>
-    <td>
-        <div class="fw-bold"><i class="fa-regular fa-file-image text-primary me-2 fs-5 align-middle"></i>Fatura Pró-Forma de Aquisição</div>
-        <small class="text-muted">FT_BBraun_Infusao_2026.png</small>
-    </td>
-    <td><span class="badge bg-warning bg-opacity-10 text-warning border border-warning-subtle px-2">Financeiro / Fatura</span></td>
-    <td class="fw-mono text-secondary">Nenhum</td>
-    <td>02/02/2026</td>
-    <td>845 KB</td>
-    <td class="text-end">
-        <button class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Descarregar Ficheiro">
-            <i class="fa-solid fa-download text-primary"></i>
-        </button>
-        <button class="btn btn-light btn-sm rounded-3 text-danger border" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Documento">
-            <i class="fa-solid fa-trash"></i>
-        </button>
-    </td>
-</tr>
-
+    <tr>
+        <td>
+            <div class="fw-bold"><i class="fa-regular <?php echo $icone_file; ?> me-2 fs-5 align-middle"></i><?php echo htmlspecialchars($doc['nome_documento']); ?></div>
+            <small class="text-muted"><?php echo basename($doc['caminho_ficheiro']); ?></small>
+        </td>
+        <td><span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary-subtle px-2"><?php echo htmlspecialchars($doc['tipo_documento']); ?></span></td>
+        <td>
+            <?php if (!empty($doc['codigo_ativo'])): ?>
+                <span class="fw-mono fw-bold text-primary"><?php echo htmlspecialchars($doc['codigo_ativo']); ?></span><br>
+                <small class="text-muted"><?php echo htmlspecialchars($doc['equipamento_nome']); ?></small>
+            <?php else: ?>
+                <em class="text-muted">Documento Geral</em>
+            <?php endif; ?>
+        </td>
+        <td class="text-secondary"><?php echo date('d/m/Y', strtotime($doc['data_upload'])); ?></td>
+        <td class="text-end">
+            <!-- LINK DE DOWNLOAD REAL -->
+            <a href="/gira/private/<?php echo htmlspecialchars($doc['caminho_ficheiro']); ?>" target="_blank" class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Abrir / Descarregar">
+                <i class="fa-solid fa-download text-primary"></i>
+            </a>
+            <button class="btn btn-light btn-sm rounded-3 text-danger border" onclick="alert('Função de apagar documento em desenvolvimento!');">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </td>
+    </tr>
 <?php
-// 3. Fechamos as tags da tabela automaticamente!
-render_table_end();
+endforeach;
 
-// 4. Fechamos a página e injetamos os scripts centrais
+if (count($lista_documentos) === 0):
+?>
+    <tr>
+        <td colspan="5" class="text-center text-muted py-5">
+            <i class="fa-solid fa-folder-open fs-1 text-light mb-3"></i><br>
+            Ainda não fizeste upload de nenhum documento técnico.
+        </td>
+    </tr>
+<?php
+endif;
+
+render_table_end();
 render_footer();
 ?>
