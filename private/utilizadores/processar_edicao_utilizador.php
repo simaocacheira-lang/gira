@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (function_exists('registar_log')) {
             registar_log($pdo, $_SESSION['user_id'], "Atualizou os dados/acessos do utilizador: " . $nome, "Utilizadores");
         }
-        header("Location: /sibdas/1241251/gira/private/utilizadores/utilizadores.php?sucesso=utilizador_editado");
+        header("Location: /sibdas/1241251/private/utilizadores/utilizadores.php?sucesso=utilizador_editado");
         exit;
     } catch (PDOException $e) {
         if ($e->getCode() == 23000) {

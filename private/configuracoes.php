@@ -18,7 +18,7 @@ render_header("Gira - Configurações Gerais do Sistema");
     </button>
 </div>
 
-<form id="form-configuracoes" action="/sibdas/1241251/gira/private/guardar_config.php" method="POST">
+<form id="form-configuracoes" action="/sibdas/1241251//gira/private/guardar_config.php" method="POST">
     <div class="row g-4">
 
         <div class="col-12 col-md-6">
