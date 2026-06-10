@@ -1,17 +1,13 @@
 <?php
-// 1. Ligar à Base de Dados
 require_once __DIR__ . '/../db.php';
 session_start();
 
-// 2. Verificar se a informação veio por POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // Proteção: Garantir que não perdemos o ID no caminho
     if (empty($_POST['id_localizacao'])) {
         die("Erro Crítico: O ID da localização desapareceu.");
     }
 
-    // 3. O comando UPDATE
     $sql = "UPDATE localizacoes SET 
                 cod_sala = :cod,
                 nome = :nome,
@@ -23,7 +19,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $stmt = $pdo->prepare($sql);
 
-        // 4. Mapear os novos dados enviados pelo modal
         $stmt->execute([
             ':id'      => (int) $_POST['id_localizacao'],
             ':cod'     => $_POST['cod_sala'],
@@ -33,7 +28,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':bloco'   => !empty($_POST['bloco']) ? $_POST['bloco'] : null
         ]);
 
-        // 5. Missão cumprida! Voltar ao mapa de localizações.
+        // --> TRANSMISSOR DE LOG <--
+        if (function_exists('registar_log')) {
+            registar_log($pdo, $_SESSION['user_id'], "Alterou as configurações da sala/serviço: " . $_POST['cod_sala'], "Localizações");
+        }
+
         header("Location: /gira/private/localizacoes/localizacoes.php?sucesso=editado");
         exit;
     } catch (PDOException $e) {

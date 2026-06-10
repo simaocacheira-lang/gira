@@ -29,6 +29,7 @@ try {
         <i class="fa-solid fa-location-dot me-2"></i> Nova Localização
     </button>
 </div>
+
 <?php if (isset($_GET['erro']) && $_GET['erro'] == 'sala_ocupada'): ?>
     <div class="alert alert-danger alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
         <i class="fa-solid fa-shield-halved me-2"></i>
@@ -36,6 +37,24 @@ try {
         <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
     </div>
 <?php endif; ?>
+
+<?php if (isset($_GET['sucesso'])): ?>
+    <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
+        <i class="fa-solid fa-circle-check text-success me-2"></i>
+        <strong>Ação concluída!</strong>
+        <?php
+        if ($_GET['sucesso'] == 'registado' || $_GET['sucesso'] == '1') {
+            echo "A nova localização foi mapeada com sucesso.";
+        } elseif ($_GET['sucesso'] == 'editado') {
+            echo "Os dados da localização foram atualizados.";
+        } elseif ($_GET['sucesso'] == 'eliminado') {
+            echo "A localização foi removida do mapa hospitalar.";
+        }
+        ?>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
+    </div>
+<?php endif; ?>
+
 <?php
 $colunas = [
     ['label' => 'Cód. Espaço', 'sort' => 'id_localizacao'],
@@ -48,7 +67,7 @@ $colunas = [
 
 render_table_start($colunas);
 
-// 3. O Loop que desenha o teu HTML as vezes necessárias
+// 3. O Loop que desenha o teu HTML
 foreach ($lista_locais as $loc):
 ?>
     <tr>
@@ -59,7 +78,6 @@ foreach ($lista_locais as $loc):
         </td>
         <td class="text-secondary">
             <?php
-            // Mostra o Piso e o Bloco, ou um traço se estiver vazio
             if (!empty($loc['piso']) || !empty($loc['bloco'])) {
                 echo htmlspecialchars($loc['piso'] . ' · ' . $loc['bloco']);
             } else {
@@ -83,48 +101,18 @@ foreach ($lista_locais as $loc):
                     <i class="fa-solid fa-pen text-primary"></i>
                 </button>
             </span>
-            <a href="/gira/private/localizacoes/eliminar_localizacao.php?id=<?php echo $loc['id']; ?>"
-                class="btn btn-light btn-sm rounded-3 border"
-                data-bs-toggle="tooltip" data-bs-placement="top" title="Remover Localização"
-                onclick="return confirm('⚠️ ATENÇÃO: Tens a certeza que queres eliminar o espaço <?php echo htmlspecialchars($loc['cod_sala']); ?>?');">
-                <i class="fa-solid fa-trash text-danger"></i>
-            </a>
+            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Remover Localização">
+                <a href="/gira/private/localizacoes/eliminar_localizacao.php?id=<?php echo $loc['id']; ?>"
+                    class="btn btn-light btn-sm rounded-3 border"
+                    onclick="return confirm('⚠️ ATENÇÃO: Tens a certeza que queres eliminar o espaço <?php echo htmlspecialchars($loc['cod_sala']); ?>?');">
+                    <i class="fa-solid fa-trash text-danger"></i>
+                </a>
+            </span>
         </td>
     </tr>
-
-    <script>
-        // Este código fica à escuta. Quando o modal de edição estiver prestes a abrir...
-        document.addEventListener('DOMContentLoaded', function() {
-            const modalEditar = document.getElementById('modalEditarLocalizacao');
-            if (modalEditar) {
-                modalEditar.addEventListener('show.bs.modal', function(event) {
-                    // 1. Descobrir qual foi o botão exato em que o utilizador clicou
-                    const button = event.relatedTarget;
-
-                    // 2. Abrir as "mochilas" e tirar os dados
-                    const id = button.getAttribute('data-id');
-                    const cod = button.getAttribute('data-cod');
-                    const nome = button.getAttribute('data-nome');
-                    const detalhe = button.getAttribute('data-detalhe');
-                    const piso = button.getAttribute('data-piso');
-                    const bloco = button.getAttribute('data-bloco');
-
-                    // 3. Injetar esses dados nas caixas de texto do formulário do modal
-                    const form = document.getElementById('formEditarLocalizacao');
-                    form.querySelector('input[name="id_localizacao"]').value = id;
-                    form.querySelector('input[name="cod_sala"]').value = cod;
-                    form.querySelector('input[name="nome"]').value = nome;
-                    form.querySelector('input[name="detalhe"]').value = detalhe;
-                    form.querySelector('select[name="piso"]').value = piso;
-                    form.querySelector('select[name="bloco"]').value = bloco;
-                });
-            }
-        });
-    </script>
 <?php
 endforeach;
 
-// 4. Mensagem caso a base de dados esteja vazia
 if (count($lista_locais) === 0):
 ?>
     <tr>
@@ -137,5 +125,34 @@ if (count($lista_locais) === 0):
 endif;
 
 render_table_end();
+?>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modalEditar = document.getElementById('modalEditarLocalizacao');
+        if (modalEditar) {
+            modalEditar.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+
+                const id = button.getAttribute('data-id');
+                const cod = button.getAttribute('data-cod');
+                const nome = button.getAttribute('data-nome');
+                const detalhe = button.getAttribute('data-detalhe');
+                const piso = button.getAttribute('data-piso');
+                const bloco = button.getAttribute('data-bloco');
+
+                const form = document.getElementById('formEditarLocalizacao');
+                form.querySelector('input[name="id_localizacao"]').value = id;
+                form.querySelector('input[name="cod_sala"]').value = cod;
+                form.querySelector('input[name="nome"]').value = nome;
+                form.querySelector('input[name="detalhe"]').value = detalhe;
+                form.querySelector('select[name="piso"]').value = piso;
+                form.querySelector('select[name="bloco"]').value = bloco;
+            });
+        }
+    });
+</script>
+
+<?php
 render_footer();
 ?>
