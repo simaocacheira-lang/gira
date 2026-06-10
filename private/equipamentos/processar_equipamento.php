@@ -25,12 +25,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':data'        => $_POST['data_aquisicao']
         ]);
 
-        header("Location: /gira/private/equipamentos/equipamentos.php?sucesso=1");
+        header("Location: /sibdas/1241251/gira/private/equipamentos/equipamentos.php?sucesso=1");
         exit;
     } catch (PDOException $e) {
         die("Erro ao guardar na base de dados: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/equipamentos/equipamentos.php");
+    header("Location: /sibdas/1241251/gira/private/equipamentos/equipamentos.php");
     exit;
 }

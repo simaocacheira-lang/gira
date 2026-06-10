@@ -16,7 +16,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         // 3. LÓGICA DE DEFESA
         if ($equipamentos_associados > 0) {
             // O fornecedor tem equipamentos associados! Abortar.
-            header("Location: /gira/private/fornecedores/fornecedores.php?erro=fornecedor_ocupado");
+            header("Location: /sibdas/1241251/gira/private/fornecedores/fornecedores.php?erro=fornecedor_ocupado");
             exit;
         } else {
             // Ir buscar o nome do fornecedor ANTES de o apagar, para podermos guardar no Log
@@ -35,13 +35,13 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 registar_log($pdo, $_SESSION['user_id'], "Removeu o contrato e o fornecedor: " . $nome_empresa, "Fornecedores");
             }
 
-            header("Location: /gira/private/fornecedores/fornecedores.php?sucesso=eliminado");
+            header("Location: /sibdas/1241251/gira/private/fornecedores/fornecedores.php?sucesso=eliminado");
             exit;
         }
     } catch (PDOException $e) {
         die("Erro ao processar eliminação: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/fornecedores/fornecedores.php");
+    header("Location: /sibdas/1241251/gira/private/fornecedores/fornecedores.php");
     exit;
 }

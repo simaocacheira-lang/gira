@@ -13,12 +13,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             registar_log($pdo, $_SESSION['user_id'], "Efetuou a purga total do histórico do sistema", "Auditoria");
         }
 
-        header("Location: /gira/private/historico/historico.php?sucesso=limpeza");
+        header("Location: /sibdas/1241251/gira/private/historico/historico.php?sucesso=limpeza");
         exit;
     } catch (PDOException $e) {
         die("Erro ao limpar os logs: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/historico/historico.php");
+    header("Location: /sibdas/1241251/gira/private/historico/historico.php");
     exit;
 }

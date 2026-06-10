@@ -25,21 +25,21 @@ try {
   <title>Inventário Hospitalar</title>
 
   <link
-    href="/gira/assets/css/bootstrap.min.css"
+    href="/sibdas/1241251/gira/assets/css/bootstrap.min.css"
     rel="stylesheet" />
-  <link rel="stylesheet" href="/gira/assets/css/all.min.css">
+  <link rel="stylesheet" href="/sibdas/1241251/gira/assets/css/all.min.css">
 
-  <link rel="stylesheet" href="/gira/assets/css/1241251.css" />
+  <link rel="stylesheet" href="/sibdas/1241251/gira/assets/css/1241251.css" />
 </head>
 
 <body>
-  <script src="/gira/assets/js/bootstrap.bundle.min.js"></script>
-  <script src="/gira/assets/js/1241251.js"></script>
+  <script src="/sibdas/1241251/gira/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="/sibdas/1241251/gira/assets/js/1241251.js"></script>
 
   <nav
     class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
     <div class="container">
-      <a class="navbar-brand fw-bold text-primary" href="/gira/public/index.php">
+      <a class="navbar-brand fw-bold text-primary" href="/sibdas/1241251/gira/public/index.php">
         <i class="fa-solid fa-notes-medical fs-4 me-2"></i>Gira
       </a>
 
@@ -59,7 +59,7 @@ try {
         <li class="nav-item"><a class="nav-link" href="#sobre">Sobre Nós</a></li>
       </ul>
       <div class="d-flex gap-2">
-        <a href="/gira/public/login.php" class="btn btn-outline-primary px-4 fw-medium">Entrar</a>
+        <a href="/sibdas/1241251/gira/public/login.php" class="btn btn-outline-primary px-4 fw-medium">Entrar</a>
         <a href="#contacto" class="btn btn-primary px-4 fw-medium">Fale Connosco</a>
       </div>
     </div>
@@ -92,7 +92,7 @@ try {
               Explorar Plataforma <i class="fa-solid fa-arrow-right ms-2"></i>
             </a>
             <a
-              href="/gira/public/login.php"
+              href="/sibdas/1241251/gira/public/login.php"
               class="btn btn-light btn-lg border px-4 shadow-sm">
               Ver Dashboard
               <i class="fa-solid fa-chart-line ms-2 text-primary"></i>
@@ -150,7 +150,7 @@ try {
           </h2>
         </div>
         <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-          <a href="/gira/public/login.php" class="btn btn-light btn-lg border px-4 shadow-sm"> Ver todas as funcionalidades <i class="fa-solid fa-arrow-right ms-2"></i>
+          <a href="/sibdas/1241251/gira/public/login.php" class="btn btn-light btn-lg border px-4 shadow-sm"> Ver todas as funcionalidades <i class="fa-solid fa-arrow-right ms-2"></i>
           </a>
         </div>
       </div>
@@ -683,7 +683,7 @@ try {
         <div class="col-lg-4 mb-4 mb-lg-0">
           <a
             class="navbar-brand fw-bold text-white fs-4 d-flex align-items-center mb-3"
-            href="/gira/public/index.php">
+            href="/sibdas/1241251/gira/public/index.php">
             <i class="fa-solid fa-notes-medical text-primary me-2"></i>Gira
           </a>
           <p class="text-white-50 small mb-4 pe-lg-4">

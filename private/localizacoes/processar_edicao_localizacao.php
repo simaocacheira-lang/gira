@@ -33,12 +33,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             registar_log($pdo, $_SESSION['user_id'], "Alterou as configurações da sala/serviço: " . $_POST['cod_sala'], "Localizações");
         }
 
-        header("Location: /gira/private/localizacoes/localizacoes.php?sucesso=editado");
+        header("Location: /sibdas/1241251/gira/private/localizacoes/localizacoes.php?sucesso=editado");
         exit;
     } catch (PDOException $e) {
         die("Erro ao atualizar a localização: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/localizacoes/localizacoes.php");
+    header("Location: /sibdas/1241251/gira/private/localizacoes/localizacoes.php");
     exit;
 }

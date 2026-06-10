@@ -26,7 +26,7 @@ render_header("Gira - Histórico de Atividades e Logs");
         <p class="text-muted m-0 small">Registo cronológico de operações, alterações de inventário e acessos de utilizadores para fins de auditoria.</p>
     </div>
 
-    <form action="/gira/private/historico/processar_limpeza.php" method="POST" onsubmit="return confirm('ATENÇÃO: Tem a certeza absoluta que deseja apagar todo o histórico de auditoria? Esta ação é irreversível!');">
+    <form action="/sibdas/1241251/gira/private/historico/processar_limpeza.php" method="POST" onsubmit="return confirm('ATENÇÃO: Tem a certeza absoluta que deseja apagar todo o histórico de auditoria? Esta ação é irreversível!');">
         <button type="submit" class="btn btn-light border rounded-3 fw-bold small px-3 py-2 text-danger shadow-sm hover-danger">
             <i class="fa-solid fa-trash-can me-2"></i> Limpar Histórico de Logs
         </button>

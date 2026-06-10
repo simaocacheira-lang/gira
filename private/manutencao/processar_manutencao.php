@@ -28,13 +28,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $id_eq = (int)$_POST['equipamento_id'];
             registar_log($pdo, $_SESSION['user_id'], "Emitiu a Ordem de Trabalho $numero_ot para o equipamento ID: $id_eq", "Manutenção");
         }
-        header("Location: /gira/private/manutencao/manutencao.php?sucesso=ot_criada");
+        header("Location: /sibdas/1241251/gira/private/manutencao/manutencao.php?sucesso=ot_criada");
         exit;
     } catch (PDOException $e) {
         die("Erro ao emitir Ordem de Trabalho: " . $e->getMessage());
     }
 } else {
     // Redirecionamento de segurança alterado para manutenção também
-    header("Location: /gira/private/manutencao/manutencao.php");
+    header("Location: /sibdas/1241251/gira/private/manutencao/manutencao.php");
     exit;
 }

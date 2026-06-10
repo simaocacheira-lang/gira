@@ -23,12 +23,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Redirecionar DE VOLTA para a página das Garantias!
-        header("Location: /gira/private/garantias/garantias.php?sucesso=garantia_atualizada");
+        header("Location: /sibdas/1241251/gira/private/garantias/garantias.php?sucesso=garantia_atualizada");
         exit;
     } catch (PDOException $e) {
         die("Erro ao atualizar a garantia: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/garantias/garantias.php");
+    header("Location: /sibdas/1241251/gira/private/garantias/garantias.php");
     exit;
 }

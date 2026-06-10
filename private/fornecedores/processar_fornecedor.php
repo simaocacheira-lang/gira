@@ -27,12 +27,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Sucesso! Volta ao ecrã dos fornecedores
-        header("Location: /gira/private/fornecedores/fornecedores.php?sucesso=registado");
+        header("Location: /sibdas/1241251/gira/private/fornecedores/fornecedores.php?sucesso=registado");
         exit;
     } catch (PDOException $e) {
         die("Erro ao registar fornecedor (o NIF pode já existir): " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/fornecedores/fornecedores.php");
+    header("Location: /sibdas/1241251/gira/private/fornecedores/fornecedores.php");
     exit;
 }

@@ -102,7 +102,7 @@ foreach ($lista_locais as $loc):
                 </button>
             </span>
             <span data-bs-toggle="tooltip" data-bs-placement="top" title="Remover Localização">
-                <a href="/gira/private/localizacoes/eliminar_localizacao.php?id=<?php echo $loc['id']; ?>"
+                <a href="/sibdas/1241251/gira/private/localizacoes/eliminar_localizacao.php?id=<?php echo $loc['id']; ?>"
                     class="btn btn-light btn-sm rounded-3 border"
                     onclick="return confirm('⚠️ ATENÇÃO: Tens a certeza que queres eliminar o espaço <?php echo htmlspecialchars($loc['cod_sala']); ?>?');">
                     <i class="fa-solid fa-trash text-danger"></i>

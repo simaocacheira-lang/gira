@@ -7,7 +7,7 @@ session_start(); // Inicia a memória da sessão para ler quem está logado
 // Se a variável 'user_id' NÃO existir na sessão, significa que não passou pelo login
 if (!isset($_SESSION['user_id'])) {
     // Expulsa o intruso de volta para a página de entrada (Caminho Absoluto)
-    header("Location: /gira/public/login.php");
+    header("Location: /sibdas/1241251/gira/public/login.php");
     exit; // Obrigatório: impede que o resto do código da página seja executado
 }
 
@@ -77,9 +77,9 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
         <meta charset="UTF-8">
         <title><?php echo $title; ?></title>
 
-        <link rel="stylesheet" href="/gira/assets/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/gira/assets/css/all.min.css">
-        <link rel="stylesheet" href="/gira/assets/css/1241251.css">
+        <link rel="stylesheet" href="/sibdas/1241251/gira/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/sibdas/1241251/gira/assets/css/all.min.css">
+        <link rel="stylesheet" href="/sibdas/1241251/gira/assets/css/1241251.css">
     </head>
 
     <body>
@@ -115,7 +115,7 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                         $ativo = (basename($_SERVER['PHP_SELF']) == $ficheiro) ? 'active' : '';
                     }
                     ?>
-                    <a href="/gira/private/<?php echo $item['link']; ?>" class="sidebar-link <?php echo $ativo; ?>">
+                    <a href="/sibdas/1241251/gira/private/<?php echo $item['link']; ?>" class="sidebar-link <?php echo $ativo; ?>">
                         <i class="fa-solid <?php echo $item['icon']; ?>"></i>
                         <span class="sidebar-text ms-2"><?php echo $item['label']; ?></span>
                     </a>
@@ -184,18 +184,18 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                     <h6 class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">A Minha Conta</h6>
                     <div class="list-group list-group-flush mb-4">
                         <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-regular fa-id-badge text-muted w-20px me-3 text-center"></i> O Meu Perfil</a>
-                        <a href="/gira/private/configuracoes.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-sliders text-muted w-20px me-3 text-center"></i> Configurações do Sistema</a>
-                        <a href="/gira/private/backoffice_publico/backoffice_publico.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-globe text-muted w-20px me-3 text-center"></i> Gerir Site Público</a>
+                        <a href="/sibdas/1241251/gira/private/configuracoes.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-sliders text-muted w-20px me-3 text-center"></i> Configurações do Sistema</a>
+                        <a href="/sibdas/1241251/gira/private/backoffice_publico/backoffice_publico.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-globe text-muted w-20px me-3 text-center"></i> Gerir Site Público</a>
                     </div>
 
                     <h6 class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">Gestão de Acessos</h6>
                     <div class="list-group list-group-flush mb-4">
-                        <a href="/gira/private/utilizadores/utilizadores.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-users text-muted w-20px me-3 text-center"></i> Contas de Utilizadores</a>
-                        <a href="/gira/private/perfis/perfis.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-user-shield text-muted w-20px me-3 text-center"></i> Perfis e Permissões</a>
+                        <a href="/sibdas/1241251/gira/private/utilizadores/utilizadores.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-users text-muted w-20px me-3 text-center"></i> Contas de Utilizadores</a>
+                        <a href="/sibdas/1241251/gira/private/perfis/perfis.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-user-shield text-muted w-20px me-3 text-center"></i> Perfis e Permissões</a>
                     </div>
 
                     <div class="mt-auto pt-3 border-top">
-                        <a href="/gira/private/logout.php" class="btn btn-danger bg-opacity-10 text-danger border-0 w-100 rounded-3 fw-bold py-2 shadow-none d-flex align-items-center justify-content-center hover-danger">
+                        <a href="/sibdas/1241251/gira/private/logout.php" class="btn btn-danger bg-opacity-10 text-danger border-0 w-100 rounded-3 fw-bold py-2 shadow-none d-flex align-items-center justify-content-center hover-danger">
                             <i class="fa-solid fa-right-from-bracket me-2"></i> Terminar Sessão
                         </a>
                     </div>
@@ -216,8 +216,8 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
         ?>
         </div>
 
-        <script src="/gira/assets/js/bootstrap.bundle.min.js"></script>
-        <script src="/gira/assets/js/1241251.js"></script>
+        <script src="/sibdas/1241251/gira/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="/sibdas/1241251/gira/assets/js/1241251.js"></script>
 
         <script>
             // Alternar Sidebar

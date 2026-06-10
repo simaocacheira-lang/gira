@@ -8,7 +8,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
     // 2. DEFESA CRÍTICA: Não podes apagar a tua própria conta!
     if ($id_para_apagar === (int)$_SESSION['user_id']) {
-        header("Location: /gira/private/utilizadores/utilizadores.php?erro=auto_eliminacao");
+        header("Location: /sibdas/1241251/gira/private/utilizadores/utilizadores.php?erro=auto_eliminacao");
         exit;
     }
 
@@ -29,12 +29,12 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             registar_log($pdo, $_SESSION['user_id'], "Eliminou definitivamente o utilizador: " . $identificador, "Utilizadores");
         }
 
-        header("Location: /gira/private/utilizadores/utilizadores.php?sucesso=utilizador_eliminado");
+        header("Location: /sibdas/1241251/gira/private/utilizadores/utilizadores.php?sucesso=utilizador_eliminado");
         exit;
     } catch (PDOException $e) {
         die("Erro ao eliminar utilizador: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/utilizadores/utilizadores.php");
+    header("Location: /sibdas/1241251/gira/private/utilizadores/utilizadores.php");
     exit;
 }

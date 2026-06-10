@@ -5,7 +5,7 @@ require_once __DIR__ . '/../layout.php';
 
 // 2. Verificar se recebemos um ID válido pelo URL
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    header("Location: /gira/private/equipamentos/equipamentos.php");
+    header("Location: /sibdas/1241251/gira/private/equipamentos/equipamentos.php");
     exit;
 }
 
@@ -22,7 +22,7 @@ try {
     $eq = $stmt->fetch();
 
     if (!$eq) {
-        die("<h3>Erro 404: Equipamento não encontrado no parque tecnológico.</h3><a href='/gira/private/equipamentos/equipamentos.php'>Voltar à lista</a>");
+        die("<h3>Erro 404: Equipamento não encontrado no parque tecnológico.</h3><a href='/sibdas/1241251/gira/private/equipamentos/equipamentos.php'>Voltar à lista</a>");
     }
 
     // 4. Ir buscar o histórico clínico (OTs) DESTE equipamento específico (Corrigido: apenas 1 vez!)
@@ -48,19 +48,19 @@ try {
 render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
 ?>
 
-<form action="/gira/private/equipamentos/processar_edicao_equipamento.php" method="POST">
+<form action="/sibdas/1241251/gira/private/equipamentos/processar_edicao_equipamento.php" method="POST">
 
     <input type="hidden" name="id_equipamento" value="<?php echo $eq['id']; ?>">
 
     <div class="mb-3 d-flex justify-content-between align-items-center">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0 small fw-bold">
-                <li class="breadcrumb-item"><a href="/gira/private/equipamentos/equipamentos.php" class="text-decoration-none text-muted">Equipamentos</a></li>
+                <li class="breadcrumb-item"><a href="/sibdas/1241251/gira/private/equipamentos/equipamentos.php" class="text-decoration-none text-muted">Equipamentos</a></li>
                 <li class="breadcrumb-item active text-primary" aria-current="page">Ficha Técnica e Edição</li>
             </ol>
         </nav>
         <div class="d-flex gap-2">
-            <a href="/gira/private/equipamentos/equipamentos.php" class="btn btn-light border rounded-3 fw-bold small px-3 py-2 shadow-sm text-secondary">
+            <a href="/sibdas/1241251/gira/private/equipamentos/equipamentos.php" class="btn btn-light border rounded-3 fw-bold small px-3 py-2 shadow-sm text-secondary">
                 <i class="fa-solid fa-arrow-left me-2"></i>Voltar
             </a>
             <div class="dropdown">
@@ -73,7 +73,7 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item fw-bold text-danger py-2" href="/gira/private/equipamentos/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>" onclick="return confirm('Tem a certeza que deseja abater este equipamento?');"><i class="fa-solid fa-trash-can me-2"></i> Abater Inventário</a></li>
+                    <li><a class="dropdown-item fw-bold text-danger py-2" href="/sibdas/1241251/gira/private/equipamentos/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>" onclick="return confirm('Tem a certeza que deseja abater este equipamento?');"><i class="fa-solid fa-trash-can me-2"></i> Abater Inventário</a></li>
                 </ul>
             </div>
             <button type="submit" class="btn btn-success rounded-3 fw-bold small px-3 py-2 shadow-sm">
@@ -303,7 +303,7 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
                                             </h6>
                                             <small class="text-muted d-block mb-2"><?php echo htmlspecialchars($doc['tipo_documento']); ?></small>
                                             <div class="d-flex gap-2">
-                                                <a href="/gira/private/<?php echo htmlspecialchars($doc['caminho_ficheiro']); ?>" target="_blank" class="btn btn-sm btn-light border rounded-2" style="font-size: 0.75rem;">
+                                                <a href="/sibdas/1241251/gira/private/<?php echo htmlspecialchars($doc['caminho_ficheiro']); ?>" target="_blank" class="btn btn-sm btn-light border rounded-2" style="font-size: 0.75rem;">
                                                     <i class="fa-solid fa-eye me-1"></i>Abrir
                                                 </a>
                                                 <button class="btn btn-sm btn-light text-danger border rounded-2 ms-auto" onclick="alert('Funcionalidade de apagar documento em desenvolvimento!');" style="font-size: 0.75rem;">
@@ -445,7 +445,7 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
                 const button = event.relatedTarget;
                 const idEquip = button.getAttribute('data-idequip');
                 const formDoc = modalDoc.querySelector('form');
-                formDoc.action = "/gira/private/documentos/processar_documento.php?id=" + idEquip;
+                formDoc.action = "/sibdas/1241251/gira/private/documentos/processar_documento.php?id=" + idEquip;
             });
         }
 

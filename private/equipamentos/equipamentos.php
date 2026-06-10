@@ -67,7 +67,7 @@ try {
             <button type="submit" class="btn btn-primary rounded-3"><i class="fa-solid fa-magnifying-glass"></i></button>
 
             <?php if (!empty($termo_pesquisa)): ?>
-                <a href="/gira/private/equipamentos/equipamentos.php" class="btn btn-light border rounded-3 text-danger"><i class="fa-solid fa-xmark"></i></a>
+                <a href="/sibdas/1241251/gira/private/equipamentos/equipamentos.php" class="btn btn-light border rounded-3 text-danger"><i class="fa-solid fa-xmark"></i></a>
             <?php endif; ?>
         </form>
     </div>
@@ -103,10 +103,10 @@ foreach ($lista_equipamentos as $eq):
             </span>
         </td>
         <td class="text-end">
-            <a href="/gira/private/equipamentos/detalhes_equipamento.php?id=<?php echo $eq['id']; ?>" class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
+            <a href="/sibdas/1241251/gira/private/equipamentos/detalhes_equipamento.php?id=<?php echo $eq['id']; ?>" class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar Equipamento">
                 <i class="fa-solid fa-eye text-primary"></i>
             </a>
-            <a href="/gira/private/equipamentos/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>"
+            <a href="/sibdas/1241251/gira/private/equipamentos/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>"
                 class="btn btn-light btn-sm rounded-3 border""
                 data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Equipamento"
                 onclick="return confirm('⚠️ ATENÇÃO: Tens a certeza absoluta que queres eliminar permanentemente o dispositivo <?php echo htmlspecialchars($eq['codigo_ativo']); ?>? Esta ação não pode ser desfeita!');">

@@ -14,7 +14,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
         if ($nivel >= 3) {
             // Tentativa de apagar um perfil de sistema! Expulsar.
-            header("Location: /gira/private/perfis/perfis.php?erro=perfil_bloqueado");
+            header("Location: /sibdas/1241251/gira/private/perfis/perfis.php?erro=perfil_bloqueado");
             exit;
         }
 
@@ -25,7 +25,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
         if ($utilizadores_associados > 0) {
             // O perfil está em uso! Devolver à página com o erro (que já programámos no perfis.php)
-            header("Location: /gira/private/perfis/perfis.php?erro=perfil_ocupado");
+            header("Location: /sibdas/1241251/gira/private/perfis/perfis.php?erro=perfil_ocupado");
             exit;
         } else {
             // O perfil não é de sistema e está vazio. Eliminação autorizada!
@@ -36,7 +36,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             if (function_exists('registar_log')) {
                 registar_log($pdo, $_SESSION['user_id'], "Eliminou o perfil de acesso (ID: $id_para_apagar)", "Perfis");
             }
-            header("Location: /gira/private/perfis/perfis.php?sucesso=eliminado");
+            header("Location: /sibdas/1241251/gira/private/perfis/perfis.php?sucesso=eliminado");
             exit;
         }
     } catch (PDOException $e) {
@@ -44,6 +44,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     }
 } else {
     // Acesso direto pelo URL sem ID
-    header("Location: /gira/private/perfis/perfis.php");
+    header("Location: /sibdas/1241251/gira/private/perfis/perfis.php");
     exit;
 }

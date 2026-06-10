@@ -4,7 +4,7 @@ session_start();
 
 // Se o utilizador já estiver logado, redireciona logo para o dashboard (CAMINHO ABSOLUTO URL)
 if (isset($_SESSION['user_id'])) {
-    header("Location: /gira/private/dashboard.php");
+    header("Location: /sibdas/1241251/gira/private/dashboard.php");
     exit;
 }
 
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
                 // Redirecionar para o Dashboard (CAMINHO ABSOLUTO URL)
-                header("Location: /gira/private/dashboard.php");
+                header("Location: /sibdas/1241251/gira/private/dashboard.php");
                 exit;
             }
         } else {
@@ -64,16 +64,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Gira Inventory</title>
 
-    <link rel="stylesheet" href="/gira/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/gira/assets/css/all.min.css">
-    <link rel="stylesheet" href="/gira/assets/css/1241251.css">
+    <link rel="stylesheet" href="/sibdas/1241251/gira/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/sibdas/1241251/gira/assets/css/all.min.css">
+    <link rel="stylesheet" href="/sibdas/1241251/gira/assets/css/1241251.css">
 </head>
 
 <body class="vh-100 d-flex align-items-center justify-content-center login-bg">
 
     <div class="login-card p-3">
         <div class="text-center mb-4">
-            <a href="/gira/public/index.html" class="text-decoration-none">
+            <a href="/sibdas/1241251/gira/public/index.html" class="text-decoration-none">
                 <h1 class="fw-bold text-primary mb-1">
                     <i class="fa-solid fa-notes-medical me-2"></i>Gira
                 </h1>
@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="card-body p-4 p-md-5">
                 <h4 class="fw-bold text-dark mb-4 text-center">Acesso Restrito</h4>
 
-                <form action="/gira/public/login.php" method="POST">
+                <form action="/sibdas/1241251/gira/public/login.php" method="POST">
                     <?php if (!empty($erro)): ?>
                         <div class="alert alert-danger text-center small mb-3">
                             <i class="fa-solid fa-triangle-exclamation me-1"></i> <?php echo $erro; ?>
@@ -113,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </button>
 
                     <div class="text-center">
-                        <a href="/gira/public/index.html" class="text-decoration-none small text-muted">
+                        <a href="/sibdas/1241251/gira/public/index.html" class="text-decoration-none small text-muted">
                             <i class="fa-solid fa-arrow-left me-1"></i> Voltar à página inicial
                         </a>
                     </div>
@@ -126,8 +126,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 
-    <script src="/gira/assets/js/bootstrap.bundle.min.js"></script>
-    <script src="/gira/assets/js/1241251.js"></script>
+    <script src="/sibdas/1241251/gira/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/sibdas/1241251/gira/assets/js/1241251.js"></script>
 </body>
 
 </html>

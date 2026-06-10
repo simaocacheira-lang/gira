@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Confirmar todas as alterações na base de dados
         $pdo->commit();
 
-        header("Location: /gira/private/armazem/armazem.php?sucesso=encomenda_criada");
+        header("Location: /sibdas/1241251/gira/private/armazem/armazem.php?sucesso=encomenda_criada");
         exit;
     } catch (PDOException $e) {
         // Se houver erro, desfaz a transação
@@ -54,6 +54,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Erro ao registar a encomenda: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/armazem/armazem.php");
+    header("Location: /sibdas/1241251/gira/private/armazem/armazem.php");
     exit;
 }

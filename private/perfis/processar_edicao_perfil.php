@@ -20,12 +20,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (function_exists('registar_log')) {
             registar_log($pdo, $_SESSION['user_id'], "Editou o perfil de acesso: " . $nome . " (Nível " . $nivel . ")", "Perfis");
         }
-        header("Location: /gira/private/perfis/perfis.php?sucesso=perfil_editado");
+        header("Location: /sibdas/1241251/gira/private/perfis/perfis.php?sucesso=perfil_editado");
         exit;
     } catch (PDOException $e) {
         die("Erro ao editar o perfil: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/perfis/perfis.php");
+    header("Location: /sibdas/1241251/gira/private/perfis/perfis.php");
     exit;
 }

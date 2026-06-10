@@ -26,13 +26,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pdo->commit();
 
         // Voltar para o backoffice com mensagem de sucesso
-        header("Location: /gira/private/backoffice_publico/backoffice_publico.php?sucesso=1");
+        header("Location: /sibdas/1241251/gira/private/backoffice_publico/backoffice_publico.php?sucesso=1");
         exit;
     } catch (PDOException $e) {
         $pdo->rollBack();
         die("Erro ao guardar os conteúdos do site: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/backoffice_publico/backoffice_publico.php");
+    header("Location: /sibdas/1241251/gira/private/backoffice_publico/backoffice_publico.php");
     exit;
 }

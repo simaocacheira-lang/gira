@@ -27,13 +27,13 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         }
 
         // 4. Voltar para a página de manutenção com a mensagem de sucesso
-        header("Location: /gira/private/manutencao/manutencao.php?sucesso=ot_eliminada");
+        header("Location: /sibdas/1241251/gira/private/manutencao/manutencao.php?sucesso=ot_eliminada");
         exit;
     } catch (PDOException $e) {
         die("Erro ao eliminar a Ordem de Trabalho: " . $e->getMessage());
     }
 } else {
     // Se acederem diretamente ao ficheiro, expulsa de volta
-    header("Location: /gira/private/manutencao/manutencao.php");
+    header("Location: /sibdas/1241251/gira/private/manutencao/manutencao.php");
     exit;
 }

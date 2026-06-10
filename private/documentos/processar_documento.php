@@ -66,9 +66,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // 6. REDIRECIONAMENTO INTELIGENTE
                 if ($id_equipamento > 0) {
-                    header("Location: /gira/private/equipamentos/detalhes_equipamento.php?id=" . $id_equipamento . "&sucesso=doc_adicionado&tab=documentos");
+                    header("Location: /sibdas/1241251/gira/private/equipamentos/detalhes_equipamento.php?id=" . $id_equipamento . "&sucesso=doc_adicionado&tab=documentos");
                 } else {
-                    header("Location: /gira/private/documentos/documentos.php?sucesso=upload");
+                    header("Location: /sibdas/1241251/gira/private/documentos/documentos.php?sucesso=upload");
                 }
                 exit;
             } catch (PDOException $e) {
@@ -81,6 +81,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("<div style='padding: 20px;'><h3>Erro no Ficheiro</h3><p>Nenhum ficheiro recebido ou ficheiro corrompido.</p></div>");
     }
 } else {
-    header("Location: /gira/private/documentos/documentos.php");
+    header("Location: /sibdas/1241251/gira/private/documentos/documentos.php");
     exit;
 }

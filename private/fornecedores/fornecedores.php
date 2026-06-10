@@ -100,7 +100,7 @@ foreach ($lista_fornecedores as $forn):
                 </button>
             </span>
             <span data-bs-toggle="tooltip" data-bs-placement="top" title="Revogar Contrato/Fornecedor">
-                <a href="/gira/private/fornecedores/eliminar_fornecedor.php?id=<?php echo $forn['id']; ?>"
+                <a href="/sibdas/1241251/gira/private/fornecedores/eliminar_fornecedor.php?id=<?php echo $forn['id']; ?>"
                     class="btn btn-light btn-sm rounded-3 border"
                     onclick="return confirm('⚠️ ATENÇÃO: Tens a certeza que queres revogar o contrato e eliminar o fornecedor <?php echo htmlspecialchars($forn['nome_empresa']); ?>?');">
                     <i class="fa-solid fa-trash text-danger"></i>

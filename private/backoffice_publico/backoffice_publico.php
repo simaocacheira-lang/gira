@@ -52,7 +52,7 @@ render_header("Gira - Backoffice da Área Pública");
         </li>
     </ul>
 
-    <form id="formConteudos" action="/gira/private/backoffice_publico/processar_conteudos.php" method="POST">
+    <form id="formConteudos" action="/sibdas/1241251/gira/private/backoffice_publico/processar_conteudos.php" method="POST">
         <div class="tab-content" id="myTabContent">
 
             <div class="tab-pane fade show active" id="Hero" role="tabpanel">

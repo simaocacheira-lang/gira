@@ -30,12 +30,12 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         }
 
         // Volta para a página com sucesso
-        header("Location: /gira/private/utilizadores/utilizadores.php?sucesso=estado_alterado");
+        header("Location: /sibdas/1241251/gira/private/utilizadores/utilizadores.php?sucesso=estado_alterado");
         exit;
     } catch (PDOException $e) {
         die("Erro ao alterar o estado do utilizador: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/utilizadores/utilizadores.php");
+    header("Location: /sibdas/1241251/gira/private/utilizadores/utilizadores.php");
     exit;
 }

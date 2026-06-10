@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             registar_log($pdo, $_SESSION['user_id'], "Criou o utilizador: $nome ($email)", "Utilizadores");
         }
         // Sucesso! Volta para a página de utilizadores
-        header("Location: /gira/private/utilizadores/utilizadores.php?sucesso=utilizador_criado");
+        header("Location: /sibdas/1241251/gira/private/utilizadores/utilizadores.php?sucesso=utilizador_criado");
         exit;
     } catch (PDOException $e) {
         // Se o email já existir, a base de dados vai bloquear e dar erro (devido ao UNIQUE)
@@ -46,6 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Erro ao criar utilizador: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/utilizadores/utilizadores.php");
+    header("Location: /sibdas/1241251/gira/private/utilizadores/utilizadores.php");
     exit;
 }

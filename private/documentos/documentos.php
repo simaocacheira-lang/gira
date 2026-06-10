@@ -66,7 +66,7 @@ foreach ($lista_documentos as $doc):
         <td class="text-secondary"><?php echo date('d/m/Y', strtotime($doc['data_upload'])); ?></td>
         <td class="text-end">
             <!-- LINK DE DOWNLOAD REAL -->
-            <a href="/gira/private/<?php echo htmlspecialchars($doc['caminho_ficheiro']); ?>" target="_blank" class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Abrir / Descarregar">
+            <a href="/sibdas/1241251/gira/private/<?php echo htmlspecialchars($doc['caminho_ficheiro']); ?>" target="_blank" class="btn btn-light btn-sm rounded-3 me-1 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Abrir / Descarregar">
                 <i class="fa-solid fa-download text-primary"></i>
             </a>
             <button class="btn btn-light btn-sm rounded-3 text-danger border" onclick="alert('Função de apagar documento em desenvolvimento!');">

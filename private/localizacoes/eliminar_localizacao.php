@@ -13,7 +13,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         $equipamentos_na_sala = $stmt_verificar->fetchColumn();
 
         if ($equipamentos_na_sala > 0) {
-            header("Location: /gira/private/localizacoes/localizacoes.php?erro=sala_ocupada");
+            header("Location: /sibdas/1241251/gira/private/localizacoes/localizacoes.php?erro=sala_ocupada");
             exit;
         } else {
             // Ir buscar o código identificador da sala antes de a apagar para o Log
@@ -32,13 +32,13 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 registar_log($pdo, $_SESSION['user_id'], "Removeu a localização do mapa hospitalar: " . $cod_sala, "Localizações");
             }
 
-            header("Location: /gira/private/localizacoes/localizacoes.php?sucesso=eliminado");
+            header("Location: /sibdas/1241251/gira/private/localizacoes/localizacoes.php?sucesso=eliminado");
             exit;
         }
     } catch (PDOException $e) {
         die("Erro ao processar eliminação: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/localizacoes/localizacoes.php");
+    header("Location: /sibdas/1241251/gira/private/localizacoes/localizacoes.php");
     exit;
 }

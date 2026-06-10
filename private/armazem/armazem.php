@@ -138,7 +138,7 @@ render_table_end();
             </div>
 
             <div class="modal-body p-4">
-                <form id="formNovaEncomenda" action="/gira/private/armazem/processar_encomenda.php" method="POST">
+                <form id="formNovaEncomenda" action="/sibdas/1241251/gira/private/armazem/processar_encomenda.php" method="POST">
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label small fw-bold text-secondary">Artigo a Encomendar</label>

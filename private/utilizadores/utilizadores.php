@@ -116,11 +116,11 @@ foreach ($lista_utilizadores as $user):
             </span>
 
             <?php if ($user['estado'] == 'Ativo'): ?>
-                <a href="/gira/private/utilizadores/alternar_estado.php?id=<?php echo $user['id']; ?>" class="btn btn-light btn-sm rounded-3 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Suspender Acesso" onclick="return confirm('Tem a certeza que deseja suspender o acesso deste utilizador?');">
+                <a href="/sibdas/1241251/gira/private/utilizadores/alternar_estado.php?id=<?php echo $user['id']; ?>" class="btn btn-light btn-sm rounded-3 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Suspender Acesso" onclick="return confirm('Tem a certeza que deseja suspender o acesso deste utilizador?');">
                     <i class="fa-solid fa-user-slash text-warning"></i>
                 </a>
             <?php else: ?>
-                <a href="/gira/private/utilizadores/alternar_estado.php?id=<?php echo $user['id']; ?>" class="btn btn-light btn-sm rounded-3 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Reativar Acesso" onclick="return confirm('Deseja reativar o acesso a este utilizador?');">
+                <a href="/sibdas/1241251/gira/private/utilizadores/alternar_estado.php?id=<?php echo $user['id']; ?>" class="btn btn-light btn-sm rounded-3 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Reativar Acesso" onclick="return confirm('Deseja reativar o acesso a este utilizador?');">
                     <i class="fa-solid fa-user-check text-success"></i>
                 </a>
             <?php endif; ?>

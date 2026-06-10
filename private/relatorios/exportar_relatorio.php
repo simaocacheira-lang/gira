@@ -3,7 +3,7 @@ require_once __DIR__ . '/../db.php';
 session_start();
 
 if (!isset($_GET['tipo'])) {
-    header("Location: /gira/private/relatorios/relatorios.php");
+    header("Location: /sibdas/1241251/gira/private/relatorios/relatorios.php");
     exit;
 }
 

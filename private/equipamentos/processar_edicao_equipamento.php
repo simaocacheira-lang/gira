@@ -52,12 +52,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // 6. Sucesso! Volta para a ficha do próprio equipamento
-        header("Location: /gira/private/equipamentos/detalhes_equipamento.php?id=" . $id_equipamento . "&sucesso=1");
+        header("Location: /sibdas/1241251/gira/private/equipamentos/detalhes_equipamento.php?id=" . $id_equipamento . "&sucesso=1");
         exit;
     } catch (PDOException $e) {
         die("Erro ao atualizar na base de dados: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/equipamentos/equipamentos.php");
+    header("Location: /sibdas/1241251/gira/private/equipamentos/equipamentos.php");
     exit;
 }

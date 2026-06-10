@@ -26,12 +26,12 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         }
 
         // 5. Missão cumprida
-        header("Location: /gira/private/equipamentos/equipamentos.php?sucesso=eliminado");
+        header("Location: /sibdas/1241251/gira/private/equipamentos/equipamentos.php?sucesso=eliminado");
         exit;
     } catch (PDOException $e) {
         die("Erro ao eliminar o equipamento na base de dados: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/equipamentos/equipamentos.php");
+    header("Location: /sibdas/1241251/gira/private/equipamentos/equipamentos.php");
     exit;
 }

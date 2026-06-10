@@ -23,12 +23,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             registar_log($pdo, $_SESSION['user_id'], "Mapeou uma nova localização hospitalar: " . $_POST['cod_sala'] . " (" . $_POST['nome'] . ")", "Localizações");
         }
 
-        header("Location: /gira/private/localizacoes/localizacoes.php?sucesso=registado");
+        header("Location: /sibdas/1241251/gira/private/localizacoes/localizacoes.php?sucesso=registado");
         exit;
     } catch (PDOException $e) {
         die("Erro ao guardar localização na base de dados: " . $e->getMessage());
     }
 } else {
-    header("Location: /gira/private/localizacoes/localizacoes.php");
+    header("Location: /sibdas/1241251/gira/private/localizacoes/localizacoes.php");
     exit;
 }

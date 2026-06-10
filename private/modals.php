@@ -47,7 +47,7 @@ try {
                 </div>
             </div>
             <div class="modal-body p-4">
-                <form id="formNovoEquipamento" action="/gira/private/equipamentos/processar_equipamento.php" method="POST" enctype="multipart/form-data">
+                <form id="formNovoEquipamento" action="/sibdas/1241251/gira/private/equipamentos/processar_equipamento.php" method="POST" enctype="multipart/form-data">
                     <div class="form-step" id="step-1">
                         <h6 class="fw-bold mb-3 text-dark border-bottom pb-2"><i class="fa-solid fa-fingerprint text-muted me-2"></i>Passo 1: Identificação e Rede</h6>
                         <div class="row g-3">
@@ -148,7 +148,7 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formNovaOT" action="/gira/private/manutencao/processar_manutencao.php" method="POST">
+                <form id="formNovaOT" action="/sibdas/1241251/gira/private/manutencao/processar_manutencao.php" method="POST">
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label small fw-bold text-secondary">Dispositivo Médico com Ocorrência</label>
@@ -202,7 +202,7 @@ try {
                 <button type="button" class="btn-close shadow-none mb-auto" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formFecharOT" action="/gira/private/manutencao/processar_fecho_ot.php" method="POST">
+                <form id="formFecharOT" action="/sibdas/1241251/gira/private/manutencao/processar_fecho_ot.php" method="POST">
                     <input type="hidden" name="id_ot" id="fecho_id_ot">
                     <input type="hidden" name="id_equipamento" id="fecho_id_equipamento">
 
@@ -242,7 +242,7 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formNovoDocumento" action="/gira/private/documentos/processar_documento.php" method="POST" enctype="multipart/form-data">
+                <form id="formNovoDocumento" action="/sibdas/1241251/gira/private/documentos/processar_documento.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="id_equipamento" id="doc_id_equipamento">
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Nome / Título do Documento</label>
@@ -281,7 +281,7 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formGarantia" action="/gira/private/garantias/processar_garantia.php" method="POST">
+                <form id="formGarantia" action="/sibdas/1241251/gira/private/garantias/processar_garantia.php" method="POST">
                     <input type="hidden" name="id_equipamento" id="garantia_id_equipamento">
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Data de Fim da Garantia</label>
@@ -305,7 +305,7 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formNovoFornecedor" action="/gira/private/fornecedores/processar_fornecedor.php" method="POST">
+                <form id="formNovoFornecedor" action="/sibdas/1241251/gira/private/fornecedores/processar_fornecedor.php" method="POST">
                     <div class="row g-3">
                         <div class="col-md-7">
                             <label class="form-label small fw-bold text-secondary">Nome da Empresa</label>
@@ -364,7 +364,7 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formEditarFornecedor" action="/gira/private/fornecedores/processar_edicao_fornecedor.php" method="POST">
+                <form id="formEditarFornecedor" action="/sibdas/1241251/gira/private/fornecedores/processar_edicao_fornecedor.php" method="POST">
                     <input type="hidden" name="id_fornecedor" id="edit_id_fornecedor">
                     <div class="row g-3">
                         <div class="col-md-7">
@@ -426,7 +426,7 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formNovaLocalizacao" action="/gira/private/localizacoes/processar_localizacao.php" method="POST">
+                <form id="formNovaLocalizacao" action="/sibdas/1241251/gira/private/localizacoes/processar_localizacao.php" method="POST">
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Código Sala</label>
                         <input type="text" class="form-control bg-light border-0 fw-mono text-uppercase" name="cod_sala" placeholder="Ex: #LOC-BLO01" required>
@@ -476,7 +476,7 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formEditarLocalizacao" action="/gira/private/localizacoes/processar_edicao_localizacao.php" method="POST">
+                <form id="formEditarLocalizacao" action="/sibdas/1241251/gira/private/localizacoes/processar_edicao_localizacao.php" method="POST">
                     <input type="hidden" name="id_localizacao" id="edit_id_localizacao">
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Código Sala</label>
@@ -527,7 +527,7 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="/gira/private/armazem/processar_encomenda.php" method="POST">
+                <form action="/sibdas/1241251/gira/private/armazem/processar_encomenda.php" method="POST">
                     <div class="mb-3"><label class="form-label small fw-bold">Artigo</label><select class="form-select bg-light border-0">
                             <option>Módulo SpO2</option>
                         </select></div>
@@ -550,7 +550,7 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formNovoUtilizador" action="/gira/private/utilizadores/processar_utilizador.php" method="POST">
+                <form id="formNovoUtilizador" action="/sibdas/1241251/gira/private/utilizadores/processar_utilizador.php" method="POST">
                     <div class="row g-3">
                         <div class="col-md-7">
                             <label class="form-label small fw-bold text-secondary">Nome Completo</label>
@@ -598,7 +598,7 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formEditarUtilizador" action="/gira/private/utilizadores/processar_edicao_utilizador.php" method="POST">
+                <form id="formEditarUtilizador" action="/sibdas/1241251/gira/private/utilizadores/processar_edicao_utilizador.php" method="POST">
                     <input type="hidden" name="id_utilizador" id="edit_id_utilizador">
                     <div class="row g-3">
                         <div class="col-md-7">
@@ -648,7 +648,7 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formAdicionarPerfil" action="/gira/private/perfis/processar_perfil.php" method="POST">
+                <form id="formAdicionarPerfil" action="/sibdas/1241251/gira/private/perfis/processar_perfil.php" method="POST">
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Nome do Perfil / Grupo</label>
                         <input type="text" class="form-control bg-light border-0" name="nome_perfil" placeholder="Ex: Técnico Auxiliar" required>
@@ -680,7 +680,7 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formEditarPerfil" action="/gira/private/perfis/processar_edicao_perfil.php" method="POST">
+                <form id="formEditarPerfil" action="/sibdas/1241251/gira/private/perfis/processar_edicao_perfil.php" method="POST">
                     <input type="hidden" name="id_perfil" id="edit_id_perfil">
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Nome do Perfil / Grupo</label>

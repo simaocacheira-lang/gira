@@ -111,7 +111,7 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
                         </span>
                     <?php endif; ?>
 
-                    <form action="/gira/private/manutencao/eliminar_ot.php?id=<?php echo $ot['id']; ?>" method="POST" class="d-inline" onsubmit="return confirm('Tem a certeza que deseja cancelar e eliminar a O.T. <?php echo htmlspecialchars($ot['numero_ot']); ?>? Esta ação não pode ser desfeita.');">
+                    <form action="/sibdas/1241251/gira/private/manutencao/eliminar_ot.php?id=<?php echo $ot['id']; ?>" method="POST" class="d-inline" onsubmit="return confirm('Tem a certeza que deseja cancelar e eliminar a O.T. <?php echo htmlspecialchars($ot['numero_ot']); ?>? Esta ação não pode ser desfeita.');">
                         <span data-bs-toggle="tooltip" data-bs-placement="top" title="Cancelar O.T.">
                             <button type="submit" class="btn btn-light btn-sm rounded-3 text-danger border hover-danger">
                                 <i class="fa-solid fa-xmark"></i>

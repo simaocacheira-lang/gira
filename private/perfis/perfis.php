@@ -134,7 +134,7 @@ foreach ($lista_perfis as $perfil):
                     <i class="fa-solid fa-lock"></i>
                 </button>
             <?php else: ?>
-                <a href="/gira/private/perfis/eliminar_perfil.php?id=<?php echo $perfil['id']; ?>"
+                <a href="/sibdas/1241251/gira/private/perfis/eliminar_perfil.php?id=<?php echo $perfil['id']; ?>"
                     class="btn btn-light btn-sm rounded-3 border"
                     data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Perfil"
                     onclick="return confirm('Tem a certeza que deseja eliminar o perfil <?php echo htmlspecialchars($perfil['nome_perfil']); ?>?');">

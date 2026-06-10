@@ -23,5 +23,5 @@ if (ini_get("session.use_cookies")) {
 session_destroy();
 
 // 5. Redireciona o utilizador de volta para a página de login pública (CAMINHO ABSOLUTO)
-header("Location: /gira/public/login.php");
+header("Location: /sibdas/1241251/gira/public/login.php");
 exit;
