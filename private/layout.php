@@ -213,7 +213,7 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
 
                     <h6 class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.7rem; letter-spacing: 0.5px;">A Minha Conta</h6>
                     <div class="list-group list-group-flush mb-4">
-                        <a href="#" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-regular fa-id-badge text-muted w-20px me-3 text-center"></i> O Meu Perfil</a>
+                        <a href="/sibdas/1241251/gira/private/meu_perfil/meu_perfil.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-regular fa-id-badge text-muted w-20px me-3 text-center"></i> O Meu Perfil</a>
 
                         <?php if ($nivel >= 3): // Apenas Administradores podem aceder às definições globais 
                         ?>
