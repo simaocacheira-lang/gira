@@ -26,7 +26,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt = $pdo->prepare($sql);
             $stmt->execute([':nome' => $nome, ':cedula' => $cedula, ':email' => $email, ':perfil' => $perfil_id, ':id' => $id]);
         }
-
+        // --> TRANSMISSOR DE LOG <--
+        if (function_exists('registar_log')) {
+            registar_log($pdo, $_SESSION['user_id'], "Atualizou os dados/acessos do utilizador: " . $nome, "Utilizadores");
+        }
         header("Location: /gira/private/utilizadores/utilizadores.php?sucesso=utilizador_editado");
         exit;
     } catch (PDOException $e) {

@@ -41,7 +41,30 @@ if (isset($_GET['erro']) && $_GET['erro'] == 'perfil_ocupado'):
         <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
     </div>
 <?php endif; ?>
+<?php if (isset($_GET['erro'])): ?>
+    <div class="alert alert-danger alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
+        <i class="fa-solid fa-shield-halved me-2"></i>
+        <strong>Ação Bloqueada!</strong>
+        <?php
+        if ($_GET['erro'] == 'perfil_bloqueado') echo "Não podes apagar ou despromover o perfil principal de Administração.";
+        if ($_GET['erro'] == 'perfil_ocupado') echo "Este perfil não pode ser apagado porque ainda existem utilizadores associados a ele. Altera o perfil desses utilizadores primeiro.";
+        ?>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
+    </div>
+<?php endif; ?>
 
+<?php if (isset($_GET['sucesso'])): ?>
+    <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
+        <i class="fa-solid fa-circle-check text-success me-2"></i>
+        <strong>Ação concluída!</strong>
+        <?php
+        if ($_GET['sucesso'] == 'perfil_criado') echo "O novo perfil de acesso foi registado.";
+        if ($_GET['sucesso'] == 'perfil_editado') echo "O nível de acesso e os dados do perfil foram atualizados.";
+        if ($_GET['sucesso'] == 'perfil_eliminado') echo "O perfil foi removido do sistema de forma segura.";
+        ?>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
+    </div>
+<?php endif; ?>
 <?php
 // Definimos as colunas da tabela
 $colunas = [

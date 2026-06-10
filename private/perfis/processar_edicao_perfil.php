@@ -16,7 +16,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "UPDATE perfis_acesso SET nome_perfil = :nome, nivel_acesso = :nivel WHERE id = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':nome' => $nome, ':nivel' => $nivel, ':id' => $id]);
-
+        // --> TRANSMISSOR DE LOG <--
+        if (function_exists('registar_log')) {
+            registar_log($pdo, $_SESSION['user_id'], "Editou o perfil de acesso: " . $nome . " (Nível " . $nivel . ")", "Perfis");
+        }
         header("Location: /gira/private/perfis/perfis.php?sucesso=perfil_editado");
         exit;
     } catch (PDOException $e) {

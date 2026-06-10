@@ -10,7 +10,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':nome' => $nome, ':nivel' => $nivel]);
-
+        // --> TRANSMISSOR DE LOG <--
+        if (function_exists('registar_log')) {
+            registar_log($pdo, $_SESSION['user_id'], "Criou o novo perfil de acesso: " . $nome, "Perfis");
+        }
         header("Location: /gira/private/perfis/perfis.php?sucesso=perfil_criado");
         exit;
     } catch (PDOException $e) {

@@ -32,11 +32,13 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             $sql_apagar = "DELETE FROM perfis_acesso WHERE id = :id";
             $stmt_apagar = $pdo->prepare($sql_apagar);
             $stmt_apagar->execute([':id' => $id_para_apagar]);
-
+            // --> TRANSMISSOR DE LOG <--
+            if (function_exists('registar_log')) {
+                registar_log($pdo, $_SESSION['user_id'], "Eliminou o perfil de acesso (ID: $id_para_apagar)", "Perfis");
+            }
             header("Location: /gira/private/perfis/perfis.php?sucesso=eliminado");
             exit;
         }
-
     } catch (PDOException $e) {
         die("Erro na base de dados ao eliminar perfil: " . $e->getMessage());
     }
@@ -45,4 +47,3 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     header("Location: /gira/private/perfis/perfis.php");
     exit;
 }
-?>
