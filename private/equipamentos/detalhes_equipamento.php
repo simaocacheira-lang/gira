@@ -25,28 +25,26 @@ try {
         die("<h3>Erro 404: Equipamento não encontrado no parque tecnológico.</h3><a href='/gira/private/equipamentos/equipamentos.php'>Voltar à lista</a>");
     }
 
-    // 4. NOVA PESQUISA: Ir buscar o histórico clínico (OTs) DESTE equipamento específico
+    // 4. Ir buscar o histórico clínico (OTs) DESTE equipamento específico (Corrigido: apenas 1 vez!)
     $sql_historico = "SELECT * FROM ordens_trabalho WHERE equipamento_id = :id ORDER BY id DESC";
     $stmt_historico = $pdo->prepare($sql_historico);
     $stmt_historico->execute([':id' => $id_equipamento]);
     $historico_ots = $stmt_historico->fetchAll();
 
-    // 4. NOVA PESQUISA: Ir buscar o histórico clínico (OTs) DESTE equipamento específico
-    $sql_historico = "SELECT * FROM ordens_trabalho WHERE equipamento_id = :id ORDER BY id DESC";
-    $stmt_historico = $pdo->prepare($sql_historico);
-    $stmt_historico->execute([':id' => $id_equipamento]);
-    $historico_ots = $stmt_historico->fetchAll();
-
-    // 5. NOVA PESQUISA: Ir buscar os documentos técnicos anexados
+    // 5. Ir buscar os documentos técnicos anexados
     $sql_docs = "SELECT * FROM documentos_equipamento WHERE equipamento_id = :id ORDER BY data_upload DESC";
     $stmt_docs = $pdo->prepare($sql_docs);
     $stmt_docs->execute([':id' => $id_equipamento]);
     $lista_documentos = $stmt_docs->fetchAll();
+
+    // 6. NOVA PESQUISA: Ir buscar todas as localizações para o dropdown dinâmico
+    $sql_loc = "SELECT id, cod_sala, nome FROM localizacoes ORDER BY nome ASC";
+    $stmt_loc = $pdo->query($sql_loc);
+    $todas_localizacoes = $stmt_loc->fetchAll();
 } catch (PDOException $e) {
     die("Erro ao carregar dados: " . $e->getMessage());
 }
 
-// Montamos o topo da página com o nome dinâmico
 render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
 ?>
 
@@ -84,6 +82,18 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
         </div>
     </div>
 
+    <?php if (isset($_GET['sucesso'])): ?>
+        <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
+            <i class="fa-solid fa-circle-check text-success me-2"></i>
+            <strong>Ação concluída!</strong>
+            <?php
+            if ($_GET['sucesso'] == '1') echo "Os dados do equipamento foram atualizados com sucesso.";
+            elseif ($_GET['sucesso'] == 'garantia_atualizada') echo "A data da garantia foi renovada.";
+            ?>
+            <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
+        </div>
+    <?php endif; ?>
+
     <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4 border-top border-primary border-4">
         <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
             <input type="text" class="form-control form-control-lg fw-bold bg-light border-0 w-auto" name="nome" value="<?php echo htmlspecialchars($eq['nome']); ?>" style="min-width: 350px;">
@@ -114,8 +124,11 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
             <div class="col-6 col-md-4">
                 <label class="text-muted d-block fw-bold mb-1 text-uppercase" style="font-size: 0.7rem;"><i class="fa-solid fa-location-dot me-1"></i>Localização ID</label>
                 <select class="form-select form-select-sm bg-light border-0 fw-bold text-primary" name="localizacao_id">
-                    <option value="1" <?php echo ($eq['localizacao_id'] == 1) ? 'selected' : ''; ?>>#LOC-URG01 · Urgências (Reanimação)</option>
-                    <option value="2" <?php echo ($eq['localizacao_id'] == 2) ? 'selected' : ''; ?>>#LOC-UCI04 · UCI (Isolamento)</option>
+                    <?php foreach ($todas_localizacoes as $loc): ?>
+                        <option value="<?php echo $loc['id']; ?>" <?php echo ($eq['localizacao_id'] == $loc['id']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($loc['cod_sala'] . ' · ' . $loc['nome']); ?>
+                        </option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <div class="col-12 col-md-2">
@@ -425,14 +438,12 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
             });
         }
 
-        // 2. Passar o ID para o Modal de Documentos (A Tática do Bypass!)
+        // 2. Passar o ID para o Modal de Documentos
         const modalDoc = document.getElementById('modalNovoDocumento');
         if (modalDoc) {
             modalDoc.addEventListener('show.bs.modal', function(event) {
                 const button = event.relatedTarget;
                 const idEquip = button.getAttribute('data-idequip');
-
-                // Em vez de preencher um input, injetamos o ID diretamente no URL de destino do formulário
                 const formDoc = modalDoc.querySelector('form');
                 formDoc.action = "/gira/private/equipamentos/processar_documento.php?id=" + idEquip;
             });
@@ -450,6 +461,5 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
         }
     });
 </script>
-
 
 <?php render_footer(); ?>
