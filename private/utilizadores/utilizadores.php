@@ -31,9 +31,14 @@ try {
         <i class="fa-solid fa-user-plus me-2"></i> Criar Utilizador
     </button>
 </div>
-<?php if (isset($_GET['erro']) && $_GET['erro'] == 'auto_eliminacao'): ?>
+
+<?php if (isset($_GET['erro'])): ?>
     <div class="alert alert-danger alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
-        <i class="fa-solid fa-shield-halved me-2"></i><strong>Ação Bloqueada!</strong> Não podes eliminar a conta com que tens a sessão iniciada.
+        <i class="fa-solid fa-shield-halved me-2"></i><strong>Ação Bloqueada!</strong>
+        <?php
+        if ($_GET['erro'] == 'auto_eliminacao') echo "Não podes eliminar a conta com que tens a sessão iniciada.";
+        if ($_GET['erro'] == 'nome_invalido') echo "O campo Nome não pode conter números (Validação Ficha 13).";
+        ?>
         <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
     </div>
 <?php endif; ?>
@@ -50,6 +55,7 @@ try {
         <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
     </div>
 <?php endif; ?>
+
 <?php
 // Definimos as colunas da tabela
 $colunas = [

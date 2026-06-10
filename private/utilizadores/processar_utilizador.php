@@ -11,6 +11,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password_limpa = $_POST['password'];
     $perfil_id = (int) $_POST['perfil_id'];
 
+    // =======================================================
+    // APLICAÇÃO DA FICHA 13: VALIDAÇÃO COM PREG_MATCH
+    // =======================================================
+    // Verificar se contém apenas números ou mistura de Letras com números
+    if (preg_match('/\d/', $nome)) {
+        // Encontrou um número! Abortar e devolver à página com erro específico
+        header("Location: /sibdas/1241251/gira/private/utilizadores/utilizadores.php?erro=nome_invalido");
+        exit;
+    }
+
     // 1. SEGURANÇA MÁXIMA: Encriptar a palavra-passe antes de guardar!
     $password_encriptada = password_hash($password_limpa, PASSWORD_DEFAULT);
 

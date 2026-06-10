@@ -33,6 +33,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($utilizador['estado'] === 'Suspenso') {
                 $erro = "Acesso negado. Esta conta encontra-se suspensa.";
             } else {
+
+                // =======================================================
+                // APLICAÇÃO DA FICHA 14: REGISTAR O ÚLTIMO LOGIN
+                // =======================================================
+                $stmt_login = $pdo->prepare("UPDATE utilizadores SET ultimo_login = NOW() WHERE id = :id");
+                $stmt_login->execute([':id' => $utilizador['id']]);
+
                 // SUCESSO ABSOLUTO! Guardar os dados do utilizador na memória da sessão
                 $_SESSION['user_id'] = $utilizador['id'];
                 $_SESSION['email'] = $utilizador['email'];
