@@ -52,7 +52,56 @@ function render_table_end()
 // FUNÇÃO 1: RENDER_HEADER (Desenha o Head, Sidebar e Topbar)
 // ============================================================================
 function render_header($title = "Gira - Sistema de Gestão Hospitalar")
-{
+{ // ============================================================================
+    // MOTOR DE NOTIFICAÇÕES INTELIGENTE
+    // ============================================================================
+    global $pdo;
+    if (empty($pdo)) {
+        require_once __DIR__ . '/db.php';
+    }
+
+    $total_notificacoes = 0;
+    $alertas = [];
+
+    try {
+        // 1. Verificar Stock em Rutura
+        $stmt_stock = $pdo->query("SELECT COUNT(*) FROM artigos_armazem WHERE quantidade_atual < quantidade_minima");
+        $ruturas = $stmt_stock->fetchColumn();
+        if ($ruturas > 0) {
+            $alertas[] = [
+                'icone' => 'fa-box-open text-warning',
+                'texto' => "<strong>$ruturas artigos</strong> em rutura no armazém.",
+                'link' => '/sibdas/1241251/gira/private/armazem/armazem.php'
+            ];
+            $total_notificacoes += $ruturas;
+        }
+
+        // 2. Verificar Garantias a Expirar (próximos 30 dias)
+        $stmt_gar = $pdo->query("SELECT COUNT(*) FROM equipamentos WHERE fim_garantia IS NOT NULL AND fim_garantia BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)");
+        $garantias_exp = $stmt_gar->fetchColumn();
+        if ($garantias_exp > 0) {
+            $alertas[] = [
+                'icone' => 'fa-shield-halved text-danger',
+                'texto' => "<strong>$garantias_exp garantias</strong> a expirar em breve.",
+                'link' => '/sibdas/1241251/gira/private/garantias/garantias.php'
+            ];
+            $total_notificacoes += $garantias_exp;
+        }
+
+        // 3. Verificar OTs Pendentes
+        $stmt_ots = $pdo->query("SELECT COUNT(*) FROM ordens_trabalho WHERE estado != 'Concluída'");
+        $ots_pendentes = $stmt_ots->fetchColumn();
+        if ($ots_pendentes > 0) {
+            $alertas[] = [
+                'icone' => 'fa-screwdriver-wrench text-primary',
+                'texto' => "Existem <strong>$ots_pendentes OTs</strong> pendentes.",
+                'link' => '/sibdas/1241251/gira/private/manutencao/manutencao.php'
+            ];
+            $total_notificacoes += $ots_pendentes;
+        }
+    } catch (PDOException $e) {
+        // Silencia erro para não quebrar a barra superior
+    }
     // ============================================================================
     // LÓGICA DE NÍVEIS DE ACESSO (RBAC) PARA CONSTRUÇÃO DA SIDEBAR
     // ============================================================================
@@ -110,6 +159,7 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
         <link rel="stylesheet" href="/sibdas/1241251/gira/assets/css/bootstrap.min.css">
         <link rel="stylesheet" href="/sibdas/1241251/gira/assets/css/all.min.css">
         <link rel="stylesheet" href="/sibdas/1241251/gira/assets/css/1241251.css">
+        <link rel="icon" type="image/png" href="/sibdas/1241251/gira/assets/img/favicon.png">
     </head>
 
     <body>
@@ -166,17 +216,38 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                     <div class="dropdown">
                         <button class="btn btn-light rounded-circle position-relative p-2 shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px;" title="Notificações do Sistema">
                             <i class="fa-regular fa-bell"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-white" style="font-size: 0.6rem;">3</span>
+                            <?php if ($total_notificacoes > 0): ?>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-white" style="font-size: 0.6rem;">
+                                    <?php echo $total_notificacoes > 99 ? '99+' : $total_notificacoes; ?>
+                                </span>
+                            <?php endif; ?>
                         </button>
 
                         <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-3 p-0 overflow-hidden" style="width: 340px;">
                             <li class="p-3 bg-light border-bottom d-flex justify-content-between align-items-center">
                                 <span class="fw-bold text-dark m-0">Notificações</span>
-                                <span class="badge bg-primary rounded-pill small">3 Novas</span>
+                                <?php if ($total_notificacoes > 0): ?>
+                                    <span class="badge bg-primary rounded-pill small"><?php echo $total_notificacoes; ?> Novas</span>
+                                <?php endif; ?>
                             </li>
-                            <li class="p-2 text-center bg-light">
-                                <a href="#" class="text-decoration-none small fw-bold text-primary d-block py-1">Ver todo o histórico</a>
-                            </li>
+
+                            <?php if (empty($alertas)): ?>
+                                <li class="p-4 text-center">
+                                    <i class="fa-regular fa-bell-slash fs-3 mb-2 text-muted opacity-50"></i>
+                                    <p class="small text-muted m-0">Tudo tranquilo! Não há novos alertas.</p>
+                                </li>
+                            <?php else: ?>
+                                <?php foreach ($alertas as $alerta): ?>
+                                    <li>
+                                        <a href="<?php echo htmlspecialchars($alerta['link']); ?>" class="dropdown-item d-flex align-items-center py-3 border-bottom text-wrap">
+                                            <div class="bg-white border rounded-circle p-2 me-3 d-flex justify-content-center align-items-center shadow-sm" style="width: 40px; height: 40px; flex-shrink: 0;">
+                                                <i class="fa-solid <?php echo htmlspecialchars($alerta['icone']); ?> fs-6"></i>
+                                            </div>
+                                            <span class="small text-dark lh-sm"><?php echo $alerta['texto']; ?></span>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </ul>
                     </div>
 
