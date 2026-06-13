@@ -346,15 +346,18 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formNovoFornecedor" action="/sibdas/1241251/gira/private/fornecedores/processar_fornecedor.php" method="POST">
+
+                <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalRegistarFornecedor'); ?>
+
+                <form id="formNovoFornecedor" action="/sibdas/1241251/gira/private/fornecedores/processar_fornecedor.php" method="POST" novalidate>
                     <div class="row g-3">
                         <div class="col-md-7">
                             <label class="form-label small fw-bold text-secondary">Nome da Empresa</label>
-                            <input type="text" class="form-control bg-light border-0" name="nome_empresa" required>
+                            <input type="text" class="form-control bg-light border-0" name="nome_empresa" maxlength="100" required>
                         </div>
                         <div class="col-md-5">
                             <label class="form-label small fw-bold text-secondary">NIF</label>
-                            <input type="text" class="form-control bg-light border-0 fw-mono" name="nif" required>
+                            <input type="text" class="form-control bg-light border-0 fw-mono" name="nif" pattern="\d{9}" maxlength="9" title="O NIF deve conter exatamente 9 números." required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-secondary">E-mail de Suporte</label>
@@ -376,6 +379,9 @@ try {
                                 <option value="Monitores e Imagiologia">Monitores e Imagiologia</option>
                                 <option value="Ventilação e Suporte de Vida">Ventilação e Suporte de Vida</option>
                                 <option value="Bombas de Infusão">Bombas de Infusão</option>
+                                <option value="Bloco Operatório e Cirurgia">Bloco Operatório e Cirurgia</option>
+                                <option value="Laboratório e Diagnóstico">Laboratório e Diagnóstico</option>
+                                <option value="Mobiliário Hospitalar">Mobiliário Hospitalar</option>
                                 <option value="Consumíveis Gerais">Consumíveis Gerais</option>
                             </select>
                         </div>
@@ -467,6 +473,9 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
+
+                <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalNovaLocalizacao'); ?>
+
                 <form id="formNovaLocalizacao" action="/sibdas/1241251/gira/private/localizacoes/processar_localizacao.php" method="POST">
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Código Sala</label>
@@ -474,7 +483,7 @@ try {
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Nome Serviço / Sala</label>
-                        <input type="text" class="form-control bg-light border-0" name="nome" placeholder="Ex: Bloco Operatório" required>
+                        <input type="text" class="form-control bg-light border-0" name="nome" maxlength="100" placeholder="Ex: Bloco Operatório" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Sublocalização / Camas</label>
@@ -485,9 +494,14 @@ try {
                             <label class="form-label small fw-bold text-secondary">Piso</label>
                             <select class="form-select bg-light border-0" name="piso">
                                 <option value="" selected disabled>Escolha...</option>
+                                <option value="Piso -2">Piso -2</option>
+                                <option value="Piso -1">Piso -1</option>
                                 <option value="Piso 0">Piso 0</option>
                                 <option value="Piso 1">Piso 1</option>
                                 <option value="Piso 2">Piso 2</option>
+                                <option value="Piso 3">Piso 3</option>
+                                <option value="Piso 4">Piso 4</option>
+                                <option value="Piso 5">Piso 5</option>
                             </select>
                         </div>
                         <div class="col-6">
@@ -496,6 +510,10 @@ try {
                                 <option value="" selected disabled>Escolha...</option>
                                 <option value="Bloco Central">Bloco Central</option>
                                 <option value="Bloco Cirúrgico">Bloco Cirúrgico</option>
+                                <option value="Ala Norte">Ala Norte</option>
+                                <option value="Ala Sul">Ala Sul</option>
+                                <option value="Ala Pediátrica">Ala Pediátrica</option>
+                                <option value="Edifício Exterior">Edifício Exterior</option>
                             </select>
                         </div>
                     </div>
@@ -568,16 +586,44 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="/sibdas/1241251/gira/private/armazem/processar_encomenda.php" method="POST">
-                    <div class="mb-3"><label class="form-label small fw-bold">Artigo</label><select class="form-select bg-light border-0">
-                            <option>Módulo SpO2</option>
-                        </select></div>
-                    <div class="mb-3"><label class="form-label small fw-bold">Qtd</label><input type="number" class="form-control bg-light border-0" value="1"></div>
+
+                <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalNovaEncomenda'); ?>
+
+                <form id="formNovaEncomenda" action="/sibdas/1241251/gira/private/armazem/processar_encomenda.php" method="POST">
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Artigo a Encomendar</label>
+                        <select class="form-select bg-light border-0" name="artigo_id" required>
+                            <option value="" selected disabled>Selecione o artigo...</option>
+                            <?php foreach ($artigos_dropdown as $artigo): ?>
+                                <option value="<?php echo $artigo['id']; ?>">
+                                    <?php echo htmlspecialchars($artigo['referencia'] . ' - ' . $artigo['nome']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">Quantidade</label>
+                            <input type="number" class="form-control bg-light border-0" name="quantidade" min="1" value="1" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">Data Prevista</label>
+                            <input type="date" class="form-control bg-light border-0" name="data_prevista" min="<?php echo date('Y-m-d'); ?>" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Notas / Observações</label>
+                        <textarea class="form-control bg-light border-0" name="notas" rows="2"></textarea>
+                    </div>
+
                 </form>
             </div>
             <div class="modal-footer border-top border-light p-3">
-                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary rounded-3 fw-bold small px-4">Confirmar Pedido</button>
+                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3 text-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovaEncomenda" class="btn btn-primary rounded-3 fw-bold small px-4">Confirmar Pedido</button>
             </div>
         </div>
     </div>

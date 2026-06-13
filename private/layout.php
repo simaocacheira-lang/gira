@@ -410,7 +410,37 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                 modal.show();
             }
         </script>
+        <?php
+        // SISTEMA MÁGICO DE AUTO-REABERTURA DE MODAIS E RESTAURO DE DADOS
+        if (isset($_SESSION['modal_aberto'])):
+        ?>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // 1. Reabrir o modal automaticamente
+                    var modalId = '<?php echo $_SESSION['modal_aberto']; ?>';
+                    var myModal = new bootstrap.Modal(document.getElementById(modalId));
+                    myModal.show();
 
+                    // 2. Repor os dados que o utilizador tinha escrito (Magia JS)
+                    <?php if (isset($_SESSION['dados_form'])): ?>
+                        var dadosAntigos = <?php echo json_encode($_SESSION['dados_form']); ?>;
+                        var modalEl = document.getElementById(modalId);
+
+                        for (var campo in dadosAntigos) {
+                            var input = modalEl.querySelector('[name="' + campo + '"]');
+                            if (input) {
+                                input.value = dadosAntigos[campo];
+                            }
+                        }
+                    <?php endif; ?>
+                });
+            </script>
+        <?php
+            // Limpar a memória para a página voltar ao normal no próximo refresh
+            unset($_SESSION['modal_aberto']);
+            unset($_SESSION['dados_form']);
+        endif;
+        ?>
     </body>
 
     </html>
