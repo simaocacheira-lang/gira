@@ -7,7 +7,7 @@ render_header("Gira - Gestão de Localizações");
 
 try {
     // 2. QUERY LIMPA: Sem paginação nem restrições LIKE.
-    $sql = "SELECT * FROM localizacoes ORDER BY id DESC";
+    $sql = "SELECT * FROM localizacoes WHERE apagado_em IS NULL ORDER BY id DESC";
     $stmt = $pdo->query($sql);
     $localizacoes = $stmt->fetchAll();
 } catch (PDOException $e) {
@@ -64,7 +64,7 @@ foreach ($localizacoes as $loc):
             <a href="/sibdas/1241251/gira/private/localizacoes/detalhes_localizacao.php?id=<?php echo $loc['id']; ?>" class="btn btn-light btn-sm rounded-3 border shadow-none me-1" data-bs-toggle="tooltip" title="Editar Localização">
                 <i class="fa-solid fa-pen text-primary"></i>
             </a>
-            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/localizacoes/eliminar_localizacao.php?id=<?php echo $loc['id']; ?>', 'Tem a certeza absoluta que deseja abater esta localização?', 'Abater Localização')" data-bs-toggle="tooltip" title="Abater Localização">
+            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/localizacoes/eliminar_localizacao.php?id=<?php echo $loc['id']; ?>', 'Tem a certeza de que deseja abater esta localização?', 'Abater Localização')" data-bs-toggle="tooltip" title="Abater Localização">
                 <i class="fa-solid fa-trash-can text-danger"></i>
             </button>
         </td>

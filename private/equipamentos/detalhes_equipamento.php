@@ -99,7 +99,7 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <button type="button" class="dropdown-item fw-bold text-danger py-2" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/equipamentos/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>', 'Tem a certeza que deseja abater este equipamento do sistema? Esta ação é irreversível.', 'Abater Inventário')">
+                        <button type="button" class="dropdown-item fw-bold text-danger py-2" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/equipamentos/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>', 'Tem a certeza que deseja de que quer abater este equipamento do sistema?', 'Abater Inventário')">
                             <i class="fa-solid fa-trash-can me-2"></i> Abater Inventário
                         </button>
                     </li>

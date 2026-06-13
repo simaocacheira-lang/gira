@@ -7,7 +7,8 @@ require_once __DIR__ . '/../layout.php';
 try {
     $sql = "SELECT p.*, COUNT(u.id) as total_users 
             FROM perfis_acesso p
-            LEFT JOIN utilizadores u ON p.id = u.perfil_id
+            LEFT JOIN utilizadores u ON p.id = u.perfil_id AND u.apagado_em IS NULL
+            WHERE p.apagado_em IS NULL
             GROUP BY p.id
             ORDER BY p.nivel_acesso DESC, p.nome_perfil ASC";
     $stmt = $pdo->query($sql);

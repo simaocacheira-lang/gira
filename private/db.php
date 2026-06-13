@@ -22,9 +22,9 @@ try {
 }
 
 // ============================================================================
-// FUNÇÃO GLOBAL DE AUDITORIA (LOGS)
+// FUNÇÃO GLOBAL DE AUDITORIA (LOGS) - AGORA PREPARADA PARA SOFT DELETES!
 // ============================================================================
-function registar_log($pdo, $utilizador_id, $acao, $modulo)
+function registar_log($pdo, $utilizador_id, $acao, $modulo, $tabela_afetada = null, $registo_id = null)
 {
     // 1. Forçar o fuso horário de Portugal
     date_default_timezone_set('Europe/Lisbon');
@@ -34,16 +34,18 @@ function registar_log($pdo, $utilizador_id, $acao, $modulo)
     $ip = $_SERVER['REMOTE_ADDR'] ?? 'Desconhecido';
 
     try {
-        // Agora inserimos também o campo 'data_hora' forçado com a hora de Portugal
-        $sql = "INSERT INTO logs_auditoria (data_hora, utilizador_id, acao, modulo, ip_origem) 
-                VALUES (:agora, :user, :acao, :mod, :ip)";
+        // Inserimos os novos campos tabela_afetada e registo_id para permitir o restauro
+        $sql = "INSERT INTO logs_auditoria (data_hora, utilizador_id, acao, modulo, ip_origem, tabela_afetada, registo_id) 
+                VALUES (:agora, :user, :acao, :mod, :ip, :tabela, :reg_id)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
-            ':agora' => $agora,
-            ':user'  => $utilizador_id,
-            ':acao'  => $acao,
-            ':mod'   => $modulo,
-            ':ip'    => $ip
+            ':agora'  => $agora,
+            ':user'   => $utilizador_id,
+            ':acao'   => $acao,
+            ':mod'    => $modulo,
+            ':ip'     => $ip,
+            ':tabela' => $tabela_afetada,
+            ':reg_id' => $registo_id
         ]);
     } catch (PDOException $e) {
         // Falha silenciosa

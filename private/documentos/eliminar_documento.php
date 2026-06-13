@@ -25,13 +25,12 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             }
 
             // 5. ELIMINAÇÃO LÓGICA: Apagar o registo da Base de Dados
-            $sql = "DELETE FROM documentos_equipamento WHERE id = :id";
+            $sql = "UPDATE documentos_equipamento SET apagado_em = NOW() WHERE id = :id";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([':id' => $id_documento]);
 
-            // 6. Transmissor de Log de Auditoria
             if (function_exists('registar_log')) {
-                registar_log($pdo, $_SESSION['user_id'], "Eliminou permanentemente o documento técnico: " . $doc['nome_documento'], "Documentos");
+                registar_log($pdo, $_SESSION['user_id'], "Eliminou o documento técnico: " . $doc['nome_documento'], "Documentos", "documentos_equipamento", $id_documento);
             }
 
             // 7. Redirecionamento Inteligente (Volta para onde o utilizador estava)

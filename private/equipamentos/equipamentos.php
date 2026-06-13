@@ -8,13 +8,11 @@ render_header("Gira - Inventário de Equipamentos Médicos");
 try {
     // 2. QUERY LIMPA: Sem paginação nem filtros de pesquisa manual!
     // O DataTables vai agarrar nestes dados todos e criar a magia no ecrã.
-    $sql = "SELECT e.*, 
-                   l.cod_sala, 
-                   l.nome AS nome_localizacao, 
-                   f.nome_empresa 
+    $sql = "SELECT e.*, l.cod_sala, l.nome AS nome_localizacao, f.nome_empresa 
             FROM equipamentos e 
             LEFT JOIN localizacoes l ON e.localizacao_id = l.id 
             LEFT JOIN fornecedores f ON e.fornecedor_id = f.id 
+            WHERE e.apagado_em IS NULL
             ORDER BY e.id DESC";
 
     $stmt = $pdo->query($sql);
@@ -100,7 +98,7 @@ foreach ($lista_equipamentos as $eq):
                 </button>
             <?php endif; ?>
 
-            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/equipamentos/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>', 'Tem a certeza absoluta que deseja abater este equipamento?', 'Abater Inventário')" data-bs-toggle="tooltip" title="Abater Inventário">
+            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/equipamentos/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>', 'Tem a certeza de que deseja abater este equipamento?', 'Abater Inventário')" data-bs-toggle="tooltip" title="Abater Inventário">
                 <i class="fa-solid fa-trash-can text-danger"></i>
             </button>
         </td>

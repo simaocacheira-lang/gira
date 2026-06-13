@@ -19,14 +19,14 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         $user = $stmt_info->fetch();
         $identificador = $user ? $user['nome'] . " (" . $user['email'] . ")" : "ID Desconhecido";
 
+
         // Apagar o utilizador
-        $sql_apagar = "DELETE FROM utilizadores WHERE id = :id";
+        $sql_apagar = "UPDATE utilizadores SET apagado_em = NOW() WHERE id = :id";
         $stmt_apagar = $pdo->prepare($sql_apagar);
         $stmt_apagar->execute([':id' => $id_para_apagar]);
 
-        // --> TRANSMISSOR DE LOG <--
         if (function_exists('registar_log')) {
-            registar_log($pdo, $_SESSION['user_id'], "Eliminou definitivamente o utilizador: " . $identificador, "Utilizadores");
+            registar_log($pdo, $_SESSION['user_id'], "Eliminou o utilizador: " . $identificador, "Utilizadores", "utilizadores", $id_para_apagar);
         }
 
         header("Location: /sibdas/1241251/gira/private/utilizadores/utilizadores.php?sucesso=utilizador_eliminado");

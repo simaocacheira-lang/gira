@@ -8,7 +8,7 @@ try {
     $sql = "SELECT e.id, e.codigo_ativo, e.nome, e.modelo, e.fim_garantia, f.nome_empresa 
             FROM equipamentos e
             LEFT JOIN fornecedores f ON e.fornecedor_id = f.id
-            WHERE e.fim_garantia IS NOT NULL
+            WHERE e.fim_garantia IS NOT NULL AND e.apagado_em IS NULL
             ORDER BY e.fim_garantia ASC";
     $stmt = $pdo->query($sql);
     $equipamentos = $stmt->fetchAll();

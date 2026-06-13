@@ -8,6 +8,7 @@ try {
     $sql = "SELECT a.*, f.nome_empresa 
             FROM artigos_armazem a 
             LEFT JOIN fornecedores f ON a.fornecedor_id = f.id 
+            WHERE a.apagado_em IS NULL
             ORDER BY a.nome ASC";
     $stmt = $pdo->query($sql);
     $artigos = $stmt->fetchAll();

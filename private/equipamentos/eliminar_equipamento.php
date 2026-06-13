@@ -16,13 +16,12 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         $identificador_eq = $eq ? $eq['codigo_ativo'] . " - " . $eq['nome'] : "ID Desconhecido ($id_para_apagar)";
 
         // 3. Comando SQL de destruição
-        $sql = "DELETE FROM equipamentos WHERE id = :id";
+        $sql = "UPDATE equipamentos SET apagado_em = NOW() WHERE id = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':id' => $id_para_apagar]);
-
-        // --> TRANSMISSOR DE LOG <--
+        
         if (function_exists('registar_log')) {
-            registar_log($pdo, $_SESSION['user_id'], "Abateu do inventário o equipamento: " . $identificador_eq, "Equipamentos");
+            registar_log($pdo, $_SESSION['user_id'], "Abateu do inventário o equipamento: " . $identificador_eq, "Equipamentos", "equipamentos", $id_para_apagar);
         }
 
         // 5. Missão cumprida

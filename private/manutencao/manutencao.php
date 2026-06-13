@@ -8,6 +8,7 @@ try {
     $sql = "SELECT ot.*, e.nome AS equip_nome, e.modelo AS equip_modelo 
             FROM ordens_trabalho ot
             LEFT JOIN equipamentos e ON ot.equipamento_id = e.id
+            WHERE ot.apagado_em IS NULL
             ORDER BY ot.id DESC";
     $stmt = $pdo->query($sql);
     $lista_ots = $stmt->fetchAll();

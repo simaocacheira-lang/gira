@@ -19,6 +19,7 @@ try {
     $sql = "SELECT u.*, p.nome_perfil 
             FROM utilizadores u
             LEFT JOIN perfis_acesso p ON u.perfil_id = p.id
+            WHERE u.apagado_em IS NULL
             ORDER BY u.id DESC";
     $stmt = $pdo->query($sql);
     $lista_utilizadores = $stmt->fetchAll();

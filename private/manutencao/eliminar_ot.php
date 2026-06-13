@@ -16,13 +16,12 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
         if ($ot) {
             // 2. Apagar a OT da base de dados
-            $sql = "DELETE FROM ordens_trabalho WHERE id = :id";
+            $sql = "UPDATE ordens_trabalho SET apagado_em = NOW() WHERE id = :id";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([':id' => $id_ot]);
 
-            // 3. O nosso Transmissor de Log!
             if (function_exists('registar_log')) {
-                registar_log($pdo, $_SESSION['user_id'], "Cancelou/Eliminou a Ordem de Trabalho: " . $ot['numero_ot'], "Manutenção");
+                registar_log($pdo, $_SESSION['user_id'], "Cancelou/Eliminou a Ordem de Trabalho: " . $ot['numero_ot'], "Manutenção", "ordens_trabalho", $id_ot);
             }
         }
 

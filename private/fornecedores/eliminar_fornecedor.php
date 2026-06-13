@@ -26,13 +26,12 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             $nome_empresa = $fornecedor ? $fornecedor['nome_empresa'] : "Empresa Desconhecida";
 
             // O fornecedor está "limpo". É seguro apagar.
-            $sql_apagar = "DELETE FROM fornecedores WHERE id = :id";
+            $sql_apagar = "UPDATE fornecedores SET apagado_em = NOW() WHERE id = :id";
             $stmt_apagar = $pdo->prepare($sql_apagar);
             $stmt_apagar->execute([':id' => $id_para_apagar]);
 
-            // --> TRANSMISSOR DE LOG <--
             if (function_exists('registar_log')) {
-                registar_log($pdo, $_SESSION['user_id'], "Removeu o contrato e o fornecedor: " . $nome_empresa, "Fornecedores");
+                registar_log($pdo, $_SESSION['user_id'], "Removeu o contrato e o fornecedor: " . $nome_empresa, "Fornecedores", "fornecedores", $id_para_apagar);
             }
 
             header("Location: /sibdas/1241251/gira/private/fornecedores/fornecedores.php?sucesso=eliminado");

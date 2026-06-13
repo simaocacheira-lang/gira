@@ -8,6 +8,7 @@ try {
     $sql = "SELECT d.*, e.codigo_ativo, e.nome AS equipamento_nome 
             FROM documentos_equipamento d
             LEFT JOIN equipamentos e ON d.equipamento_id = e.id
+            WHERE d.apagado_em IS NULL
             ORDER BY d.data_upload DESC";
     $stmt = $pdo->query($sql);
     $lista_documentos = $stmt->fetchAll();
@@ -80,7 +81,7 @@ foreach ($lista_documentos as $doc):
             <a href="/sibdas/1241251/gira/private/<?php echo htmlspecialchars($doc['caminho_ficheiro']); ?>" target="_blank" class="btn btn-light btn-sm rounded-3 border shadow-none me-1" data-bs-toggle="tooltip" title="Abrir / Descarregar">
                 <i class="fa-solid fa-download text-primary"></i>
             </a>
-            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/documentos/eliminar_documento.php?id=<?php echo $doc['id']; ?>', 'Tem a certeza absoluta que deseja abater este documento?', 'Abater Documento')" data-bs-toggle="tooltip" title="Abater Documento">
+            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/documentos/eliminar_documento.php?id=<?php echo $doc['id']; ?>', 'Tem a certeza de que deseja abater este documento?', 'Abater Documento')" data-bs-toggle="tooltip" title="Abater Documento">
                 <i class="fa-solid fa-trash-can text-danger"></i>
             </button>
         </td>

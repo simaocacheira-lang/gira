@@ -1,0 +1,60 @@
+-- ==============================================================================
+-- 1. MODO DE PURGA: DESATIVAR RESTRIÇÕES
+-- ==============================================================================
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- 2. LIMPAR TOTALMENTE AS TABELAS
+TRUNCATE TABLE `ordens_trabalho`;
+TRUNCATE TABLE `documentos_equipamento`;
+TRUNCATE TABLE `encomendas_armazem`;
+TRUNCATE TABLE `artigos_armazem`;
+TRUNCATE TABLE `equipamentos`;
+TRUNCATE TABLE `fornecedores`;
+TRUNCATE TABLE `localizacoes`;
+TRUNCATE TABLE `logs_auditoria`;
+
+-- ==============================================================================
+-- 3. INJEÇÃO DOS NOVOS DADOS DE TESTE (Respeitando o ENUM)
+-- ==============================================================================
+
+-- INSERIR LOCALIZAÇÕES
+INSERT INTO `localizacoes` (`id`, `cod_sala`, `nome`, `detalhe`, `piso`, `bloco`) VALUES
+(1, 'S-101', 'Urgência Geral', 'Box de Reanimação 1', 'Piso 0', 'Bloco Central'),
+(2, 'S-102', 'Urgência Geral', 'Box de Trauma', 'Piso 0', 'Bloco Central'),
+(3, 'S-205', 'Bloco Operatório', 'Sala de Cirurgia 3', 'Piso 2', 'Bloco Sul'),
+(4, 'S-310', 'Cuidados Intensivos', 'Cama 4', 'Piso 3', 'Bloco Norte'),
+(5, 'S-005', 'Imagiologia', 'Sala de Raio-X', 'Piso -1', 'Bloco Central');
+
+-- INSERIR FORNECEDORES
+INSERT INTO `fornecedores` (`id`, `nome_empresa`, `nif`, `especialidade`, `estado`, `email_suporte`, `telefone_suporte`) VALUES
+(1, 'Dräger Medical Portugal', '501234567', 'Ventilação e Anestesia', 'Ativo', 'suporte@draeger.pt', '210000001'),
+(2, 'Philips Healthcare', '502345678', 'Monitorização e Imagem', 'Ativo', 'helpdesk@philips.pt', '210000002'),
+(3, 'Siemens Healthineers', '503456789', 'Imagiologia e Diagnóstico', 'Ativo', 'tech@siemens.pt', '210000003'),
+(4, 'GE Healthcare', '504567890', 'Equipamento Geral', 'Ativo', 'assistencia@ge.com', '210000004');
+
+-- INSERIR EQUIPAMENTOS MÉDICOS (Apenas Operacional, Inoperacional ou Manutenção)
+INSERT INTO `equipamentos` (`id`, `codigo_ativo`, `nome`, `modelo`, `num_serie`, `classe_risco`, `estado`, `localizacao_id`, `fornecedor_id`, `data_aquisicao`, `custo_aquisicao`, `fim_garantia`, `proxima_revisao`) VALUES
+(1, 'EQ-2026-A1B2', 'Ventilador Pulmonar', 'Evita V500', 'DRG-887766', 'Classe III', 'Operacional', 4, 1, '2023-01-15', 25000.00, '2028-01-15', '2026-07-15'),
+(2, 'EQ-2026-C3D4', 'Monitor Multiparamétrico', 'IntelliVue MX700', 'PHL-112233', 'Classe IIb', 'Operacional', 1, 2, '2024-05-20', 8500.00, '2027-05-20', '2026-11-20'),
+(3, 'EQ-2026-E5F6', 'Aparelho de Raio-X Fixo', 'Multix Impact', 'SIE-998877', 'Classe IIb', 'Inoperacional', 5, 3, '2021-11-10', 85000.00, '2026-06-15', '2026-05-10'),
+(4, 'EQ-2026-G7H8', 'Desfibrilhador', 'HeartStart MRx', 'PHL-554433', 'Classe III', 'Operacional', 2, 2, '2025-02-28', 6000.00, '2028-02-28', '2026-08-28'),
+(5, 'EQ-2026-I9J0', 'Bomba de Infusão', 'Volumat MC Agilia', 'DRG-332211', 'Classe IIa', 'Manutenção', 3, 1, '2015-06-01', 1200.00, '2018-06-01', NULL),
+(6, 'EQ-2026-K1L2', 'Eletrocardiógrafo (ECG)', 'PageWriter TC30', 'PHL-990011', 'Classe IIa', 'Operacional', 1, 2, '2022-09-10', 3500.00, '2026-06-25', '2026-09-10');
+
+-- INSERIR ORDENS DE TRABALHO
+INSERT INTO `ordens_trabalho` (`id`, `numero_ot`, `equipamento_id`, `tipo_manutencao`, `prioridade`, `descricao_avaria`, `data_abertura`, `estado`, `relatorio_tecnico`, `tempo_gasto`, `data_fecho`) VALUES
+(1, 'OT-2026-X111', 3, 'Corretiva', 'Alta', 'Tubo de RX não emite radiação. Erro E-404 no painel.', '2026-06-01 09:30:00', 'Pendente', NULL, NULL, NULL),
+(2, 'OT-2026-X222', 1, 'Preventiva', 'Normal', 'Calibração anual obrigatória dos sensores de fluxo.', '2026-05-15 10:00:00', 'Concluída', 'Sensores calibrados com sucesso. Testes de fuga elétrica realizados.', 2.5, '2026-05-15 14:30:00'),
+(3, 'OT-2026-X333', 2, 'Corretiva', 'Baixa', 'Ecrã tátil com falhas de resposta no canto superior direito.', '2026-06-10 14:15:00', 'Pendente', NULL, NULL, NULL);
+
+-- INSERIR ARTIGOS DE ARMAZÉM
+INSERT INTO `artigos_armazem` (`id`, `referencia`, `nome`, `categoria`, `quantidade_atual`, `quantidade_minima`, `fornecedor_id`, `quantidade_em_transito`) VALUES
+(1, 'ART-SENS-01', 'Sensor de SpO2 Reutilizável', 'Sensores', 12, 15, 2, 5),
+(2, 'ART-FILT-02', 'Filtro HMEF Adulto', 'Consumíveis', 150, 50, 1, 0),
+(3, 'ART-CABO-03', 'Cabo ECG 5 Vias', 'Cabos', 8, 10, 2, 0),
+(4, 'ART-BAT-04', 'Bateria Desfibrilhador 12V', 'Energia', 2, 5, 2, 3);
+
+-- ==============================================================================
+-- 4. REATIVAR AS RESTRIÇÕES DE SEGURANÇA
+-- ==============================================================================
+SET FOREIGN_KEY_CHECKS = 1;

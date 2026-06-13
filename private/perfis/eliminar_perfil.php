@@ -29,12 +29,12 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             exit;
         } else {
             // O perfil não é de sistema e está vazio. Eliminação autorizada!
-            $sql_apagar = "DELETE FROM perfis_acesso WHERE id = :id";
+            $sql_apagar = "UPDATE perfis_acesso SET apagado_em = NOW() WHERE id = :id";
             $stmt_apagar = $pdo->prepare($sql_apagar);
             $stmt_apagar->execute([':id' => $id_para_apagar]);
-            // --> TRANSMISSOR DE LOG <--
+
             if (function_exists('registar_log')) {
-                registar_log($pdo, $_SESSION['user_id'], "Eliminou o perfil de acesso (ID: $id_para_apagar)", "Perfis");
+                registar_log($pdo, $_SESSION['user_id'], "Eliminou o perfil de acesso (ID: $id_para_apagar)", "Perfis", "perfis_acesso", $id_para_apagar);
             }
             header("Location: /sibdas/1241251/gira/private/perfis/perfis.php?sucesso=eliminado");
             exit;

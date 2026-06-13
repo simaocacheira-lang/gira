@@ -23,13 +23,12 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             $cod_sala = $sala ? $sala['cod_sala'] : "Sala Desconhecida";
 
             // A sala está vazia. É seguro destruir.
-            $sql_apagar = "DELETE FROM localizacoes WHERE id = :id";
+            $sql_apagar = "UPDATE localizacoes SET apagado_em = NOW() WHERE id = :id";
             $stmt_apagar = $pdo->prepare($sql_apagar);
             $stmt_apagar->execute([':id' => $id_para_apagar]);
 
-            // --> TRANSMISSOR DE LOG <--
             if (function_exists('registar_log')) {
-                registar_log($pdo, $_SESSION['user_id'], "Removeu a localização do mapa hospitalar: " . $cod_sala, "Localizações");
+                registar_log($pdo, $_SESSION['user_id'], "Removeu a localização do mapa hospitalar: " . $cod_sala, "Localizações", "localizacoes", $id_para_apagar);
             }
 
             header("Location: /sibdas/1241251/gira/private/localizacoes/localizacoes.php?sucesso=eliminado");

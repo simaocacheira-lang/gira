@@ -7,7 +7,7 @@ render_header("Gira - Gestão de Fornecedores");
 
 try {
     // 2. QUERY LIMPA: O DataTables vai receber os dados todos e tratar da pesquisa/paginação
-    $sql = "SELECT * FROM fornecedores ORDER BY id DESC";
+    $sql = "SELECT * FROM fornecedores WHERE apagado_em IS NULL ORDER BY id DESC";
     $stmt = $pdo->query($sql);
     $fornecedores = $stmt->fetchAll();
 } catch (PDOException $e) {
@@ -75,7 +75,7 @@ foreach ($fornecedores as $f):
             <a href="/sibdas/1241251/gira/private/fornecedores/detalhes_fornecedor.php?id=<?php echo $f['id']; ?>" class="btn btn-light btn-sm rounded-3 border shadow-none me-1" data-bs-toggle="tooltip" title="Ver Detalhes / Editar">
                 <i class="fa-solid fa-pen text-primary"></i>
             </a>
-            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/fornecedores/eliminar_fornecedor.php?id=<?php echo $f['id']; ?>', 'Tem a certeza absoluta que deseja abater este fornecedor?', 'Abater Fornecedor')" data-bs-toggle="tooltip" title="Abater Fornecedor">
+            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/fornecedores/eliminar_fornecedor.php?id=<?php echo $f['id']; ?>', 'Tem a certeza de que deseja abater este fornecedor?', 'Abater Fornecedor')" data-bs-toggle="tooltip" title="Abater Fornecedor">
                 <i class="fa-solid fa-trash-can text-danger"></i>
             </button>
         </td>
