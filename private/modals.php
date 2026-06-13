@@ -124,9 +124,9 @@ try {
                             <div class="col-12">
                                 <label class="form-label small fw-bold text-secondary">Periféricos / Consumíveis</label>
                                 <select class="form-select rounded-3 bg-light border-0" name="consumiveis">
-                                    <option value="" selected>Nenhum (Sem periférico associado)</option>
+                                    <option value="" selected>Nenhum (Sem peça oficial associada)</option>
                                     <?php foreach ($artigos_dropdown as $artigo): ?>
-                                        <option value="<?php echo htmlspecialchars($artigo['nome']); ?>">
+                                        <option value="<?php echo $artigo['id']; ?>">
                                             <?php echo htmlspecialchars($artigo['referencia'] . ' - ' . $artigo['nome']); ?>
                                         </option>
                                     <?php endforeach; ?>

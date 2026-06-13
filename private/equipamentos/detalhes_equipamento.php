@@ -41,6 +41,19 @@ try {
     $sql_loc = "SELECT id, cod_sala, nome FROM localizacoes ORDER BY nome ASC";
     $stmt_loc = $pdo->query($sql_loc);
     $todas_localizacoes = $stmt_loc->fetchAll();
+
+    // 7. A MAGIA DO ARMAZÉM: Se este equipamento tiver uma peça associada (um ID numérico), vamos ver o stock!
+    $consumivel = null;
+    if (!empty($eq['consumiveis']) && is_numeric($eq['consumiveis'])) {
+        $sql_cons = "SELECT * FROM artigos_armazem WHERE id = :id_artigo";
+        $stmt_cons = $pdo->prepare($sql_cons);
+        $stmt_cons->execute([':id_artigo' => $eq['consumiveis']]);
+        $consumivel = $stmt_cons->fetch();
+    }
+    // 8. NOVA PESQUISA: Buscar o catálogo do armazém para podermos associar peças
+    $sql_art = "SELECT id, referencia, nome FROM artigos_armazem ORDER BY nome ASC";
+    $stmt_art = $pdo->query($sql_art);
+    $lista_artigos = $stmt_art->fetchAll();
 } catch (PDOException $e) {
     die("Erro ao carregar dados: " . $e->getMessage());
 }
@@ -51,6 +64,7 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
 <form action="/sibdas/1241251/gira/private/equipamentos/processar_edicao_equipamento.php" method="POST">
 
     <input type="hidden" name="id_equipamento" value="<?php echo $eq['id']; ?>">
+    <input type="hidden" name="fornecedor_id" value="<?php echo $eq['fornecedor_id']; ?>">
 
     <div class="mb-3 d-flex justify-content-between align-items-center">
         <nav aria-label="breadcrumb">
@@ -136,7 +150,7 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
             </div>
             <div class="col-6 col-md-4">
                 <label class="text-muted d-block fw-bold mb-1 text-uppercase" style="font-size: 0.7rem;"><i class="fa-solid fa-industry me-1"></i>Fabricante / Modelo</label>
-                <input type="text" class="form-control form-control-sm bg-light border-0 fw-medium" name="marca" value="<?php echo htmlspecialchars($eq['modelo']); ?>">
+                <input type="text" class="form-control form-control-sm bg-light border-0 fw-medium" name="modelo" value="<?php echo htmlspecialchars($eq['modelo']); ?>">
             </div>
             <div class="col-6 col-md-4">
                 <label class="text-muted d-block fw-bold mb-1 text-uppercase" style="font-size: 0.7rem;"><i class="fa-solid fa-location-dot me-1"></i>Localização ID</label>
@@ -217,8 +231,9 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
                             </div>
 
                             <div class="col-12 mt-4 pt-3 border-top">
-                                <label class="text-muted d-block mb-2 small fw-bold">Consumíveis / Notas</label>
-                                <textarea class="form-control bg-light border-0 text-secondary small" name="consumiveis" rows="3"><?php echo htmlspecialchars($eq['consumiveis'] ?? ''); ?></textarea>
+                                <label class="text-muted d-block mb-2 small fw-bold">ID do Consumível / Peça Base (Oculto)</label>
+                                <input type="text" class="form-control bg-light border-0 text-secondary small fw-mono" value="<?php echo htmlspecialchars($eq['consumiveis'] ?? 'Sem ID Associado'); ?>" readonly disabled>
+                                <small class="text-muted mt-1 d-block">A gestão da peça associada é agora feita na aba "Peças Compatíveis".</small>
                             </div>
                         </div>
                     </div>
@@ -439,9 +454,79 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
         </div>
 
         <div class="tab-pane fade" id="armazem" role="tabpanel" tabindex="0">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white text-center py-5">
-                <i class="fa-solid fa-boxes-stacked text-muted fs-1 mb-3 opacity-50"></i>
-                <p class="text-muted">Integração com Armazém em desenvolvimento.</p>
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h6 class="fw-bold text-dark fs-5 m-0"><i class="fa-solid fa-boxes-stacked text-primary me-2"></i>Peça / Consumível Compatível</h6>
+
+                    <div style="width: 350px;">
+                        <select class="form-select form-select-sm bg-light border border-secondary border-opacity-25 fw-bold text-primary shadow-sm" name="consumiveis" onchange="document.getElementById('avisoGuardarPeca').classList.remove('d-none');">
+                            <option value="">Nenhuma (Remover Associação)</option>
+                            <?php foreach ($lista_artigos as $artigo): ?>
+                                <option value="<?php echo $artigo['id']; ?>" <?php echo ($eq['consumiveis'] == $artigo['id']) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($artigo['referencia'] . ' - ' . $artigo['nome']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="avisoGuardarPeca" class="alert alert-warning border-warning py-2 mb-4 d-none d-flex align-items-center rounded-3 shadow-sm">
+                    <i class="fa-solid fa-triangle-exclamation fs-4 me-3 text-warning"></i>
+                    <div>
+                        <strong class="d-block">Atenção! A peça associada foi alterada.</strong>
+                        <span class="small">Para gravar e aplicar esta integração, clica no botão verde <b>"Guardar Alterações"</b> no topo da página.</span>
+                    </div>
+                </div>
+
+                <?php if ($consumivel):
+                    // Calcular se há rutura de stock para pintar de vermelho
+                    $em_rutura = ($consumivel['quantidade_atual'] < $consumivel['quantidade_minima']);
+                    $cor_stock = $em_rutura ? 'danger' : 'success';
+                ?>
+                    <div class="row g-4">
+                        <div class="col-md-7">
+                            <div class="p-4 border rounded-4 bg-light h-100 position-relative overflow-hidden">
+                                <small class="text-muted fw-bold text-uppercase d-block mb-2" style="font-size: 0.7rem;">Designação Oficial no Armazém</small>
+                                <h5 class="fw-bold text-dark mb-1"><?php echo htmlspecialchars($consumivel['nome']); ?></h5>
+                                <span class="badge bg-secondary text-white fw-mono px-2 py-1"><?php echo htmlspecialchars($consumivel['referencia']); ?></span>
+
+                                <div class="mt-4 pt-3 border-top border-secondary border-opacity-25 small text-muted">
+                                    <i class="fa-solid fa-layer-group me-2"></i> Categoria: <strong><?php echo htmlspecialchars($consumivel['categoria']); ?></strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="p-4 border rounded-4 border-<?php echo $cor_stock; ?> bg-<?php echo $cor_stock; ?> bg-opacity-10 h-100 d-flex flex-column justify-content-center align-items-center text-center">
+                                <small class="text-<?php echo $cor_stock; ?> fw-bold text-uppercase mb-2" style="font-size: 0.75rem;">
+                                    <?php echo $em_rutura ? '<i class="fa-solid fa-triangle-exclamation me-1"></i> Stock em Rutura' : '<i class="fa-solid fa-check-circle me-1"></i> Stock Saudável'; ?>
+                                </small>
+
+                                <h1 class="fw-black text-<?php echo $cor_stock; ?> m-0 mb-1" style="font-size: 3rem;">
+                                    <?php echo $consumivel['quantidade_atual']; ?> <span class="fs-6 fw-medium">Unid.</span>
+                                </h1>
+                                <small class="text-muted fw-medium">Mínimo Exigido: <?php echo $consumivel['quantidade_minima']; ?></small>
+
+                                <?php if ($em_rutura): ?>
+                                    <div class="mt-4 w-100">
+                                        <a href="/sibdas/1241251/gira/private/armazem/armazem.php" class="btn btn-danger btn-sm w-100 rounded-3 fw-bold py-2 shadow-sm hover-danger">
+                                            <i class="fa-solid fa-cart-arrow-down me-2"></i> Ir para o Armazém
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+
+                <?php else: ?>
+                    <div class="text-center py-5 bg-light rounded-4 border border-dashed">
+                        <div class="bg-white p-3 rounded-circle d-inline-block shadow-sm mb-3">
+                            <i class="fa-solid fa-link-slash text-muted fs-3 opacity-50"></i>
+                        </div>
+                        <p class="fw-bold text-dark m-0">Nenhuma peça de armazém associada.</p>
+                        <p class="text-muted small mt-2">Para ter acompanhamento de stock em tempo real, edite a ficha técnica e selecione o consumível compatível.</p>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
 
