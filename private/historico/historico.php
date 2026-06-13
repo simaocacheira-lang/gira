@@ -3,14 +3,13 @@
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../layout.php';
 
-// 2. LÓGICA DINÂMICA: Buscar os Logs mais recentes
+// 2. LÓGICA DINÂMICA: Buscar os Logs
 try {
     $sql = "SELECT l.*, u.nome AS nome_utilizador, p.nome_perfil 
             FROM logs_auditoria l
             LEFT JOIN utilizadores u ON l.utilizador_id = u.id
             LEFT JOIN perfis_acesso p ON u.perfil_id = p.id
-            ORDER BY l.data_hora DESC 
-            LIMIT 200";
+            ORDER BY l.data_hora DESC";
     $stmt = $pdo->query($sql);
     $lista_logs = $stmt->fetchAll();
 } catch (PDOException $e) {
@@ -34,14 +33,14 @@ render_header("Gira - Histórico de Atividades e Logs");
 </div>
 
 <?php
-// Definição das colunas SEM a coluna de Ações
+// Definição das colunas com larguras (width) devidamente equilibradas
 $colunas = [
-    ['label' => 'Cód. Registo'],
-    ['label' => 'Data / Hora'],
-    ['label' => 'Utilizador'],
-    ['label' => 'Ação / Evento'],
-    ['label' => 'Módulo'],
-    ['label' => 'IP Origem']
+    ['label' => 'Cód. Registo', 'width' => '10%'],
+    ['label' => 'Data / Hora', 'width' => '15%'],
+    ['label' => 'Utilizador', 'width' => '25%'],
+    ['label' => 'Ação / Evento', 'width' => '25%'],
+    ['label' => 'Módulo', 'width' => '10%'],
+    ['label' => 'IP Origem', 'width' => '15%']
 ];
 
 render_table_start($colunas);
@@ -95,18 +94,6 @@ foreach ($lista_logs as $log):
     </tr>
 <?php
 endforeach;
-
-// Mensagem ajustada para 6 colunas
-if (count($lista_logs) === 0):
-?>
-    <tr>
-        <td colspan="6" class="text-center text-muted py-5">
-            <i class="fa-solid fa-clipboard-list fs-1 text-light mb-3"></i><br>
-            O histórico de auditoria está limpo.
-        </td>
-    </tr>
-<?php
-endif;
 
 render_table_end();
 render_footer();

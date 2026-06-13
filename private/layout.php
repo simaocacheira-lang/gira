@@ -19,25 +19,21 @@ function render_table_start($headers)
 {
     echo '<div class="card border-0 shadow-sm rounded-4 p-4 bg-white">';
     echo '    <div class="table-responsive">';
-    echo '        <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">';
+    echo '        <table class="table table-hover align-middle mb-0 gira-datatable w-100" style="font-size: 0.85rem;">';
     echo '            <thead class="table-light">';
     echo '                <tr class="text-muted fw-bold unselectable">';
 
+    // NOVA LÓGICA: Suporta alinhamentos e larguras (width), sem conflitos com o DataTables!
     foreach ($headers as $th) {
         $align = isset($th['align']) ? ' text-' . $th['align'] : '';
+        $width = isset($th['width']) ? ' style="width: ' . $th['width'] . ';"' : '';
 
-        if (isset($th['sort'])) {
-            echo '<th class="th-sortable' . $align . '" onclick="simularOrdenacao(\'' . $th['sort'] . '\')">';
-            echo '<div class="d-inline-flex align-items-center gap-1">' . $th['label'] . '<i class="fa-solid fa-sort text-muted opacity-50 ms-1" style="font-size: 0.7rem;"></i></div>';
-            echo '</th>';
-        } else {
-            echo '<th class="' . $align . '">' . $th['label'] . '</th>';
-        }
+        echo '<th class="border-0' . $align . '"' . $width . '>' . $th['label'] . '</th>';
     }
 
     echo '                </tr>';
     echo '            </thead>';
-    echo '            <tbody>';
+    echo '            <tbody class="border-top-0">';
 }
 
 function render_table_end()
@@ -52,7 +48,8 @@ function render_table_end()
 // FUNÇÃO 1: RENDER_HEADER (Desenha o Head, Sidebar e Topbar)
 // ============================================================================
 function render_header($title = "Gira - Sistema de Gestão Hospitalar")
-{ // ============================================================================
+{
+    // ============================================================================
     // MOTOR DE NOTIFICAÇÕES INTELIGENTE
     // ============================================================================
     global $pdo;
@@ -102,6 +99,7 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
     } catch (PDOException $e) {
         // Silencia erro para não quebrar a barra superior
     }
+
     // ============================================================================
     // LÓGICA DE NÍVEIS DE ACESSO (RBAC) PARA CONSTRUÇÃO DA SIDEBAR
     // ============================================================================
@@ -160,6 +158,8 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
         <link rel="stylesheet" href="/sibdas/1241251/gira/assets/css/all.min.css">
         <link rel="stylesheet" href="/sibdas/1241251/gira/assets/css/1241251.css">
         <link rel="icon" type="image/png" href="/sibdas/1241251/gira/assets/img/favicon.png">
+
+        <link rel="stylesheet" href="/sibdas/1241251/gira/assets/css/datatables.min.css">
     </head>
 
     <body>
@@ -324,7 +324,9 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
         ?>
         </div>
 
+        <script src="/sibdas/1241251/gira/assets/js/jquery.min.js"></script>
         <script src="/sibdas/1241251/gira/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="/sibdas/1241251/gira/assets/js/datatables.min.js"></script>
         <script src="/sibdas/1241251/gira/assets/js/1241251.js"></script>
 
         <script>

@@ -47,20 +47,21 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
 
     <div class="tab-pane fade show active" id="lista" role="tabpanel" tabindex="0">
         <?php
+        // Ajustamos as colunas com larguras fixas (width) e removemos o 'sort' que não faz falta ao layout.php
         $colunas = [
-            ['label' => 'Nº O.T.', 'sort' => 'id_ot'],
-            ['label' => 'Equipamento / Modelo', 'sort' => 'equipamento'],
-            ['label' => 'Tipo de Intervenção', 'sort' => 'tipo_manutencao'],
-            ['label' => 'Prioridade', 'sort' => 'prioridade'],
-            ['label' => 'Abertura', 'sort' => 'data_abertura'],
-            ['label' => 'Estado', 'sort' => 'status'],
-            ['label' => 'Ações Técnicas', 'align' => 'end']
+            ['label' => 'Nº O.T.', 'width' => '10%'],
+            ['label' => 'Equipamento / Modelo', 'width' => '25%'],
+            ['label' => 'Tipo de Intervenção', 'width' => '15%'],
+            ['label' => 'Prioridade', 'width' => '10%'],
+            ['label' => 'Abertura', 'width' => '10%'],
+            ['label' => 'Estado', 'width' => '10%'],
+            ['label' => 'Ações Técnicas', 'align' => 'end', 'width' => '20%']
         ];
 
         render_table_start($colunas);
 
         // =======================================================
-        // O LOOP DINÂMICO QUE SUBSTITUI OS EXEMPLOS ESTÁTICOS
+        // O LOOP DINÂMICO DA TABELA
         // =======================================================
         foreach ($lista_ots as $ot):
             // 1. Lógica para as cores do Tipo de Intervenção
@@ -97,42 +98,28 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
                 <td><span class="<?php echo $prioridade_class; ?>"><?php echo $prioridade_icon . htmlspecialchars($ot['prioridade']); ?></span></td>
                 <td><?php echo $data_abertura; ?></td>
                 <td><span class="badge bg-<?php echo $estado_badge; ?> rounded-pill px-2"><?php echo htmlspecialchars($estado_atual); ?></span></td>
-                <td class="text-end">
+                <td class="text-end text-nowrap">
                     <?php if ($estado_atual != 'Concluída'): ?>
-                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Gerir / Fechar Ordem">
-                            <button class="btn btn-light btn-sm rounded-3 me-1 border btn-fechar-ot hover-success"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalFecharOT"
-                                data-id="<?php echo $ot['id']; ?>"
-                                data-numero="<?php echo htmlspecialchars($ot['numero_ot']); ?>"
-                                data-equipamento="<?php echo $ot['equipamento_id']; ?>">
-                                <i class="fa-solid fa-check text-success"></i>
-                            </button>
-                        </span>
+                        <button class="btn btn-light btn-sm rounded-3 me-1 border btn-fechar-ot hover-success"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalFecharOT"
+                            data-id="<?php echo $ot['id']; ?>"
+                            data-numero="<?php echo htmlspecialchars($ot['numero_ot']); ?>"
+                            data-equipamento="<?php echo $ot['equipamento_id']; ?>"
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="Gerir / Fechar Ordem">
+                            <i class="fa-solid fa-check text-success"></i>
+                        </button>
                     <?php endif; ?>
 
                     <form action="/sibdas/1241251/gira/private/manutencao/eliminar_ot.php?id=<?php echo $ot['id']; ?>" method="POST" class="d-inline" onsubmit="return confirm('Tem a certeza que deseja cancelar e eliminar a O.T. <?php echo htmlspecialchars($ot['numero_ot']); ?>? Esta ação não pode ser desfeita.');">
-                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="Cancelar O.T.">
-                            <button type="submit" class="btn btn-light btn-sm rounded-3 text-danger border hover-danger">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
-                        </span>
+                        <button type="submit" class="btn btn-light btn-sm rounded-3 border hover-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Cancelar O.T.">
+                            <i class="fa-solid fa-xmark text-danger"></i>
+                        </button>
                     </form>
                 </td>
             </tr>
         <?php
         endforeach;
-
-        if (count($lista_ots) === 0):
-        ?>
-            <tr>
-                <td colspan="7" class="text-center text-muted py-5">
-                    <i class="fa-solid fa-clipboard-check fs-1 text-light mb-3"></i><br>
-                    Tudo operacional! Não existem Ordens de Trabalho pendentes.
-                </td>
-            </tr>
-        <?php
-        endif;
 
         render_table_end();
         ?>
@@ -141,7 +128,7 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
     <div class="tab-pane fade" id="calendario" role="tabpanel" tabindex="0">
         <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h5 class="fw-bold text-dark m-0">Maio 2026</h5>
+                <h5 class="fw-bold text-dark m-0">Junho 2026</h5>
                 <p class="text-muted small mt-4"><em>(Visualização do Calendário Estática para Efeitos de Design)</em></p>
             </div>
         </div>

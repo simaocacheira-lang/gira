@@ -138,25 +138,37 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm rounded-4 mb-4 bg-white px-3 pt-3">
-        <ul class="nav nav-underline flex-nowrap overflow-x-auto border-bottom-0 gap-3 fw-bold" id="equipamentoTabs" role="tablist">
+    <div class="card border-0 shadow-sm rounded-4 mb-4 bg-light p-2">
+        <ul class="nav nav-pills flex-nowrap overflow-x-auto gap-2 fw-bold" id="equipamentoTabs" role="tablist" style="scrollbar-width: none;">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active text-nowrap text-secondary pb-3" id="visao-tab" data-bs-toggle="tab" data-bs-target="#visao" type="button" role="tab"><i class="fa-solid fa-cube me-2"></i>Visão Geral</button>
+                <button class="nav-link active rounded-pill px-4 py-2 text-nowrap" id="visao-tab" data-bs-toggle="tab" data-bs-target="#visao" type="button" role="tab">
+                    <i class="fa-solid fa-cube me-2"></i>Visão Geral
+                </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link text-nowrap text-secondary pb-3" id="manutencao-tab" data-bs-toggle="tab" data-bs-target="#manutencao" type="button" role="tab"><i class="fa-solid fa-screwdriver-wrench me-2"></i>Ordens Trabalho</button>
+                <button class="nav-link text-secondary rounded-pill px-4 py-2 text-nowrap" id="manutencao-tab" data-bs-toggle="tab" data-bs-target="#manutencao" type="button" role="tab">
+                    <i class="fa-solid fa-screwdriver-wrench me-2"></i>Ordens de Trabalho
+                </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link text-nowrap text-secondary pb-3" id="documentos-tab" data-bs-toggle="tab" data-bs-target="#documentos" type="button" role="tab"><i class="fa-regular fa-file-pdf me-2"></i>Documentos</button>
+                <button class="nav-link text-secondary rounded-pill px-4 py-2 text-nowrap" id="documentos-tab" data-bs-toggle="tab" data-bs-target="#documentos" type="button" role="tab">
+                    <i class="fa-regular fa-file-pdf me-2"></i>Documentos
+                </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link text-nowrap text-secondary pb-3" id="comercial-tab" data-bs-toggle="tab" data-bs-target="#comercial" type="button" role="tab"><i class="fa-solid fa-handshake me-2"></i>Comercial & Garantias</button>
+                <button class="nav-link text-secondary rounded-pill px-4 py-2 text-nowrap" id="comercial-tab" data-bs-toggle="tab" data-bs-target="#comercial" type="button" role="tab">
+                    <i class="fa-solid fa-handshake me-2"></i>Comercial e Garantias
+                </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link text-nowrap text-secondary pb-3" id="armazem-tab" data-bs-toggle="tab" data-bs-target="#armazem" type="button" role="tab"><i class="fa-solid fa-boxes-stacked me-2"></i>Peças Compativeis</button>
+                <button class="nav-link text-secondary rounded-pill px-4 py-2 text-nowrap" id="armazem-tab" data-bs-toggle="tab" data-bs-target="#armazem" type="button" role="tab">
+                    <i class="fa-solid fa-boxes-stacked me-2"></i>Peças Compatíveis
+                </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link text-nowrap text-secondary pb-3" id="auditoria-tab" data-bs-toggle="tab" data-bs-target="#auditoria" type="button" role="tab"><i class="fa-solid fa-clock-rotate-left me-2"></i>Logs</button>
+                <button class="nav-link text-secondary rounded-pill px-4 py-2 text-nowrap" id="auditoria-tab" data-bs-toggle="tab" data-bs-target="#auditoria" type="button" role="tab">
+                    <i class="fa-solid fa-clock-rotate-left me-2"></i>Logs
+                </button>
             </li>
         </ul>
     </div>

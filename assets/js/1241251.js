@@ -135,3 +135,35 @@ Object.keys(mapeamentoAtalhos).forEach(checkboxId => {
         alternarAtalho(checkboxId, mapeamentoAtalhos[checkboxId]);
     }
 });
+// ============================================================================
+// INICIALIZAÇÃO DO DATATABLES (GLOBAL)
+// ============================================================================
+$(document).ready(function () {
+    if ($('.gira-datatable').length) {
+        $('.gira-datatable').DataTable({
+            language: {
+                "emptyTable": "Não existem dados disponíveis na tabela",
+                "info": "A mostrar _START_ até _END_ de _TOTAL_ registos",
+                "infoEmpty": "A mostrar 0 até 0 de 0 registos",
+                "infoFiltered": "(filtrado de um total de _MAX_ registos)",
+                "lengthMenu": "Mostrar _MENU_ registos",
+                "loadingRecords": "A carregar...",
+                "processing": "A processar...",
+                "search": "Pesquisar:",
+                "zeroRecords": "Não foram encontrados resultados",
+                "paginate": {
+                    "first": "Primeiro",
+                    "last": "Último",
+                    "next": "Seguinte",
+                    "previous": "Anterior"
+                }
+            },
+            pageLength: 7,
+            lengthMenu: [[7, 14, 21, 50, -1], [7, 14, 21, 50, "Todos"]],
+            order: [],
+            dom: "<'row mb-3'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row mt-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        });
+    }
+});

@@ -31,16 +31,6 @@ render_header("Gira - Perfis e Grupos de Permissões");
     </button>
 </div>
 
-<?php
-// Mensagem de erro caso tente apagar um perfil que ainda tenha utilizadores
-if (isset($_GET['erro']) && $_GET['erro'] == 'perfil_ocupado'):
-?>
-    <div class="alert alert-danger alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
-        <i class="fa-solid fa-shield-halved me-2"></i>
-        <strong>Ação Bloqueada!</strong> Não podes eliminar este perfil porque existem contas de utilizador associadas a ele. Altera o perfil dessas pessoas primeiro.
-        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
-    </div>
-<?php endif; ?>
 <?php if (isset($_GET['erro'])): ?>
     <div class="alert alert-danger alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
         <i class="fa-solid fa-shield-halved me-2"></i>
@@ -65,14 +55,15 @@ if (isset($_GET['erro']) && $_GET['erro'] == 'perfil_ocupado'):
         <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
     </div>
 <?php endif; ?>
+
 <?php
-// Definimos as colunas da tabela
+// Definimos as colunas da tabela com as larguras (width) adequadas
 $colunas = [
-    ['label' => 'Nome do Perfil', 'sort' => 'nome_perfil'],
-    ['label' => 'Nível (Interno)'],
-    ['label' => 'Nº Utilizadores', 'sort' => 'total_users'],
-    ['label' => 'Permissões Globais', 'sort' => 'nivel_acesso'],
-    ['label' => 'Ações', 'align' => 'end']
+    ['label' => 'Nome do Perfil', 'width' => '30%'],
+    ['label' => 'Nível (Interno)', 'width' => '15%'],
+    ['label' => 'Nº Utilizadores', 'width' => '15%'],
+    ['label' => 'Permissões Globais', 'width' => '25%'],
+    ['label' => 'Ações', 'align' => 'end', 'width' => '15%']
 ];
 
 render_table_start($colunas);
@@ -117,17 +108,16 @@ foreach ($lista_perfis as $perfil):
                 <?php echo $icon; ?>
             </span>
         </td>
-        <td class="text-end">
-            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Configurar Direitos">
-                <button class="btn btn-light btn-sm rounded-3 me-1 border"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalEditarPerfil"
-                    data-id="<?php echo $perfil['id']; ?>"
-                    data-nome="<?php echo htmlspecialchars($perfil['nome_perfil']); ?>"
-                    data-nivel="<?php echo $perfil['nivel_acesso']; ?>">
-                    <i class="fa-solid fa-key text-primary"></i>
-                </button>
-            </span>
+        <td class="text-end text-nowrap">
+            <button class="btn btn-light btn-sm rounded-3 me-1 border"
+                data-bs-toggle="modal"
+                data-bs-target="#modalEditarPerfil"
+                data-id="<?php echo $perfil['id']; ?>"
+                data-nome="<?php echo htmlspecialchars($perfil['nome_perfil']); ?>"
+                data-nivel="<?php echo $perfil['nivel_acesso']; ?>"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="Configurar Direitos">
+                <i class="fa-solid fa-key text-primary"></i>
+            </button>
 
             <?php if ($nivel >= 3): ?>
                 <button class="btn btn-light btn-sm rounded-3 text-danger border disabled" data-bs-toggle="tooltip" data-bs-placement="top" title="Perfil de Sistema (Bloqueado)">
@@ -135,7 +125,7 @@ foreach ($lista_perfis as $perfil):
                 </button>
             <?php else: ?>
                 <a href="/sibdas/1241251/gira/private/perfis/eliminar_perfil.php?id=<?php echo $perfil['id']; ?>"
-                    class="btn btn-light btn-sm rounded-3 border"
+                    class="btn btn-light btn-sm rounded-3 border hover-danger"
                     data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Perfil"
                     onclick="return confirm('Tem a certeza que deseja eliminar o perfil <?php echo htmlspecialchars($perfil['nome_perfil']); ?>?');">
                     <i class="fa-solid fa-trash text-danger"></i>

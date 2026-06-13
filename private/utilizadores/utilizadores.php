@@ -63,15 +63,15 @@ try {
 <?php endif; ?>
 
 <?php
-// Definimos as colunas da tabela
+// Definimos as colunas da tabela com as larguras fixas (width) em vez de sort
 $colunas = [
-    ['label' => 'Utilizador / Identificação', 'sort' => 'nome'],
-    ['label' => 'E-mail', 'sort' => 'email'],
-    ['label' => 'Cédula', 'sort' => 'cedula'],
-    ['label' => 'Perfil de Acesso', 'sort' => 'perfil'],
-    ['label' => 'Registo', 'sort' => 'data_criacao'],
-    ['label' => 'Estado', 'sort' => 'estado'],
-    ['label' => 'Ações', 'align' => 'end']
+    ['label' => 'Utilizador / Identificação', 'width' => '20%'],
+    ['label' => 'E-mail', 'width' => '20%'],
+    ['label' => 'Cédula', 'width' => '10%'],
+    ['label' => 'Perfil de Acesso', 'width' => '15%'],
+    ['label' => 'Registo', 'width' => '10%'],
+    ['label' => 'Estado', 'width' => '10%'],
+    ['label' => 'Ações', 'align' => 'end', 'width' => '15%']
 ];
 
 // Desenhamos a caixa exterior e os cabeçalhos automaticamente!
@@ -113,19 +113,18 @@ foreach ($lista_utilizadores as $user):
                 <?php echo htmlspecialchars($user['estado']); ?>
             </span>
         </td>
-        <td class="text-end">
-            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Utilizador">
-                <button class="btn btn-light btn-sm rounded-3 me-1 border"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalEditarUtilizador"
-                    data-id="<?php echo $user['id']; ?>"
-                    data-nome="<?php echo htmlspecialchars($user['nome']); ?>"
-                    data-email="<?php echo htmlspecialchars($user['email']); ?>"
-                    data-cedula="<?php echo htmlspecialchars($user['cedula'] ?? ''); ?>"
-                    data-perfil="<?php echo $user['perfil_id']; ?>">
-                    <i class="fa-solid fa-user-pen text-primary"></i>
-                </button>
-            </span>
+        <td class="text-end text-nowrap">
+            <button class="btn btn-light btn-sm rounded-3 me-1 border"
+                data-bs-toggle="modal"
+                data-bs-target="#modalEditarUtilizador"
+                data-id="<?php echo $user['id']; ?>"
+                data-nome="<?php echo htmlspecialchars($user['nome']); ?>"
+                data-email="<?php echo htmlspecialchars($user['email']); ?>"
+                data-cedula="<?php echo htmlspecialchars($user['cedula'] ?? ''); ?>"
+                data-perfil="<?php echo $user['perfil_id']; ?>"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="Editar Utilizador">
+                <i class="fa-solid fa-user-pen text-primary"></i>
+            </button>
 
             <?php if ($user['estado'] == 'Ativo'): ?>
                 <a href="/sibdas/1241251/gira/private/utilizadores/alternar_estado.php?id=<?php echo $user['id']; ?>" class="btn btn-light btn-sm rounded-3 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Suspender Acesso" onclick="return confirm('Tem a certeza que deseja suspender o acesso deste utilizador?');">
@@ -140,18 +139,6 @@ foreach ($lista_utilizadores as $user):
     </tr>
 <?php
 endforeach;
-
-// Mensagem caso a tabela esteja vazia
-if (count($lista_utilizadores) === 0):
-?>
-    <tr>
-        <td colspan="7" class="text-center text-muted py-5">
-            <i class="fa-solid fa-users-slash fs-1 text-light mb-3"></i><br>
-            Ainda não existem utilizadores registados no sistema.
-        </td>
-    </tr>
-<?php
-endif;
 
 // Fechamos as tags da tabela automaticamente!
 render_table_end();

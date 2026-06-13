@@ -49,13 +49,13 @@ render_header("Gira - Relatórios Analíticos e Indicadores");
 </div>
 
 <?php
-// Tabela de Relatórios Disponíveis (Acionáveis)
+// Tabela de Relatórios Disponíveis com larguras (width) fixadas
 $colunas = [
-    ['label' => 'Ref. Relatório'],
-    ['label' => 'Designação / Conteúdo'],
-    ['label' => 'Módulo'],
-    ['label' => 'Formato'],
-    ['label' => 'Ações', 'align' => 'end']
+    ['label' => 'Ref. Relatório', 'width' => '15%'],
+    ['label' => 'Designação / Conteúdo', 'width' => '35%'],
+    ['label' => 'Módulo', 'width' => '15%'],
+    ['label' => 'Formato', 'width' => '15%'],
+    ['label' => 'Ações', 'align' => 'end', 'width' => '20%']
 ];
 
 render_table_start($colunas);
@@ -95,7 +95,7 @@ foreach ($relatorios_disponiveis as $rep):
         </td>
         <td><span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary-subtle px-2"><?php echo $rep['modulo']; ?></span></td>
         <td><span class="badge bg-success bg-opacity-10 text-success border border-success-subtle px-2"><i class="fa-solid fa-file-csv me-1"></i> CSV / Excel</span></td>
-        <td class="text-end">
+        <td class="text-end text-nowrap">
             <a href="/sibdas/1241251/gira/private/relatorios/exportar_relatorio.php?tipo=<?php echo $rep['tipo']; ?>" class="btn btn-primary btn-sm rounded-3 fw-bold shadow-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Gerar e Descarregar">
                 <i class="fa-solid fa-download me-1"></i> Exportar
             </a>

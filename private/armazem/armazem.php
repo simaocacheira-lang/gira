@@ -63,14 +63,14 @@ render_header("Gira - Armazém e Gestão de Stock Técnico");
 </div>
 
 <?php
-// 1. Definimos as colunas da tabela (Adicionámos o "Em Trânsito")
+// 1. Definimos as colunas da tabela com as larguras (width) adequadas
 $colunas = [
-    ['label' => 'Ref. Peça', 'sort' => 'referencia'],
-    ['label' => 'Designação do Artigo', 'sort' => 'nome'],
-    ['label' => 'Fornecedor', 'sort' => 'fornecedor_id'],
-    ['label' => 'Stock Atual', 'sort' => 'quantidade_atual'],
-    ['label' => 'Em Trânsito', 'align' => 'center'], // NOVA COLUNA
-    ['label' => 'Estado']
+    ['label' => 'Ref. Peça', 'width' => '15%'],
+    ['label' => 'Designação do Artigo', 'width' => '30%'],
+    ['label' => 'Fornecedor', 'width' => '20%'],
+    ['label' => 'Stock Atual', 'width' => '10%'],
+    ['label' => 'Em Trânsito', 'align' => 'center', 'width' => '15%'],
+    ['label' => 'Estado', 'width' => '10%']
 ];
 
 // 2. Desenhamos a caixa exterior e os cabeçalhos
@@ -110,20 +110,8 @@ foreach ($artigos as $artigo):
 <?php
 endforeach;
 
-if (count($artigos) === 0):
-?>
-    <tr>
-        <td colspan="6" class="text-center text-muted py-5">
-            <i class="fa-solid fa-box-open fs-1 text-light mb-3"></i><br>
-            Não existem artigos registados no armazém.
-        </td>
-    </tr>
-<?php
-endif;
-
 // 3. Fechamos as tags da tabela
 render_table_end();
-?>
 ?>
 
 <div class="modal fade" id="modalNovaEncomenda" tabindex="-1" aria-hidden="true">
