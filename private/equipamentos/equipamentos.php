@@ -38,7 +38,12 @@ try {
 <?php if (isset($_GET['sucesso'])): ?>
     <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
         <i class="fa-solid fa-circle-check text-success me-2"></i>
-        <strong>Ação Concluída!</strong> O inventário foi atualizado com sucesso.
+        <strong>Ação Concluída!</strong>
+        <?php
+        if ($_GET['sucesso'] == 'eliminado') echo "O equipamento foi abatido e retirado do sistema.";
+        elseif ($_GET['sucesso'] == 'estado_alterado') echo "O estado operacional do equipamento foi alterado com sucesso.";
+        else echo "O inventário foi atualizado com sucesso.";
+        ?>
         <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
     </div>
 <?php endif; ?>
@@ -80,6 +85,21 @@ foreach ($lista_equipamentos as $eq):
             <a href="/sibdas/1241251/gira/private/equipamentos/detalhes_equipamento.php?id=<?php echo $eq['id']; ?>" class="btn btn-light btn-sm rounded-3 border shadow-none me-1" data-bs-toggle="tooltip" title="Ver Ficha / Editar">
                 <i class="fa-solid fa-folder-open text-primary"></i>
             </a>
+
+            <?php if ($eq['estado'] == 'Operacional'): ?>
+                <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-warning me-1"
+                    data-bs-toggle="tooltip" title="Suspender Equipamento"
+                    onclick="confirmarEstado('/sibdas/1241251/gira/private/equipamentos/suspender_equipamento.php?id=<?php echo $eq['id']; ?>&acao=suspender', 'Tem a certeza que deseja suspender a atividade deste equipamento? Ele passará automaticamente ao estado de Inoperacional.', 'Suspender Equipamento', 'suspender')">
+                    <i class="fa-solid fa-ban text-warning"></i>
+                </button>
+            <?php else: ?>
+                <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-success me-1"
+                    data-bs-toggle="tooltip" title="Reativar Equipamento"
+                    onclick="confirmarEstado('/sibdas/1241251/gira/private/equipamentos/suspender_equipamento.php?id=<?php echo $eq['id']; ?>&acao=reativar', 'Deseja reativar este equipamento? O seu estado passará novamente a Operacional e poderá ser utilizado.', 'Reativar Equipamento', 'reativar')">
+                    <i class="fa-solid fa-check text-success"></i>
+                </button>
+            <?php endif; ?>
+
             <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/equipamentos/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>', 'Tem a certeza absoluta que deseja abater este equipamento?', 'Abater Inventário')" data-bs-toggle="tooltip" title="Abater Inventário">
                 <i class="fa-solid fa-trash-can text-danger"></i>
             </button>

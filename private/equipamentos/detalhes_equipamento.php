@@ -69,8 +69,19 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 small">
                     <li><a class="dropdown-item fw-medium py-2" href="#"><i class="fa-solid fa-qrcode text-muted me-2"></i> Imprimir Etiqueta QR</a></li>
-                    <li><a class="dropdown-item fw-medium py-2" href="#"><i class="fa-solid fa-ban text-warning me-2"></i> Suspender Equipamento</a></li>
-                    <li>
+                    <?php if ($eq['estado'] == 'Operacional'): ?>
+                        <li>
+                            <button type="button" class="dropdown-item fw-medium py-2" onclick="confirmarEstado('/sibdas/1241251/gira/private/equipamentos/suspender_equipamento.php?id=<?php echo $eq['id']; ?>&acao=suspender', 'Tem a certeza que deseja suspender a atividade deste equipamento? Ele passará automaticamente ao estado de Inoperacional.', 'Suspender Equipamento', 'suspender')">
+                                <i class="fa-solid fa-ban text-warning me-2"></i> Suspender Equipamento
+                            </button>
+                        </li>
+                    <?php else: ?>
+                        <li>
+                            <button type="button" class="dropdown-item fw-medium py-2" onclick="confirmarEstado('/sibdas/1241251/gira/private/equipamentos/suspender_equipamento.php?id=<?php echo $eq['id']; ?>&acao=reativar', 'Deseja reativar este equipamento? O seu estado passará novamente a Operacional e poderá ser utilizado.', 'Reativar Equipamento', 'reativar')">
+                                <i class="fa-solid fa-check text-success me-2"></i> Reativar Equipamento
+                            </button>
+                        </li>
+                    <?php endif; ?> <li>
                         <hr class="dropdown-divider">
                     </li>
                     <li>
@@ -91,8 +102,10 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
             <i class="fa-solid fa-circle-check text-success me-2"></i>
             <strong>Ação concluída!</strong>
             <?php
-            if ($_GET['sucesso'] == 'doc_eliminado') echo "O documento e o respetivo ficheiro foram eliminados permanentemente.";
-            else echo "O documento foi processado com sucesso.";
+            if ($_GET['sucesso'] == 'doc_eliminado') echo "O documento técnico foi eliminado permanentemente.";
+            elseif ($_GET['sucesso'] == 'estado_alterado') echo "O estado operacional do equipamento foi atualizado.";
+            elseif ($_GET['sucesso'] == '1') echo "A ficha técnica do equipamento foi guardada com sucesso.";
+            else echo "Operação realizada com sucesso.";
             ?>
             <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
         </div>
