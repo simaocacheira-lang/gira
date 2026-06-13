@@ -366,6 +366,49 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
             document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(elemento) {
                 new bootstrap.Tooltip(elemento);
             });
+
+            // Função Global para os Modais de Eliminação
+            function confirmarEliminacao(url, mensagem, titulo = 'Confirmar Eliminação') {
+                // 1. Mudar o Título e a Mensagem do Modal
+                document.getElementById('tituloModalEliminacao').innerHTML = '<i class="fa-solid fa-triangle-exclamation me-2"></i>' + titulo;
+                document.getElementById('textoModalEliminacao').innerText = mensagem;
+
+                // 2. Colocar o Link de Destino no botão vermelho
+                document.getElementById('btnConfirmarEliminacao').href = url;
+
+                // 3. Mostrar o Modal no ecrã
+                var modal = new bootstrap.Modal(document.getElementById('modalConfirmarEliminacao'));
+                modal.show();
+            }
+
+            // Função Dinâmica para Suspender ou Reativar Utilizadores
+            function confirmarEstado(url, mensagem, titulo, tipo) {
+                const tituloEl = document.getElementById('tituloModalEstado');
+                const btn = document.getElementById('btnConfirmarEstado');
+
+                // Injetar a mensagem
+                document.getElementById('textoModalEstado').innerText = mensagem;
+                btn.href = url;
+
+                // Lógica de Cores: Amarelo (Suspender) ou Verde (Reativar)
+                if (tipo === 'suspender') {
+                    tituloEl.innerHTML = '<i class="fa-solid fa-user-slash me-2"></i>' + titulo;
+                    tituloEl.className = 'modal-title fw-bold text-warning';
+
+                    btn.className = 'btn btn-warning rounded-3 fw-bold small px-4 shadow-sm text-dark';
+                    btn.innerHTML = '<i class="fa-solid fa-ban me-2"></i>Sim, Suspender';
+                } else {
+                    tituloEl.innerHTML = '<i class="fa-solid fa-user-check me-2"></i>' + titulo;
+                    tituloEl.className = 'modal-title fw-bold text-success';
+
+                    btn.className = 'btn btn-success rounded-3 fw-bold small px-4 shadow-sm text-white';
+                    btn.innerHTML = '<i class="fa-solid fa-check me-2"></i>Sim, Reativar';
+                }
+
+                // Mostrar o Modal
+                var modal = new bootstrap.Modal(document.getElementById('modalConfirmarEstado'));
+                modal.show();
+            }
         </script>
 
     </body>

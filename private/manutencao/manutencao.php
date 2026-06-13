@@ -19,6 +19,19 @@ try {
 render_header("Gira - Ordens de Trabalho e Manutenção");
 ?>
 
+<?php if (isset($_GET['sucesso'])): ?>
+    <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
+        <i class="fa-solid fa-circle-check text-success me-2"></i>
+        <strong>Ação Concluída!</strong>
+        <?php
+        if ($_GET['sucesso'] == 'ot_criada') echo "A nova Ordem de Trabalho foi emitida com sucesso.";
+        elseif ($_GET['sucesso'] == 'ot_fechada') echo "A Ordem de Trabalho foi encerrada e o relatório técnico guardado.";
+        elseif ($_GET['sucesso'] == 'ot_eliminada') echo "A Ordem de Trabalho foi cancelada e removida do sistema.";
+        ?>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
+    </div>
+<?php endif; ?>
+
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h2 class="fw-bold m-0">Ordens de Trabalho e Manutenção</h2>
@@ -47,7 +60,6 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
 
     <div class="tab-pane fade show active" id="lista" role="tabpanel" tabindex="0">
         <?php
-        // Ajustamos as colunas com larguras fixas (width) e removemos o 'sort' que não faz falta ao layout.php
         $colunas = [
             ['label' => 'Nº O.T.', 'width' => '10%'],
             ['label' => 'Equipamento / Modelo', 'width' => '25%'],
@@ -79,7 +91,7 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
                 $prioridade_class = 'text-warning fw-bold';
             }
 
-            // 3. Lógica para as cores do Estado (Assumindo 'Pendente' se não existir ainda)
+            // 3. Lógica para as cores do Estado
             $estado_atual = isset($ot['estado']) ? $ot['estado'] : 'Pendente';
             $estado_badge = 'danger text-white';
             if ($estado_atual == 'Em Curso') $estado_badge = 'warning text-dark';
@@ -98,6 +110,7 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
                 <td><span class="<?php echo $prioridade_class; ?>"><?php echo $prioridade_icon . htmlspecialchars($ot['prioridade']); ?></span></td>
                 <td><?php echo $data_abertura; ?></td>
                 <td><span class="badge bg-<?php echo $estado_badge; ?> rounded-pill px-2"><?php echo htmlspecialchars($estado_atual); ?></span></td>
+
                 <td class="text-end text-nowrap">
                     <?php if ($estado_atual != 'Concluída'): ?>
                         <button class="btn btn-light btn-sm rounded-3 me-1 border btn-fechar-ot hover-success"
@@ -111,11 +124,11 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
                         </button>
                     <?php endif; ?>
 
-                    <form action="/sibdas/1241251/gira/private/manutencao/eliminar_ot.php?id=<?php echo $ot['id']; ?>" method="POST" class="d-inline" onsubmit="return confirm('Tem a certeza que deseja cancelar e eliminar a O.T. <?php echo htmlspecialchars($ot['numero_ot']); ?>? Esta ação não pode ser desfeita.');">
-                        <button type="submit" class="btn btn-light btn-sm rounded-3 border hover-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Cancelar O.T.">
-                            <i class="fa-solid fa-xmark text-danger"></i>
-                        </button>
-                    </form>
+                    <button type="button" class="btn btn-light btn-sm rounded-3 border hover-danger"
+                        onclick="confirmarEliminacao('/sibdas/1241251/gira/private/manutencao/eliminar_ot.php?id=<?php echo $ot['id']; ?>', 'Tem a certeza que deseja cancelar e eliminar a O.T. <?php echo htmlspecialchars($ot['numero_ot']); ?>? Esta ação não pode ser desfeita.', 'Cancelar Ordem de Trabalho')"
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="Cancelar O.T.">
+                        <i class="fa-solid fa-trash-can text-danger"></i>
+                    </button>
                 </td>
             </tr>
         <?php
@@ -155,6 +168,7 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
         }
     });
 </script>
+
 <?php
 // IMPORTAR TODOS OS MODAIS ANTES DO RODAPÉ
 require_once __DIR__ . '/../modals.php';

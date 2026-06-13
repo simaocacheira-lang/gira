@@ -30,7 +30,16 @@ render_header("Gira - Garantias e Contratos de Manutenção");
 <?php if (isset($_GET['sucesso'])): ?>
     <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
         <i class="fa-solid fa-circle-check text-success me-2"></i>
-        <strong>Ação Concluída!</strong> A data de garantia foi atualizada com sucesso.
+        <strong>Ação Concluída!</strong>
+        <?php
+        if ($_GET['sucesso'] == 'garantia_atualizada') {
+            echo "A data de garantia foi atualizada com sucesso.";
+        } elseif ($_GET['sucesso'] == 'garantia_eliminada') {
+            echo "A garantia foi removida do sistema.";
+        } else {
+            echo "Operação realizada com sucesso.";
+        }
+        ?>
         <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
     </div>
 <?php endif; ?>
@@ -100,6 +109,12 @@ foreach ($equipamentos as $eq):
                 data-data="<?php echo $eq['fim_garantia']; ?>"
                 data-bs-toggle="tooltip" title="Atualizar Data">
                 <i class="fa-solid fa-pen text-primary"></i>
+            </button>
+
+            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger ms-1"
+                onclick="confirmarEliminacao('/sibdas/1241251/gira/private/garantias/eliminar_garantia.php?id=<?php echo $eq['id']; ?>', 'Tem a certeza que deseja remover a garantia do equipamento \'<?php echo htmlspecialchars($eq['nome']); ?>\'? A data será limpa do sistema.', 'Remover Garantia')"
+                data-bs-toggle="tooltip" title="Remover Garantia">
+                <i class="fa-solid fa-trash-can text-danger"></i>
             </button>
         </td>
     </tr>

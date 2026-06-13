@@ -272,7 +272,19 @@ try {
             </div>
             <div class="modal-body p-4">
                 <form id="formNovoDocumento" action="/sibdas/1241251/gira/private/documentos/processar_documento.php" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="id_equipamento" id="doc_id_equipamento">
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Equipamento Associado</label>
+                        <select class="form-select bg-light border-0 fw-bold text-primary" name="id_equipamento" id="doc_id_equipamento" required>
+                            <option value="" selected disabled>Selecione o equipamento...</option>
+                            <?php foreach ($equipamentos_dropdown as $opt): ?>
+                                <option value="<?php echo $opt['id']; ?>">
+                                    <?php echo htmlspecialchars($opt['codigo_ativo'] . ' - ' . $opt['nome']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Nome / Título do Documento</label>
                         <input type="text" class="form-control bg-light border-0" name="nome_documento" placeholder="Ex: Manual de Serviço" required>
@@ -728,6 +740,49 @@ try {
             <div class="modal-footer border-top border-light p-3">
                 <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
                 <button type="submit" form="formEditarPerfil" class="btn btn-primary rounded-3 fw-bold small px-4">Guardar Alterações</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalConfirmarEliminacao" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <div class="modal-header border-bottom-0 p-4 pb-2">
+                <h5 class="modal-title fw-bold text-danger" id="tituloModalEliminacao">
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i>Confirmar Eliminação
+                </h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4 pt-2">
+                <p class="text-secondary mb-0 fw-medium" id="textoModalEliminacao">
+                    Tem a certeza que deseja eliminar este registo?
+                </p>
+            </div>
+            <div class="modal-footer border-top-0 p-4 pt-0">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small px-4 text-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <a href="#" id="btnConfirmarEliminacao" class="btn btn-danger rounded-3 fw-bold small px-4 shadow-sm hover-danger">
+                    <i class="fa-solid fa-trash-can me-2"></i>Sim, Eliminar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalConfirmarEstado" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <div class="modal-header border-bottom-0 p-4 pb-2">
+                <h5 class="modal-title fw-bold" id="tituloModalEstado">
+                </h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4 pt-2">
+                <p class="text-secondary mb-0 fw-medium" id="textoModalEstado">
+                </p>
+            </div>
+            <div class="modal-footer border-top-0 p-4 pt-0">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small px-4 text-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <a href="#" id="btnConfirmarEstado" class="btn rounded-3 fw-bold small px-4 shadow-sm">
+                </a>
             </div>
         </div>
     </div>

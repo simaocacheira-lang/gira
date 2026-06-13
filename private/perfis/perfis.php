@@ -49,8 +49,9 @@ render_header("Gira - Perfis e Grupos de Permissões");
         <strong>Ação concluída!</strong>
         <?php
         if ($_GET['sucesso'] == 'perfil_criado') echo "O novo perfil de acesso foi registado.";
-        if ($_GET['sucesso'] == 'perfil_editado') echo "O nível de acesso e os dados do perfil foram atualizados.";
-        if ($_GET['sucesso'] == 'perfil_eliminado') echo "O perfil foi removido do sistema de forma segura.";
+        elseif ($_GET['sucesso'] == 'perfil_editado') echo "O nível de acesso e os dados do perfil foram atualizados.";
+        // BUG CORRIGIDO: Agora reconhece tanto 'perfil_eliminado' como o 'eliminado' que vem do eliminar_perfil.php
+        elseif ($_GET['sucesso'] == 'perfil_eliminado' || $_GET['sucesso'] == 'eliminado') echo "O perfil foi removido do sistema de forma segura.";
         ?>
         <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
     </div>
@@ -124,12 +125,11 @@ foreach ($lista_perfis as $perfil):
                     <i class="fa-solid fa-lock"></i>
                 </button>
             <?php else: ?>
-                <a href="/sibdas/1241251/gira/private/perfis/eliminar_perfil.php?id=<?php echo $perfil['id']; ?>"
-                    class="btn btn-light btn-sm rounded-3 border hover-danger"
+                <button type="button" class="btn btn-light btn-sm rounded-3 border hover-danger"
                     data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Perfil"
-                    onclick="return confirm('Tem a certeza que deseja eliminar o perfil <?php echo htmlspecialchars($perfil['nome_perfil']); ?>?');">
-                    <i class="fa-solid fa-trash text-danger"></i>
-                </a>
+                    onclick="confirmarEliminacao('/sibdas/1241251/gira/private/perfis/eliminar_perfil.php?id=<?php echo $perfil['id']; ?>', 'Tem a certeza que deseja eliminar o perfil \'<?php echo htmlspecialchars($perfil['nome_perfil']); ?>\'?', 'Eliminar Perfil')">
+                    <i class="fa-solid fa-trash-can text-danger"></i>
+                </button>
             <?php endif; ?>
         </td>
     </tr>

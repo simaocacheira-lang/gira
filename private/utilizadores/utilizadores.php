@@ -127,13 +127,17 @@ foreach ($lista_utilizadores as $user):
             </button>
 
             <?php if ($user['estado'] == 'Ativo'): ?>
-                <a href="/sibdas/1241251/gira/private/utilizadores/alternar_estado.php?id=<?php echo $user['id']; ?>" class="btn btn-light btn-sm rounded-3 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Suspender Acesso" onclick="return confirm('Tem a certeza que deseja suspender o acesso deste utilizador?');">
+                <button type="button" class="btn btn-light btn-sm rounded-3 border hover-warning"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Suspender Acesso"
+                    onclick="confirmarEstado('/sibdas/1241251/gira/private/utilizadores/alternar_estado.php?id=<?php echo $user['id']; ?>', 'Tem a certeza que deseja suspender o acesso a este utilizador? A conta ficará bloqueada.', 'Suspender Conta', 'suspender')">
                     <i class="fa-solid fa-user-slash text-warning"></i>
-                </a>
+                </button>
             <?php else: ?>
-                <a href="/sibdas/1241251/gira/private/utilizadores/alternar_estado.php?id=<?php echo $user['id']; ?>" class="btn btn-light btn-sm rounded-3 border" data-bs-toggle="tooltip" data-bs-placement="top" title="Reativar Acesso" onclick="return confirm('Deseja reativar o acesso a este utilizador?');">
+                <button type="button" class="btn btn-light btn-sm rounded-3 border hover-success"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Reativar Acesso"
+                    onclick="confirmarEstado('/sibdas/1241251/gira/private/utilizadores/alternar_estado.php?id=<?php echo $user['id']; ?>', 'Deseja reativar o acesso a este utilizador? Ele voltará a ter permissão para entrar no sistema.', 'Reativar Conta', 'reativar')">
                     <i class="fa-solid fa-user-check text-success"></i>
-                </a>
+                </button>
             <?php endif; ?>
         </td>
     </tr>

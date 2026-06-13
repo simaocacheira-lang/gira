@@ -10,7 +10,6 @@ try {
     $sql = "SELECT * FROM localizacoes ORDER BY id DESC";
     $stmt = $pdo->query($sql);
     $localizacoes = $stmt->fetchAll();
-    
 } catch (PDOException $e) {
     die("Erro ao carregar as localizações: " . $e->getMessage());
 }
@@ -65,9 +64,9 @@ foreach ($localizacoes as $loc):
             <a href="/sibdas/1241251/gira/private/localizacoes/detalhes_localizacao.php?id=<?php echo $loc['id']; ?>" class="btn btn-light btn-sm rounded-3 border shadow-none me-1" data-bs-toggle="tooltip" title="Editar Localização">
                 <i class="fa-solid fa-pen text-primary"></i>
             </a>
-            <a href="/sibdas/1241251/gira/private/localizacoes/eliminar_localizacao.php?id=<?php echo $loc['id']; ?>" class="btn btn-light btn-sm rounded-3 border shadow-none text-danger" onclick="return confirm('Tem a certeza que deseja remover esta localização? Cuidado com os equipamentos a ela associados.');" data-bs-toggle="tooltip" title="Remover Localização">
-                <i class="fa-solid fa-trash-can"></i>
-            </a>
+            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/localizacoes/eliminar_localizacao.php?id=<?php echo $loc['id']; ?>', 'Tem a certeza absoluta que deseja abater esta localização?', 'Abater Localização')" data-bs-toggle="tooltip" title="Abater Localização">
+                <i class="fa-solid fa-trash-can text-danger"></i>
+            </button>
         </td>
     </tr>
 <?php

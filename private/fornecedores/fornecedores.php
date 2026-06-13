@@ -75,9 +75,9 @@ foreach ($fornecedores as $f):
             <a href="/sibdas/1241251/gira/private/fornecedores/detalhes_fornecedor.php?id=<?php echo $f['id']; ?>" class="btn btn-light btn-sm rounded-3 border shadow-none me-1" data-bs-toggle="tooltip" title="Ver Detalhes / Editar">
                 <i class="fa-solid fa-pen text-primary"></i>
             </a>
-            <a href="/sibdas/1241251/gira/private/fornecedores/eliminar_fornecedor.php?id=<?php echo $f['id']; ?>" class="btn btn-light btn-sm rounded-3 border shadow-none text-danger" onclick="return confirm('Tem a certeza que deseja remover este fornecedor?');" data-bs-toggle="tooltip" title="Remover">
-                <i class="fa-solid fa-trash-can"></i>
-            </a>
+            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/fornecedores/eliminar_fornecedor.php?id=<?php echo $f['id']; ?>', 'Tem a certeza absoluta que deseja abater este fornecedor?', 'Abater Fornecedor')" data-bs-toggle="tooltip" title="Abater Fornecedor">
+                <i class="fa-solid fa-trash-can text-danger"></i>
+            </button>
         </td>
     </tr>
 <?php

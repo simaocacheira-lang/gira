@@ -80,9 +80,9 @@ foreach ($lista_equipamentos as $eq):
             <a href="/sibdas/1241251/gira/private/equipamentos/detalhes_equipamento.php?id=<?php echo $eq['id']; ?>" class="btn btn-light btn-sm rounded-3 border shadow-none me-1" data-bs-toggle="tooltip" title="Ver Ficha / Editar">
                 <i class="fa-solid fa-folder-open text-primary"></i>
             </a>
-            <a href="/sibdas/1241251/gira/private/equipamentos/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>" class="btn btn-light btn-sm rounded-3 border shadow-none" onclick="return confirm('Tem a certeza absoluta que deseja abater este equipamento?');" data-bs-toggle="tooltip" title="Abater Inventário">
+            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/equipamentos/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>', 'Tem a certeza absoluta que deseja abater este equipamento?', 'Abater Inventário')" data-bs-toggle="tooltip" title="Abater Inventário">
                 <i class="fa-solid fa-trash-can text-danger"></i>
-            </a>
+            </button>
         </td>
     </tr>
 <?php

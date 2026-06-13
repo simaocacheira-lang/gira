@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // 6. REDIRECIONAMENTO INTELIGENTE
                 if ($id_equipamento > 0) {
-                    header("Location: /sibdas/1241251/gira/private/equipamentos/detalhes_equipamento.php?id=" . $id_equipamento . "&sucesso=doc_adicionado&tab=documentos");
+                    header("Location: /sibdas/1241251/gira/private/documentos/documentos.php?id=" . $id_equipamento . "&sucesso=doc_adicionado&tab=documentos");
                 } else {
                     header("Location: /sibdas/1241251/gira/private/documentos/documentos.php?sucesso=upload");
                 }

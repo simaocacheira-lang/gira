@@ -73,7 +73,11 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item fw-bold text-danger py-2" href="/sibdas/1241251/gira/private/equipamentos/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>" onclick="return confirm('Tem a certeza que deseja abater este equipamento?');"><i class="fa-solid fa-trash-can me-2"></i> Abater Inventário</a></li>
+                    <li>
+                        <button type="button" class="dropdown-item fw-bold text-danger py-2" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/equipamentos/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>', 'Tem a certeza que deseja abater este equipamento do sistema? Esta ação é irreversível.', 'Abater Inventário')">
+                            <i class="fa-solid fa-trash-can me-2"></i> Abater Inventário
+                        </button>
+                    </li>
                 </ul>
             </div>
             <button type="submit" class="btn btn-success rounded-3 fw-bold small px-3 py-2 shadow-sm">
@@ -87,8 +91,8 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
             <i class="fa-solid fa-circle-check text-success me-2"></i>
             <strong>Ação concluída!</strong>
             <?php
-            if ($_GET['sucesso'] == '1') echo "Os dados do equipamento foram atualizados com sucesso.";
-            elseif ($_GET['sucesso'] == 'garantia_atualizada') echo "A data da garantia foi renovada.";
+            if ($_GET['sucesso'] == 'doc_eliminado') echo "O documento e o respetivo ficheiro foram eliminados permanentemente.";
+            else echo "O documento foi processado com sucesso.";
             ?>
             <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
         </div>
@@ -318,8 +322,8 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
                                                 <a href="/sibdas/1241251/gira/private/<?php echo htmlspecialchars($doc['caminho_ficheiro']); ?>" target="_blank" class="btn btn-sm btn-light border rounded-2" style="font-size: 0.75rem;">
                                                     <i class="fa-solid fa-eye me-1"></i>Abrir
                                                 </a>
-                                                <button class="btn btn-sm btn-light text-danger border rounded-2 ms-auto" onclick="alert('Funcionalidade de apagar documento em desenvolvimento!');" style="font-size: 0.75rem;">
-                                                    <i class="fa-solid fa-trash"></i>
+                                                <button type="button" class="btn btn-sm btn-light text-danger border rounded-2 ms-auto hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/documentos/eliminar_documento.php?id=<?php echo $doc['id']; ?>', 'Tem a certeza que deseja apagar este ficheiro?', 'Apagar Anexo')" style="font-size: 0.75rem;">
+                                                    <i class="fa-solid fa-trash-can"></i>
                                                 </button>
                                             </div>
                                         </div>

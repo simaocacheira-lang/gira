@@ -32,7 +32,11 @@ render_header("Gira - Gestão de Documentos Técnicos");
 <?php if (isset($_GET['sucesso'])): ?>
     <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
         <i class="fa-solid fa-circle-check text-success me-2"></i>
-        <strong>Ação concluída!</strong> O documento foi carregado com sucesso.
+        <strong>Ação concluída!</strong>
+        <?php
+        if ($_GET['sucesso'] == 'doc_eliminado') echo "O documento e o respetivo ficheiro foram eliminados permanentemente.";
+        else echo "O documento foi processado com sucesso.";
+        ?>
         <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
     </div>
 <?php endif; ?>
@@ -76,7 +80,7 @@ foreach ($lista_documentos as $doc):
             <a href="/sibdas/1241251/gira/private/<?php echo htmlspecialchars($doc['caminho_ficheiro']); ?>" target="_blank" class="btn btn-light btn-sm rounded-3 border shadow-none me-1" data-bs-toggle="tooltip" title="Abrir / Descarregar">
                 <i class="fa-solid fa-download text-primary"></i>
             </a>
-            <button class="btn btn-light btn-sm rounded-3 border shadow-none" onclick="alert('Função de apagar documento em desenvolvimento!');" data-bs-toggle="tooltip" title="Remover Documento">
+            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/documentos/eliminar_documento.php?id=<?php echo $doc['id']; ?>', 'Tem a certeza absoluta que deseja abater este documento?', 'Abater Documento')" data-bs-toggle="tooltip" title="Abater Documento">
                 <i class="fa-solid fa-trash-can text-danger"></i>
             </button>
         </td>
