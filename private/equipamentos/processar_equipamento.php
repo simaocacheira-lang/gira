@@ -7,22 +7,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Gerar código automaticamente
     $codigo_gerado = 'EQ-2026-' . strtoupper(substr(uniqid(), -4));
 
-    // SQL preparado para os nomes exatos do teu HTML
-    $sql = "INSERT INTO equipamentos (codigo_ativo, nome, modelo, num_serie, estado, localizacao_id, fornecedor_id, data_aquisicao) 
-            VALUES (:codigo, :nome, :modelo, :serie, :estado, :localizacao, :fornecedor, :data)";
+    // SQL corrigido para guardar TODOS os campos que tens no Modal!
+    $sql = "INSERT INTO equipamentos (
+                codigo_ativo, nome, modelo, num_serie, mac_address, classe_risco, 
+                estado, localizacao_id, fornecedor_id, data_aquisicao, custo_aquisicao, 
+                fim_garantia, proxima_revisao, consumiveis
+            ) VALUES (
+                :codigo, :nome, :modelo, :serie, :mac, :risco, 
+                :estado, :localizacao, :fornecedor, :data_aq, :custo, 
+                :garantia, :revisao, :consumiveis
+            )";
 
     try {
         $stmt = $pdo->prepare($sql);
 
         $stmt->execute([
             ':codigo'      => $codigo_gerado,
-            ':nome'        => $_POST['nome'],             // Correspondente a name="nome"
-            ':modelo'      => $_POST['marca'],            // Correspondente a name="marca"
-            ':serie'       => $_POST['sn'],               // Correspondente a name="sn"
-            ':estado'      => $_POST['estado_operacional'], // Correspondente a name="estado_operacional"
-            ':localizacao' => $_POST['localizacao_id'],   // Correspondente a name="localizacao_id"
-            ':fornecedor'  => $_POST['fornecedor_id'],    // Correspondente a name="fornecedor_id"
-            ':data'        => $_POST['data_aquisicao']
+            ':nome'        => $_POST['nome'],
+            ':modelo'      => $_POST['modelo'] ?? null, // O novo campo isolado para o Modelo
+            ':serie'       => $_POST['sn'],
+            ':mac'         => !empty($_POST['mac_address']) ? $_POST['mac_address'] : null,
+            ':risco'       => $_POST['classe_risco'],
+            ':estado'      => $_POST['estado_operacional'],
+            ':localizacao' => $_POST['localizacao_id'],
+            ':fornecedor'  => $_POST['fornecedor_id'], // O teu novo Dropdown de Fornecedores
+            ':data_aq'     => $_POST['data_aquisicao'],
+            ':custo'       => !empty($_POST['custo_aquisicao']) ? $_POST['custo_aquisicao'] : null,
+            ':garantia'    => !empty($_POST['fim_garantia']) ? $_POST['fim_garantia'] : null,
+            ':revisao'     => !empty($_POST['proxima_revisao']) ? $_POST['proxima_revisao'] : null,
+            ':consumiveis' => !empty($_POST['consumiveis']) ? $_POST['consumiveis'] : null // O teu novo Dropdown de Artigos
         ]);
 
         header("Location: /sibdas/1241251/gira/private/equipamentos/equipamentos.php?sucesso=1");

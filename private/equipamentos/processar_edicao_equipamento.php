@@ -6,17 +6,17 @@ session_start();
 // 2. Verificar se a informação veio do formulário (POST)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // 3. Garantir que recebemos o ID do equipamento
     if (empty($_POST['id_equipamento'])) {
         die("Erro Crítico: O ID do equipamento desapareceu.");
     }
 
     $id_equipamento = (int) $_POST['id_equipamento'];
 
-    // 4. O comando UPDATE
+    // 4. O comando UPDATE adaptado aos novos dropdowns
     $sql = "UPDATE equipamentos SET 
                 nome = :nome,
                 modelo = :modelo,
+                fornecedor_id = :fornecedor,
                 num_serie = :serie,
                 mac_address = :mac,
                 classe_risco = :risco,
@@ -34,7 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute([
             ':id'           => $id_equipamento,
             ':nome'         => $_POST['nome'],
-            ':modelo'       => $_POST['marca'],
+            ':modelo'       => $_POST['modelo'] ?? null,
+            ':fornecedor'   => $_POST['fornecedor_id'],
             ':serie'        => $_POST['sn'],
             ':mac'          => !empty($_POST['mac_address']) ? $_POST['mac_address'] : null,
             ':risco'        => $_POST['classe_risco'],

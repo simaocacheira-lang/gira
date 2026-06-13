@@ -16,10 +16,20 @@ try {
     // 3. Ir buscar os Perfis para o modal de Utilizadores
     $stmt_perfis = $pdo->query("SELECT id, nome_perfil FROM perfis_acesso ORDER BY nivel_acesso DESC");
     $perfis_dropdown = $stmt_perfis->fetchAll();
+
+    // 4. Ir buscar os Fornecedores para o Registo de Equipamento (Fabricante)
+    $stmt_forn = $pdo->query("SELECT id, nome_empresa FROM fornecedores ORDER BY nome_empresa ASC");
+    $fornecedores_dropdown = $stmt_forn->fetchAll();
+
+    // 5. Ir buscar os Artigos do Armazém para os Consumíveis
+    $stmt_artigos = $pdo->query("SELECT id, referencia, nome FROM artigos_armazem ORDER BY nome ASC");
+    $artigos_dropdown = $stmt_artigos->fetchAll();
 } catch (Exception $e) {
     $equipamentos_dropdown = [];
     $localizacoes_dropdown = [];
     $perfis_dropdown = [];
+    $fornecedores_dropdown = [];
+    $artigos_dropdown = [];
 }
 ?>
 
@@ -52,9 +62,26 @@ try {
                         <h6 class="fw-bold mb-3 text-dark border-bottom pb-2"><i class="fa-solid fa-fingerprint text-muted me-2"></i>Passo 1: Identificação e Rede</h6>
                         <div class="row g-3">
                             <div class="col-12"><label class="form-label small fw-bold text-secondary">Nome do Equipamento</label><input type="text" class="form-control rounded-3 bg-light border-0" name="nome" placeholder="Ex: Ventilador Pulmonar" required></div>
-                            <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Fabricante / Modelo</label><input type="text" class="form-control rounded-3 bg-light border-0" name="marca" placeholder="Ex: Dräger · Evita V500" required></div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-secondary">Fabricante Oficial</label>
+                                <select class="form-select rounded-3 bg-light border-0" name="fornecedor_id" required>
+                                    <option value="" selected disabled>Escolha o fabricante...</option>
+                                    <?php foreach ($fornecedores_dropdown as $forn): ?>
+                                        <option value="<?php echo $forn['id']; ?>">
+                                            <?php echo htmlspecialchars($forn['nome_empresa']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-secondary">Modelo / Versão</label>
+                                <input type="text" class="form-control rounded-3 bg-light border-0" name="modelo" placeholder="Ex: Evita V500" required>
+                            </div>
+
                             <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Número de Série (SN)</label><input type="text" class="form-control rounded-3 bg-light border-0 fw-mono" name="sn" placeholder="Ex: DG-EV-99214" required></div>
-                            <div class="col-12"><label class="form-label small fw-bold text-secondary">Endereço MAC (Opcional - Integração IT)</label><input type="text" class="form-control rounded-3 bg-light border-0 fw-mono" name="mac_address" placeholder="Ex: 00:1A:2B:3C:4D:5E"></div>
+                            <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Endereço MAC (Integração IT)</label><input type="text" class="form-control rounded-3 bg-light border-0 fw-mono" name="mac_address" placeholder="Ex: 00:1A:2B:3C:4D:5E"></div>
                         </div>
                     </div>
                     <div class="form-step d-none" id="step-2">
@@ -86,23 +113,25 @@ try {
                     <div class="form-step d-none" id="step-3">
                         <h6 class="fw-bold mb-3 text-dark border-bottom pb-2"><i class="fa-solid fa-file-invoice-dollar text-muted me-2"></i>Passo 3: Aquisição e Contratos</h6>
                         <div class="row g-3">
-                            <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Data de Aquisição</label><input type="date" class="form-control rounded-3 bg-light border-0" name="data_aquisicao" required></div>
-                            <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Custo de Aquisição (€)</label><input type="number" step="0.01" class="form-control rounded-3 bg-light border-0" name="custo_aquisicao" placeholder="Ex: 24500.00" required></div>
-                            <div class="col-md-6">
-                                <label class="form-label small fw-bold text-secondary">Fornecedor Oficial</label>
-                                <select class="form-select rounded-3 bg-light border-0" name="fornecedor_id" required>
-                                    <option value="" selected disabled>Selecione o fornecedor...</option>
-                                    <option value="1">B. Braun Medical S.A.</option>
-                                    <option value="2">Dräger Portugal</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Fim da Garantia de Fábrica</label><input type="date" class="form-control rounded-3 bg-light border-0" name="fim_garantia" required></div>
+                            <div class="col-md-4"><label class="form-label small fw-bold text-secondary">Data de Aquisição</label><input type="date" class="form-control rounded-3 bg-light border-0" name="data_aquisicao" required></div>
+                            <div class="col-md-4"><label class="form-label small fw-bold text-secondary">Custo de Aquisição (€)</label><input type="number" step="0.01" class="form-control rounded-3 bg-light border-0" name="custo_aquisicao" placeholder="Ex: 24500.00" required></div>
+                            <div class="col-md-4"><label class="form-label small fw-bold text-secondary">Fim da Garantia</label><input type="date" class="form-control rounded-3 bg-light border-0" name="fim_garantia" required></div>
                         </div>
                     </div>
                     <div class="form-step d-none" id="step-4">
                         <h6 class="fw-bold mb-3 text-dark border-bottom pb-2"><i class="fa-solid fa-paperclip text-muted me-2"></i>Passo 4: Consumíveis e Anexos</h6>
                         <div class="row g-3">
-                            <div class="col-12"><label class="form-label small fw-bold text-secondary">Periféricos / Consumíveis</label><input type="text" class="form-control rounded-3 bg-light border-0" name="consumiveis" placeholder="Ex: Cabos ECG, Módulo SpO2"></div>
+                            <div class="col-12">
+                                <label class="form-label small fw-bold text-secondary">Periféricos / Consumíveis</label>
+                                <select class="form-select rounded-3 bg-light border-0" name="consumiveis">
+                                    <option value="" selected>Nenhum (Sem periférico associado)</option>
+                                    <?php foreach ($artigos_dropdown as $artigo): ?>
+                                        <option value="<?php echo htmlspecialchars($artigo['nome']); ?>">
+                                            <?php echo htmlspecialchars($artigo['referencia'] . ' - ' . $artigo['nome']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
                             <div class="col-12 border-top pt-3 mt-3"><label class="form-label small fw-bold text-secondary">Documento a Anexar</label><input type="file" class="form-control rounded-3 bg-white shadow-sm border-light" name="documento_anexo" accept=".pdf,.doc,.docx,.jpg,.png"></div>
                             <div class="col-12">
                                 <label class="form-label small fw-bold text-secondary">Tipo do Documento</label>
