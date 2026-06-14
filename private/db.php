@@ -298,3 +298,18 @@ function validar_tipo_documento($tipo)
     }
     return null;
 }
+// ============================================================================
+// VALIDAÇÕES DE DOMÍNIO - GARANTIAS
+// ============================================================================
+
+function validar_data_garantia($data)
+{
+    if (empty($data)) {
+        return "A Data de Fim de Garantia é de preenchimento obrigatório.";
+    }
+    // Verifica se é uma data real reconhecida pelo PHP
+    if (!strtotime($data)) {
+        return "O formato da data inserida é inválido.";
+    }
+    return null;
+}

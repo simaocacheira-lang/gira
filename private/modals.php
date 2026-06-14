@@ -24,6 +24,10 @@ try {
     // 5. Ir buscar os Artigos do Armazém para os Consumíveis
     $stmt_artigos = $pdo->query("SELECT id, referencia, nome FROM artigos_armazem ORDER BY nome ASC");
     $artigos_dropdown = $stmt_artigos->fetchAll();
+
+    // 6. Ir buscar APENAS os Equipamentos SEM GARANTIA
+    $stmt_sem_garantia = $pdo->query("SELECT id, codigo_ativo, nome FROM equipamentos WHERE fim_garantia IS NULL AND apagado_em IS NULL ORDER BY nome ASC");
+    $equipamentos_sem_garantia = $stmt_sem_garantia->fetchAll();
 } catch (Exception $e) {
     $equipamentos_dropdown = [];
     $localizacoes_dropdown = [];
@@ -325,6 +329,45 @@ try {
     </div>
 </div>
 
+<div class="modal fade" id="modalNovaGarantia" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-file-shield text-primary me-2"></i>Registar Nova Garantia</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+
+                <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalNovaGarantia'); ?>
+
+                <form id="formNovaGarantia" action="/sibdas/1241251/gira/private/garantias/processar_garantia.php" method="POST" novalidate>
+                    <input type="hidden" name="is_nova_garantia" value="1">
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Equipamento (Sem Garantia)</label>
+                        <select class="form-select bg-light border-0 fw-bold text-primary" name="id_equipamento" required>
+                            <option value="" selected disabled>Selecione o equipamento...</option>
+                            <?php foreach ($equipamentos_sem_garantia as $eq_sg): ?>
+                                <option value="<?php echo $eq_sg['id']; ?>">
+                                    <?php echo htmlspecialchars($eq_sg['codigo_ativo'] . ' - ' . $eq_sg['nome']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Data de Fim da Garantia</label>
+                        <input type="date" class="form-control rounded-3 bg-light border-0" name="fim_garantia" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small px-3 text-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovaGarantia" class="btn btn-primary rounded-3 fw-bold small px-4">Associar Garantia</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modalAdicionarGarantia" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 rounded-4 shadow">
@@ -333,7 +376,10 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formGarantia" action="/sibdas/1241251/gira/private/garantias/processar_garantia.php" method="POST">
+
+                <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalAdicionarGarantia'); ?>
+                
+                <form id="formGarantia" action="/sibdas/1241251/gira/private/garantias/processar_garantia.php" method="POST" novalidate>
                     <input type="hidden" name="id_equipamento" id="garantia_id_equipamento">
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Data de Fim da Garantia</label>

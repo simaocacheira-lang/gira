@@ -450,7 +450,7 @@ render_header("Gira - Dashboard Geral");
                         <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Registar Fornecedor</p>
                     </div>
                 </div>
-                <div class="col-4 acao-item" id="btnAcaoGarantias" data-bs-toggle="modal" data-bs-target="#modalAdicionarGarantia">
+                <div class="col-4 acao-item" id="btnAcaoGarantias" data-bs-toggle="modal" data-bs-target="#modalNovaGarantia">
                     <div class="action-btn border rounded-3 p-3 h-100 cursor-pointer">
                         <i class="fa-solid fa-file-shield text-danger fs-4 mb-2"></i>
                         <p class="mb-0 fw-bold" style="font-size: 0.6rem;">Adicionar Contrato</p>

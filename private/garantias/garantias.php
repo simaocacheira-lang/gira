@@ -25,6 +25,10 @@ render_header("Gira - Garantias e Contratos de Manutenção");
         <h2 class="fw-bold m-0 text-dark">Garantias e Contratos</h2>
         <p class="text-muted m-0 small">Controlo de coberturas de fábrica, contratos de assistência técnica externa e SLAs de fornecedores.</p>
     </div>
+
+    <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNovaGarantia">
+        <i class="fa-solid fa-plus me-2"></i> Registar Garantia
+    </button>
 </div>
 
 <?php if (isset($_GET['sucesso'])): ?>
