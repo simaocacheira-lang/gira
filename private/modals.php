@@ -180,7 +180,10 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formNovaOT" action="/sibdas/1241251/gira/private/manutencao/processar_manutencao.php" method="POST">
+
+                <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalAbrirOT'); ?>
+
+                <form id="formNovaOT" action="/sibdas/1241251/gira/private/manutencao/processar_manutencao.php" method="POST" novalidate>
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label small fw-bold text-secondary">Dispositivo Médico com Ocorrência</label>
@@ -234,7 +237,9 @@ try {
                 <button type="button" class="btn-close shadow-none mb-auto" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formFecharOT" action="/sibdas/1241251/gira/private/manutencao/processar_fecho_ot.php" method="POST">
+                <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalFecharOT'); ?>
+
+                <form id="formFecharOT" action="/sibdas/1241251/gira/private/manutencao/processar_fecho_ot.php" method="POST" novalidate>
                     <input type="hidden" name="id_ot" id="fecho_id_ot">
                     <input type="hidden" name="id_equipamento" id="fecho_id_equipamento">
 

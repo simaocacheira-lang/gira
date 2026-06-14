@@ -173,3 +173,43 @@ function validar_nome_localizacao($nome)
     }
     return null;
 }
+// ============================================================================
+// VALIDAÇÕES DE DOMÍNIO - MANUTENÇÃO (Ordens de Trabalho)
+// ============================================================================
+
+function validar_selecao_equipamento($id_equipamento)
+{
+    if (empty($id_equipamento) || !is_numeric($id_equipamento) || $id_equipamento <= 0) {
+        return "É obrigatório selecionar o equipamento alvo da intervenção.";
+    }
+    return null;
+}
+
+function validar_descricao_avaria($descricao)
+{
+    $descricao = trim($descricao);
+    if (empty($descricao)) {
+        return "A descrição dos sintomas / avaria é de preenchimento obrigatório.";
+    }
+    if (strlen($descricao) < 5) {
+        return "A descrição da avaria é demasiado curta. Por favor, detalhe mais o problema.";
+    }
+    return null;
+}
+
+function validar_relatorio_tecnico($relatorio)
+{
+    $relatorio = trim($relatorio);
+    if (empty($relatorio)) {
+        return "O Relatório Técnico do trabalho realizado é obrigatório para fechar a O.T.";
+    }
+    return null;
+}
+
+function validar_tempo_gasto($tempo)
+{
+    if (empty($tempo) || !is_numeric($tempo) || $tempo <= 0) {
+        return "O tempo gasto na intervenção tem de ser um valor superior a 0 horas.";
+    }
+    return null;
+}
