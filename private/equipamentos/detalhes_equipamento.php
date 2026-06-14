@@ -61,8 +61,25 @@ try {
 render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
 ?>
 
-<form action="/sibdas/1241251/gira/private/equipamentos/processar_edicao_equipamento.php" method="POST">
-
+<form action="/sibdas/1241251/gira/private/equipamentos/processar_edicao_equipamento.php" method="POST" novalidate>
+    <?php
+    // INJEÇÃO DA NOSSA CAIXA DE ERROS DE VALIDAÇÃO
+    if (isset($_SESSION['erros']) && !empty($_SESSION['erros'])):
+    ?>
+        <div class="alert alert-danger alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
+            <i class="fa-solid fa-triangle-exclamation me-2 fs-5"></i>
+            <strong class="fs-6">Verifique os seguintes erros antes de guardar:</strong>
+            <ul class="mb-0 mt-2 fw-medium">
+                <?php foreach ($_SESSION['erros'] as $erro): ?>
+                    <li><?php echo htmlspecialchars($erro); ?></li>
+                <?php endforeach; ?>
+            </ul>
+            <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
+        </div>
+    <?php
+        unset($_SESSION['erros']);
+    endif;
+    ?>
     <input type="hidden" name="id_equipamento" value="<?php echo $eq['id']; ?>">
     <input type="hidden" name="fornecedor_id" value="<?php echo $eq['fornecedor_id']; ?>">
 
@@ -575,5 +592,25 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
         }
     });
 </script>
+
+<?php if (isset($_SESSION['dados_form'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Magia para repor os dados alterados pelo utilizador após falha de validação
+            var dadosAntigos = <?php echo json_encode($_SESSION['dados_form']); ?>;
+            var form = document.querySelector('form[action*="processar_edicao_equipamento.php"]');
+
+            if (form) {
+                for (var campo in dadosAntigos) {
+                    var input = form.querySelector('[name="' + campo + '"]');
+                    if (input) {
+                        input.value = dadosAntigos[campo];
+                    }
+                }
+            }
+        });
+    </script>
+<?php unset($_SESSION['dados_form']);
+endif; ?>
 
 <?php render_footer(); ?>
