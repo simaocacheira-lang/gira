@@ -250,3 +250,27 @@ function validar_selecao_perfil($perfil_id)
     }
     return null;
 }
+// ============================================================================
+// VALIDAÇÕES DE DOMÍNIO - PERFIS DE ACESSO
+// ============================================================================
+
+function validar_nome_perfil($nome)
+{
+    $nome = trim($nome);
+    if (empty($nome)) {
+        return "O Nome do Perfil é de preenchimento obrigatório.";
+    }
+    if (strlen($nome) > 50) {
+        return "O Nome do Perfil não pode exceder os 50 caracteres.";
+    }
+    return null;
+}
+
+function validar_nivel_acesso($nivel)
+{
+    $niveis_validos = [1, 2, 3];
+    if (empty($nivel) || !in_array((int)$nivel, $niveis_validos)) {
+        return "Deve selecionar um nível de acesso válido (1, 2 ou 3).";
+    }
+    return null;
+}

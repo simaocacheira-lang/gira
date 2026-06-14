@@ -767,7 +767,10 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formAdicionarPerfil" action="/sibdas/1241251/gira/private/perfis/processar_perfil.php" method="POST">
+
+                <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalAdicionarPerfil'); ?>
+
+                <form id="formAdicionarPerfil" action="/sibdas/1241251/gira/private/perfis/processar_perfil.php" method="POST" novalidate>
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Nome do Perfil / Grupo</label>
                         <input type="text" class="form-control bg-light border-0" name="nome_perfil" placeholder="Ex: Técnico Auxiliar" required>
@@ -799,7 +802,10 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formEditarPerfil" action="/sibdas/1241251/gira/private/perfis/processar_edicao_perfil.php" method="POST">
+
+                <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalEditarPerfil'); ?>
+
+                <form id="formEditarPerfil" action="/sibdas/1241251/gira/private/perfis/processar_edicao_perfil.php" method="POST" novalidate>
                     <input type="hidden" name="id_perfil" id="edit_id_perfil">
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Nome do Perfil / Grupo</label>
