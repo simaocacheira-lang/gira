@@ -21,7 +21,7 @@ try {
         <p class="text-muted m-0 small">Mapeamento de salas, blocos e pisos do parque tecnológico.</p>
     </div>
 
-    <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalRegistarLocalizacao">
+    <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNovaLocalizacao">
         <i class="fa-solid fa-plus me-2"></i> Registar
     </button>
 </div>

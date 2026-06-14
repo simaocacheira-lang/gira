@@ -4,10 +4,47 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // Gerar código automaticamente
+    $erros = [];
+
+    // 1. RECOLHER DADOS
+    $nome = trim($_POST['nome'] ?? '');
+    $modelo = trim($_POST['modelo'] ?? '');
+    $sn = trim($_POST['sn'] ?? '');
+    $mac_address = trim($_POST['mac_address'] ?? '');
+    $custo_aquisicao = $_POST['custo_aquisicao'] ?? '';
+
+    // 2. VALIDAÇÕES
+    if ($e = validar_texto_obrigatorio($nome, 100, "Nome do Equipamento")) $erros[] = $e;
+    if ($e = validar_texto_obrigatorio($modelo, 100, "Modelo / Versão")) $erros[] = $e;
+    if ($e = validar_texto_obrigatorio($sn, 100, "Número de Série")) $erros[] = $e;
+    if ($e = validar_mac_opcional($mac_address)) $erros[] = $e;
+
+    // Validar Dropdowns Obrigatórias
+    if (empty($_POST['fornecedor_id'])) $erros[] = "Deve selecionar o Fabricante Oficial.";
+    if (empty($_POST['classe_risco'])) $erros[] = "A Classe de Risco é obrigatória.";
+    if (empty($_POST['localizacao_id'])) $erros[] = "Deve indicar a Localização / Serviço Alocado.";
+
+    // Validar Datas
+    if (empty($_POST['data_aquisicao'])) $erros[] = "A Data de Aquisição é obrigatória.";
+    if (empty($_POST['proxima_revisao'])) $erros[] = "A data da Próxima Revisão é obrigatória.";
+
+    // Validar Custo (Não pode ser negativo)
+    if (!empty($custo_aquisicao) && (!is_numeric($custo_aquisicao) || $custo_aquisicao < 0)) {
+        $erros[] = "O Custo de Aquisição não pode ser negativo.";
+    }
+
+    // 3. DECISÃO: Gravar ou Devolver Erros?
+    if (!empty($erros)) {
+        $_SESSION['erros'] = $erros;
+        $_SESSION['modal_aberto'] = 'modalRegistarEquipamento';
+        $_SESSION['dados_form'] = $_POST;
+        header("Location: /sibdas/1241251/gira/private/equipamentos/equipamentos.php");
+        exit;
+    }
+
+    // 4. GRAVAÇÃO NA BASE DE DADOS
     $codigo_gerado = 'EQ-2026-' . strtoupper(substr(uniqid(), -4));
 
-    // SQL corrigido para guardar TODOS os campos que tens no Modal!
     $sql = "INSERT INTO equipamentos (
                 codigo_ativo, nome, modelo, num_serie, mac_address, classe_risco, 
                 estado, localizacao_id, fornecedor_id, data_aquisicao, custo_aquisicao, 
@@ -20,28 +57,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         $stmt = $pdo->prepare($sql);
-
         $stmt->execute([
             ':codigo'      => $codigo_gerado,
-            ':nome'        => $_POST['nome'],
-            ':modelo'      => $_POST['modelo'] ?? null, // O novo campo isolado para o Modelo
-            ':serie'       => $_POST['sn'],
-            ':mac'         => !empty($_POST['mac_address']) ? $_POST['mac_address'] : null,
+            ':nome'        => $nome,
+            ':modelo'      => $modelo,
+            ':serie'       => $sn,
+            ':mac'         => !empty($mac_address) ? $mac_address : null,
             ':risco'       => $_POST['classe_risco'],
             ':estado'      => $_POST['estado_operacional'],
             ':localizacao' => $_POST['localizacao_id'],
-            ':fornecedor'  => $_POST['fornecedor_id'], // O teu novo Dropdown de Fornecedores
+            ':fornecedor'  => $_POST['fornecedor_id'],
             ':data_aq'     => $_POST['data_aquisicao'],
-            ':custo'       => !empty($_POST['custo_aquisicao']) ? $_POST['custo_aquisicao'] : null,
+            ':custo'       => !empty($custo_aquisicao) ? $custo_aquisicao : null,
             ':garantia'    => !empty($_POST['fim_garantia']) ? $_POST['fim_garantia'] : null,
-            ':revisao'     => !empty($_POST['proxima_revisao']) ? $_POST['proxima_revisao'] : null,
-            ':consumiveis' => !empty($_POST['consumiveis']) ? $_POST['consumiveis'] : null // O teu novo Dropdown de Artigos
+            ':revisao'     => $_POST['proxima_revisao'],
+            ':consumiveis' => !empty($_POST['consumiveis']) ? $_POST['consumiveis'] : null
         ]);
 
-        header("Location: /sibdas/1241251/gira/private/equipamentos/equipamentos.php?sucesso=1");
+        if (function_exists('registar_log')) {
+            registar_log($pdo, $_SESSION['user_id'], "Registou um novo equipamento: $codigo_gerado - $nome", "Equipamentos");
+        }
+
+        header("Location: /sibdas/1241251/gira/private/equipamentos/equipamentos.php?sucesso=registado");
         exit;
     } catch (PDOException $e) {
-        die("Erro ao guardar na base de dados: " . $e->getMessage());
+        $_SESSION['erros'] = ["Erro crítico ao registar o equipamento: " . $e->getMessage()];
+        $_SESSION['modal_aberto'] = 'modalRegistarEquipamento';
+        $_SESSION['dados_form'] = $_POST;
+        header("Location: /sibdas/1241251/gira/private/equipamentos/equipamentos.php");
+        exit;
     }
 } else {
     header("Location: /sibdas/1241251/gira/private/equipamentos/equipamentos.php");

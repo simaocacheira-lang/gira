@@ -107,3 +107,23 @@ function validar_telefone_opcional($telefone)
     }
     return null;
 }
+function validar_mac_opcional($mac)
+{
+    $mac = trim($mac);
+    if (empty($mac)) return null;
+    // Regex: Verifica se é um MAC Address válido (ex: 00:1A:2B:3C:4D:5E ou 00-1A-2B-3C-4D-5E)
+    if (!preg_match('/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/', $mac)) {
+        return "O Endereço MAC tem um formato inválido (Ex: 00:1A:2B:3C:4D:5E).";
+    }
+    return null;
+}
+
+function validar_password_forte($password)
+{
+    if (empty($password)) return "A palavra-passe é obrigatória.";
+    // Regra da Ficha 10: password entre 6 e 12 caracteres
+    if (strlen($password) < 6 || strlen($password) > 12) {
+        return "A palavra-passe deve ter entre 6 e 12 caracteres.";
+    }
+    return null;
+}

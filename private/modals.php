@@ -57,7 +57,10 @@ try {
                 </div>
             </div>
             <div class="modal-body p-4">
-                <form id="formNovoEquipamento" action="/sibdas/1241251/gira/private/equipamentos/processar_equipamento.php" method="POST" enctype="multipart/form-data">
+
+                <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalRegistarEquipamento'); ?>
+
+                <form id="formNovoEquipamento" action="/sibdas/1241251/gira/private/equipamentos/processar_equipamento.php" method="POST" enctype="multipart/form-data" novalidate>
                     <div class="form-step" id="step-1">
                         <h6 class="fw-bold mb-3 text-dark border-bottom pb-2"><i class="fa-solid fa-fingerprint text-muted me-2"></i>Passo 1: Identificação e Rede</h6>
                         <div class="row g-3">
@@ -637,7 +640,10 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formNovoUtilizador" action="/sibdas/1241251/gira/private/utilizadores/processar_utilizador.php" method="POST">
+
+                <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalCriarUtilizador'); ?>
+
+                <form id="formNovoUtilizador" action="/sibdas/1241251/gira/private/utilizadores/processar_utilizador.php" method="POST" novalidate>
                     <div class="row g-3">
                         <div class="col-md-7">
                             <label class="form-label small fw-bold text-secondary">Nome Completo</label>
