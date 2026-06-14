@@ -681,3 +681,23 @@ body.login-bg {
 .badge-rutura {
   animation: blink-alert 1.5s infinite;
 }
+/* Forçar cores corretas nas abas de navegação (Pills) do Equipamento */
+#equipamentoTabs .nav-link {
+  color: #6c757d; /* Cinzento (secondary) para inativos */
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+#equipamentoTabs .nav-link:hover {
+  color: #0d6efd; /* Fica azul suave ao passar o rato */
+  background-color: rgba(13, 110, 253, 0.05);
+}
+
+#equipamentoTabs .nav-link.active {
+  background-color: #0d6efd !important; /* Fundo do botão azul primário */
+  color: #ffffff !important; /* Texto obrigatoriamente branco */
+}
+
+#equipamentoTabs .nav-link.active i {
+  color: #ffffff !important; /* Ícone obrigatoriamente branco */
+}

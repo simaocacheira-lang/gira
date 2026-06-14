@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ]);
 
         if (function_exists('registar_log')) {
-            registar_log($pdo, $_SESSION['user_id'], "Atualizou a ficha técnica do equipamento " . $nome . " (ID: $id_equipamento)", "Equipamentos");
+            registar_log($pdo, $_SESSION['user_id'], "Atualizou a ficha técnica do equipamento: " . $nome, "Equipamentos", "equipamentos", $id_equipamento);
         }
 
         header("Location: /sibdas/1241251/gira/private/equipamentos/detalhes_equipamento.php?id=" . $id_equipamento . "&sucesso=atualizado");

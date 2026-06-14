@@ -54,6 +54,22 @@ try {
     $sql_art = "SELECT id, referencia, nome FROM artigos_armazem ORDER BY nome ASC";
     $stmt_art = $pdo->query($sql_art);
     $lista_artigos = $stmt_art->fetchAll();
+
+    // 9. HISTÓRICO DE AUDITORIA (LOGS)
+    // Procuramos os logs deste equipamento específico e fazemos JOIN para saber o nome de quem fez a ação
+    $sql_logs = "SELECT l.*, u.nome AS nome_utilizador 
+                 FROM logs_auditoria l 
+                 LEFT JOIN utilizadores u ON l.utilizador_id = u.id 
+                 WHERE (l.tabela_afetada = 'equipamentos' AND l.registo_id = :id) 
+                    OR (l.modulo = 'Equipamentos' AND l.acao LIKE :texto)
+                 ORDER BY l.data_hora DESC";
+    $stmt_logs = $pdo->prepare($sql_logs);
+    // Usamos um truque no :texto para apanhar logs antigos que só tinham o ID no meio da frase
+    $stmt_logs->execute([
+        ':id' => $id_equipamento,
+        ':texto' => '%ID: ' . $id_equipamento . '%'
+    ]);
+    $lista_logs = $stmt_logs->fetchAll();
 } catch (PDOException $e) {
     die("Erro ao carregar dados: " . $e->getMessage());
 }
@@ -194,27 +210,27 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link text-secondary rounded-pill px-4 py-2 text-nowrap" id="manutencao-tab" data-bs-toggle="tab" data-bs-target="#manutencao" type="button" role="tab">
+                <button class="nav-link rounded-pill px-4 py-2 text-nowrap" id="manutencao-tab" data-bs-toggle="tab" data-bs-target="#manutencao" type="button" role="tab">
                     <i class="fa-solid fa-screwdriver-wrench me-2"></i>Ordens de Trabalho
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link text-secondary rounded-pill px-4 py-2 text-nowrap" id="documentos-tab" data-bs-toggle="tab" data-bs-target="#documentos" type="button" role="tab">
+                <button class="nav-link rounded-pill px-4 py-2 text-nowrap" id="documentos-tab" data-bs-toggle="tab" data-bs-target="#documentos" type="button" role="tab">
                     <i class="fa-regular fa-file-pdf me-2"></i>Documentos
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link text-secondary rounded-pill px-4 py-2 text-nowrap" id="comercial-tab" data-bs-toggle="tab" data-bs-target="#comercial" type="button" role="tab">
+                <button class="nav-link rounded-pill px-4 py-2 text-nowrap" id="comercial-tab" data-bs-toggle="tab" data-bs-target="#comercial" type="button" role="tab">
                     <i class="fa-solid fa-handshake me-2"></i>Comercial e Garantias
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link text-secondary rounded-pill px-4 py-2 text-nowrap" id="armazem-tab" data-bs-toggle="tab" data-bs-target="#armazem" type="button" role="tab">
+                <button class="nav-link rounded-pill px-4 py-2 text-nowrap" id="armazem-tab" data-bs-toggle="tab" data-bs-target="#armazem" type="button" role="tab">
                     <i class="fa-solid fa-boxes-stacked me-2"></i>Peças Compatíveis
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link text-secondary rounded-pill px-4 py-2 text-nowrap" id="auditoria-tab" data-bs-toggle="tab" data-bs-target="#auditoria" type="button" role="tab">
+                <button class="nav-link rounded-pill px-4 py-2 text-nowrap" id="auditoria-tab" data-bs-toggle="tab" data-bs-target="#auditoria" type="button" role="tab">
                     <i class="fa-solid fa-clock-rotate-left me-2"></i>Logs
                 </button>
             </li>
@@ -548,9 +564,50 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
         </div>
 
         <div class="tab-pane fade" id="auditoria" role="tabpanel" tabindex="0">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white text-center py-5">
-                <i class="fa-solid fa-clock-rotate-left text-muted fs-1 mb-3 opacity-50"></i>
-                <p class="text-muted">Sistema de Logs em desenvolvimento.</p>
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                <h6 class="fw-bold mb-4 text-dark fs-5"><i class="fa-solid fa-user-shield text-primary me-2"></i>Registo de Auditoria do Equipamento</h6>
+
+                <?php if (count($lista_logs) === 0): ?>
+                    <div class="text-center py-5">
+                        <i class="fa-solid fa-clock-rotate-left text-muted fs-1 mb-3 opacity-50"></i>
+                        <p class="text-muted">Ainda não existem registos de auditoria associados a este equipamento.</p>
+                    </div>
+                <?php else: ?>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light text-secondary small fw-bold">
+                                <tr>
+                                    <th>Data / Hora</th>
+                                    <th>Ação Realizada</th>
+                                    <th>Utilizador</th>
+                                    <th>Endereço IP</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($lista_logs as $log): ?>
+                                    <tr>
+                                        <td class="text-muted small">
+                                            <span class="fw-bold text-dark"><?php echo date('d/m/Y', strtotime($log['data_hora'])); ?></span><br>
+                                            <span style="font-size: 0.75rem;"><?php echo date('H:i:s', strtotime($log['data_hora'])); ?></span>
+                                        </td>
+                                        <td>
+                                            <span class="small fw-medium text-dark"><?php echo htmlspecialchars($log['acao']); ?></span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($log['nome_utilizador'] ?? 'Sistema'); ?>&background=random&color=fff&rounded=true&size=24" alt="Avatar" class="shadow-sm">
+                                                <span class="small fw-bold text-secondary"><?php echo htmlspecialchars($log['nome_utilizador'] ?? 'Desconhecido'); ?></span>
+                                            </div>
+                                        </td>
+                                        <td class="small text-muted fw-mono">
+                                            <?php echo htmlspecialchars($log['ip_origem']); ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
 

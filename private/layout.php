@@ -301,10 +301,9 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                             <a href="/sibdas/1241251/gira/private/perfis/perfis.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-user-shield text-muted w-20px me-3 text-center"></i> Perfis e Permissões</a>
                         </div>
                     <?php endif; ?>
-
                     <div class="mt-auto pt-3 border-top">
-                        <a href="/sibdas/1241251/gira/private/logout.php" class="btn btn-danger bg-opacity-10 text-danger border-0 w-100 rounded-3 fw-bold py-2 shadow-none d-flex align-items-center justify-content-center hover-danger">
-                            <i class="fa-solid fa-right-from-bracket me-2"></i> Terminar Sessão
+                        <a href="/sibdas/1241251/gira/private/logout.php" class="btn btn-danger border-0 w-100 rounded-3 fw-bold py-2 shadow-sm d-flex align-items-center justify-content-center text-white" style="color: #ffffff !important;">
+                            <i class="fa-solid fa-right-from-bracket me-2" style="color: #ffffff !important;"></i> <span style="color: #ffffff !important;">Terminar Sessão</span>
                         </a>
                     </div>
                 </div>
