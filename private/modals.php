@@ -608,7 +608,7 @@ try {
 
                 <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalNovaEncomenda'); ?>
 
-                <form id="formNovaEncomenda" action="/sibdas/1241251/gira/private/armazem/processar_encomenda.php" method="POST">
+                <form id="formNovaEncomenda" action="/sibdas/1241251/gira/private/armazem/processar_encomenda.php" method="POST" novalidate>
 
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Artigo a Encomendar</label>
@@ -628,14 +628,14 @@ try {
                             <input type="number" class="form-control bg-light border-0" name="quantidade" min="1" value="1" required>
                         </div>
                         <div class="col-6">
-                            <label class="form-label small fw-bold text-secondary">Data Prevista</label>
+                            <label class="form-label small fw-bold text-secondary">Data Prevista Chegada</label>
                             <input type="date" class="form-control bg-light border-0" name="data_prevista" min="<?php echo date('Y-m-d'); ?>" required>
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Notas / Observações</label>
-                        <textarea class="form-control bg-light border-0" name="notas" rows="2"></textarea>
+                        <textarea class="form-control bg-light border-0" name="notas" rows="2" placeholder="Ex: Urgente, stock em rutura."></textarea>
                     </div>
 
                 </form>
@@ -851,6 +851,73 @@ try {
                 <button type="button" class="btn btn-light rounded-3 fw-bold small px-4 text-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <a href="#" id="btnConfirmarEstado" class="btn rounded-3 fw-bold small px-4 shadow-sm">
                 </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalNovoArtigo" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-bottom border-light p-3">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-box text-success me-2"></i>Registar Novo Artigo</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+
+                <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalNovoArtigo'); ?>
+
+                <form id="formNovoArtigo" action="/sibdas/1241251/gira/private/armazem/processar_artigo.php" method="POST" novalidate>
+
+    
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Referência / SKU</label>
+                        <input type="text" class="form-control bg-light border-0 fw-mono" name="referencia" placeholder="Ex: REF-1029" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Nome do Consumível</label>
+                        <input type="text" class="form-control bg-light border-0" name="nome" placeholder="Ex: Máscara de Oxigénio Adulto" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Categoria do Artigo</label>
+                        <select class="form-select bg-light border-0" name="categoria" required>
+                            <option value="" selected disabled>Escolha a categoria...</option>
+                            <option value="Peças de Reparação">Peças de Reparação</option>
+                            <option value="Consumíveis Clínicos">Consumíveis Clínicos</option>
+                            <option value="Limpeza e Desinfeção">Limpeza e Desinfeção</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Fornecedor / Fabricante</label>
+                        <select class="form-select bg-light border-0" name="fornecedor_id" required>
+                            <option value="" selected disabled>Escolha o fornecedor...</option>
+                            <?php foreach ($fornecedores_dropdown as $forn): ?>
+                                <option value="<?php echo $forn['id']; ?>">
+                                    <?php echo htmlspecialchars($forn['nome_empresa']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">Quantidade Atual</label>
+                            <input type="number" class="form-control bg-light border-0" name="quantidade_atual" min="0" value="0" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold text-secondary">Alerta de Stock Mínimo</label>
+                            <input type="number" class="form-control bg-light border-0" name="quantidade_minima" min="1" value="5" required>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer border-top border-light p-3">
+                <button type="button" class="btn btn-light rounded-3 fw-bold small text-secondary px-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="formNovoArtigo" class="btn btn-success rounded-3 fw-bold small px-4">Adicionar ao Catálogo</button>
             </div>
         </div>
     </div>
