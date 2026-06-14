@@ -72,9 +72,18 @@ foreach ($fornecedores as $f):
             </span>
         </td>
         <td class="text-end text-nowrap">
-            <a href="/sibdas/1241251/gira/private/fornecedores/detalhes_fornecedor.php?id=<?php echo $f['id']; ?>" class="btn btn-light btn-sm rounded-3 border shadow-none me-1" data-bs-toggle="tooltip" title="Ver Detalhes / Editar">
+            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none me-1"
+                data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor"
+                data-id="<?php echo $f['id']; ?>"
+                data-nome="<?php echo htmlspecialchars($f['nome_empresa']); ?>"
+                data-nif="<?php echo htmlspecialchars($f['nif']); ?>"
+                data-email="<?php echo htmlspecialchars($f['email_suporte']); ?>"
+                data-telefone="<?php echo htmlspecialchars($f['telefone_suporte']); ?>"
+                data-especialidade="<?php echo htmlspecialchars($f['especialidade']); ?>"
+                data-estado="<?php echo htmlspecialchars($f['estado']); ?>"
+                title="Editar Fornecedor">
                 <i class="fa-solid fa-pen text-primary"></i>
-            </a>
+            </button>
             <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/fornecedores/eliminar_fornecedor.php?id=<?php echo $f['id']; ?>', 'Tem a certeza de que deseja abater este fornecedor?', 'Abater Fornecedor')" data-bs-toggle="tooltip" title="Abater Fornecedor">
                 <i class="fa-solid fa-trash-can text-danger"></i>
             </button>
@@ -86,3 +95,20 @@ endforeach;
 render_table_end();
 render_footer();
 ?>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modalEditar = document.getElementById('modalEditarFornecedor');
+        if (modalEditar) {
+            modalEditar.addEventListener('show.bs.modal', function(event) {
+                const btn = event.relatedTarget;
+                modalEditar.querySelector('[name="id_fornecedor"]').value = btn.getAttribute('data-id');
+                modalEditar.querySelector('[name="nome_empresa"]').value = btn.getAttribute('data-nome');
+                modalEditar.querySelector('[name="nif"]').value = btn.getAttribute('data-nif');
+                modalEditar.querySelector('[name="email_suporte"]').value = btn.getAttribute('data-email');
+                modalEditar.querySelector('[name="telefone_suporte"]').value = btn.getAttribute('data-telefone');
+                modalEditar.querySelector('[name="especialidade"]').value = btn.getAttribute('data-especialidade');
+                modalEditar.querySelector('[name="estado"]').value = btn.getAttribute('data-estado');
+            });
+        }
+    });
+</script>

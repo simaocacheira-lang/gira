@@ -61,9 +61,17 @@ foreach ($localizacoes as $loc):
             </div>
         </td>
         <td class="text-end text-nowrap">
-            <a href="/sibdas/1241251/gira/private/localizacoes/detalhes_localizacao.php?id=<?php echo $loc['id']; ?>" class="btn btn-light btn-sm rounded-3 border shadow-none me-1" data-bs-toggle="tooltip" title="Editar Localização">
+            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none me-1"
+                data-bs-toggle="modal" data-bs-target="#modalEditarLocalizacao"
+                data-id="<?php echo $loc['id']; ?>"
+                data-cod="<?php echo htmlspecialchars($loc['cod_sala']); ?>"
+                data-nome="<?php echo htmlspecialchars($loc['nome']); ?>"
+                data-detalhe="<?php echo htmlspecialchars($loc['detalhe'] ?? ''); ?>"
+                data-piso="<?php echo htmlspecialchars($loc['piso'] ?? ''); ?>"
+                data-bloco="<?php echo htmlspecialchars($loc['bloco'] ?? ''); ?>"
+                title="Editar Localização">
                 <i class="fa-solid fa-pen text-primary"></i>
-            </a>
+            </button>
             <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/localizacoes/eliminar_localizacao.php?id=<?php echo $loc['id']; ?>', 'Tem a certeza de que deseja abater esta localização?', 'Abater Localização')" data-bs-toggle="tooltip" title="Abater Localização">
                 <i class="fa-solid fa-trash-can text-danger"></i>
             </button>
@@ -75,3 +83,21 @@ endforeach;
 render_table_end();
 render_footer();
 ?>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modalEditarLoc = document.getElementById('modalEditarLocalizacao');
+        if (modalEditarLoc) {
+            modalEditarLoc.addEventListener('show.bs.modal', function(event) {
+                const btn = event.relatedTarget;
+
+                // Preenchimento à prova de bala usando IDs!
+                document.getElementById('edit_id_localizacao').value = btn.getAttribute('data-id');
+                document.getElementById('edit_cod_sala').value = btn.getAttribute('data-cod');
+                document.getElementById('edit_nome_sala').value = btn.getAttribute('data-nome');
+                document.getElementById('edit_detalhe_sala').value = btn.getAttribute('data-detalhe');
+                document.getElementById('edit_piso_sala').value = btn.getAttribute('data-piso');
+                document.getElementById('edit_bloco_sala').value = btn.getAttribute('data-bloco');
+            });
+        }
+    });
+</script>
