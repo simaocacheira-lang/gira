@@ -714,7 +714,10 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formEditarUtilizador" action="/sibdas/1241251/gira/private/utilizadores/processar_edicao_utilizador.php" method="POST">
+
+                <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalEditarUtilizador'); ?>
+
+                <form id="formEditarUtilizador" action="/sibdas/1241251/gira/private/utilizadores/processar_edicao_utilizador.php" method="POST" novalidate>
                     <input type="hidden" name="id_utilizador" id="edit_id_utilizador">
                     <div class="row g-3">
                         <div class="col-md-7">

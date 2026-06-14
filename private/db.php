@@ -213,3 +213,40 @@ function validar_tempo_gasto($tempo)
     }
     return null;
 }
+// ============================================================================
+// VALIDAÇÕES DE DOMÍNIO - UTILIZADORES
+// ============================================================================
+
+function validar_nome_utilizador($nome)
+{
+    $nome = trim($nome);
+    if (empty($nome)) {
+        return "O Nome Completo é de preenchimento obrigatório.";
+    }
+    // Verifica se o nome contém algum dígito numérico (0 a 9)
+    if (preg_match('/[0-9]/', $nome)) {
+        return "O campo Nome não pode conter números (Validação Ficha 13).";
+    }
+    if (strlen($nome) > 100) {
+        return "O Nome não pode exceder os 100 caracteres.";
+    }
+    return null;
+}
+
+function validar_cedula_opcional($cedula)
+{
+    $cedula = trim($cedula);
+    if (empty($cedula)) return null;
+    if (strlen($cedula) > 20) {
+        return "A Cédula Profissional inserida é demasiado longa.";
+    }
+    return null;
+}
+
+function validar_selecao_perfil($perfil_id)
+{
+    if (empty($perfil_id) || !is_numeric($perfil_id) || $perfil_id <= 0) {
+        return "É obrigatório selecionar um Perfil de Acesso válido para este utilizador.";
+    }
+    return null;
+}
