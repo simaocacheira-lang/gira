@@ -279,7 +279,10 @@ try {
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="formNovoDocumento" action="/sibdas/1241251/gira/private/documentos/processar_documento.php" method="POST" enctype="multipart/form-data">
+
+                <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalNovoDocumento'); ?>
+
+                <form id="formNovoDocumento" action="/sibdas/1241251/gira/private/documentos/processar_documento.php" method="POST" enctype="multipart/form-data" novalidate>
 
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Equipamento Associado</label>

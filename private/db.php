@@ -274,3 +274,27 @@ function validar_nivel_acesso($nivel)
     }
     return null;
 }
+// ============================================================================
+// VALIDAÇÕES DE DOMÍNIO - DOCUMENTOS TÉCNICOS
+// ============================================================================
+
+function validar_nome_documento($nome)
+{
+    $nome = trim($nome);
+    if (empty($nome)) {
+        return "O Nome / Título do documento é de preenchimento obrigatório.";
+    }
+    if (strlen($nome) > 100) {
+        return "O título do documento não pode exceder os 100 caracteres.";
+    }
+    return null;
+}
+
+function validar_tipo_documento($tipo)
+{
+    $tipos_validos = ['Manual Técnico', 'Certificado Conformidade (CE)', 'Guia de Calibração', 'Outro'];
+    if (empty($tipo) || !in_array($tipo, $tipos_validos)) {
+        return "Deve selecionar um Tipo de Documento válido.";
+    }
+    return null;
+}

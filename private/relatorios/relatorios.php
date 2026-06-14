@@ -96,8 +96,8 @@ foreach ($relatorios_disponiveis as $rep):
         <td><span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary-subtle px-2"><?php echo $rep['modulo']; ?></span></td>
         <td><span class="badge bg-success bg-opacity-10 text-success border border-success-subtle px-2"><i class="fa-solid fa-file-csv me-1"></i> CSV / Excel</span></td>
         <td class="text-end text-nowrap">
-            <a href="/sibdas/1241251/gira/private/relatorios/exportar_relatorio.php?tipo=<?php echo $rep['tipo']; ?>" class="btn btn-primary btn-sm rounded-3 fw-bold shadow-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Gerar e Descarregar">
-                <i class="fa-solid fa-download me-1"></i> Exportar
+            <a href="/sibdas/1241251/gira/private/relatorios/exportar_relatorio.php?tipo=<?php echo $rep['tipo']; ?>" class="btn btn-primary btn-sm rounded-3 fw-bold shadow-sm text-white" style="color: #ffffff !important;" data-bs-toggle="tooltip" data-bs-placement="top" title="Gerar e Descarregar">
+                <i class="fa-solid fa-download me-1" style="color: #ffffff !important;"></i> <span style="color: #ffffff !important;">Exportar</span>
             </a>
         </td>
     </tr>
