@@ -93,6 +93,19 @@ function validar_email_opcional($email)
     if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) return "O formato do e-mail inserido é inválido.";
     return null;
 }
+function validar_email_obrigatorio($email)
+{
+    $email = trim($email);
+    if (empty($email)) {
+        return "O E-mail de Suporte é um campo obrigatório.";
+    }
+    // O PHP tem uma função nativa maravilhosa para validar o formato de emails
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return "O formato do e-mail inserido é inválido.";
+    }
+    return null;
+}
+
 function validar_telefone_opcional($telefone)
 {
     $telefone = trim($telefone);
@@ -104,6 +117,18 @@ function validar_telefone_opcional($telefone)
     // Regex: Aceita 9 dígitos numéricos, podendo ter ou não o prefixo +351
     if (!preg_match('/^(?:\+351)?\d{9}$/', $telefone_limpo)) {
         return "O contacto telefónico é inválido (deve conter 9 dígitos).";
+    }
+    return null;
+}
+function validar_telefone_obrigatorio($telefone)
+{
+    $telefone = trim($telefone);
+    if (empty($telefone)) {
+        return "O Contacto Telefónico é um campo obrigatório.";
+    }
+    // Expressão Regular (Regex) para garantir que são inseridos exatamente 9 números
+    if (!preg_match('/^[0-9]{9}$/', $telefone)) {
+        return "O telefone de suporte deve conter exatamente 9 dígitos numéricos.";
     }
     return null;
 }
@@ -121,9 +146,30 @@ function validar_mac_opcional($mac)
 function validar_password_forte($password)
 {
     if (empty($password)) return "A palavra-passe é obrigatória.";
-    // Regra da Ficha 10: password entre 6 e 12 caracteres
     if (strlen($password) < 6 || strlen($password) > 12) {
         return "A palavra-passe deve ter entre 6 e 12 caracteres.";
+    }
+    return null;
+}
+function validar_codigo_sala($codigo)
+{
+    $codigo = trim($codigo);
+    if (empty($codigo)) {
+        return "O Código da Sala é de preenchimento obrigatório.";
+    }
+    if (!preg_match('/^S-[0-9]{3}$/', $codigo)) {
+        return "O Código da Sala tem um formato inválido. Deve seguir o padrão 'S-xxx' (Ex: S-014, S-999).";
+    }
+    return null;
+}
+function validar_nome_localizacao($nome)
+{
+    $nome = trim($nome);
+    if (empty($nome)) {
+        return "O Nome da Sala / Serviço é de preenchimento obrigatório.";
+    }
+    if (strlen($nome) > 100) {
+        return "O Nome da Sala não pode ultrapassar os 100 caracteres.";
     }
     return null;
 }

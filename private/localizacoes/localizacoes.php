@@ -38,7 +38,7 @@ try {
 // Utilização de 'label' em vez de 'text' para evitar o erro da linha 34
 render_table_start([
     ['label' => 'Cód. Sala', 'width' => '15%'],
-    ['label' => 'Nome da Sala', 'width' => '30%'],
+    ['label' => 'Localização', 'width' => '30%'],
     ['label' => 'Detalhe', 'width' => '25%'],
     ['label' => 'Piso / Bloco', 'width' => '20%'],
     ['label' => 'Ações', 'align' => 'end', 'width' => '10%']

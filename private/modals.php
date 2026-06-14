@@ -366,14 +366,14 @@ try {
                             <label class="form-label small fw-bold text-secondary">E-mail de Suporte</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-0"><i class="fa-solid fa-envelope text-muted"></i></span>
-                                <input type="email" class="form-control rounded-end-3 bg-light border-0" name="email_suporte">
+                                <input type="email" class="form-control rounded-end-3 bg-light border-0" name="email_suporte" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-secondary">Telefone / Linha de Apoio</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-0"><i class="fa-solid fa-phone text-muted"></i></span>
-                                <input type="text" class="form-control rounded-end-3 bg-light border-0" name="telefone_suporte">
+                                <input type="text" class="form-control rounded-end-3 bg-light border-0" name="telefone_suporte" required>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -482,13 +482,13 @@ try {
 
                 <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalNovaLocalizacao'); ?>
 
-                <form id="formNovaLocalizacao" action="/sibdas/1241251/gira/private/localizacoes/processar_localizacao.php" method="POST">
+                <form id="formNovaLocalizacao" action="/sibdas/1241251/gira/private/localizacoes/processar_localizacao.php" method="POST" novalidate>
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Código Sala</label>
-                        <input type="text" class="form-control bg-light border-0 fw-mono text-uppercase" name="cod_sala" placeholder="Ex: #LOC-BLO01" required>
+                        <input type="text" class="form-control bg-light border-0 fw-mono text-uppercase" name="cod_sala" placeholder="Ex: S-463" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">Nome Serviço / Sala</label>
+                        <label class="form-label small fw-bold text-secondary">Localização</label>
                         <input type="text" class="form-control bg-light border-0" name="nome" maxlength="100" placeholder="Ex: Bloco Operatório" required>
                     </div>
                     <div class="mb-3">
@@ -516,6 +516,7 @@ try {
                                 <option value="" selected disabled>Escolha...</option>
                                 <option value="Bloco Central">Bloco Central</option>
                                 <option value="Bloco Cirúrgico">Bloco Cirúrgico</option>
+                                <option value="Bloco Urgências">Bloco Urgências</option>
                                 <option value="Ala Norte">Ala Norte</option>
                                 <option value="Ala Sul">Ala Sul</option>
                                 <option value="Ala Pediátrica">Ala Pediátrica</option>
@@ -552,7 +553,7 @@ try {
                         <input type="text" class="form-control bg-light border-0 fw-mono text-uppercase" name="cod_sala" id="edit_cod_sala" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">Nome Serviço / Sala</label>
+                        <label class="form-label small fw-bold text-secondary">Localização</label>
                         <input type="text" class="form-control bg-light border-0" name="nome" id="edit_nome_sala" maxlength="100" required>
                     </div>
                     <div class="mb-3">
@@ -580,6 +581,7 @@ try {
                                 <option value="" selected disabled>Escolha...</option>
                                 <option value="Bloco Central">Bloco Central</option>
                                 <option value="Bloco Cirúrgico">Bloco Cirúrgico</option>
+                                <option value="Bloco Urgências">Bloco Urgências</option>
                                 <option value="Ala Norte">Ala Norte</option>
                                 <option value="Ala Sul">Ala Sul</option>
                                 <option value="Ala Pediátrica">Ala Pediátrica</option>
@@ -868,7 +870,7 @@ try {
 
                 <form id="formNovoArtigo" action="/sibdas/1241251/gira/private/armazem/processar_artigo.php" method="POST" novalidate>
 
-    
+
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Referência / SKU</label>
                         <input type="text" class="form-control bg-light border-0 fw-mono" name="referencia" placeholder="Ex: REF-1029" required>

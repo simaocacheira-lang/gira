@@ -15,8 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($e = validar_texto_obrigatorio($nome, 100, "Nome da Empresa")) $erros[] = $e;
     if ($e = validar_nif($nif)) $erros[] = $e;
-    if ($e = validar_email_opcional($email)) $erros[] = $e;
-    if ($e = validar_telefone_opcional($telefone)) $erros[] = $e;
+    if ($e = validar_email_obrigatorio($email)) $erros[] = $e;
+    if ($e = validar_telefone_obrigatorio($telefone)) $erros[] = $e;
     if (empty($especialidade)) $erros[] = "A Especialidade é obrigatória.";
 
     if (!empty($erros)) {

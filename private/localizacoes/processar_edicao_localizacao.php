@@ -9,8 +9,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cod_sala = trim($_POST['cod_sala'] ?? '');
     $nome = trim($_POST['nome'] ?? '');
 
-    if ($e = validar_texto_obrigatorio($nome, 100, "Nome da Localização")) $erros[] = $e;
-    if (empty($cod_sala)) $erros[] = "O Código da Sala é obrigatório.";
+    if ($e = validar_nome_localizacao($nome)) $erros[] =$e;
+    if ($e = validar_codigo_sala($cod_sala)) $erros[] = $e;
 
     if (!empty($erros)) {
         $_SESSION['erros'] = $erros;
