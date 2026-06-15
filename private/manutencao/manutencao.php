@@ -16,6 +16,45 @@ try {
     die("Erro ao carregar o dashboard de manutenção: " . $e->getMessage());
 }
 
+try {
+    // Buscar equipamentos que tenham uma data de revisão definida
+    $sql_prev = "SELECT e.id, e.codigo_ativo, e.nome, e.proxima_revisao, l.cod_sala 
+                 FROM equipamentos e 
+                 LEFT JOIN localizacoes l ON e.localizacao_id = l.id 
+                 WHERE e.proxima_revisao IS NOT NULL AND e.apagado_em IS NULL 
+                 ORDER BY e.proxima_revisao ASC";
+    $stmt_prev = $pdo->query($sql_prev);
+    $lista_preventiva = $stmt_prev->fetchAll();
+
+    // =======================================================
+    // CONVERTER DADOS PARA O FULLCALENDAR (JSON)
+    // =======================================================
+    $eventos_calendario = [];
+    foreach ($lista_preventiva as $prev) {
+        $hoje = strtotime(date('Y-m-d'));
+        $data_revisao = strtotime($prev['proxima_revisao']);
+        $dias_em_falta = round(($data_revisao - $hoje) / (60 * 60 * 24));
+
+        // Cores do Bootstrap em Hexadecimal
+        $cor_evento = '#198754'; // Verde (No prazo)
+        if ($dias_em_falta < 0) {
+            $cor_evento = '#dc3545'; // Vermelho (Atrasado)
+        } elseif ($dias_em_falta <= 15) {
+            $cor_evento = '#ffc107'; // Amarelo/Laranja (Urgente)
+        }
+
+        $eventos_calendario[] = [
+            'title' => $prev['codigo_ativo'] . ' - ' . $prev['nome'],
+            'start' => $prev['proxima_revisao'],
+            'url'   => '/sibdas/1241251/gira/private/equipamentos/detalhes_equipamento.php?id=' . $prev['id'] . '&tab=manutencao',
+            'color' => $cor_evento
+        ];
+    }
+    $json_eventos = json_encode($eventos_calendario);
+} catch (PDOException $e) {
+    die("Erro ao carregar o plano preventivo: " . $e->getMessage());
+}
+
 // 3. Montamos o topo da página
 render_header("Gira - Ordens de Trabalho e Manutenção");
 ?>
@@ -141,27 +180,59 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
 
     <div class="tab-pane fade" id="calendario" role="tabpanel" tabindex="0">
         <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h5 class="fw-bold text-dark m-0">Junho 2026</h5>
-                <p class="text-muted small mt-4"><em>(Visualização do Calendário Estática para Efeitos de Design)</em></p>
-            </div>
+            <h5 class="fw-bold text-dark mb-4"><i class="fa-solid fa-calendar-days text-primary me-2"></i>Calendário de Intervenções Preventivas</h5>
+
+            <div id="calendario-preventivo"></div>
         </div>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // 1. Inicializar o FullCalendar
+        var calendarEl = document.getElementById('calendario-preventivo');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'pt',
+            height: 'auto',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,listMonth'
+            },
+            buttonText: {
+                today: 'Hoje',
+                month: 'Mês',
+                list: 'Lista'
+            },
+            events: <?php echo $json_eventos; ?>,
+            eventClick: function(info) {
+                window.location.href = info.event.url;
+                info.jsEvent.preventDefault();
+            }
+        });
+
+        // 2. Truque para renderizar o calendário corretamente ao mudar de aba
+        var tabs = document.querySelectorAll('button[data-bs-toggle="tab"]');
+        tabs.forEach(function(tab) {
+            tab.addEventListener('shown.bs.tab', function(event) {
+                if (event.target.getAttribute('data-bs-target') === '#calendario') {
+                    calendar.render();
+                }
+            });
+        });
+
+        // 3. Lógica original do Modal de Fechar O.T.
         const modalFecharOT = document.getElementById('modalFecharOT');
         if (modalFecharOT) {
             modalFecharOT.addEventListener('show.bs.modal', function(event) {
                 const button = event.relatedTarget;
-
-                // Apanhar os dados
                 const idOt = button.getAttribute('data-id');
                 const numOt = button.getAttribute('data-numero');
                 const idEquip = button.getAttribute('data-equipamento');
 
-                // Preencher o modal
                 document.getElementById('fecho_id_ot').value = idOt;
                 document.getElementById('fecho_id_equipamento').value = idEquip;
                 document.getElementById('fecho_numero_ot').textContent = numOt;

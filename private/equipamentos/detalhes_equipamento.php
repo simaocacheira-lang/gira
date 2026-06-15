@@ -299,6 +299,43 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
             <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
                 <h6 class="fw-bold mb-4 text-dark fs-5"><i class="fa-solid fa-clock-rotate-left text-primary me-2"></i>Histórico de Intervenções</h6>
 
+                <?php if (!empty($eq['proxima_revisao'])):
+                    $hoje = strtotime(date('Y-m-d'));
+                    $data_revisao = strtotime($eq['proxima_revisao']);
+                    $dias = round(($data_revisao - $hoje) / (60 * 60 * 24));
+
+                    $cor_alerta = 'success';
+                    $icone_alerta = 'fa-calendar-check';
+                    if ($dias < 0) {
+                        $cor_alerta = 'danger';
+                        $icone_alerta = 'fa-calendar-xmark';
+                    } elseif ($dias <= 15) {
+                        $cor_alerta = 'warning text-dark';
+                        $icone_alerta = 'fa-clock';
+                    }
+                ?>
+                    <div class="alert bg-<?php echo str_replace(' text-dark', '', $cor_alerta); ?> bg-opacity-10 border border-<?php echo str_replace(' text-dark', '', $cor_alerta); ?>-subtle rounded-4 d-flex align-items-center mb-4 p-3 shadow-sm">
+                        <div class="bg-<?php echo $cor_alerta; ?> text-white rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 48px; height: 48px;">
+                            <i class="fa-solid <?php echo $icone_alerta; ?> fs-5" style="color: #ffffff !important;"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="fw-bold mb-1 text-dark">Revisão Preventiva Agendada</h6>
+                            <p class="mb-0 small text-dark">
+                                A próxima intervenção está planeada para <strong><?php echo date('d/m/Y', strtotime($eq['proxima_revisao'])); ?></strong>
+                                <?php
+                                if ($dias < 0) echo "<span class='text-danger fw-bold'>(Atrasada há " . abs($dias) . " dias!)</span>";
+                                elseif ($dias == 0) echo "<span class='text-warning fw-bold'>(É hoje!)</span>";
+                                else echo "<span class='text-muted'>(Faltam " . $dias . " dias)</span>";
+                                ?>.
+                            </p>
+                        </div>
+                        <div class="ms-auto ps-3 border-start border-<?php echo str_replace(' text-dark', '', $cor_alerta); ?>-subtle">
+                            <button type="button" class="btn btn-<?php echo str_replace(' text-dark', '', $cor_alerta); ?> btn-sm fw-bold rounded-3 shadow-sm text-white" style="color: #ffffff !important;" data-bs-toggle="modal" data-bs-target="#modalAbrirOT" data-idequip="<?php echo $eq['id']; ?>">
+                                <i class="fa-solid fa-play me-1" style="color: #ffffff !important;"></i> Iniciar O.T.
+                            </button>
+                        </div>
+                    </div>
+                <?php endif; ?>
                 <?php if (count($historico_ots) === 0): ?>
                     <div class="text-center py-5">
                         <i class="fa-solid fa-screwdriver-wrench text-muted fs-1 mb-3 opacity-50"></i>
@@ -646,6 +683,32 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
             if (botaoAba) {
                 botaoAba.click();
             }
+        }
+
+        // 4. MÁGICA: Preencher automaticamente o Modal de Abrir O.T. se viermos do Alerta
+        const modalAbrirOT = document.getElementById('modalAbrirOT');
+        if (modalAbrirOT) {
+            modalAbrirOT.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const idEquip = button.getAttribute('data-idequip');
+
+                // Se o botão tiver um ID de equipamento (ou seja, veio do botão do alerta)
+                if (idEquip) {
+                    // 4.1. Seleciona o equipamento correto na dropdown
+                    const selectEquip = modalAbrirOT.querySelector('select[name="equipamento_id"]');
+                    if (selectEquip) {
+                        selectEquip.value = idEquip;
+                        // Opcional de UX: bloqueia o clique para impedir o user de mudar sem querer
+                        selectEquip.style.pointerEvents = 'none';
+                    }
+
+                    // 4.2. BÓNUS: Preenche logo o tipo como "Preventiva"
+                    const selectTipo = modalAbrirOT.querySelector('select[name="tipo_manutencao"]');
+                    if (selectTipo) {
+                        selectTipo.value = 'Preventiva (Revisão/Calibração)';
+                    }
+                }
+            });
         }
     });
 </script>

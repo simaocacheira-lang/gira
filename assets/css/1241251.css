@@ -701,3 +701,87 @@ body.login-bg {
 #equipamentoTabs .nav-link.active i {
   color: #ffffff !important; /* Ícone obrigatoriamente branco */
 }
+/* ============================================================================
+   PERSONALIZAÇÃO DO CALENDÁRIO (FULLCALENDAR)
+============================================================================ */
+
+/* Suavizar a grelha e remover as linhas escuras */
+.fc-theme-standard th,
+.fc-theme-standard td,
+.fc-theme-standard .fc-scrollgrid {
+  border-color: #f1f3f5 !important;
+}
+
+/* Estilo do título do Mês (Junho 2026, etc) */
+.fc .fc-toolbar-title {
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  color: #2b3035 !important;
+  text-transform: capitalize;
+}
+
+/* Transformar os botões feios em botões modernos (estilo Bootstrap) */
+.fc .fc-button-primary {
+  background-color: #f8f9fa !important;
+  border-color: #dee2e6 !important;
+  color: #495057 !important;
+  font-weight: 600 !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05) !important;
+  text-transform: capitalize !important;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Efeito Hover e Ativo dos botões (Ficam azuis quando clicados) */
+.fc .fc-button-primary:not(:disabled):active,
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:hover {
+  background-color: #0d6efd !important;
+  border-color: #0d6efd !important;
+  color: #ffffff !important;
+}
+
+/* Estilizar os dias da semana no topo (Seg, Ter, Qua...) */
+.fc .fc-col-header-cell-cushion {
+  color: #6c757d !important;
+  font-weight: 700 !important;
+  font-size: 0.8rem;
+  text-decoration: none !important;
+  padding: 12px 0 !important;
+  text-transform: uppercase;
+}
+
+/* Estilizar os números dos dias */
+.fc .fc-daygrid-day-number {
+  color: #495057 !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  padding: 8px !important;
+}
+
+/* Destacar o dia de HOJE com um fundo azul muito suave (em vez do amarelo de origem) */
+.fc .fc-day-today {
+  background-color: rgba(13, 110, 253, 0.05) !important;
+}
+
+/* =======================================================
+   O TOQUE MÁGICO: ESTILIZAÇÃO DOS EVENTOS (BARRAS)
+======================================================= */
+.fc-h-event {
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 4px 6px !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  cursor: pointer !important;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Faz a barra "saltar" ligeiramente quando passas o rato por cima */
+.fc-h-event:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+}

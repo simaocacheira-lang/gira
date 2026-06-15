@@ -3,24 +3,6 @@
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../layout.php';
 
-// 2. LÓGICA DINÂMICA: Calcular KPIs Reais do Hospital
-try {
-    // A) Disponibilidade Geral do Parque
-    $stmt_total = $pdo->query("SELECT COUNT(*) FROM equipamentos");
-    $total_equipamentos = $stmt_total->fetchColumn();
-
-    $stmt_op = $pdo->query("SELECT COUNT(*) FROM equipamentos WHERE estado = 'Operacional'");
-    $equipamentos_op = $stmt_op->fetchColumn();
-
-    $taxa_disponibilidade = ($total_equipamentos > 0) ? round(($equipamentos_op / $total_equipamentos) * 100, 1) : 0;
-
-    // B) Ordens de Trabalho Pendentes vs Concluídas
-    $stmt_ots = $pdo->query("SELECT COUNT(*) FROM ordens_trabalho WHERE estado != 'Concluída'");
-    $ots_abertas = $stmt_ots->fetchColumn();
-} catch (PDOException $e) {
-    die("Erro ao carregar indicadores: " . $e->getMessage());
-}
-
 render_header("Gira - Relatórios Analíticos e Indicadores");
 ?>
 
@@ -28,23 +10,6 @@ render_header("Gira - Relatórios Analíticos e Indicadores");
     <div>
         <h2 class="fw-bold m-0">Centro de Relatórios</h2>
         <p class="text-muted m-0 small">Indicadores de desempenho em tempo real e exportação de dados para Excel/CSV.</p>
-    </div>
-</div>
-
-<div class="row g-3 mb-4">
-    <div class="col-12 col-sm-6 col-xl-4">
-        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white border-start border-success border-4">
-            <small class="text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Disponibilidade Geral</small>
-            <h3 class="fw-bold my-1 text-success"><?php echo $taxa_disponibilidade; ?>%</h3>
-            <small class="text-muted" style="font-size: 0.75rem;"><?php echo $equipamentos_op; ?> de <?php echo $total_equipamentos; ?> operacionais</small>
-        </div>
-    </div>
-    <div class="col-12 col-sm-6 col-xl-4">
-        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white border-start border-warning border-4">
-            <small class="text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Manutenções em Curso</small>
-            <h3 class="fw-bold my-1 text-warning"><?php echo $ots_abertas; ?> O.T.s</h3>
-            <small class="text-muted" style="font-size: 0.75rem;">A aguardar resolução técnica</small>
-        </div>
     </div>
 </div>
 
