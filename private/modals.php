@@ -333,7 +333,7 @@ try {
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 rounded-4 shadow">
             <div class="modal-header border-bottom border-light p-3">
-                <h5 class="modal-title fw-bold"><i class="fa-solid fa-file-shield text-primary me-2"></i>Registar Nova Garantia</h5>
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-file-shield text-primary me-2"></i>Registar Nova Garantia / Contrato</h5>
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
@@ -344,18 +344,18 @@ try {
                     <input type="hidden" name="is_nova_garantia" value="1">
 
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">Equipamento (Sem Garantia)</label>
+                        <label class="form-label small fw-bold text-secondary">Equipamento Associado</label>
                         <select class="form-select bg-light border-0 fw-bold text-primary" name="id_equipamento" required>
                             <option value="" selected disabled>Selecione o equipamento...</option>
-                            <?php foreach ($equipamentos_sem_garantia as $eq_sg): ?>
-                                <option value="<?php echo $eq_sg['id']; ?>">
-                                    <?php echo htmlspecialchars($eq_sg['codigo_ativo'] . ' - ' . $eq_sg['nome']); ?>
+                            <?php foreach ($equipamentos_dropdown as $eq): ?>
+                                <option value="<?php echo $eq['id']; ?>">
+                                    <?php echo htmlspecialchars($eq['codigo_ativo'] . ' - ' . $eq['nome']); ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold text-secondary">Data de Fim da Garantia</label>
+                        <label class="form-label small fw-bold text-secondary">Data de Fim do Contrato / Garantia</label>
                         <input type="date" class="form-control rounded-3 bg-light border-0" name="fim_garantia" required>
                     </div>
                 </form>
@@ -378,7 +378,7 @@ try {
             <div class="modal-body p-4">
 
                 <?php if (function_exists('exibir_erros_modal')) exibir_erros_modal('modalAdicionarGarantia'); ?>
-                
+
                 <form id="formGarantia" action="/sibdas/1241251/gira/private/garantias/processar_garantia.php" method="POST" novalidate>
                     <input type="hidden" name="id_equipamento" id="garantia_id_equipamento">
                     <div class="mb-3">

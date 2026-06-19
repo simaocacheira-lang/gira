@@ -115,7 +115,6 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 small">
-                    <li><a class="dropdown-item fw-medium py-2" href="#"><i class="fa-solid fa-qrcode text-muted me-2"></i> Imprimir Etiqueta QR</a></li>
                     <?php if ($eq['estado'] == 'Operacional'): ?>
                         <li>
                             <button type="button" class="dropdown-item fw-medium py-2" onclick="confirmarEstado('/sibdas/1241251/gira/private/equipamentos/suspender_equipamento.php?id=<?php echo $eq['id']; ?>&acao=suspender', 'Tem a certeza que deseja suspender a atividade deste equipamento? Ele passará automaticamente ao estado de Inoperacional.', 'Suspender Equipamento', 'suspender')">
