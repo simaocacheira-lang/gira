@@ -4,6 +4,7 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $erros = [];
+    $url_origem = $_SERVER['HTTP_REFERER'] ?? '/sibdas/1241251/gira/private/manutencao/manutencao.php';
 
     // 1. Recolha
     $id_ot = $_POST['id_ot'] ?? '';
@@ -21,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['erros'] = $erros;
         $_SESSION['modal_aberto'] = 'modalFecharOT';
         $_SESSION['dados_form'] = $_POST;
-        header("Location: /sibdas/1241251/gira/private/manutencao/manutencao.php");
+        header("Location: " . $url_origem);
         exit;
     }
 
@@ -41,14 +42,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (function_exists('registar_log')) {
             registar_log($pdo, $_SESSION['user_id'], "Encerrou a Ordem de Trabalho (ID: $id_ot) e definiu estado do equipamento como '$novo_estado'", "Manutenção");
         }
-        header("Location: /sibdas/1241251/gira/private/manutencao/manutencao.php?sucesso=ot_fechada");
+        $url_origem = preg_replace('/([&?])sucesso=[^&]*(&|$)/', '$1', $url_origem);
+        $url_origem = rtrim($url_origem, '?&');
+        $separador = (strpos($url_origem, '?') !== false) ? '&' : '?';
+        header("Location: " . $url_origem . $separador . "sucesso=ot_fechada");
         exit;
     } catch (PDOException $e) {
         $pdo->rollBack();
         $_SESSION['erros'] = ["Erro crítico ao fechar OT: " . $e->getMessage()];
         $_SESSION['modal_aberto'] = 'modalFecharOT';
         $_SESSION['dados_form'] = $_POST;
-        header("Location: /sibdas/1241251/gira/private/manutencao/manutencao.php");
+        header("Location: " . $url_origem);
         exit;
     }
 } else {

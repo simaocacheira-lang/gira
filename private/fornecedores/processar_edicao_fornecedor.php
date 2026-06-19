@@ -5,6 +5,7 @@ session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_fornecedor = (int) $_POST['id_fornecedor'];
     $erros = [];
+    $url_origem = $_SERVER['HTTP_REFERER'] ?? '/sibdas/1241251/gira/private/fornecedores/fornecedores.php';
 
     $nome = trim($_POST['nome_empresa'] ?? '');
     $nif = trim($_POST['nif'] ?? '');
@@ -23,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['erros'] = $erros;
         $_SESSION['modal_aberto'] = 'modalEditarFornecedor';
         $_SESSION['dados_form'] = $_POST;
-        header("Location: /sibdas/1241251/gira/private/fornecedores/fornecedores.php");
+        header("Location: " . $url_origem);
         exit;
     }
 
@@ -45,13 +46,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (function_exists('registar_log')) {
             registar_log($pdo, $_SESSION['user_id'], "Editou os dados do fornecedor: " . $nome, "Fornecedores");
         }
-        header("Location: /sibdas/1241251/gira/private/fornecedores/fornecedores.php?sucesso=atualizado");
+        $url_origem = preg_replace('/([&?])sucesso=[^&]*(&|$)/', '$1', $url_origem);
+        $url_origem = rtrim($url_origem, '?&');
+        $separador = (strpos($url_origem, '?') !== false) ? '&' : '?';
+        header("Location: " . $url_origem . $separador . "sucesso=editado");
         exit;
     } catch (PDOException $e) {
         $_SESSION['erros'] = ["Erro: O NIF inserido já pertence a outro fornecedor."];
         $_SESSION['modal_aberto'] = 'modalEditarFornecedor';
         $_SESSION['dados_form'] = $_POST;
-        header("Location: /sibdas/1241251/gira/private/fornecedores/fornecedores.php");
+        header("Location: " . $url_origem);
         exit;
     }
 }

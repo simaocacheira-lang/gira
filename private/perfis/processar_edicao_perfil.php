@@ -4,6 +4,7 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $erros = [];
+    $url_origem = $_SERVER['HTTP_REFERER'] ?? '/sibdas/1241251/gira/private/perfis/perfis.php';
 
     $id = (int) ($_POST['id_perfil'] ?? 0);
     $nome = trim($_POST['nome_perfil'] ?? '');
@@ -23,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['erros'] = $erros;
         $_SESSION['modal_aberto'] = 'modalEditarPerfil';
         $_SESSION['dados_form'] = $_POST;
-        header("Location: /sibdas/1241251/gira/private/perfis/perfis.php");
+        header("Location: " . $url_origem);
         exit;
     }
 
@@ -36,13 +37,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (function_exists('registar_log')) {
             registar_log($pdo, $_SESSION['user_id'], "Editou o perfil de acesso: " . $nome . " (Nível " . $nivel . ")", "Perfis");
         }
-        header("Location: /sibdas/1241251/gira/private/perfis/perfis.php?sucesso=perfil_editado");
+        $url_origem = preg_replace('/([&?])sucesso=[^&]*(&|$)/', '$1', $url_origem);
+        $url_origem = rtrim($url_origem, '?&');
+        $separador = (strpos($url_origem, '?') !== false) ? '&' : '?';
+        header("Location: " . $url_origem . $separador . "sucesso=perfil_atualizado");
         exit;
     } catch (PDOException $e) {
         $_SESSION['erros'] = ["Erro na base de dados: " . $e->getMessage()];
         $_SESSION['modal_aberto'] = 'modalEditarPerfil';
         $_SESSION['dados_form'] = $_POST;
-        header("Location: /sibdas/1241251/gira/private/perfis/perfis.php");
+        header("Location: " . $url_origem);
         exit;
     }
 } else {

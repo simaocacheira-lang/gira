@@ -43,30 +43,6 @@ render_header("Gira - Armazém e Gestão de Stock Técnico");
     </button>
 </div>
 
-<div class="row g-3 mb-4">
-    <div class="col-12 col-md-4">
-        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white border-start border-danger border-4">
-            <small class="text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Stock em Rutura</small>
-            <h3 class="fw-bold my-1 text-danger"><?php echo $total_ruturas; ?> Artigos</h3>
-            <small class="text-muted" style="font-size: 0.75rem;">A necessitar de compra urgente</small>
-        </div>
-    </div>
-    <div class="col-12 col-md-4">
-        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white border-start border-warning border-4">
-            <small class="text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Valor Total em Stock</small>
-            <h3 class="fw-bold my-1 text-dark">-- €</h3>
-            <small class="text-muted" style="font-size: 0.75rem;">Módulo financeiro em desenvolvimento</small>
-        </div>
-    </div>
-    <div class="col-12 col-md-4">
-        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white border-start border-success border-4">
-            <small class="text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Movimentações (Mês)</small>
-            <h3 class="fw-bold my-1 text-success">--</h3>
-            <small class="text-muted" style="font-size: 0.75rem;">Módulo estatístico em desenvolvimento</small>
-        </div>
-    </div>
-</div>
-
 <?php
 // 1. Definimos as colunas da tabela com as larguras (width) adequadas
 $colunas = [

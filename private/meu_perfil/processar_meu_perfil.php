@@ -11,6 +11,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $acao = $_POST['acao'];
     $meu_id = $_SESSION['user_id'];
 
+    // 1. APANHAR A ORIGEM
+    $url_origem = $_SERVER['HTTP_REFERER'] ?? '/sibdas/1241251/gira/private/meu_perfil/meu_perfil.php';
+
     try {
         if ($acao === 'dados') {
             $nome = trim($_POST['nome']);
@@ -19,7 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (empty($cedula)) $cedula = null;
 
             if (preg_match('/\d/', $nome)) {
-                header("Location: /sibdas/1241251/gira/private/meu_perfil/meu_perfil.php?erro=nome_invalido");
+                $separador = (strpos($url_origem, '?') !== false) ? '&' : '?';
+                header("Location: " . $url_origem . $separador . "erro=nome_invalido");
                 exit;
             }
 
@@ -33,14 +37,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 registar_log($pdo, $meu_id, "Atualizou os dados do seu próprio perfil", "Conta Pessoal");
             }
 
-            header("Location: /sibdas/1241251/gira/private/meu_perfil/meu_perfil.php?sucesso=1");
+            // LIMPEZA E REDIRECIONAMENTO COM SUCESSO
+            $url_origem = preg_replace('/([&?])sucesso=[^&]*(&|$)/', '$1', $url_origem);
+            $url_origem = preg_replace('/([&?])erro=[^&]*(&|$)/', '$1', $url_origem);
+            $url_origem = rtrim($url_origem, '?&');
+            $separador = (strpos($url_origem, '?') !== false) ? '&' : '?';
+
+            header("Location: " . $url_origem . $separador . "sucesso=1");
             exit;
         } elseif ($acao === 'password') {
             $nova_pass = $_POST['nova_pass'];
             $confirma_pass = $_POST['confirma_pass'];
 
             if ($nova_pass !== $confirma_pass) {
-                header("Location: /sibdas/1241251/gira/private/meu_perfil/meu_perfil.php?erro=pass_mismatch");
+                $separador = (strpos($url_origem, '?') !== false) ? '&' : '?';
+                header("Location: " . $url_origem . $separador . "erro=pass_mismatch");
                 exit;
             }
 
@@ -53,14 +64,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 registar_log($pdo, $meu_id, "Alterou a sua palavra-passe", "Segurança");
             }
 
+            // SEGURANÇA: Se a password mudar, não usamos o redirecionamento. Expulsamos para o login!
             header("Location: /sibdas/1241251/gira/private/logout.php");
             exit;
         }
     } catch (PDOException $e) {
-        if ($e->getCode() == 23000) {
-            header("Location: /sibdas/1241251/gira/private/meu_perfil/meu_perfil.php?erro=email_duplicado");
-            exit;
-        }
         die("Erro ao atualizar perfil: " . $e->getMessage());
     }
 } else {

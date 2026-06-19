@@ -4,6 +4,7 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $erros = [];
+    $url_origem = $_SERVER['HTTP_REFERER'] ?? '/sibdas/1241251/gira/private/garantias/garantias.php';
 
     $id_equipamento = $_POST['id_equipamento'] ?? '';
     $fim_garantia = $_POST['fim_garantia'] ?? '';
@@ -19,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['erros'] = $erros;
         $_SESSION['modal_aberto'] = $modal_origem;
         $_SESSION['dados_form'] = $_POST;
-        header("Location: /sibdas/1241251/gira/private/garantias/garantias.php");
+        header("Location: " . $url_origem);
         exit;
     }
 
@@ -35,13 +36,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             registar_log($pdo, $_SESSION['user_id'], "Atualizou a data de garantia do equipamento (ID: $id_equipamento) para $fim_garantia", "Garantias");
         }
 
-        header("Location: /sibdas/1241251/gira/private/garantias/garantias.php?sucesso=garantia_atualizada");
+        $url_origem = preg_replace('/([&?])sucesso=[^&]*(&|$)/', '$1', $url_origem);
+        $url_origem = rtrim($url_origem, '?&');
+        $separador = (strpos($url_origem, '?') !== false) ? '&' : '?';
+        header("Location: " . $url_origem . $separador . "sucesso=garantia_atualizada");
         exit;
     } catch (PDOException $e) {
         $_SESSION['erros'] = ["Erro ao atualizar a garantia: " . $e->getMessage()];
         $_SESSION['modal_aberto'] = $modal_origem;
         $_SESSION['dados_form'] = $_POST;
-        header("Location: /sibdas/1241251/gira/private/garantias/garantias.php");
+        header("Location: " . $url_origem);
         exit;
     }
 } else {

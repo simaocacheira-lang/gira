@@ -4,6 +4,7 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $erros = [];
+    $url_origem = $_SERVER['HTTP_REFERER'] ?? '/sibdas/1241251/gira/private/localizacoes/localizacoes.php';
 
     // 1. Recolher Dados
     $cod_sala = trim($_POST['cod_sala'] ?? '');
@@ -22,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['erros'] = $erros;
         $_SESSION['modal_aberto'] = 'modalNovaLocalizacao';
         $_SESSION['dados_form'] = $_POST;
-        header("Location: /sibdas/1241251/gira/private/localizacoes/localizacoes.php");
+        header("Location: " . $url_origem);
         exit;
     }
 
@@ -44,7 +45,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             registar_log($pdo, $_SESSION['user_id'], "Mapeou uma nova localização hospitalar: $cod_sala ($nome)", "Localizações");
         }
 
-        header("Location: /sibdas/1241251/gira/private/localizacoes/localizacoes.php?sucesso=registado");
+        $url_origem = preg_replace('/([&?])sucesso=[^&]*(&|$)/', '$1', $url_origem);
+        $url_origem = rtrim($url_origem, '?&');
+        $separador = (strpos($url_origem, '?') !== false) ? '&' : '?';
+        header("Location: " . $url_origem . $separador . "sucesso=registado");
         exit;
     } catch (PDOException $e) {
         if ($e->getCode() == 23000) {
@@ -54,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $_SESSION['modal_aberto'] = 'modalNovaLocalizacao';
         $_SESSION['dados_form'] = $_POST;
-        header("Location: /sibdas/1241251/gira/private/localizacoes/localizacoes.php");
+        header("Location: " . $url_origem);
         exit;
     }
 } else {

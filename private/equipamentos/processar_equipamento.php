@@ -5,6 +5,7 @@ session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $erros = [];
+    $url_origem = $_SERVER['HTTP_REFERER'] ?? '/sibdas/1241251/gira/private/equipamentos/equipamentos.php';
 
     // 1. RECOLHER DADOS
     $nome = trim($_POST['nome'] ?? '');
@@ -38,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['erros'] = $erros;
         $_SESSION['modal_aberto'] = 'modalRegistarEquipamento';
         $_SESSION['dados_form'] = $_POST;
-        header("Location: /sibdas/1241251/gira/private/equipamentos/equipamentos.php");
+        header("Location: " . $url_origem);
         exit;
     }
 
@@ -78,13 +79,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             registar_log($pdo, $_SESSION['user_id'], "Registou um novo equipamento: $codigo_gerado - $nome", "Equipamentos");
         }
 
-        header("Location: /sibdas/1241251/gira/private/equipamentos/equipamentos.php?sucesso=registado");
+        $url_origem = preg_replace('/([&?])sucesso=[^&]*(&|$)/', '$1', $url_origem);
+        $url_origem = rtrim($url_origem, '?&');
+        $separador = (strpos($url_origem, '?') !== false) ? '&' : '?';
+        header("Location: " . $url_origem . $separador . "sucesso=atualizado");
         exit;
     } catch (PDOException $e) {
         $_SESSION['erros'] = ["Erro crítico ao registar o equipamento: " . $e->getMessage()];
         $_SESSION['modal_aberto'] = 'modalRegistarEquipamento';
         $_SESSION['dados_form'] = $_POST;
-        header("Location: /sibdas/1241251/gira/private/equipamentos/equipamentos.php");
+        header("Location: " . $url_origem);
         exit;
     }
 } else {

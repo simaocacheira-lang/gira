@@ -5,7 +5,10 @@ session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $erros = [];
 
-    // 1. APANHAR O ID (Para saber para onde voltar se houver erros)
+    // 1. APANHAR A ORIGEM (Redirecionamento Inteligente HTTP_REFERER)
+    $url_origem = $_SERVER['HTTP_REFERER'] ?? '/sibdas/1241251/gira/private/documentos/documentos.php';
+
+    // Apanhar o ID do equipamento (apenas para associar na Base de Dados e para o nome do ficheiro)
     $id_equipamento = 0;
     if (!empty($_POST['id_equipamento'])) {
         $id_equipamento = (int) $_POST['id_equipamento'];
@@ -13,16 +16,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id_equipamento = (int) $_GET['id'];
     }
 
-    // Configuração do URL de retorno (Pode voltar para os documentos gerais ou para um equipamento específico)
-    $url_retorno = ($id_equipamento > 0)
-        ? "/sibdas/1241251/gira/private/documentos/documentos.php?id=" . $id_equipamento
-        : "/sibdas/1241251/gira/private/documentos/documentos.php";
-
     // 2. DETETOR DE FICHEIROS PESADOS (Proteção contra limite do servidor post_max_size)
     if (empty($_POST) && empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > 0) {
         $_SESSION['erros'] = ["Ficheiro demasiado grande! O limite do servidor foi ultrapassado. Tente um PDF mais pequeno."];
         $_SESSION['modal_aberto'] = 'modalNovoDocumento';
-        header("Location: " . $url_retorno);
+        header("Location: " . $url_origem);
         exit;
     }
 
@@ -46,12 +44,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // 5. DEVOLVER ERROS (Sem usar o "die()")
+    // 5. DEVOLVER ERROS
     if (!empty($erros)) {
         $_SESSION['erros'] = $erros;
         $_SESSION['modal_aberto'] = 'modalNovoDocumento';
         $_SESSION['dados_form'] = $_POST;
-        header("Location: " . $url_retorno);
+        header("Location: " . $url_origem);
         exit;
     }
 
@@ -82,22 +80,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 registar_log($pdo, $_SESSION['user_id'], "Fez upload do ficheiro '$nome_doc'", "Documentos");
             }
 
-            // Redirecionamento Dinâmico (Mantém o utilizador onde estava)
-            $separador = (strpos($url_retorno, '?') !== false) ? '&' : '?';
-            header("Location: " . $url_retorno . $separador . "sucesso=doc_adicionado&tab=documentos");
+            // ====================================================================
+            // MAGIA DE REDIRECIONAMENTO COM SUCESSO (Mantém o utilizador onde estava)
+            // ====================================================================
+            $url_origem = preg_replace('/([&?])sucesso=[^&]*(&|$)/', '$1', $url_origem);
+            $url_origem = rtrim($url_origem, '?&');
+            $separador = (strpos($url_origem, '?') !== false) ? '&' : '?';
+
+            header("Location: " . $url_origem . $separador . "sucesso=doc_adicionado&tab=documentos");
             exit;
         } catch (PDOException $e) {
             $_SESSION['erros'] = ["Erro ao gravar na Base de Dados: " . $e->getMessage()];
             $_SESSION['modal_aberto'] = 'modalNovoDocumento';
             $_SESSION['dados_form'] = $_POST;
-            header("Location: " . $url_retorno);
+            header("Location: " . $url_origem);
             exit;
         }
     } else {
         $_SESSION['erros'] = ["Falha no Upload: O servidor não conseguiu guardar o ficheiro na pasta de destino."];
         $_SESSION['modal_aberto'] = 'modalNovoDocumento';
         $_SESSION['dados_form'] = $_POST;
-        header("Location: " . $url_retorno);
+        header("Location: " . $url_origem);
         exit;
     }
 } else {

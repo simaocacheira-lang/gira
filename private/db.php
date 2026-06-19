@@ -17,7 +17,7 @@ try {
     // Definir que queremos receber os dados da base de dados num formato fácil de ler (Array Associativo)
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    // Se a ligação falhar, o código entra aqui e "morre" (die), mostrando o erro exato
+    // Se a ligação falhar, o código entra aqui e "morre" (die), mostrando o erro
     die("Erro crítico de ligação à base de dados: " . $e->getMessage());
 }
 

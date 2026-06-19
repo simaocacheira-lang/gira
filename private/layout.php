@@ -208,7 +208,7 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
             <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded-4 shadow-sm mb-4 sticky-top" style="top: 20px; z-index: 990;">
 
                 <div class="d-flex align-items-center">
-                    <h5 class="fw-bold m-0 text-secondary opacity-75 sidebar-text"><i class="fa-solid fa-laptop-medical me-2 text-primary"></i>Painel Técnico</h5>
+                    <h5 class="fw-bold m-0 text-secondary opacity-75 sidebar-text"><i class="fa-solid fa-laptop-medical me-2 text-primary"></i>Gira</h5>
                 </div>
 
                 <div class="d-flex align-items-center gap-3">
