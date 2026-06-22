@@ -288,7 +288,6 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
 
                         <?php if ($nivel >= 3): // Apenas Administradores podem aceder às definições globais 
                         ?>
-                            <a href="/sibdas/1241251/gira/private/configuracoes.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-sliders text-muted w-20px me-3 text-center"></i> Configurações do Sistema</a>
                             <a href="/sibdas/1241251/gira/private/backoffice_publico/backoffice_publico.php" class="list-group-item list-group-item-action border-0 px-0 d-flex align-items-center fw-medium rounded-3 mb-1 text-secondary"><i class="fa-solid fa-globe text-muted w-20px me-3 text-center"></i> Gerir Site Público</a>
                         <?php endif; ?>
                     </div>
