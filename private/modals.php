@@ -89,8 +89,20 @@ try {
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold text-secondary">Fabricante Oficial</label>
-                                <select class="form-select rounded-3 bg-light border-0" name="fornecedor_id" required>
+                                <select class="form-select rounded-3 bg-light border-0" name="fabricante_id" required>
                                     <option value="" selected disabled>Escolha o fabricante...</option>
+                                    <?php foreach ($fornecedores_dropdown as $forn): ?>
+                                        <option value="<?php echo $forn['id']; ?>">
+                                            <?php echo htmlspecialchars($forn['nome_empresa']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-secondary">Assistência / Fornecedor</label>
+                                <select class="form-select rounded-3 bg-light border-0" name="fornecedor_id" required>
+                                    <option value="" selected disabled>Escolha o parceiro...</option>
                                     <?php foreach ($fornecedores_dropdown as $forn): ?>
                                         <option value="<?php echo $forn['id']; ?>">
                                             <?php echo htmlspecialchars($forn['nome_empresa']); ?>

@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $categoria = trim($_POST['categoria'] ?? '');
     $marca = trim($_POST['marca'] ?? '');
     $observacoes = trim($_POST['observacoes'] ?? '');
+    $fabricante_id = !empty($_POST['fabricante_id']) ? (int) $_POST['fabricante_id'] : null;
 
     // Utilizar as funções do db.php
     if ($e = validar_texto_obrigatorio($nome, 100, "Nome do Equipamento")) $erros[] = $e;
@@ -50,9 +51,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // 5. O comando UPDATE SEGURO
-    $sql = "UPDATE equipamentos 
+   $sql = "UPDATE equipamentos 
             SET nome = :nome, categoria = :categoria, marca = :marca, modelo = :modelo, num_serie = :serie, mac_address = :mac, 
-                classe_risco = :risco, estado = :estado, localizacao_id = :localizacao, fornecedor_id = :fornecedor, 
+                classe_risco = :risco, estado = :estado, localizacao_id = :localizacao, fabricante_id = :fabricante, fornecedor_id = :fornecedor, 
                 data_aquisicao = :data_aq, custo_aquisicao = :custo, proxima_revisao = :revisao, consumiveis = :consumiveis, observacoes = :observacoes
             WHERE id = :id";
 
@@ -63,6 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':id'           => $id_equipamento,
             ':nome'         => $nome,
             ':modelo'       => !empty($modelo) ? $modelo : null,
+            ':fabricante'   => $fabricante_id,
             ':fornecedor'   => $_POST['fornecedor_id'],
             ':serie'        => $sn,
             ':mac'          => !empty($mac_address) ? $mac_address : null,

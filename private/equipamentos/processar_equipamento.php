@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $categoria = trim($_POST['categoria'] ?? '');
     $marca = trim($_POST['marca'] ?? '');
     $observacoes = trim($_POST['observacoes'] ?? '');
+    $fabricante_id = !empty($_POST['fabricante_id']) ? (int) $_POST['fabricante_id'] : null;
 
     // 2. VALIDAÇÕES
     if ($e = validar_texto_obrigatorio($nome, 100, "Nome do Equipamento")) $erros[] = $e;
@@ -49,8 +50,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // 4. GRAVAÇÃO NA BASE DE DADOS
     $codigo_gerado = 'EQ-2026-' . strtoupper(substr(uniqid(), -4));
 
-    $sql = "INSERT INTO equipamentos (codigo_ativo, nome, categoria, marca, modelo, num_serie, mac_address, classe_risco, estado, localizacao_id, fornecedor_id, data_aquisicao, custo_aquisicao, fim_garantia, proxima_revisao, consumiveis, observacoes) 
-            VALUES (:codigo, :nome, :categoria, :marca, :modelo, :serie, :mac, :risco, :estado, :localizacao, :fornecedor, :data_aq, :custo, :garantia, :revisao, :consumiveis, :observacoes)";
+    $sql = "INSERT INTO equipamentos (codigo_ativo, nome, categoria, marca, modelo, num_serie, mac_address, classe_risco, estado, localizacao_id, fabricante_id, fornecedor_id, data_aquisicao, custo_aquisicao, fim_garantia, proxima_revisao, consumiveis, observacoes) 
+            VALUES (:codigo, :nome, :categoria, :marca, :modelo, :serie, :mac, :risco, :estado, :localizacao, :fabricante, :fornecedor, :data_aq, :custo, :garantia, :revisao, :consumiveis, :observacoes)";
     try {
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
@@ -62,6 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':risco'       => $_POST['classe_risco'],
             ':estado'      => $_POST['estado_operacional'],
             ':localizacao' => $_POST['localizacao_id'],
+            ':fabricante'  => $fabricante_id,
             ':fornecedor'  => $_POST['fornecedor_id'],
             ':data_aq'     => $_POST['data_aquisicao'],
             ':custo'       => !empty($custo_aquisicao) ? $custo_aquisicao : null,
@@ -71,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':categoria'   => !empty($categoria) ? $categoria : null,
             ':marca'       => !empty($marca) ? $marca : null,
             ':observacoes' => !empty($observacoes) ? $observacoes : null,
-            
+
         ]);
 
         if (function_exists('registar_log')) {

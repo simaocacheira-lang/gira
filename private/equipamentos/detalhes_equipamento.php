@@ -13,9 +13,12 @@ $id_equipamento = (int) $_GET['id'];
 
 try {
     // 3. Ir buscar os dados do equipamento E do Fornecedor associado
-    $sql = "SELECT e.*, f.nome_empresa, f.email_suporte, f.telefone_suporte 
+    $sql = "SELECT e.*, 
+                   f_ass.nome_empresa AS nome_assistencia, f_ass.email_suporte AS assistencia_email, f_ass.telefone_suporte AS assistencia_telefone,
+                   f_fab.nome_empresa AS nome_fabricante
             FROM equipamentos e 
-            LEFT JOIN fornecedores f ON e.fornecedor_id = f.id 
+            LEFT JOIN fornecedores f_ass ON e.fornecedor_id = f_ass.id 
+            LEFT JOIN fornecedores f_fab ON e.fabricante_id = f_fab.id
             WHERE e.id = :id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':id' => $id_equipamento]);
@@ -54,6 +57,11 @@ try {
     $sql_art = "SELECT id, referencia, nome FROM artigos_armazem ORDER BY nome ASC";
     $stmt_art = $pdo->query($sql_art);
     $lista_artigos = $stmt_art->fetchAll();
+
+    // Buscar todos os fornecedores para as dropdowns do ecrã Comercial
+    $sql_forn = "SELECT id, nome_empresa FROM fornecedores ORDER BY nome_empresa ASC";
+    $stmt_forn = $pdo->query($sql_forn);
+    $lista_fornecedores = $stmt_forn->fetchAll();
 
     // 9. HISTÓRICO DE AUDITORIA (LOGS)
     // Procuramos os logs deste equipamento específico e fazemos JOIN para saber o nome de quem fez a ação
@@ -97,7 +105,6 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
     endif;
     ?>
     <input type="hidden" name="id_equipamento" value="<?php echo $eq['id']; ?>">
-    <input type="hidden" name="fornecedor_id" value="<?php echo $eq['fornecedor_id']; ?>">
 
     <div class="mb-3 d-flex justify-content-between align-items-center">
         <nav aria-label="breadcrumb">
@@ -465,8 +472,26 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
 
                         <div class="row g-4">
                             <div class="col-sm-6">
-                                <label class="text-muted d-block mb-1 small fw-bold">Fornecedor Oficial</label>
-                                <div class="fw-bold text-dark"><?php echo !empty($eq['nome_empresa']) ? htmlspecialchars($eq['nome_empresa']) : '<em class="text-muted">Não definido</em>'; ?></div>
+                                <label class="text-muted d-block mb-1 small fw-bold">Fabricante Oficial</label>
+                                <select class="form-select bg-light border-0 fw-bold" name="fabricante_id">
+                                    <option value="">Desconhecido</option>
+                                    <?php foreach ($lista_fornecedores as $forn): ?>
+                                        <option value="<?php echo $forn['id']; ?>" <?php echo ($eq['fabricante_id'] == $forn['id']) ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($forn['nome_empresa']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="text-muted d-block mb-1 small fw-bold">Fornecedor / Assistência</label>
+                                <select class="form-select bg-light border-0 fw-bold" name="fornecedor_id">
+                                    <option value="">Desconhecido</option>
+                                    <?php foreach ($lista_fornecedores as $forn): ?>
+                                        <option value="<?php echo $forn['id']; ?>" <?php echo ($eq['fornecedor_id'] == $forn['id']) ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($forn['nome_empresa']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                             <div class="col-sm-6">
                                 <label class="text-muted d-block mb-1 small fw-bold">Data de Aquisição</label>
