@@ -83,7 +83,7 @@ foreach ($fornecedores as $f):
                 title="Editar Fornecedor">
                 <i class="fa-solid fa-pen text-primary"></i>
             </button>
-            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/fornecedores/eliminar_fornecedor.php?id=<?php echo $f['id']; ?>', 'Tem a certeza de que deseja abater este fornecedor?', 'Abater Fornecedor')" data-bs-toggle="tooltip" title="Abater Fornecedor">
+            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/fornecedores/eliminar_fornecedor.php', <?php echo $f['id']; ?>, 'Tem a certeza de que deseja abater este fornecedor?', 'Abater Fornecedor')">
                 <i class="fa-solid fa-trash-can text-danger"></i>
             </button>
         </td>

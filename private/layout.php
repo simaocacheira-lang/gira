@@ -365,16 +365,19 @@ function render_header($title = "Gira - Sistema de Gestão Hospitalar")
                 new bootstrap.Tooltip(elemento);
             });
 
-            // Função Global para os Modais de Eliminação
-            function confirmarEliminacao(url, mensagem, titulo = 'Confirmar Eliminação') {
+            // Função Global para os Modais de Eliminação (Agora com segurança POST)
+            function confirmarEliminacao(urlProcessamento, idRegisto, mensagem, titulo = 'Confirmar Eliminação') {
                 // 1. Mudar o Título e a Mensagem do Modal
-                document.getElementById('tituloModalEliminacao').innerHTML = '<i class="fa-solid fa-triangle-exclamation me-2"></i>' + titulo;
+                document.getElementById('tituloModalEliminacao').innerHTML = titulo;
                 document.getElementById('textoModalEliminacao').innerText = mensagem;
 
-                // 2. Colocar o Link de Destino no botão vermelho
-                document.getElementById('btnConfirmarEliminacao').href = url;
+                // 2. Apontar o formulário para o ficheiro PHP correto (ex: eliminar_utilizador.php)
+                document.getElementById('formGlobalEliminar').action = urlProcessamento;
 
-                // 3. Mostrar o Modal no ecrã
+                // 3. Colocar o ID do registo no input invisível para ser enviado por POST
+                document.getElementById('inputGlobalEliminarId').value = idRegisto;
+
+                // 4. Mostrar o Modal no ecrã
                 var modal = new bootstrap.Modal(document.getElementById('modalConfirmarEliminacao'));
                 modal.show();
             }

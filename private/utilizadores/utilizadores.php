@@ -134,6 +134,11 @@ foreach ($lista_utilizadores as $user):
                     <i class="fa-solid fa-user-check text-success"></i>
                 </button>
             <?php endif; ?>
+            <button type="button" class="btn btn-light btn-sm rounded-3 border hover-danger"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Utilizador"
+                onclick="confirmarEliminacao('/sibdas/1241251/gira/private/utilizadores/eliminar_utilizador.php', <?php echo $user['id']; ?>, 'Tem a certeza que deseja eliminar o utilizador \'<?php echo htmlspecialchars($user['nome']); ?>\'?', 'Eliminar Utilizador')">
+                <i class="fa-solid fa-trash-can text-danger"></i>
+            </button>
         </td>
     </tr>
 <?php

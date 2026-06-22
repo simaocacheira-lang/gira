@@ -31,6 +31,13 @@ try {
         <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
     </div>
 <?php endif; ?>
+<?php if (isset($_GET['erro']) && $_GET['erro'] == 'sala_ocupada'): ?>
+    <div class="alert alert-danger alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
+        <i class="fa-solid fa-triangle-exclamation text-danger me-2"></i>
+        <strong>Ação Recusada!</strong> Não é possível apagar esta localização porque ainda existem equipamentos ativos associados a ela. Mova os equipamentos primeiro.
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
+    </div>
+<?php endif; ?>
 
 <?php
 // Utilização de 'label' em vez de 'text' para evitar o erro da linha 34
@@ -70,8 +77,7 @@ foreach ($localizacoes as $loc):
                 title="Editar Localização">
                 <i class="fa-solid fa-pen text-primary"></i>
             </button>
-            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/localizacoes/eliminar_localizacao.php?id=<?php echo $loc['id']; ?>', 'Tem a certeza de que deseja abater esta localização?', 'Abater Localização')" data-bs-toggle="tooltip" title="Abater Localização">
-                <i class="fa-solid fa-trash-can text-danger"></i>
+            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/localizacoes/eliminar_localizacao.php', <?php echo $loc['id']; ?>, 'Tem a certeza de que deseja abater esta localização?', 'Abater Localização')"> <i class="fa-solid fa-trash-can text-danger"></i>
             </button>
         </td>
     </tr>

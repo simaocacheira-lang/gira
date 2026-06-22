@@ -4,9 +4,9 @@ require_once __DIR__ . '/../db.php';
 session_start();
 
 // 2. Verificar se recebemos um ID válido
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id']) && is_numeric($_POST['id'])) {
+    $id_documento = (int) $_POST['id'];
 
-    $id_documento = (int) $_GET['id'];
 
     try {
         // 3. Ir buscar os dados do documento ANTES de o apagar

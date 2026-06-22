@@ -4,9 +4,8 @@ require_once __DIR__ . '/../db.php';
 session_start();
 
 // 2. Verificar o ID
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-
-    $id_para_apagar = (int) $_GET['id'];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id']) && is_numeric($_POST['id'])) {
+    $id_para_apagar = (int) $_POST['id'];
 
     try {
         // IR BUSCAR O CÓDIGO DO EQUIPAMENTO ANTES DE O APAGAR PARA O LOG!

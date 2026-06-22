@@ -3,8 +3,8 @@
 require_once __DIR__ . '/../db.php';
 session_start();
 
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $id_para_apagar = (int) $_GET['id'];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id']) && is_numeric($_POST['id'])) {
+    $id_para_apagar = (int) $_POST['id'];
 
     try {
         // 2. VERIFICAÇÃO DE SEGURANÇA: Este fornecedor tem equipamentos associados?

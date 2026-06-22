@@ -89,7 +89,7 @@ foreach ($lista_equipamentos as $eq):
                 </button>
             <?php endif; ?>
 
-            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/equipamentos/eliminar_equipamento.php?id=<?php echo $eq['id']; ?>', 'Tem a certeza de que deseja abater este equipamento?', 'Abater Inventário')" data-bs-toggle="tooltip" title="Abater Inventário">
+            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/equipamentos/eliminar_equipamento.php', <?php echo $eq['id']; ?>, 'Tem a certeza de que deseja abater este equipamento?', 'Abater Inventário')">
                 <i class="fa-solid fa-trash-can text-danger"></i>
             </button>
         </td>

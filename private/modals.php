@@ -878,25 +878,24 @@ try {
     </div>
 </div>
 <div class="modal fade" id="modalConfirmarEliminacao" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 rounded-4 shadow-lg">
-            <div class="modal-header border-bottom-0 p-4 pb-2">
-                <h5 class="modal-title fw-bold text-danger" id="tituloModalEliminacao">
-                    <i class="fa-solid fa-triangle-exclamation me-2"></i>Confirmar Eliminação
-                </h5>
-                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content border-0 rounded-4 shadow text-center p-4">
+            <div class="mb-3">
+                <i class="fa-solid fa-circle-exclamation text-danger" style="font-size: 3rem;"></i>
             </div>
-            <div class="modal-body p-4 pt-2">
-                <p class="text-secondary mb-0 fw-medium" id="textoModalEliminacao">
-                    Tem a certeza que deseja eliminar este registo?
-                </p>
-            </div>
-            <div class="modal-footer border-top-0 p-4 pt-0">
-                <button type="button" class="btn btn-light rounded-3 fw-bold small px-4 text-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <a href="#" id="btnConfirmarEliminacao" class="btn btn-danger rounded-3 fw-bold small px-4 shadow-sm hover-danger">
-                    <i class="fa-solid fa-trash-can me-2"></i>Sim, Eliminar
-                </a>
-            </div>
+            <h5 class="modal-title fw-bold mb-2 text-dark" id="tituloModalEliminacao">Confirmar</h5>
+            <p class="text-muted small mb-4" id="textoModalEliminacao">Tem a certeza?</p>
+
+            <form id="formGlobalEliminar" method="POST">
+                <input type="hidden" id="inputGlobalEliminarId" name="id" value="">
+
+                <div class="d-flex justify-content-center gap-2">
+                    <button type="button" class="btn btn-light rounded-3 fw-bold small px-4 shadow-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger rounded-3 fw-bold small px-4 shadow-sm">
+                        <i class="fa-solid fa-trash-can me-2"></i>Sim, Apagar
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

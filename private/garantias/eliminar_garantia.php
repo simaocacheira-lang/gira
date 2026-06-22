@@ -4,9 +4,8 @@ require_once __DIR__ . '/../db.php';
 session_start();
 
 // 2. Verificar se recebemos um ID válido do equipamento
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-
-    $id_equipamento = (int) $_GET['id'];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id']) && is_numeric($_POST['id'])) {
+    $id_equipamento = (int) $_POST['id'];
 
     try {
         // 3. Ir buscar os dados para o Log de Auditoria

@@ -3,7 +3,6 @@
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../layout.php';
 
-// 2. QUERY LIMPA: Apenas o SELECT com o JOIN, sem LIMITs nem offsets
 // 2. EXTRAÇÃO LIMPA: Acesso a dados separado da interface
 try {
     $lista_documentos = obterTodosDocumentos($pdo);
@@ -76,7 +75,7 @@ foreach ($lista_documentos as $doc):
             <a href="/sibdas/1241251/gira/private/<?php echo htmlspecialchars($doc['caminho_ficheiro']); ?>" target="_blank" class="btn btn-light btn-sm rounded-3 border shadow-none me-1" data-bs-toggle="tooltip" title="Abrir / Descarregar">
                 <i class="fa-solid fa-download text-primary"></i>
             </a>
-            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/documentos/eliminar_documento.php?id=<?php echo $doc['id']; ?>', 'Tem a certeza de que deseja abater este documento?', 'Abater Documento')" data-bs-toggle="tooltip" title="Abater Documento">
+            <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger" onclick="confirmarEliminacao('/sibdas/1241251/gira/private/documentos/eliminar_documento.php', <?php echo $doc['id']; ?>, 'Tem a certeza de que deseja abater este documento?', 'Abater Documento')">
                 <i class="fa-solid fa-trash-can text-danger"></i>
             </button>
         </td>

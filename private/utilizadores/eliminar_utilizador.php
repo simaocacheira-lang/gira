@@ -3,9 +3,9 @@
 require_once __DIR__ . '/../db.php';
 session_start();
 
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $id_para_apagar = (int) $_GET['id'];
-
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id']) && is_numeric($_POST['id'])) {
+    $id_para_apagar = (int) $_POST['id'];
+    
     // 2. DEFESA CRÍTICA: Não podes apagar a tua própria conta!
     if ($id_para_apagar === (int)$_SESSION['user_id']) {
         header("Location: /sibdas/1241251/gira/private/utilizadores/utilizadores.php?erro=auto_eliminacao");

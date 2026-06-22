@@ -160,8 +160,7 @@ render_header("Gira - Ordens de Trabalho e Manutenção");
                     <?php endif; ?>
 
                     <button type="button" class="btn btn-light btn-sm rounded-3 border hover-danger"
-                        onclick="confirmarEliminacao('/sibdas/1241251/gira/private/manutencao/eliminar_ot.php?id=<?php echo $ot['id']; ?>', 'Tem a certeza que deseja cancelar e eliminar a O.T. <?php echo htmlspecialchars($ot['numero_ot']); ?>? Esta ação não pode ser desfeita.', 'Cancelar Ordem de Trabalho')"
-                        data-bs-toggle="tooltip" data-bs-placement="top" title="Cancelar O.T.">
+                        onclick="confirmarEliminacao('/sibdas/1241251/gira/private/manutencao/eliminar_ot.php', <?php echo $ot['id']; ?>, 'Tem a certeza que deseja cancelar e eliminar a O.T. <?php echo htmlspecialchars($ot['numero_ot']); ?>? Esta ação não pode ser desfeita.', 'Cancelar Ordem de Trabalho')" data-bs-toggle="tooltip" data-bs-placement="top" title="Cancelar O.T.">
                         <i class="fa-solid fa-trash-can text-danger"></i>
                     </button>
                 </td>

@@ -121,7 +121,7 @@ foreach ($lista_perfis as $perfil):
             <?php else: ?>
                 <button type="button" class="btn btn-light btn-sm rounded-3 border hover-danger"
                     data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar Perfil"
-                    onclick="confirmarEliminacao('/sibdas/1241251/gira/private/perfis/eliminar_perfil.php?id=<?php echo $perfil['id']; ?>', 'Tem a certeza que deseja eliminar o perfil \'<?php echo htmlspecialchars($perfil['nome_perfil']); ?>\'?', 'Eliminar Perfil')">
+                    onclick="confirmarEliminacao('/sibdas/1241251/gira/private/perfis/eliminar_perfil.php', <?php echo $perfil['id']; ?>, 'Tem a certeza que deseja eliminar o perfil \'<?php echo htmlspecialchars($perfil['nome_perfil']); ?>\'?', 'Eliminar Perfil')">
                     <i class="fa-solid fa-trash-can text-danger"></i>
                 </button>
             <?php endif; ?>

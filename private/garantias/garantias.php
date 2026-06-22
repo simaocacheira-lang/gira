@@ -110,8 +110,7 @@ foreach ($equipamentos as $eq):
             </button>
 
             <button type="button" class="btn btn-light btn-sm rounded-3 border shadow-none hover-danger ms-1"
-                onclick="confirmarEliminacao('/sibdas/1241251/gira/private/garantias/eliminar_garantia.php?id=<?php echo $eq['id']; ?>', 'Tem a certeza que deseja remover a garantia do equipamento \'<?php echo htmlspecialchars($eq['nome']); ?>\'? A data será limpa do sistema.', 'Remover Garantia')"
-                data-bs-toggle="tooltip" title="Remover Garantia">
+                onclick="confirmarEliminacao('/sibdas/1241251/gira/private/garantias/eliminar_garantia.php', <?php echo $eq['id']; ?>, 'Tem a certeza que deseja remover a garantia do equipamento \'<?php echo htmlspecialchars($eq['nome']); ?>\'? A data será limpa do sistema.', 'Remover Garantia')">
                 <i class="fa-solid fa-trash-can text-danger"></i>
             </button>
         </td>

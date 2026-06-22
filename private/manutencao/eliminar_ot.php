@@ -4,9 +4,9 @@ require_once __DIR__ . '/../db.php';
 session_start();
 
 // Verificar se recebemos um ID válido
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id']) && is_numeric($_POST['id'])) {
 
-    $id_ot = (int) $_GET['id'];
+    $id_ot = (int) $_POST['id'];
 
     try {
         // 1. Descobrir qual é o número da OT para o Log de Auditoria
