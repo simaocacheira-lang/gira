@@ -246,6 +246,23 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
 
                         <div class="row g-4">
                             <div class="col-sm-6">
+                                <label class="text-muted d-block mb-1 small fw-bold">Categoria / Grupo</label>
+                                <select class="form-select bg-light border-0 fw-bold" name="categoria">
+                                    <option value="" <?php echo empty($eq['categoria']) ? 'selected' : ''; ?>>Selecione...</option>
+                                    <option value="Monitorização" <?php echo ($eq['categoria'] == 'Monitorização') ? 'selected' : ''; ?>>Monitorização</option>
+                                    <option value="Suporte de Vida" <?php echo ($eq['categoria'] == 'Suporte de Vida') ? 'selected' : ''; ?>>Suporte de Vida</option>
+                                    <option value="Terapia" <?php echo ($eq['categoria'] == 'Terapia') ? 'selected' : ''; ?>>Terapia</option>
+                                    <option value="Diagnóstico" <?php echo ($eq['categoria'] == 'Diagnóstico') ? 'selected' : ''; ?>>Diagnóstico</option>
+                                    <option value="Laboratório" <?php echo ($eq['categoria'] == 'Laboratório') ? 'selected' : ''; ?>>Laboratório</option>
+                                    <option value="Esterilização" <?php echo ($eq['categoria'] == 'Esterilização') ? 'selected' : ''; ?>>Esterilização</option>
+                                    <option value="Reabilitação" <?php echo ($eq['categoria'] == 'Reabilitação') ? 'selected' : ''; ?>>Reabilitação</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="text-muted d-block mb-1 small fw-bold">Marca</label>
+                                <input type="text" class="form-control bg-light border-0 fw-bold" name="marca" value="<?php echo htmlspecialchars($eq['marca'] ?? ''); ?>">
+                            </div>
+                            <div class="col-sm-6">
                                 <label class="text-muted d-block mb-1 small fw-bold">Número de Série (SN)</label>
                                 <input type="text" class="form-control bg-light border-0 fw-mono fw-bold" name="sn" value="<?php echo htmlspecialchars($eq['num_serie']); ?>">
                             </div>
@@ -262,6 +279,10 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
                                 <input type="date" class="form-control bg-light border-0 fw-bold text-primary" name="proxima_revisao" value="<?php echo $eq['proxima_revisao']; ?>">
                             </div>
 
+                            <div class="col-12">
+                                <label class="text-muted d-block mb-1 small fw-bold">Observações / Notas</label>
+                                <textarea class="form-control bg-light border-0" name="observacoes" rows="3" placeholder="Informações adicionais..."><?php echo htmlspecialchars($eq['observacoes'] ?? ''); ?></textarea>
+                            </div>
                             <div class="col-12 mt-4 pt-3 border-top">
                                 <label class="text-muted d-block mb-2 small fw-bold">ID do Consumível / Peça Base (Oculto)</label>
                                 <input type="text" class="form-control bg-light border-0 text-secondary small fw-mono" value="<?php echo htmlspecialchars($eq['consumiveis'] ?? 'Sem ID Associado'); ?>" readonly disabled>

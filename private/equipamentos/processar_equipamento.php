@@ -13,6 +13,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sn = trim($_POST['sn'] ?? '');
     $mac_address = trim($_POST['mac_address'] ?? '');
     $custo_aquisicao = $_POST['custo_aquisicao'] ?? '';
+    $categoria = trim($_POST['categoria'] ?? '');
+    $marca = trim($_POST['marca'] ?? '');
+    $observacoes = trim($_POST['observacoes'] ?? '');
 
     // 2. VALIDAÇÕES
     if ($e = validar_texto_obrigatorio($nome, 100, "Nome do Equipamento")) $erros[] = $e;
@@ -46,16 +49,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // 4. GRAVAÇÃO NA BASE DE DADOS
     $codigo_gerado = 'EQ-2026-' . strtoupper(substr(uniqid(), -4));
 
-    $sql = "INSERT INTO equipamentos (
-                codigo_ativo, nome, modelo, num_serie, mac_address, classe_risco, 
-                estado, localizacao_id, fornecedor_id, data_aquisicao, custo_aquisicao, 
-                fim_garantia, proxima_revisao, consumiveis
-            ) VALUES (
-                :codigo, :nome, :modelo, :serie, :mac, :risco, 
-                :estado, :localizacao, :fornecedor, :data_aq, :custo, 
-                :garantia, :revisao, :consumiveis
-            )";
-
+    $sql = "INSERT INTO equipamentos (codigo_ativo, nome, categoria, marca, modelo, num_serie, mac_address, classe_risco, estado, localizacao_id, fornecedor_id, data_aquisicao, custo_aquisicao, fim_garantia, proxima_revisao, consumiveis, observacoes) 
+            VALUES (:codigo, :nome, :categoria, :marca, :modelo, :serie, :mac, :risco, :estado, :localizacao, :fornecedor, :data_aq, :custo, :garantia, :revisao, :consumiveis, :observacoes)";
     try {
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
@@ -72,7 +67,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':custo'       => !empty($custo_aquisicao) ? $custo_aquisicao : null,
             ':garantia'    => !empty($_POST['fim_garantia']) ? $_POST['fim_garantia'] : null,
             ':revisao'     => $_POST['proxima_revisao'],
-            ':consumiveis' => !empty($_POST['consumiveis']) ? $_POST['consumiveis'] : null
+            ':consumiveis' => !empty($_POST['consumiveis']) ? $_POST['consumiveis'] : null,
+            ':categoria'   => !empty($categoria) ? $categoria : null,
+            ':marca'       => !empty($marca) ? $marca : null,
+            ':observacoes' => !empty($observacoes) ? $observacoes : null,
+            
         ]);
 
         if (function_exists('registar_log')) {

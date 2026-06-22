@@ -71,6 +71,23 @@ try {
                             <div class="col-12"><label class="form-label small fw-bold text-secondary">Nome do Equipamento</label><input type="text" class="form-control rounded-3 bg-light border-0" name="nome" placeholder="Ex: Ventilador Pulmonar" required></div>
 
                             <div class="col-md-6">
+                                <label class="form-label small fw-bold text-secondary">Categoria / Grupo</label>
+                                <select class="form-select rounded-3 bg-light border-0" name="categoria" required>
+                                    <option value="" selected disabled>Escolha a categoria...</option>
+                                    <option value="Monitorização">Monitorização</option>
+                                    <option value="Suporte de Vida">Suporte de Vida</option>
+                                    <option value="Terapia">Terapia</option>
+                                    <option value="Diagnóstico">Diagnóstico</option>
+                                    <option value="Laboratório">Laboratório</option>
+                                    <option value="Esterilização">Esterilização</option>
+                                    <option value="Reabilitação">Reabilitação</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-secondary">Marca</label>
+                                <input type="text" class="form-control rounded-3 bg-light border-0" name="marca" placeholder="Ex: Philips, Dräger" required>
+                            </div>
+                            <div class="col-md-6">
                                 <label class="form-label small fw-bold text-secondary">Fabricante Oficial</label>
                                 <select class="form-select rounded-3 bg-light border-0" name="fornecedor_id" required>
                                     <option value="" selected disabled>Escolha o fabricante...</option>
@@ -161,6 +178,11 @@ try {
                                 </select>
                             </div>
                             <div class="col-12"><label class="form-label small fw-bold text-secondary">Próxima Revisão / Calibração</label><input type="date" class="form-control rounded-3 bg-light border-0 text-secondary" name="proxima_revisao" required></div>
+
+                            <div class="col-12 mt-2">
+                                <label class="form-label small fw-bold text-secondary">Observações (Opcional)</label>
+                                <textarea class="form-control rounded-3 bg-light border-0" name="observacoes" rows="2" placeholder="Ex: Equipamento de empréstimo temporário, apresenta riscos no chassi..."></textarea>
+                            </div>
                         </div>
                     </div>
                 </form>

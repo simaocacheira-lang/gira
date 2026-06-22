@@ -19,6 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sn = trim($_POST['sn'] ?? '');
     $mac_address = trim($_POST['mac_address'] ?? '');
     $custo_aquisicao = $_POST['custo_aquisicao'] ?? '';
+    $categoria = trim($_POST['categoria'] ?? '');
+    $marca = trim($_POST['marca'] ?? '');
+    $observacoes = trim($_POST['observacoes'] ?? '');
 
     // Utilizar as funções do db.php
     if ($e = validar_texto_obrigatorio($nome, 100, "Nome do Equipamento")) $erros[] = $e;
@@ -47,19 +50,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // 5. O comando UPDATE SEGURO
-    $sql = "UPDATE equipamentos SET 
-                nome = :nome,
-                modelo = :modelo,
-                fornecedor_id = :fornecedor,
-                num_serie = :serie,
-                mac_address = :mac,
-                classe_risco = :risco,
-                estado = :estado,
-                localizacao_id = :localizacao,
-                data_aquisicao = :data_aq,
-                custo_aquisicao = :custo,
-                proxima_revisao = :revisao,
-                consumiveis = :consumiveis
+    $sql = "UPDATE equipamentos 
+            SET nome = :nome, categoria = :categoria, marca = :marca, modelo = :modelo, num_serie = :serie, mac_address = :mac, 
+                classe_risco = :risco, estado = :estado, localizacao_id = :localizacao, fornecedor_id = :fornecedor, 
+                data_aquisicao = :data_aq, custo_aquisicao = :custo, proxima_revisao = :revisao, consumiveis = :consumiveis, observacoes = :observacoes
             WHERE id = :id";
 
     try {
@@ -78,7 +72,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':data_aq'      => $_POST['data_aquisicao'],
             ':custo'        => !empty($custo_aquisicao) ? $custo_aquisicao : null,
             ':revisao'      => $_POST['proxima_revisao'],
-            ':consumiveis'  => !empty($_POST['consumiveis']) ? $_POST['consumiveis'] : null
+            ':consumiveis'  => !empty($_POST['consumiveis']) ? $_POST['consumiveis'] : null,
+            ':categoria'   => !empty($categoria) ? $categoria : null,
+            ':marca'       => !empty($marca) ? $marca : null,
+            ':observacoes' => !empty($observacoes) ? $observacoes : null,
         ]);
 
         if (function_exists('registar_log')) {
