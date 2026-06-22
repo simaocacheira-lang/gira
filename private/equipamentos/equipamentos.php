@@ -6,17 +6,8 @@ require_once __DIR__ . '/../layout.php';
 render_header("Gira - Inventário de Equipamentos Médicos");
 
 try {
-    // 2. QUERY LIMPA: Sem paginação nem filtros de pesquisa manual!
-    // O DataTables vai agarrar nestes dados todos e criar a magia no ecrã.
-    $sql = "SELECT e.*, l.cod_sala, l.nome AS nome_localizacao, f.nome_empresa 
-            FROM equipamentos e 
-            LEFT JOIN localizacoes l ON e.localizacao_id = l.id 
-            LEFT JOIN fornecedores f ON e.fornecedor_id = f.id 
-            WHERE e.apagado_em IS NULL
-            ORDER BY e.id DESC";
-
-    $stmt = $pdo->query($sql);
-    $lista_equipamentos = $stmt->fetchAll();
+    // 2. EXTRAÇÃO LIMPA: Acesso a dados separado da interface (Camada de Modelo)
+    $lista_equipamentos = obterTodosEquipamentos($pdo);
 } catch (PDOException $e) {
     die("Erro ao carregar o inventário: " . $e->getMessage());
 }

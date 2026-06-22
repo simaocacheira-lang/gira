@@ -6,13 +6,12 @@ require_once __DIR__ . '/../layout.php';
 render_header("Gira - Gestão de Fornecedores");
 
 try {
-    // 2. QUERY LIMPA: O DataTables vai receber os dados todos e tratar da pesquisa/paginação
-    $sql = "SELECT * FROM fornecedores WHERE apagado_em IS NULL ORDER BY id DESC";
-    $stmt = $pdo->query($sql);
-    $fornecedores = $stmt->fetchAll();
+    // 2. EXTRAÇÃO LIMPA
+    $fornecedores = obterTodosFornecedores($pdo);
 } catch (PDOException $e) {
     die("Erro ao carregar a lista de fornecedores: " . $e->getMessage());
 }
+
 ?>
 
 <div class="d-flex justify-content-between align-items-center mb-4">

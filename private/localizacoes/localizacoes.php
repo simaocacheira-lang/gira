@@ -5,11 +5,9 @@ require_once __DIR__ . '/../layout.php';
 
 render_header("Gira - Gestão de Localizações");
 
+// 2. EXTRAÇÃO LIMPA
 try {
-    // 2. QUERY LIMPA: Sem paginação nem restrições LIKE.
-    $sql = "SELECT * FROM localizacoes WHERE apagado_em IS NULL ORDER BY id DESC";
-    $stmt = $pdo->query($sql);
-    $localizacoes = $stmt->fetchAll();
+    $localizacoes = obterLocalizacoes($pdo);
 } catch (PDOException $e) {
     die("Erro ao carregar as localizações: " . $e->getMessage());
 }

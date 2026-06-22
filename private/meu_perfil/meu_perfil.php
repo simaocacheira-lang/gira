@@ -4,13 +4,7 @@ require_once __DIR__ . '/../layout.php';
 
 // Ir buscar os dados completos do utilizador que tem sessão iniciada
 try {
-    $sql = "SELECT u.*, p.nome_perfil, p.nivel_acesso 
-            FROM utilizadores u 
-            LEFT JOIN perfis_acesso p ON u.perfil_id = p.id 
-            WHERE u.id = :id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([':id' => $_SESSION['user_id']]);
-    $meu_perfil = $stmt->fetch();
+    $meu_perfil = obterMeuPerfil($pdo, $_SESSION['user_id']);
 
     if (!$meu_perfil) {
         die("Erro Crítico: Perfil não encontrado.");

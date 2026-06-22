@@ -3,15 +3,10 @@
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../layout.php';
 
-// 2. O Motor de Busca: Fazer JOIN para juntar as OTs com os dados dos Equipamentos
+// 2. EXTRAÇÃO LIMPA (MVC): OTs e Preventivas
 try {
-    $sql = "SELECT ot.*, e.nome AS equip_nome, e.modelo AS equip_modelo 
-            FROM ordens_trabalho ot
-            LEFT JOIN equipamentos e ON ot.equipamento_id = e.id
-            WHERE ot.apagado_em IS NULL
-            ORDER BY ot.id DESC";
-    $stmt = $pdo->query($sql);
-    $lista_ots = $stmt->fetchAll();
+    $lista_ots = obterOrdensTrabalho($pdo);
+    $lista_preventiva = obterRevisoesPreventivas($pdo);
 } catch (PDOException $e) {
     die("Erro ao carregar o dashboard de manutenção: " . $e->getMessage());
 }

@@ -313,3 +313,141 @@ function validar_data_garantia($data)
     }
     return null;
 }
+// ============================================================================
+// MODELOS DE EXTRAÇÃO DE DADOS (SEPARAÇÃO DE CAMADAS - MVC)
+// ============================================================================
+
+function obterTodosUtilizadores($pdo)
+{
+    $sql = "SELECT u.*, p.nome_perfil 
+            FROM utilizadores u
+            LEFT JOIN perfis_acesso p ON u.perfil_id = p.id
+            WHERE u.apagado_em IS NULL
+            ORDER BY u.id DESC";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll();
+}
+
+function obterTodosEquipamentos($pdo)
+{
+    $sql = "SELECT e.*, l.cod_sala, l.nome AS nome_localizacao, f.nome_empresa 
+            FROM equipamentos e 
+            LEFT JOIN localizacoes l ON e.localizacao_id = l.id 
+            LEFT JOIN fornecedores f ON e.fornecedor_id = f.id 
+            WHERE e.apagado_em IS NULL
+            ORDER BY e.id DESC";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll();
+}
+function obterTodosArtigos($pdo)
+{
+    $sql = "SELECT a.*, f.nome_empresa 
+            FROM artigos_armazem a 
+            LEFT JOIN fornecedores f ON a.fornecedor_id = f.id 
+            WHERE a.apagado_em IS NULL
+            ORDER BY a.nome ASC";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll();
+}
+
+function obterTodosDocumentos($pdo)
+{
+    $sql = "SELECT d.*, e.codigo_ativo, e.nome AS equipamento_nome 
+            FROM documentos_equipamento d
+            LEFT JOIN equipamentos e ON d.equipamento_id = e.id
+            WHERE d.apagado_em IS NULL
+            ORDER BY d.data_upload DESC";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll();
+}
+
+function obterTodosFornecedores($pdo)
+{
+    $sql = "SELECT * FROM fornecedores WHERE apagado_em IS NULL ORDER BY id DESC";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll();
+}
+function obterGarantias($pdo)
+{
+    $sql = "SELECT e.id, e.codigo_ativo, e.nome, e.modelo, e.fim_garantia, f.nome_empresa 
+            FROM equipamentos e
+            LEFT JOIN fornecedores f ON e.fornecedor_id = f.id
+            WHERE e.fim_garantia IS NOT NULL AND e.apagado_em IS NULL
+            ORDER BY e.fim_garantia ASC";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll();
+}
+
+function obterHistorico($pdo)
+{
+    $sql = "SELECT l.*, u.nome AS nome_utilizador, p.nome_perfil 
+            FROM logs_auditoria l
+            LEFT JOIN utilizadores u ON l.utilizador_id = u.id
+            LEFT JOIN perfis_acesso p ON u.perfil_id = p.id
+            ORDER BY l.data_hora DESC";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll();
+}
+
+function obterLocalizacoes($pdo)
+{
+    $sql = "SELECT * FROM localizacoes WHERE apagado_em IS NULL ORDER BY id DESC";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll();
+}
+
+function obterOrdensTrabalho($pdo)
+{
+    $sql = "SELECT ot.*, e.nome AS equip_nome, e.modelo AS equip_modelo 
+            FROM ordens_trabalho ot
+            LEFT JOIN equipamentos e ON ot.equipamento_id = e.id
+            WHERE ot.apagado_em IS NULL
+            ORDER BY ot.id DESC";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll();
+}
+
+function obterRevisoesPreventivas($pdo)
+{
+    $sql = "SELECT e.id, e.codigo_ativo, e.nome, e.proxima_revisao, l.cod_sala 
+            FROM equipamentos e 
+            LEFT JOIN localizacoes l ON e.localizacao_id = l.id 
+            WHERE e.proxima_revisao IS NOT NULL AND e.apagado_em IS NULL 
+            ORDER BY e.proxima_revisao ASC";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll();
+}
+function obterMeuPerfil($pdo, $user_id)
+{
+    $sql = "SELECT u.*, p.nome_perfil, p.nivel_acesso 
+            FROM utilizadores u 
+            LEFT JOIN perfis_acesso p ON u.perfil_id = p.id 
+            WHERE u.id = :id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':id' => $user_id]);
+    return $stmt->fetch();
+}
+
+function obterTodosPerfis($pdo)
+{
+    $sql = "SELECT p.*, COUNT(u.id) as total_users 
+            FROM perfis_acesso p
+            LEFT JOIN utilizadores u ON p.id = u.perfil_id AND u.apagado_em IS NULL
+            WHERE p.apagado_em IS NULL
+            GROUP BY p.id
+            ORDER BY p.nivel_acesso DESC, p.nome_perfil ASC";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll();
+}
+
+function obterConteudosSite($pdo)
+{
+    $stmt = $pdo->query("SELECT chave, texto FROM conteudos_site");
+    $resultados = $stmt->fetchAll();
+
+    $conteudos = [];
+    foreach ($resultados as $row) {
+        $conteudos[$row['chave']] = $row['texto'];
+    }
+    return $conteudos;
+}

@@ -3,16 +3,9 @@
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../layout.php';
 
-// 2. LÓGICA DINÂMICA: Buscar perfis e contar quantos utilizadores pertencem a cada um
+// 2. EXTRAÇÃO LIMPA (MVC)
 try {
-    $sql = "SELECT p.*, COUNT(u.id) as total_users 
-            FROM perfis_acesso p
-            LEFT JOIN utilizadores u ON p.id = u.perfil_id AND u.apagado_em IS NULL
-            WHERE p.apagado_em IS NULL
-            GROUP BY p.id
-            ORDER BY p.nivel_acesso DESC, p.nome_perfil ASC";
-    $stmt = $pdo->query($sql);
-    $lista_perfis = $stmt->fetchAll();
+    $lista_perfis = obterTodosPerfis($pdo);
 } catch (PDOException $e) {
     die("Erro ao carregar perfis de acesso: " . $e->getMessage());
 }

@@ -3,16 +3,9 @@
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../layout.php';
 
-// 2. Ir buscar todos os conteúdos à Base de Dados
+// 2. EXTRAÇÃO LIMPA: Ir buscar todos os conteúdos à Base de Dados
 try {
-    $stmt = $pdo->query("SELECT chave, texto FROM conteudos_site");
-    $resultados = $stmt->fetchAll();
-
-    // Transformar o resultado num array fácil de usar: $conteudos['chave'] = 'texto'
-    $conteudos = [];
-    foreach ($resultados as $row) {
-        $conteudos[$row['chave']] = $row['texto'];
-    }
+    $conteudos = obterConteudosSite($pdo);
 } catch (PDOException $e) {
     die("Erro ao carregar os conteúdos: " . $e->getMessage());
 }

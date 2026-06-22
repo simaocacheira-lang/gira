@@ -4,14 +4,9 @@ require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../layout.php';
 
 // 2. QUERY LIMPA: Apenas o SELECT com o JOIN, sem LIMITs nem offsets
+// 2. EXTRAÇÃO LIMPA: Acesso a dados separado da interface
 try {
-    $sql = "SELECT d.*, e.codigo_ativo, e.nome AS equipamento_nome 
-            FROM documentos_equipamento d
-            LEFT JOIN equipamentos e ON d.equipamento_id = e.id
-            WHERE d.apagado_em IS NULL
-            ORDER BY d.data_upload DESC";
-    $stmt = $pdo->query($sql);
-    $lista_documentos = $stmt->fetchAll();
+    $lista_documentos = obterTodosDocumentos($pdo);
 } catch (PDOException $e) {
     die("Erro ao carregar documentos: " . $e->getMessage());
 }

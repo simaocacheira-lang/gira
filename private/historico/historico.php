@@ -5,13 +5,7 @@ require_once __DIR__ . '/../layout.php';
 
 // 2. LÓGICA DINÂMICA: Buscar os Logs
 try {
-    $sql = "SELECT l.*, u.nome AS nome_utilizador, p.nome_perfil 
-            FROM logs_auditoria l
-            LEFT JOIN utilizadores u ON l.utilizador_id = u.id
-            LEFT JOIN perfis_acesso p ON u.perfil_id = p.id
-            ORDER BY l.data_hora DESC";
-    $stmt = $pdo->query($sql);
-    $lista_logs = $stmt->fetchAll();
+    $lista_logs = obterHistorico($pdo);
 } catch (PDOException $e) {
     die("Erro ao carregar o histórico de auditoria: " . $e->getMessage());
 }

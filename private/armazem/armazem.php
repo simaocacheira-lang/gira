@@ -3,15 +3,9 @@
 require_once __DIR__ . '/../db.php';
 require_once __DIR__ . '/../layout.php';
 
-// 2. LÓGICA DINÂMICA: Buscar artigos e contar ruturas
+// 2. LÓGICA DINÂMICA: Buscar artigos e contar ruturas (MVC)
 try {
-    $sql = "SELECT a.*, f.nome_empresa 
-            FROM artigos_armazem a 
-            LEFT JOIN fornecedores f ON a.fornecedor_id = f.id 
-            WHERE a.apagado_em IS NULL
-            ORDER BY a.nome ASC";
-    $stmt = $pdo->query($sql);
-    $artigos = $stmt->fetchAll();
+    $artigos = obterTodosArtigos($pdo);
 
     // Contar quantas peças estão abaixo do mínimo
     $total_ruturas = 0;
@@ -37,7 +31,7 @@ render_header("Gira - Armazém e Gestão de Stock Técnico");
     <button class="btn btn-primary rounded-3 fw-bold small px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalNovaEncomenda">
         <i class="fa-solid fa-cart-plus me-2"></i> Nova Encomenda
     </button>
-    
+
     <button class="btn btn-success rounded-3 fw-bold small px-3 py-2 shadow-sm me-2" data-bs-toggle="modal" data-bs-target="#modalNovoArtigo">
         <i class="fa-solid fa-box-open me-2"></i> Novo Artigo
     </button>
