@@ -45,14 +45,17 @@ try {
     $stmt_loc = $pdo->query($sql_loc);
     $todas_localizacoes = $stmt_loc->fetchAll();
 
-    // 7. A MAGIA DO ARMAZÉM: Se este equipamento tiver uma peça associada (um ID numérico), vamos ver o stock!
-    $consumivel = null;
-    if (!empty($eq['consumiveis']) && is_numeric($eq['consumiveis'])) {
-        $sql_cons = "SELECT * FROM artigos_armazem WHERE id = :id_artigo";
-        $stmt_cons = $pdo->prepare($sql_cons);
-        $stmt_cons->execute([':id_artigo' => $eq['consumiveis']]);
-        $consumivel = $stmt_cons->fetch();
-    }
+    // 7. NOVA LÓGICA N:M - Buscar todas as peças associadas a este equipamento
+    $sql_cons = "SELECT a.* FROM artigos_armazem a 
+                 INNER JOIN equipamento_artigo_armazem ea ON a.id = ea.artigo_id 
+                 WHERE ea.equipamento_id = :id_eq";
+    $stmt_cons = $pdo->prepare($sql_cons);
+    $stmt_cons->execute([':id_eq' => $id_equipamento]);
+    $consumiveis_associados = $stmt_cons->fetchAll();
+
+    // Extrair apenas os IDs num array simples para pré-selecionar na lista
+    $ids_consumiveis_selecionados = array_column($consumiveis_associados, 'id');
+
     // 8. NOVA PESQUISA: Buscar o catálogo do armazém para podermos associar peças
     $sql_art = "SELECT id, referencia, nome FROM artigos_armazem ORDER BY nome ASC";
     $stmt_art = $pdo->query($sql_art);
@@ -290,11 +293,6 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
                                 <label class="text-muted d-block mb-1 small fw-bold">Observações / Notas</label>
                                 <textarea class="form-control bg-light border-0" name="observacoes" rows="3" placeholder="Informações adicionais..."><?php echo htmlspecialchars($eq['observacoes'] ?? ''); ?></textarea>
                             </div>
-                            <div class="col-12 mt-4 pt-3 border-top">
-                                <label class="text-muted d-block mb-2 small fw-bold">ID do Consumível / Peça Base (Oculto)</label>
-                                <input type="text" class="form-control bg-light border-0 text-secondary small fw-mono" value="<?php echo htmlspecialchars($eq['consumiveis'] ?? 'Sem ID Associado'); ?>" readonly disabled>
-                                <small class="text-muted mt-1 d-block">A gestão da peça associada é agora feita na aba "Peças Compatíveis".</small>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -466,104 +464,60 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
 
         <div class="tab-pane fade" id="comercial" role="tabpanel" tabindex="0">
             <div class="row g-4">
-                <div class="col-lg-7">
-                    <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
-                        <h6 class="fw-bold mb-4 text-dark fs-5"><i class="fa-solid fa-file-invoice-dollar text-primary me-2"></i>Processo de Aquisição</h6>
-
-                        <div class="row g-4">
-                            <div class="col-sm-6">
-                                <label class="text-muted d-block mb-1 small fw-bold">Fabricante Oficial</label>
-                                <select class="form-select bg-light border-0 fw-bold" name="fabricante_id">
-                                    <option value="">Desconhecido</option>
-                                    <?php foreach ($lista_fornecedores as $forn): ?>
-                                        <option value="<?php echo $forn['id']; ?>" <?php echo ($eq['fabricante_id'] == $forn['id']) ? 'selected' : ''; ?>>
-                                            <?php echo htmlspecialchars($forn['nome_empresa']); ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="col-sm-6">
-                                <label class="text-muted d-block mb-1 small fw-bold">Fornecedor / Assistência</label>
-                                <select class="form-select bg-light border-0 fw-bold" name="fornecedor_id">
-                                    <option value="">Desconhecido</option>
-                                    <?php foreach ($lista_fornecedores as $forn): ?>
-                                        <option value="<?php echo $forn['id']; ?>" <?php echo ($eq['fornecedor_id'] == $forn['id']) ? 'selected' : ''; ?>>
-                                            <?php echo htmlspecialchars($forn['nome_empresa']); ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="col-sm-6">
-                                <label class="text-muted d-block mb-1 small fw-bold">Data de Aquisição</label>
-                                <div class="fw-bold text-dark"><?php echo !empty($eq['data_aquisicao']) ? date('d/m/Y', strtotime($eq['data_aquisicao'])) : '-'; ?></div>
-                            </div>
-                            <div class="col-sm-6">
-                                <label class="text-muted d-block mb-1 small fw-bold">Valor de Aquisição</label>
-                                <div class="fw-bold text-dark fs-5"><?php echo !empty($eq['custo_aquisicao']) ? number_format($eq['custo_aquisicao'], 2, ',', ' ') . ' €' : '-'; ?></div>
-                            </div>
-                            <div class="col-sm-6">
-                                <label class="text-muted d-block mb-1 small fw-bold">Contactos de Suporte</label>
-                                <?php if (!empty($eq['email_suporte']) || !empty($eq['telefone_suporte'])): ?>
-                                    <div class="small">
-                                        <?php if (!empty($eq['email_suporte'])) echo '<i class="fa-solid fa-envelope text-muted me-1"></i> ' . htmlspecialchars($eq['email_suporte']) . '<br>'; ?>
-                                        <?php if (!empty($eq['telefone_suporte'])) echo '<i class="fa-solid fa-phone text-muted me-1"></i> ' . htmlspecialchars($eq['telefone_suporte']); ?>
-                                    </div>
-                                <?php else: ?>
-                                    <em class="text-muted small">Sem contactos diretos</em>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-sm-6">
+                    <label class="text-muted d-block mb-1 small fw-bold">Fabricante Oficial</label>
+                    <select class="form-select bg-white border border-secondary border-opacity-25 shadow-sm rounded-3 fw-bold" name="fabricante_id">
+                        <option value="">Desconhecido</option>
+                        <?php foreach ($lista_fornecedores as $forn): ?>
+                            <option value="<?php echo $forn['id']; ?>" <?php echo ($eq['fabricante_id'] == $forn['id']) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($forn['nome_empresa']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <label class="text-muted d-block mb-1 small fw-bold">Fornecedor / Assistência</label>
+                    <select class="form-select bg-white border border-secondary border-opacity-25 shadow-sm rounded-3 fw-bold" name="fornecedor_id">
+                        <option value="">Desconhecido</option>
+                        <?php foreach ($lista_fornecedores as $forn): ?>
+                            <option value="<?php echo $forn['id']; ?>" <?php echo ($eq['fornecedor_id'] == $forn['id']) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($forn['nome_empresa']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
 
-                <div class="col-lg-5">
-                    <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h6 class="fw-bold text-dark fs-5 m-0"><i class="fa-solid fa-shield-halved text-success me-2"></i>Cobertura</h6>
-                            <button type="button" class="btn btn-sm btn-outline-primary rounded-pill fw-bold" style="font-size: 0.7rem;" data-bs-toggle="modal" data-bs-target="#modalAdicionarGarantia" data-idequip="<?php echo $eq['id']; ?>">
-                                <i class="fa-solid fa-pen me-1"></i> Atualizar
-                            </button>
+                <div class="col-sm-6">
+                    <label class="text-muted d-block mb-1 small fw-bold">Tipo de Entrada</label>
+                    <select class="form-select bg-white border border-secondary border-opacity-25 shadow-sm rounded-3 fw-bold text-primary" name="tipo_entrada">
+                        <option value="Compra" <?php echo (($eq['tipo_entrada'] ?? 'Compra') == 'Compra') ? 'selected' : ''; ?>>Compra</option>
+                        <option value="Doação" <?php echo (($eq['tipo_entrada'] ?? '') == 'Doação') ? 'selected' : ''; ?>>Doação</option>
+                        <option value="Aluguer" <?php echo (($eq['tipo_entrada'] ?? '') == 'Aluguer') ? 'selected' : ''; ?>>Aluguer</option>
+                        <option value="Empréstimo" <?php echo (($eq['tipo_entrada'] ?? '') == 'Empréstimo') ? 'selected' : ''; ?>>Empréstimo</option>
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <label class="text-muted d-block mb-1 small fw-bold">Ano de Fabrico</label>
+                    <input type="number" class="form-control bg-white border border-secondary border-opacity-25 shadow-sm rounded-3 fw-bold" name="ano_fabrico" value="<?php echo htmlspecialchars($eq['ano_fabrico'] ?? ''); ?>" min="1980" max="<?php echo date('Y'); ?>">
+                </div>
+                <div class="col-sm-6">
+                    <label class="text-muted d-block mb-1 small fw-bold">Data de Aquisição</label>
+                    <div class="fw-bold text-dark"><?php echo !empty($eq['data_aquisicao']) ? date('d/m/Y', strtotime($eq['data_aquisicao'])) : '-'; ?></div>
+                </div>
+                <div class="col-sm-6">
+                    <label class="text-muted d-block mb-1 small fw-bold">Valor de Aquisição</label>
+                    <div class="fw-bold text-dark fs-5"><?php echo !empty($eq['custo_aquisicao']) ? number_format($eq['custo_aquisicao'], 2, ',', ' ') . ' €' : '-'; ?></div>
+                </div>
+                <div class="col-sm-12">
+                    <label class="text-muted d-block mb-1 small fw-bold">Contactos de Suporte (Assistência Técnica)</label>
+                    <?php if (!empty($eq['assistencia_email']) || !empty($eq['assistencia_telefone'])): ?>
+                        <div class="small bg-light p-2 rounded-3 border border-light d-inline-block">
+                            <?php if (!empty($eq['assistencia_email'])) echo '<i class="fa-solid fa-envelope text-muted me-1"></i> ' . htmlspecialchars($eq['assistencia_email']) . '<br>'; ?>
+                            <?php if (!empty($eq['assistencia_telefone'])) echo '<i class="fa-solid fa-phone text-muted me-1"></i> ' . htmlspecialchars($eq['assistencia_telefone']); ?>
                         </div>
-
-                        <?php
-                        // Lógica de cálculo da garantia (Válida ou Expirada)
-                        $tem_garantia = !empty($eq['fim_garantia']);
-                        $garantia_expirada = false;
-                        if ($tem_garantia) {
-                            $data_fim = new DateTime($eq['fim_garantia']);
-                            $hoje = new DateTime();
-                            $hoje->setTime(0, 0, 0); // Limpar horas para comparar apenas os dias
-                            $garantia_expirada = $data_fim < $hoje;
-                        }
-                        ?>
-
-                        <?php if (!$tem_garantia): ?>
-                            <div class="text-center py-4 bg-light rounded-3 border border-dashed">
-                                <i class="fa-solid fa-file-shield text-muted fs-3 mb-2 opacity-50"></i>
-                                <p class="text-muted small m-0">Sem data de garantia registada.</p>
-                            </div>
-                        <?php else: ?>
-                            <div class="p-3 rounded-3 border <?php echo $garantia_expirada ? 'border-danger bg-danger bg-opacity-10' : 'border-success bg-success bg-opacity-10'; ?>">
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fa-solid <?php echo $garantia_expirada ? 'fa-shield-virus text-danger' : 'fa-shield-check text-success'; ?> fs-1 me-3"></i>
-                                    <div>
-                                        <h6 class="fw-bold m-0 <?php echo $garantia_expirada ? 'text-danger' : 'text-success'; ?>">Garantia de Fábrica</h6>
-                                        <small class="<?php echo $garantia_expirada ? 'text-danger' : 'text-success'; ?> opacity-75">
-                                            <?php echo $garantia_expirada ? 'Expirou a ' : 'Válida até '; ?>
-                                            <strong><?php echo date('d/m/Y', strtotime($eq['fim_garantia'])); ?></strong>
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-
-                        <div class="mt-4 pt-3 border-top">
-                            <label class="text-muted d-block mb-2 small fw-bold">Contratos de Manutenção (Extensões)</label>
-                            <div class="text-center py-3 bg-light rounded-3 border border-dashed">
-                                <span class="text-muted small">Funcionalidade de extensões em desenvolvimento.</span>
-                            </div>
-                        </div>
-                    </div>
+                    <?php else: ?>
+                        <em class="text-muted small">Sem contactos registados na ficha do fornecedor de assistência.</em>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -571,75 +525,70 @@ render_header("Detalhes - " . htmlspecialchars($eq['codigo_ativo']));
         <div class="tab-pane fade" id="armazem" role="tabpanel" tabindex="0">
             <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h6 class="fw-bold text-dark fs-5 m-0"><i class="fa-solid fa-boxes-stacked text-primary me-2"></i>Peça / Consumível Compatível</h6>
+                    <h6 class="fw-bold text-dark fs-5 m-0"><i class="fa-solid fa-boxes-stacked text-primary me-2"></i>Peças e Consumíveis Compatíveis</h6>
 
-                    <div style="width: 350px;">
-                        <select class="form-select form-select-sm bg-light border border-secondary border-opacity-25 fw-bold text-primary shadow-sm" name="consumiveis" onchange="document.getElementById('avisoGuardarPeca').classList.remove('d-none');">
-                            <option value="">Nenhuma (Remover Associação)</option>
+                    <div style="width: 400px;">
+                        <label class="small text-muted fw-bold mb-2">Selecione as peças (Clique para marcar/desmarcar)</label>
+                        <div class="bg-white border border-secondary border-opacity-25 rounded-3 shadow-sm p-2" style="max-height: 160px; overflow-y: auto;">
                             <?php foreach ($lista_artigos as $artigo): ?>
-                                <option value="<?php echo $artigo['id']; ?>" <?php echo ($eq['consumiveis'] == $artigo['id']) ? 'selected' : ''; ?>>
-                                    <?php echo htmlspecialchars($artigo['referencia'] . ' - ' . $artigo['nome']); ?>
-                                </option>
+                                <div class="form-check mb-1">
+                                    <input class="form-check-input border-secondary shadow-none" type="checkbox" name="consumiveis[]"
+                                        value="<?php echo $artigo['id']; ?>"
+                                        id="peca_<?php echo $artigo['id']; ?>"
+                                        <?php echo in_array($artigo['id'], $ids_consumiveis_selecionados) ? 'checked' : ''; ?>
+                                        onchange="document.getElementById('avisoGuardarPeca').classList.remove('d-none');"
+                                        style="cursor: pointer;">
+                                    <label class="form-check-label fw-bold text-primary w-100" for="peca_<?php echo $artigo['id']; ?>" style="font-size: 0.85rem; cursor: pointer;">
+                                        <?php echo htmlspecialchars($artigo['referencia'] . ' - ' . $artigo['nome']); ?>
+                                    </label>
+                                </div>
                             <?php endforeach; ?>
-                        </select>
+                        </div>
                     </div>
                 </div>
 
                 <div id="avisoGuardarPeca" class="alert alert-warning border-warning py-2 mb-4 d-none d-flex align-items-center rounded-3 shadow-sm">
                     <i class="fa-solid fa-triangle-exclamation fs-4 me-3 text-warning"></i>
                     <div>
-                        <strong class="d-block">Atenção! A peça associada foi alterada.</strong>
+                        <strong class="d-block">Atenção! As peças associadas foram alteradas.</strong>
                         <span class="small">Para gravar e aplicar esta integração, clica no botão verde <b>"Guardar Alterações"</b> no topo da página.</span>
                     </div>
                 </div>
 
-                <?php if ($consumivel):
-                    // Calcular se há rutura de stock para pintar de vermelho
-                    $em_rutura = ($consumivel['quantidade_atual'] < $consumivel['quantidade_minima']);
-                    $cor_stock = $em_rutura ? 'danger' : 'success';
-                ?>
+                <?php if (count($consumiveis_associados) > 0): ?>
                     <div class="row g-4">
-                        <div class="col-md-7">
-                            <div class="p-4 border rounded-4 bg-light h-100 position-relative overflow-hidden">
-                                <small class="text-muted fw-bold text-uppercase d-block mb-2" style="font-size: 0.7rem;">Designação Oficial no Armazém</small>
-                                <h5 class="fw-bold text-dark mb-1"><?php echo htmlspecialchars($consumivel['nome']); ?></h5>
-                                <span class="badge bg-secondary text-white fw-mono px-2 py-1"><?php echo htmlspecialchars($consumivel['referencia']); ?></span>
-
-                                <div class="mt-4 pt-3 border-top border-secondary border-opacity-25 small text-muted">
-                                    <i class="fa-solid fa-layer-group me-2"></i> Categoria: <strong><?php echo htmlspecialchars($consumivel['categoria']); ?></strong>
+                        <?php foreach ($consumiveis_associados as $consumivel):
+                            $em_rutura = ($consumivel['quantidade_atual'] < $consumivel['quantidade_minima']);
+                            $cor_stock = $em_rutura ? 'danger' : 'success';
+                        ?>
+                            <div class="col-md-6">
+                                <div class="row g-0 border rounded-4 overflow-hidden h-100 shadow-sm">
+                                    <div class="col-7 p-3 bg-light d-flex flex-column justify-content-center">
+                                        <small class="text-muted fw-bold text-uppercase d-block mb-1" style="font-size: 0.65rem;">Designação no Armazém</small>
+                                        <h6 class="fw-bold text-dark mb-1 lh-sm"><?php echo htmlspecialchars($consumivel['nome']); ?></h6>
+                                        <span class="badge bg-secondary text-white fw-mono px-2 py-1 mb-2 align-self-start"><?php echo htmlspecialchars($consumivel['referencia']); ?></span>
+                                        <small class="text-muted mt-auto" style="font-size: 0.75rem;"><i class="fa-solid fa-layer-group me-1"></i> Categoria: <?php echo htmlspecialchars($consumivel['categoria']); ?></small>
+                                    </div>
+                                    <div class="col-5 p-3 bg-<?php echo $cor_stock; ?> bg-opacity-10 d-flex flex-column justify-content-center align-items-center text-center border-start border-<?php echo $cor_stock; ?> border-opacity-25">
+                                        <small class="text-<?php echo $cor_stock; ?> fw-bold text-uppercase mb-1" style="font-size: 0.65rem;">
+                                            <?php echo $em_rutura ? '<i class="fa-solid fa-triangle-exclamation me-1"></i> Rutura' : '<i class="fa-solid fa-check-circle me-1"></i> Stock OK'; ?>
+                                        </small>
+                                        <h3 class="fw-black text-<?php echo $cor_stock; ?> m-0">
+                                            <?php echo $consumivel['quantidade_atual']; ?>
+                                        </h3>
+                                        <small class="text-muted fw-medium" style="font-size: 0.65rem;">Mín: <?php echo $consumivel['quantidade_minima']; ?></small>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="col-md-5">
-                            <div class="p-4 border rounded-4 border-<?php echo $cor_stock; ?> bg-<?php echo $cor_stock; ?> bg-opacity-10 h-100 d-flex flex-column justify-content-center align-items-center text-center">
-                                <small class="text-<?php echo $cor_stock; ?> fw-bold text-uppercase mb-2" style="font-size: 0.75rem;">
-                                    <?php echo $em_rutura ? '<i class="fa-solid fa-triangle-exclamation me-1"></i> Stock em Rutura' : '<i class="fa-solid fa-check-circle me-1"></i> Stock Saudável'; ?>
-                                </small>
-
-                                <h1 class="fw-black text-<?php echo $cor_stock; ?> m-0 mb-1" style="font-size: 3rem;">
-                                    <?php echo $consumivel['quantidade_atual']; ?> <span class="fs-6 fw-medium">Unid.</span>
-                                </h1>
-                                <small class="text-muted fw-medium">Mínimo Exigido: <?php echo $consumivel['quantidade_minima']; ?></small>
-
-                                <?php if ($em_rutura): ?>
-                                    <div class="mt-4 w-100">
-                                        <a href="/sibdas/1241251/gira/private/armazem/armazem.php" class="btn btn-danger btn-sm w-100 rounded-3 fw-bold py-2 shadow-sm hover-danger">
-                                            <i class="fa-solid fa-cart-arrow-down me-2"></i> Ir para o Armazém
-                                        </a>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
-
                 <?php else: ?>
                     <div class="text-center py-5 bg-light rounded-4 border border-dashed">
                         <div class="bg-white p-3 rounded-circle d-inline-block shadow-sm mb-3">
                             <i class="fa-solid fa-link-slash text-muted fs-3 opacity-50"></i>
                         </div>
-                        <p class="fw-bold text-dark m-0">Nenhuma peça de armazém associada.</p>
-                        <p class="text-muted small mt-2">Para ter acompanhamento de stock em tempo real, edite a ficha técnica e selecione o consumível compatível.</p>
+                        <p class="fw-bold text-dark m-0">Nenhuma peça de armazém associada a este equipamento.</p>
+                        <p class="text-muted small mt-2">Pode selecionar múltiplas peças na lista acima mantendo a tecla CTRL pressionada.</p>
                     </div>
                 <?php endif; ?>
             </div>

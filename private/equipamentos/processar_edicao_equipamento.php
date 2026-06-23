@@ -18,11 +18,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $modelo = trim($_POST['modelo'] ?? '');
     $sn = trim($_POST['sn'] ?? '');
     $mac_address = trim($_POST['mac_address'] ?? '');
-    $custo_aquisicao = $_POST['custo_aquisicao'] ?? '';
+
+    // Tratar vírgulas e cêntimos no custo
+    $custo_aquisicao = !empty($_POST['custo_aquisicao']) ? str_replace(',', '.', $_POST['custo_aquisicao']) : null;
+
     $categoria = trim($_POST['categoria'] ?? '');
     $marca = trim($_POST['marca'] ?? '');
     $observacoes = trim($_POST['observacoes'] ?? '');
     $fabricante_id = !empty($_POST['fabricante_id']) ? (int) $_POST['fabricante_id'] : null;
+
+    // OS NOVOS CAMPOS
+    $ano_fabrico = !empty($_POST['ano_fabrico']) ? (int) $_POST['ano_fabrico'] : null;
+    $tipo_entrada = trim($_POST['tipo_entrada'] ?? 'Compra');
 
     // Utilizar as funções do db.php
     if ($e = validar_texto_obrigatorio($nome, 100, "Nome do Equipamento")) $erros[] = $e;
@@ -30,55 +37,72 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($e = validar_texto_obrigatorio($sn, 100, "Número de Série")) $erros[] = $e;
     if ($e = validar_mac_opcional($mac_address)) $erros[] = $e;
 
-    // Validar Dropdowns e Datas
-    if (empty($_POST['fornecedor_id'])) $erros[] = "Deve selecionar o Fabricante Oficial.";
+    // Validar Dropdowns Obrigatórias
+    if (empty($_POST['fornecedor_id'])) $erros[] = "Deve selecionar a Assistência / Fornecedor.";
+    if (empty($_POST['localizacao_id'])) $erros[] = "Deve selecionar uma localização válida.";
     if (empty($_POST['classe_risco'])) $erros[] = "A Classe de Risco é obrigatória.";
-    if (empty($_POST['localizacao_id'])) $erros[] = "Deve indicar a Localização / Serviço Alocado.";
+    if (empty($_POST['estado_operacional'])) $erros[] = "O Estado Operacional é obrigatório.";
     if (empty($_POST['data_aquisicao'])) $erros[] = "A Data de Aquisição é obrigatória.";
     if (empty($_POST['proxima_revisao'])) $erros[] = "A data da Próxima Revisão é obrigatória.";
 
-    // Validar Custo (Não pode ser negativo)
-    if (!empty($custo_aquisicao) && (!is_numeric($custo_aquisicao) || $custo_aquisicao < 0)) {
-        $erros[] = "O Custo de Aquisição não pode ser negativo.";
-    }
-
-    // 4. DECISÃO: Encontrou Erros?
+    // Se houver erros, devolve ao formulário
     if (!empty($erros)) {
         $_SESSION['erros'] = $erros;
-        $_SESSION['dados_form'] = $_POST; // Guardar o que o utilizador tentou editar!
+        $_SESSION['dados_form'] = $_POST;
         header("Location: /sibdas/1241251/gira/private/equipamentos/detalhes_equipamento.php?id=" . $id_equipamento);
         exit;
     }
 
-    // 5. O comando UPDATE SEGURO
-   $sql = "UPDATE equipamentos 
-            SET nome = :nome, categoria = :categoria, marca = :marca, modelo = :modelo, num_serie = :serie, mac_address = :mac, 
-                classe_risco = :risco, estado = :estado, localizacao_id = :localizacao, fabricante_id = :fabricante, fornecedor_id = :fornecedor, 
-                data_aquisicao = :data_aq, custo_aquisicao = :custo, proxima_revisao = :revisao, consumiveis = :consumiveis, observacoes = :observacoes
-            WHERE id = :id";
-
     try {
+        // 4. ATUALIZAR O EQUIPAMENTO NA BASE DE DADOS
+        $sql = "UPDATE equipamentos 
+                SET nome = :nome, categoria = :categoria, marca = :marca, modelo = :modelo, num_serie = :serie, mac_address = :mac, 
+                    classe_risco = :risco, estado = :estado, localizacao_id = :localizacao, fabricante_id = :fabricante, fornecedor_id = :fornecedor, 
+                    data_aquisicao = :data_aq, ano_fabrico = :ano_fabrico, tipo_entrada = :tipo_entrada, custo_aquisicao = :custo, proxima_revisao = :revisao, observacoes = :observacoes
+                WHERE id = :id";
         $stmt = $pdo->prepare($sql);
 
         $stmt->execute([
             ':id'           => $id_equipamento,
             ':nome'         => $nome,
-            ':modelo'       => !empty($modelo) ? $modelo : null,
-            ':fabricante'   => $fabricante_id,
-            ':fornecedor'   => $_POST['fornecedor_id'],
+            ':categoria'    => !empty($categoria) ? $categoria : null,
+            ':marca'        => !empty($marca) ? $marca : null,
+            ':modelo'       => $modelo,
             ':serie'        => $sn,
             ':mac'          => !empty($mac_address) ? $mac_address : null,
             ':risco'        => $_POST['classe_risco'],
             ':estado'       => $_POST['estado_operacional'],
             ':localizacao'  => $_POST['localizacao_id'],
+            ':fabricante'   => $fabricante_id,
+            ':fornecedor'   => $_POST['fornecedor_id'],
             ':data_aq'      => $_POST['data_aquisicao'],
-            ':custo'        => !empty($custo_aquisicao) ? $custo_aquisicao : null,
+            ':ano_fabrico'  => $ano_fabrico,
+            ':tipo_entrada' => $tipo_entrada,
+            ':custo'        => $custo_aquisicao,
             ':revisao'      => $_POST['proxima_revisao'],
-            ':consumiveis'  => !empty($_POST['consumiveis']) ? $_POST['consumiveis'] : null,
-            ':categoria'   => !empty($categoria) ? $categoria : null,
-            ':marca'       => !empty($marca) ? $marca : null,
-            ':observacoes' => !empty($observacoes) ? $observacoes : null,
+            ':observacoes'  => !empty($observacoes) ? $observacoes : null
         ]);
+
+        // =======================================================
+        // RELAÇÃO N:M - Atualizar Consumíveis Múltiplos
+        // =======================================================
+        // A) Apagar todas as ligações antigas deste equipamento
+        $sql_limpar = "DELETE FROM equipamento_artigo_armazem WHERE equipamento_id = :id";
+        $stmt_limpar = $pdo->prepare($sql_limpar);
+        $stmt_limpar->execute([':id' => $id_equipamento]);
+
+        // B) Inserir as novas ligações (se o utilizador selecionou alguma)
+        if (!empty($_POST['consumiveis']) && is_array($_POST['consumiveis'])) {
+            $sql_inserir = "INSERT INTO equipamento_artigo_armazem (equipamento_id, artigo_id) VALUES (:eq_id, :art_id)";
+            $stmt_inserir = $pdo->prepare($sql_inserir);
+
+            foreach ($_POST['consumiveis'] as $id_artigo) {
+                $stmt_inserir->execute([
+                    ':eq_id' => $id_equipamento,
+                    ':art_id' => (int) $id_artigo
+                ]);
+            }
+        }
 
         if (function_exists('registar_log')) {
             registar_log($pdo, $_SESSION['user_id'], "Atualizou a ficha técnica do equipamento: " . $nome, "Equipamentos", "equipamentos", $id_equipamento);

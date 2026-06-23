@@ -147,11 +147,22 @@ try {
                         </div>
                     </div>
                     <div class="form-step d-none" id="step-3">
-                        <h6 class="fw-bold mb-3 text-dark border-bottom pb-2"><i class="fa-solid fa-file-invoice-dollar text-muted me-2"></i>Passo 3: Aquisição e Contratos</h6>
+                        <h6 class="fw-bold mb-3 text-dark border-bottom pb-2"><i class="fa-solid fa-file-invoice-dollar text-muted me-2"></i>Passo 3: Aquisição e Dados Comerciais</h6>
                         <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-secondary">Tipo de Entrada</label>
+                                <select class="form-select rounded-3 bg-light border-0 text-primary fw-bold" name="tipo_entrada" required>
+                                    <option value="Compra" selected>Compra</option>
+                                    <option value="Doação">Doação</option>
+                                    <option value="Aluguer">Aluguer</option>
+                                    <option value="Empréstimo">Empréstimo</option>
+                                </select>
+                            </div>
                             <div class="col-md-4"><label class="form-label small fw-bold text-secondary">Data de Aquisição</label><input type="date" class="form-control rounded-3 bg-light border-0" name="data_aquisicao" required></div>
-                            <div class="col-md-4"><label class="form-label small fw-bold text-secondary">Custo de Aquisição (€)</label><input type="number" step="0.01" class="form-control rounded-3 bg-light border-0" name="custo_aquisicao" placeholder="Ex: 24500.00" required></div>
-                            <div class="col-md-4"><label class="form-label small fw-bold text-secondary">Fim da Garantia</label><input type="date" class="form-control rounded-3 bg-light border-0" name="fim_garantia" required></div>
+                            <div class="col-md-4"><label class="form-label small fw-bold text-secondary">Custo / Valor Estimado (€)</label><input type="number" step="0.01" class="form-control rounded-3 bg-light border-0" name="custo_aquisicao" placeholder="Ex: 24500.00"></div>
+
+                            <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Ano de Fabrico</label><input type="number" class="form-control rounded-3 bg-light border-0" name="ano_fabrico" placeholder="Ex: 2024" min="1980" max="<?php echo date('Y'); ?>"></div>
+                            <div class="col-md-6"><label class="form-label small fw-bold text-secondary">Fim da Garantia de Fábrica</label><input type="date" class="form-control rounded-3 bg-light border-0" name="fim_garantia"></div>
                         </div>
                     </div>
                     <div class="form-step d-none" id="step-4">
@@ -159,13 +170,20 @@ try {
                         <div class="row g-3">
                             <div class="col-12">
                                 <label class="form-label small fw-bold text-secondary">Periféricos / Consumíveis</label>
-                                <select class="form-select rounded-3 bg-light border-0" name="consumiveis">
-                                    <option value="" selected>Nenhum (Sem peça oficial associada)</option>
+                                <label class="form-label small fw-bold text-secondary">Periféricos / Consumíveis (Pressione CTRL para selecionar vários)</label>
+                                <select class="form-select rounded-3 bg-light border-0" name="consumiveis[]" multiple size="4">
                                     <?php foreach ($artigos_dropdown as $artigo): ?>
                                         <option value="<?php echo $artigo['id']; ?>">
                                             <?php echo htmlspecialchars($artigo['referencia'] . ' - ' . $artigo['nome']); ?>
                                         </option>
                                     <?php endforeach; ?>
+                                </select>
+                                <option value="" selected>Nenhum (Sem peça oficial associada)</option>
+                                <?php foreach ($artigos_dropdown as $artigo): ?>
+                                    <option value="<?php echo $artigo['id']; ?>">
+                                        <?php echo htmlspecialchars($artigo['referencia'] . ' - ' . $artigo['nome']); ?>
+                                    </option>
+                                <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="col-12 border-top pt-3 mt-3"><label class="form-label small fw-bold text-secondary">Documento a Anexar</label><input type="file" class="form-control rounded-3 bg-white shadow-sm border-light" name="documento_anexo" accept=".pdf,.doc,.docx,.jpg,.png"></div>
