@@ -1,60 +1,139 @@
--- ==============================================================================
--- 1. MODO DE PURGA: DESATIVAR RESTRIÇÕES
--- ==============================================================================
+-- ==============================================================================================
+-- 1. LIMPEZA TOTAL DA BASE DE DADOS (TRUNCATE)
+-- ==============================================================================================
 SET FOREIGN_KEY_CHECKS = 0;
 
--- 2. LIMPAR TOTALMENTE AS TABELAS
+TRUNCATE TABLE `logs_auditoria`;
 TRUNCATE TABLE `ordens_trabalho`;
 TRUNCATE TABLE `documentos_equipamento`;
+TRUNCATE TABLE `equipamento_artigo_armazem`;
 TRUNCATE TABLE `encomendas_armazem`;
 TRUNCATE TABLE `artigos_armazem`;
 TRUNCATE TABLE `equipamentos`;
-TRUNCATE TABLE `fornecedores`;
 TRUNCATE TABLE `localizacoes`;
-TRUNCATE TABLE `logs_auditoria`;
+TRUNCATE TABLE `fornecedores`;
+TRUNCATE TABLE `utilizadores`;
+TRUNCATE TABLE `perfis_acesso`;
+TRUNCATE TABLE `conteudos_site`;
 
--- ==============================================================================
--- 3. INJEÇÃO DOS NOVOS DADOS DE TESTE (Respeitando o ENUM)
--- ==============================================================================
-
--- INSERIR LOCALIZAÇÕES
-INSERT INTO `localizacoes` (`id`, `cod_sala`, `nome`, `detalhe`, `piso`, `bloco`) VALUES
-(1, 'S-101', 'Urgência Geral', 'Box de Reanimação 1', 'Piso 0', 'Bloco Central'),
-(2, 'S-102', 'Urgência Geral', 'Box de Trauma', 'Piso 0', 'Bloco Central'),
-(3, 'S-205', 'Bloco Operatório', 'Sala de Cirurgia 3', 'Piso 2', 'Bloco Sul'),
-(4, 'S-310', 'Cuidados Intensivos', 'Cama 4', 'Piso 3', 'Bloco Norte'),
-(5, 'S-005', 'Imagiologia', 'Sala de Raio-X', 'Piso -1', 'Bloco Central');
-
--- INSERIR FORNECEDORES
-INSERT INTO `fornecedores` (`id`, `nome_empresa`, `nif`, `especialidade`, `estado`, `email_suporte`, `telefone_suporte`) VALUES
-(1, 'Dräger Medical Portugal', '501234567', 'Ventilação e Anestesia', 'Ativo', 'suporte@draeger.pt', '210000001'),
-(2, 'Philips Healthcare', '502345678', 'Monitorização e Imagem', 'Ativo', 'helpdesk@philips.pt', '210000002'),
-(3, 'Siemens Healthineers', '503456789', 'Imagiologia e Diagnóstico', 'Ativo', 'tech@siemens.pt', '210000003'),
-(4, 'GE Healthcare', '504567890', 'Equipamento Geral', 'Ativo', 'assistencia@ge.com', '210000004');
-
--- INSERIR EQUIPAMENTOS MÉDICOS (Apenas Operacional, Inoperacional ou Manutenção)
-INSERT INTO `equipamentos` (`id`, `codigo_ativo`, `nome`, `modelo`, `num_serie`, `classe_risco`, `estado`, `localizacao_id`, `fornecedor_id`, `data_aquisicao`, `custo_aquisicao`, `fim_garantia`, `proxima_revisao`) VALUES
-(1, 'EQ-2026-A1B2', 'Ventilador Pulmonar', 'Evita V500', 'DRG-887766', 'Classe III', 'Operacional', 4, 1, '2023-01-15', 25000.00, '2028-01-15', '2026-07-15'),
-(2, 'EQ-2026-C3D4', 'Monitor Multiparamétrico', 'IntelliVue MX700', 'PHL-112233', 'Classe IIb', 'Operacional', 1, 2, '2024-05-20', 8500.00, '2027-05-20', '2026-11-20'),
-(3, 'EQ-2026-E5F6', 'Aparelho de Raio-X Fixo', 'Multix Impact', 'SIE-998877', 'Classe IIb', 'Inoperacional', 5, 3, '2021-11-10', 85000.00, '2026-06-15', '2026-05-10'),
-(4, 'EQ-2026-G7H8', 'Desfibrilhador', 'HeartStart MRx', 'PHL-554433', 'Classe III', 'Operacional', 2, 2, '2025-02-28', 6000.00, '2028-02-28', '2026-08-28'),
-(5, 'EQ-2026-I9J0', 'Bomba de Infusão', 'Volumat MC Agilia', 'DRG-332211', 'Classe IIa', 'Manutenção', 3, 1, '2015-06-01', 1200.00, '2018-06-01', NULL),
-(6, 'EQ-2026-K1L2', 'Eletrocardiógrafo (ECG)', 'PageWriter TC30', 'PHL-990011', 'Classe IIa', 'Operacional', 1, 2, '2022-09-10', 3500.00, '2026-06-25', '2026-09-10');
-
--- INSERIR ORDENS DE TRABALHO
-INSERT INTO `ordens_trabalho` (`id`, `numero_ot`, `equipamento_id`, `tipo_manutencao`, `prioridade`, `descricao_avaria`, `data_abertura`, `estado`, `relatorio_tecnico`, `tempo_gasto`, `data_fecho`) VALUES
-(1, 'OT-2026-X111', 3, 'Corretiva', 'Alta', 'Tubo de RX não emite radiação. Erro E-404 no painel.', '2026-06-01 09:30:00', 'Pendente', NULL, NULL, NULL),
-(2, 'OT-2026-X222', 1, 'Preventiva', 'Normal', 'Calibração anual obrigatória dos sensores de fluxo.', '2026-05-15 10:00:00', 'Concluída', 'Sensores calibrados com sucesso. Testes de fuga elétrica realizados.', 2.5, '2026-05-15 14:30:00'),
-(3, 'OT-2026-X333', 2, 'Corretiva', 'Baixa', 'Ecrã tátil com falhas de resposta no canto superior direito.', '2026-06-10 14:15:00', 'Pendente', NULL, NULL, NULL);
-
--- INSERIR ARTIGOS DE ARMAZÉM
-INSERT INTO `artigos_armazem` (`id`, `referencia`, `nome`, `categoria`, `quantidade_atual`, `quantidade_minima`, `fornecedor_id`, `quantidade_em_transito`) VALUES
-(1, 'ART-SENS-01', 'Sensor de SpO2 Reutilizável', 'Sensores', 12, 15, 2, 5),
-(2, 'ART-FILT-02', 'Filtro HMEF Adulto', 'Consumíveis', 150, 50, 1, 0),
-(3, 'ART-CABO-03', 'Cabo ECG 5 Vias', 'Cabos', 8, 10, 2, 0),
-(4, 'ART-BAT-04', 'Bateria Desfibrilhador 12V', 'Energia', 2, 5, 2, 3);
-
--- ==============================================================================
--- 4. REATIVAR AS RESTRIÇÕES DE SEGURANÇA
--- ==============================================================================
 SET FOREIGN_KEY_CHECKS = 1;
+
+-- ==============================================================================================
+-- 2. POVOAMENTO DA BASE DE DADOS - CENÁRIO HOSPITALAR COMPLETO
+-- ==============================================================================================
+
+-- PERFIS DE ACESSO
+INSERT INTO `perfis_acesso` (`id`, `nome_perfil`, `descricao`, `nivel_acesso`) VALUES
+(1, 'Administrador do Sistema', 'Acesso total a configurações e gestão do sistema Gira', 3),
+(2, 'Engenharia Clínica / Técnicos', 'Gestão operacional de equipamentos, manutenção e armazém', 2),
+(3, 'Direção Clínica / Médicos', 'Apenas leitura de inventário e emissão de O.T.s', 1),
+(4, 'Enfermagem', 'Acesso aos equipamentos do respetivo serviço', 1);
+
+-- UTILIZADORES (A tua equipa e colegas)
+-- Password para todos: 12345
+INSERT INTO `utilizadores` (`id`, `nome`, `cedula`, `email`, `password_hash`, `perfil_id`, `estado`) VALUES
+(1, 'Simão Cacheira', 'ENG-001', 'admin@gira.pt', '$2y$10$4L.hpnuWg56JjRJrHX0hy.2CT6zwKZoC1LyyF3yBLwjFNcNGaWHtG', 1, 'Ativo'),
+(2, 'Helena Barbosa', 'TEC-405', 'hbarbosa@gira.pt', '$2y$10$4L.hpnuWg56JjRJrHX0hy.2CT6zwKZoC1LyyF3yBLwjFNcNGaWHtG', 2, 'Ativo'),
+(3, 'Inês Barros', 'MED-892', 'ibarros@gira.pt', '$2y$10$4L.hpnuWg56JjRJrHX0hy.2CT6zwKZoC1LyyF3yBLwjFNcNGaWHtG', 3, 'Ativo'),
+(4, 'Dinis Martins', 'TEC-406', 'dmartins@gira.pt', '$2y$10$4L.hpnuWg56JjRJrHX0hy.2CT6zwKZoC1LyyF3yBLwjFNcNGaWHtG', 2, 'Ativo'),
+(5, 'Mariana', 'ENF-112', 'mariana@gira.pt', '$2y$10$4L.hpnuWg56JjRJrHX0hy.2CT6zwKZoC1LyyF3yBLwjFNcNGaWHtG', 4, 'Ativo'),
+(6, 'Afonso', 'MED-905', 'afonso@gira.pt', '$2y$10$4L.hpnuWg56JjRJrHX0hy.2CT6zwKZoC1LyyF3yBLwjFNcNGaWHtG', 3, 'Ativo');
+
+-- FORNECEDORES E MARCAS
+INSERT INTO `fornecedores` (`id`, `nome_empresa`, `nif`, `especialidade`, `estado`, `email_suporte`, `telefone_suporte`) VALUES
+(1, 'Dräger Medical Portugal', '501234567', 'Ventilação e Suporte de Vida', 'Ativo', 'suporte@draeger.pt', '+351 210 000 001'),
+(2, 'Philips Healthcare', '502345678', 'Monitores e Imagiologia', 'Ativo', 'helpdesk@philips.pt', '+351 210 000 002'),
+(3, 'Siemens Healthineers', '503456789', 'Imagiologia e Diagnóstico', 'Ativo', 'tech@siemens.pt', '+351 210 000 003'),
+(4, 'B. Braun Medical S.A.', '504567890', 'Bombas de Infusão', 'Ativo', 'suporte.pt@bbraun.com', '+351 210 000 004'),
+(5, 'Medtronic Portugal', '505678901', 'Suporte de Vida e Cirurgia', 'Ativo', 'assistencia@medtronic.com', '+351 210 000 005'),
+(6, 'GE Healthcare', '506789012', 'Imagiologia e Monitorização', 'Ativo', 'suporte@ge.com', '+351 210 000 006'),
+(7, 'Mindray Portugal', '507890123', 'Monitores e Diagnóstico', 'Ativo', 'service.pt@mindray.com', '+351 210 000 007'),
+(8, 'Nihon Kohden', '508901234', 'Cardiologia e Neurologia', 'Ativo', 'support@nihonkohden.com', '+351 210 000 008');
+
+-- LOCALIZAÇÕES DO HOSPITAL
+INSERT INTO `localizacoes` (`id`, `cod_sala`, `nome`, `detalhe`, `piso`, `bloco`) VALUES
+(1, 'URG-101', 'Serviço de Urgência', 'Box de Reanimação 1', 'Piso 0', 'Bloco Central'),
+(2, 'URG-102', 'Serviço de Urgência', 'Sala de Triagem', 'Piso 0', 'Bloco Central'),
+(3, 'BLO-205', 'Bloco Operatório', 'Sala de Cirurgia 3', 'Piso 2', 'Bloco Cirúrgico'),
+(4, 'UCI-310', 'Cuidados Intensivos (UCI)', 'Cama 4', 'Piso 3', 'Ala Norte'),
+(5, 'UCI-311', 'Cuidados Intensivos (UCI)', 'Cama 5', 'Piso 3', 'Ala Norte'),
+(6, 'IMG-005', 'Imagiologia', 'Sala de Raio-X Fixo', 'Piso -1', 'Bloco Central'),
+(7, 'CAR-401', 'Cardiologia', 'Laboratório de Ecocardiografia', 'Piso 4', 'Ala Sul'),
+(8, 'PED-502', 'Pediatria / Neonatologia', 'Sala de Cuidados Intermédios', 'Piso 5', 'Ala Pediátrica');
+
+-- EQUIPAMENTOS (Inventário Maciço)
+INSERT INTO `equipamentos` (`id`, `codigo_ativo`, `nome`, `categoria`, `marca`, `modelo`, `num_serie`, `mac_address`, `classe_risco`, `estado`, `localizacao_id`, `fabricante_id`, `fornecedor_id`, `data_aquisicao`, `ano_fabrico`, `tipo_entrada`, `custo_aquisicao`, `fim_garantia`, `proxima_revisao`, `observacoes`) VALUES
+(1, 'EQ-2026-A1B2', 'Ventilador Pulmonar', 'Suporte de Vida', 'Dräger', 'Evita V500', 'DRG-887766', '00:1A:2B:3C:4D:5E', 'Suporte de Vida', 'Operacional', 4, 1, 1, '2023-01-15', 2022, 'Compra', 25000.00, '2028-01-15', '2026-07-15', 'Equipamento crítico.'),
+(2, 'EQ-2026-C3D4', 'Monitor Multiparamétrico', 'Monitorização', 'Philips', 'IntelliVue MX700', 'PHL-112233', 'A1:B2:C3:D4:E5:F6', 'Médio/Alto Risco', 'Operacional', 1, 2, 2, '2024-05-20', 2024, 'Compra', 8500.00, '2027-05-20', '2026-11-20', 'Alocado à reanimação.'),
+(3, 'EQ-2026-E5F6', 'Aparelho de Raio-X Fixo', 'Diagnóstico', 'Siemens', 'Multix Impact', 'SIE-998877', NULL, 'Médio/Alto Risco', 'Operacional', 6, 3, 3, '2021-11-10', 2021, 'Compra', 85000.00, '2025-11-10', '2026-10-10', 'Contrato de manutenção ativo.'),
+(4, 'EQ-2026-G7H8', 'Bomba de Infusão Volumétrica', 'Terapia', 'B. Braun', 'Infusomat Space', 'BBR-332211', NULL, 'Baixo Risco', 'Operacional', 4, 4, 4, '2025-06-01', 2025, 'Empréstimo', 1200.00, '2027-06-01', '2027-01-10', 'Equipamento de empréstimo temporário.'),
+(5, 'EQ-2026-I9J0', 'Desfibrilhador Bifásico', 'Suporte de Vida', 'Medtronic', 'LIFEPAK 15', 'MED-554433', NULL, 'Suporte de Vida', 'Inoperacional', 1, 5, 5, '2020-02-28', 2019, 'Doação', 0.00, '2023-02-28', '2026-02-28', 'Avariado. Problema no condensador principal.'),
+(6, 'EQ-2026-K1L2', 'Monitor de Sinais Vitais', 'Monitorização', 'Mindray', 'BeneVision N12', 'MIN-998811', 'B2:C3:D4:E5:F6:A1', 'Médio/Alto Risco', 'Operacional', 2, 7, 7, '2023-08-14', 2023, 'Compra', 5400.00, '2026-08-14', '2026-08-14', NULL),
+(7, 'EQ-2026-M3N4', 'Incubadora Neonatal', 'Suporte de Vida', 'GE Healthcare', 'Giraffe OmniBed', 'GE-774411', NULL, 'Suporte de Vida', 'Operacional', 8, 6, 6, '2022-03-10', 2021, 'Compra', 32000.00, '2027-03-10', '2026-09-10', 'Verificar o sensor de humidade na próxima revisão.'),
+(8, 'EQ-2026-O5P6', 'Ecógrafo Portátil', 'Diagnóstico', 'Philips', 'Affiniti 70', 'PHL-ECO-445', 'C3:D4:E5:F6:A1:B2', 'Monitorização', 'Manutenção', 7, 2, 2, '2024-11-22', 2024, 'Compra', 45000.00, '2029-11-22', '2026-05-22', 'A aguardar sonda linear.'),
+(9, 'EQ-2026-Q7R8', 'Eletrocardiógrafo (ECG)', 'Diagnóstico', 'GE Healthcare', 'MAC 2000', 'GE-ECG-112', NULL, 'Monitorização', 'Operacional', 7, 6, 6, '2021-01-30', 2020, 'Compra', 3200.00, '2024-01-30', '2026-07-30', 'Garantia expirada.'),
+(10, 'EQ-2026-S9T0', 'Bomba Seringa', 'Terapia', 'B. Braun', 'Perfusor Space', 'BBR-990022', NULL, 'Baixo Risco', 'Operacional', 5, 4, 4, '2025-06-01', 2025, 'Empréstimo', 950.00, '2027-06-01', '2027-01-10', NULL),
+(11, 'EQ-2026-U1V2', 'Desfibrilhador DAE', 'Suporte de Vida', 'Nihon Kohden', 'TEC-5631', 'NHK-556677', NULL, 'Suporte de Vida', 'Operacional', 2, 8, 8, '2023-09-05', 2023, 'Compra', 2100.00, '2028-09-05', '2026-09-05', 'Bateria substituída recentemente.'),
+(12, 'EQ-2026-W3X4', 'Arco em C Cirúrgico', 'Diagnóstico', 'Siemens', 'Cios Select', 'SIE-C-999', NULL, 'Médio/Alto Risco', 'Operacional', 3, 3, 3, '2022-12-15', 2022, 'Compra', 110000.00, '2027-12-15', '2026-12-15', 'Radiação controlada.'),
+(13, 'EQ-2026-Y5Z6', 'Ventilador Pulmonar', 'Suporte de Vida', 'Dräger', 'Evita V600', 'DRG-V6-112', 'D4:E5:F6:A1:B2:C3', 'Suporte de Vida', 'Operacional', 5, 1, 1, '2024-02-10', 2024, 'Compra', 28000.00, '2029-02-10', '2026-08-10', NULL),
+(14, 'EQ-2026-A7B8', 'Monitor Multiparamétrico', 'Monitorização', 'Philips', 'IntelliVue MX700', 'PHL-112244', 'E5:F6:A1:B2:C3:D4', 'Médio/Alto Risco', 'Operacional', 5, 2, 2, '2024-05-20', 2024, 'Compra', 8500.00, '2027-05-20', '2026-11-20', NULL),
+(15, 'EQ-2026-C9D0', 'Máquina de Anestesia', 'Suporte de Vida', 'Dräger', 'Fabius Plus', 'DRG-FAB-777', NULL, 'Suporte de Vida', 'Inoperacional', 3, 1, 1, '2018-07-22', 2018, 'Compra', 35000.00, '2023-07-22', '2026-01-22', 'A aguardar aprovação de orçamento para reparação.');
+
+-- ARMAZÉM: ARTIGOS E PEÇAS
+INSERT INTO `artigos_armazem` (`id`, `referencia`, `nome`, `categoria`, `quantidade_atual`, `quantidade_minima`, `fornecedor_id`) VALUES
+(1, 'REF-SPO2-AD', 'Sensor de SpO2 Reutilizável (Adulto)', 'Consumíveis Clínicos', 45, 20, 2),
+(2, 'REF-SPO2-PED', 'Sensor de SpO2 Reutilizável (Pediátrico)', 'Consumíveis Clínicos', 8, 15, 2), -- Rutura
+(3, 'REF-HMEF-01', 'Filtro Permutador HMEF Adulto', 'Consumíveis Clínicos', 5, 100, 1), -- Rutura Crítica
+(4, 'REF-CABO-3V', 'Cabo ECG 3 Vias', 'Peças de Reparação', 22, 10, 2),
+(5, 'REF-CABO-5V', 'Cabo ECG 5 Vias', 'Peças de Reparação', 14, 10, 2),
+(6, 'REF-BAT-LP', 'Bateria Ion-Lítio 12V (LIFEPAK)', 'Peças de Reparação', 1, 4, 5), -- Rutura
+(7, 'REF-GEL-ECO', 'Gel para Ecografia (Frasco 5L)', 'Consumíveis Clínicos', 2, 5, 6), -- Rutura
+(8, 'REF-PAPEL-ECG', 'Papel Térmico para ECG (Rolo)', 'Consumíveis Clínicos', 85, 30, 6),
+(9, 'REF-NIBP-AD', 'Manguito NIBP (Adulto Normal)', 'Consumíveis Clínicos', 30, 15, 7),
+(10, 'REF-NIBP-OB', 'Manguito NIBP (Adulto Obeso)', 'Consumíveis Clínicos', 12, 10, 7),
+(11, 'REF-CEL-O2', 'Célula de Oxigénio O2 Sensor', 'Peças de Reparação', 4, 10, 1); -- Rutura
+
+-- ASSOCIAÇÃO N:M (Ligar as peças compatíveis aos equipamentos)
+INSERT INTO `equipamento_artigo_armazem` (`equipamento_id`, `artigo_id`) VALUES
+(1, 3), (1, 11), -- Ventilador V500: Filtros e Células O2
+(13, 3), (13, 11), -- Ventilador V600: Filtros e Células O2
+(15, 3), (15, 11), -- Anestesia: Filtros e Células O2
+(2, 1), (2, 5), (2, 9), (2, 10), -- Monitor Philips: SpO2, ECG 5 vias, Manguitos
+(14, 1), (14, 5), (14, 9), (14, 10), -- Monitor Philips 2: Mesmas peças
+(6, 1), (6, 4), (6, 9), -- Monitor Mindray: SpO2, ECG 3 vias, Manguito
+(5, 6), (5, 4), -- Desfibrilhador LIFEPAK: Bateria, ECG 3 vias
+(11, 4), -- DAE Nihon Kohden: ECG 3 vias
+(8, 7), -- Ecógrafo: Gel
+(9, 8), -- ECG GE: Papel Térmico
+(7, 2); -- Incubadora: SpO2 Pediátrico
+
+-- ORDENS DE TRABALHO
+INSERT INTO `ordens_trabalho` (`id`, `numero_ot`, `equipamento_id`, `tipo_manutencao`, `prioridade`, `descricao_avaria`, `data_abertura`, `estado`, `relatorio_tecnico`, `tempo_gasto`, `data_fecho`) VALUES
+(1, 'OT-2026-0A1B', 5, 'Corretiva (Avaria)', 'Crítica', 'Desfibrilhador não carrega a bateria. Condensador apresenta falha de tensão E-201.', '2026-06-20 09:30:00', 'Pendente', NULL, NULL, NULL),
+(2, 'OT-2026-0C2D', 1, 'Preventiva Planeada', 'Média', 'Substituição das células de O2 e calibração de fluxo (Preventiva 3000h).', '2026-05-10 10:00:00', 'Concluída', 'Células de O2 substituídas. Testes de fuga elétrica realizados. Equipamento funcional.', 2.5, '2026-05-10 14:30:00'),
+(3, 'OT-2026-0E3F', 8, 'Corretiva (Avaria)', 'Alta', 'Sonda linear apresenta artefactos na imagem. Cabo da sonda com sinais de desgaste.', '2026-06-21 14:15:00', 'Em Curso', NULL, NULL, NULL),
+(4, 'OT-2026-0G4H', 15, 'Corretiva (Avaria)', 'Alta', 'Máquina não passa no auto-teste matinal. Fuga no fole.', '2026-06-15 08:00:00', 'Pendente', NULL, NULL, NULL),
+(5, 'OT-2026-0I5J', 9, 'Preventiva Planeada', 'Baixa', 'Revisão anual obrigatória.', '2026-06-18 11:00:00', 'Concluída', 'Limpeza interna, calibração da impressora térmica. Tudo OK.', 1.0, '2026-06-18 12:30:00');
+
+-- ENCOMENDAS DE ARMAZÉM
+INSERT INTO `encomendas_armazem` (`id`, `artigo_id`, `quantidade`, `data_prevista`, `notas`, `estado`, `data_pedido`) VALUES
+(1, 3, 200, '2026-06-28', 'URGENTE: Rutura de stock no bloco operatório.', 'Pendente', '2026-06-21 15:15:00'),
+(2, 6, 5, '2026-07-05', 'Substituição planeada de baterias dos desfibrilhadores do piso 0.', 'Pendente', '2026-06-22 10:30:00'),
+(3, 7, 20, '2026-06-25', 'Reforço mensal de gel para a imagiologia.', 'Concluída', '2026-06-10 09:00:00'),
+(4, 11, 15, '2026-07-10', 'Encomenda normal à Dräger.', 'Pendente', '2026-06-23 09:00:00');
+
+-- DOCUMENTOS DOS EQUIPAMENTOS
+INSERT INTO `documentos_equipamento` (`id`, `equipamento_id`, `nome_documento`, `tipo_documento`, `caminho_ficheiro`, `data_upload`) VALUES
+(1, 1, 'Manual de Serviço V500', 'Manual Técnico', 'documentos/uploads/manual_v500.pdf', '2026-06-01 10:00:00'),
+(2, 2, 'Certificado CE', 'Certificado Conformidade (CE)', 'documentos/uploads/cert_ce_mx700.pdf', '2026-06-05 11:30:00'),
+(3, 3, 'Relatório de Proteção Radiológica', 'Guia de Calibração', 'documentos/uploads/rad_siemens.pdf', '2026-06-10 14:20:00'),
+(4, 5, 'Esquema Elétrico', 'Manual Técnico', 'documentos/uploads/esq_lifepak.pdf', '2026-06-12 09:15:00');
+
+-- CONTEÚDOS DO SITE PÚBLICO
+INSERT INTO `conteudos_site` (`chave`, `texto`) VALUES
+('contacto_email', 'geral@gira.pt'),
+('contacto_morada', 'Rua Dr. António Bernardino de Almeida, 431, Porto, Portugal'),
+('contacto_telefone', '+351 228 340 500'),
+('hero_titulo', 'Gira'),
+('hero_subtitulo', 'Plataforma integrada para controlo de equipamentos médicos, manutenções e gestão de armazém tecnológico.'),
+('sobre_texto', 'O Gira é uma solução desenvolvida para otimizar o fluxo de trabalho da Engenharia Clínica, garantindo a rastreabilidade e segurança do parque tecnológico hospitalar.');

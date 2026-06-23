@@ -158,8 +158,8 @@ $(document).ready(function () {
                     "previous": "Anterior"
                 }
             },
-            pageLength: 7,
-            lengthMenu: [[7, 14, 21, 50, -1], [7, 14, 21, 50, "Todos"]],
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
             order: [],
             dom: "<'row mb-3'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
                 "<'row'<'col-sm-12'tr>>" +

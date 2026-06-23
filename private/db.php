@@ -1,24 +1,21 @@
 <?php
-// 1. Definir as "Coordenadas" da Base de Dados, ou seja, as informações necessárias para o PHP se conectar à base de dados
-$host = '127.0.0.1';           // O endereço do teu servidor local (Laragon)
-$dbname = 'gira_inventario';   // Nome da bd
-$username = 'root';            // O utilizador padrão do Laragon
-$password = '';                // O Laragon, por defeito, não tem palavra-passe definida
+// 1. Definir as "Coordenadas" da Base de Dados
+$host = 'vsgate-s1.dei.isep.ipp.pt';
+$port = 10464; // O porto obrigatório indicado pelos professores
+$dbname = 'db1241251'; // O nome da tua base de dados atribuída
+$username = '1241251'; // O teu número de estudante
+$password = 'cacheira_251'; // A tua password de acesso
 
-// 2. Tentar fazer a ligação (Try / Catch) - tenta (try) fazer a ligação. Se houver algum problema (por exemplo, o Laragon estar desligado), em vez de o site explodir com erros feios, apanha (catch) o erro e mostra uma mensagem limpa."
+// 2. Tentar fazer a ligação (Try / Catch)
 try {
-    // Criar a nova ligação PDO
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+    // CORREÇÃO: O porto foi adicionado à string de ligação PDO!
+    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4", $username, $password);
 
     // 3. Configurações adicionais para a ligação PDO
-    // Obrigar o PHP a mostrar-nos os erros da base de dados caso algo corra mal
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Definir que queremos receber os dados da base de dados num formato fácil de ler (Array Associativo)
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    // Se a ligação falhar, o código entra aqui e "morre" (die), mostrando o erro
-    die("Erro crítico de ligação à base de dados: " . $e->getMessage());
+    die("Erro crítico de ligação ao servidor do ISEP: " . $e->getMessage());
 }
 
 // ============================================================================
@@ -173,6 +170,7 @@ function validar_nome_localizacao($nome)
     }
     return null;
 }
+
 // ============================================================================
 // VALIDAÇÕES DE DOMÍNIO - MANUTENÇÃO (Ordens de Trabalho)
 // ============================================================================
@@ -213,6 +211,7 @@ function validar_tempo_gasto($tempo)
     }
     return null;
 }
+
 // ============================================================================
 // VALIDAÇÕES DE DOMÍNIO - UTILIZADORES
 // ============================================================================
@@ -250,6 +249,7 @@ function validar_selecao_perfil($perfil_id)
     }
     return null;
 }
+
 // ============================================================================
 // VALIDAÇÕES DE DOMÍNIO - PERFIS DE ACESSO
 // ============================================================================
@@ -274,6 +274,7 @@ function validar_nivel_acesso($nivel)
     }
     return null;
 }
+
 // ============================================================================
 // VALIDAÇÕES DE DOMÍNIO - DOCUMENTOS TÉCNICOS
 // ============================================================================
@@ -298,6 +299,7 @@ function validar_tipo_documento($tipo)
     }
     return null;
 }
+
 // ============================================================================
 // VALIDAÇÕES DE DOMÍNIO - GARANTIAS
 // ============================================================================
@@ -313,6 +315,7 @@ function validar_data_garantia($data)
     }
     return null;
 }
+
 // ============================================================================
 // MODELOS DE EXTRAÇÃO DE DADOS (SEPARAÇÃO DE CAMADAS - MVC)
 // ============================================================================
