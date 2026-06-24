@@ -30,6 +30,7 @@ try {
   <link rel="stylesheet" href="/sibdas/1241251/gira/assets/css/all.min.css">
 
   <link rel="stylesheet" href="/sibdas/1241251/gira/assets/css/1241251.css" />
+  <link rel="icon" type="image/png" href="/sibdas/1241251/gira/assets/img/favicon.png">
 </head>
 
 <body>
@@ -115,25 +116,9 @@ try {
             </div>
           </div>
         </div>
-
         <div class="col-lg-6">
           <div class="position-relative">
-            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Gira healthcare dashboard interface displaying patient data, medical charts, and equipment management metrics on a modern computer screen with professional medical imagery in the background" class="img-fluid rounded-4 shadow-lg border border-white border-4">
-
-            <div
-              class="position-absolute bottom-0 start-0 translate-middle-x bg-white p-3 rounded-3 shadow border d-none d-md-block"
-              style="margin-bottom: 50%">
-              <div class="d-flex align-items-center gap-3">
-                <div
-                  class="bg-primary bg-opacity-10 p-2 rounded text-primary">
-                  <i class="fa-solid fa-stethoscope fs-3"></i>
-                </div>
-                <div>
-                  <h6 class="mb-0 fw-bold">+1.500</h6>
-                  <small class="text-muted">Equipamentos Geridos</small>
-                </div>
-              </div>
-            </div>
+            <img src="/sibdas/1241251/gira/assets/img/Dashboard.png" alt="Dashboard da Gira" class="img-fluid rounded-4 shadow-lg border border-white border-4">
           </div>
         </div>
       </div>
@@ -525,7 +510,7 @@ try {
         <div class="col-lg-6 position-relative">
           <div class="position-absolute top-0 start-0 translate-middle z-0 bg-primary bg-opacity-10 rounded-4" style="width: 200px; height: 200px;"></div>
 
-          <img src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=800&q=80" alt="Profissionais de saúde a usar tecnologia" class="img-fluid rounded-4 shadow-lg position-relative z-1 border border-white border-4">
+          <img src="/sibdas/1241251/gira/assets/img/Hospital_building.jpg" alt="Edifício de Hospital" class="img-fluid rounded-4 shadow-lg position-relative z-1 border border-white border-4">
 
           <div class="position-absolute bottom-0 end-0 translate-middle-y z-2 bg-white p-3 rounded-4 shadow-sm border me-3 d-none d-md-block">
             <div class="d-flex align-items-center gap-3">
@@ -588,12 +573,12 @@ try {
         <div class="col-md-6 col-lg-4">
           <div class="card border-0 shadow-sm rounded-4 h-100 text-center p-4 hover-lift">
             <div class="mb-4 d-inline-block position-relative">
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="Lead Developer" class="rounded-circle shadow-sm border border-white border-4" style="width: 130px; height: 130px; object-fit: cover;">
+              <img src="/sibdas/1241251/gira/assets/img/gatos_pingo_doce.jpg" alt="Lead Developer" class="rounded-circle shadow-sm border border-white border-4" style="width: 130px; height: 130px; object-fit: cover;">
               <span class="position-absolute bottom-0 end-0 bg-primary text-white p-2 rounded-circle shadow-sm" style="width: 40px; height: 40px;">
                 <i class="fa-solid fa-code small"></i>
               </span>
             </div>
-            <h5 class="fw-bold mb-1">Nome 1</h5>
+            <h5 class="fw-bold mb-1">Simão</h5>
             <span class="text-primary small fw-bold text-uppercase tracking-wider">Lead Developer & Founder</span>
             <p class="text-secondary mt-3 mb-4 small">
               Responsável pela arquitetura do sistema e implementação de toda a lógica backend em PHP e base de dados.
@@ -608,15 +593,15 @@ try {
         <div class="col-md-6 col-lg-4">
           <div class="card border-0 shadow-sm rounded-4 h-100 text-center p-4 hover-lift">
             <div class="mb-4 d-inline-block position-relative">
-              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80" alt="UI/UX Designer" class="rounded-circle shadow-sm border border-white border-4" style="width: 130px; height: 130px; object-fit: cover;">
+              <img src="/sibdas/1241251/gira/assets/img/gato_pingo_doce.jpg" alt="UI/UX Designer" class="rounded-circle shadow-sm border border-white border-4" style="width: 130px; height: 130px; object-fit: cover;">
               <span class="position-absolute bottom-0 end-0 bg-success text-white p-2 rounded-circle shadow-sm" style="width: 40px; height: 40px;">
                 <i class="fa-solid fa-palette small"></i>
               </span>
             </div>
-            <h5 class="fw-bold mb-1">Nome 2</h5>
+            <h5 class="fw-bold mb-1">Cacheira</h5>
             <span class="text-primary small fw-bold text-uppercase tracking-wider">UI/UX Designer</span>
             <p class="text-secondary mt-3 mb-4 small">
-              Focada em garantir que a Gira seja intuitiva e acessível para todos os profissionais de saúde.
+              Focado em garantir que a Gira seja intuitiva e acessível para todos os profissionais de saúde.
             </p>
             <div class="d-flex justify-content-center gap-3">
               <a href="#" class="text-secondary hover-primary"><i class="fa-brands fa-linkedin fs-5"></i></a>
@@ -628,15 +613,15 @@ try {
         <div class="col-md-6 col-lg-4">
           <div class="card border-0 shadow-sm rounded-4 h-100 text-center p-4 hover-lift">
             <div class="mb-4 d-inline-block position-relative">
-              <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80" alt="Product Manager" class="rounded-circle shadow-sm border border-white border-4" style="width: 130px; height: 130px; object-fit: cover;">
+              <img src="/sibdas/1241251/gira/assets/img/Gemini_icon.png" alt="Product Manager" class="rounded-circle shadow-sm border border-white border-4" style="width: 130px; height: 130px; object-fit: cover;">
               <span class="position-absolute bottom-0 end-0 bg-info text-white p-2 rounded-circle shadow-sm" style="width: 40px; height: 40px;">
                 <i class="fa-solid fa-stethoscope small"></i>
               </span>
             </div>
-            <h5 class="fw-bold mb-1">Nome 3</h5>
-            <span class="text-primary small fw-bold text-uppercase tracking-wider">Medical Consultant</span>
+            <h5 class="fw-bold mb-1">AI</h5>
+            <span class="text-primary small fw-bold text-uppercase tracking-wider">Consultant</span>
             <p class="text-secondary mt-3 mb-4 small">
-              Consultor clínico que garante que o software cumpre as normas e necessidades reais do ambiente hospitalar.
+              Aconselhador de Eleição do Simão Cacheira.
             </p>
             <div class="d-flex justify-content-center gap-3">
               <a href="#" class="text-secondary hover-primary"><i class="fa-brands fa-linkedin fs-5"></i></a>

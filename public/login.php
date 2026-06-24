@@ -84,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="login-card p-3">
         <div class="text-center mb-4">
-            <a href="/sibdas/1241251/gira/public/index.html" class="text-decoration-none">
+            <a href="/sibdas/1241251/gira/public/index.php" class="text-decoration-none">
                 <h1 class="fw-bold text-primary mb-1">
                     <i class="fa-solid fa-notes-medical me-2"></i>Gira
                 </h1>
@@ -124,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </button>
 
                     <div class="text-center">
-                        <a href="/sibdas/1241251/gira/public/index.html" class="text-decoration-none small text-muted">
+                        <a href="/sibdas/1241251/gira/public/index.php" class="text-decoration-none small text-muted">
                             <i class="fa-solid fa-arrow-left me-1"></i> Voltar à página inicial
                         </a>
                     </div>
