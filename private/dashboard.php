@@ -25,8 +25,8 @@ try {
     $stmt_gar = $pdo->query("SELECT COUNT(*) FROM equipamentos WHERE fim_garantia IS NOT NULL AND fim_garantia >= CURDATE() AND fim_garantia <= DATE_ADD(CURDATE(), INTERVAL 30 DAY)");
     $garantias_exp = $stmt_gar->fetchColumn();
 
-    // 4. Documentos Totais (Métrica de exemplo)
-    $stmt_doc = $pdo->query("SELECT COUNT(*) FROM documentos_equipamento");
+    // 4. Equipamentos sem Documentação (Subconsulta)
+    $stmt_doc = $pdo->query("SELECT COUNT(*) FROM equipamentos WHERE id NOT IN (SELECT DISTINCT equipamento_id FROM documentos_equipamento)");
     $docs_total = $stmt_doc->fetchColumn();
 
     // 5. Custo de Aquisição Total (Soma)
@@ -163,7 +163,7 @@ render_header("Gira - Dashboard Geral");
                 <div>
                     <p class="text-muted small-caps mb-0">Docs</p>
                     <h3 class="text-primary"><?php echo $docs_total; ?></h3>
-                    <small class="text-primary fw-bold">Anexados</small>
+                    <small class="text-primary fw-bold">Equipamentos sem Documentos</small>
                 </div>
             </div>
         </a>
